@@ -214,6 +214,20 @@ Layer 3: skills/*/SKILL.md
 
 ## 常见问题
 
+### Q: Codex/OpenCode 每次会话都自动加载某些 skills？
+
+这是因为某些 skills 的 description 写了 "ALWAYS run" 或 "every session"，Codex/OpenCode 可能太死板地执行了。
+
+**解决方案：** 删除这些强制触发的 skills：
+```bash
+rm -rf ~/.codex/skills/offer-k-dense-web
+rm -rf ~/.codex/skills/using-superpowers
+rm -rf ~/.config/opencode/skills/offer-k-dense-web
+rm -rf ~/.config/opencode/skills/using-superpowers
+```
+
+**正确的行为：** Skills 应该是按需调用的，不是自动加载。
+
 ### Q: 权限弹窗还是会出现？
 
 检查 `settings.json` 中的 `defaultMode` 是否为 `bypassPermissions`，且 `skipDangerousModePermissionPrompt` 为 `true`。

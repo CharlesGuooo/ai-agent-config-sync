@@ -1,0 +1,55 @@
+# API Keys - 绝对不要上传
+*.key
+*.pem
+.env
+.env.local
+.env.*.local
+*secrets*
+*token*
+*credential*
+
+# 本地覆盖配置
+settings.local.json
+*.local.json
+
+# 缓存和历史
+cache/
+history.jsonl
+logs/
+*.log
+*.sqlite
+
+# 临时文件
+tmp/
+temp/
+*.tmp
+*.bak
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# Sandbox 数据
+.sandbox/
+.sandbox-bin/
+.sandbox-secrets/
+
+# Session 和运行时数据
+sessions/
+shell-snapshots/
+session-env/
+plans/
+todos/
+tasks/
+debug/
+downloads/
+paste-cache/
+file-history/
+backups/
+usage-data/
+telemetry/

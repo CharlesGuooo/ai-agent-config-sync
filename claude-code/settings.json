@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(*)",
+      "Read(*)",
+      "Write(*)",
+      "Edit(*)",
+      "Glob(*)",
+      "Grep(*)",
+      "Agent(*)",
+      "WebSearch(*)",
+      "mcp__*"
+    ]
+  },
+  "model": "opus",
+  "enabledPlugins": {
+    "superpowers@superpowers-marketplace": true,
+    "compound-engineering@compound-engineering-plugin": true
+  },
+  "extraKnownMarketplaces": {
+    "superpowers-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "obra/superpowers-marketplace"
+      }
+    },
+    "compound-engineering": {
+      "source": {
+        "source": "directory",
+        "path": "C:/Users/Lenovo/.claude/marketplaces"
+      }
+    },
+    "compound-engineering-plugin": {
+      "source": {
+        "source": "directory",
+        "path": "C:\\Users\\Lenovo\\.claude\\marketplaces\\compound-engineering"
+      }
+    }
+  },
+  "autoUpdatesChannel": "latest",
+  "skipDangerousModePermissionPrompt": true
+}

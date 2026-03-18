@@ -117,9 +117,11 @@ nano ~/.claude/.env  # 或用其他编辑器
 | `FIRECRAWL_API_KEY` | 网页抓取 MCP |
 | `SUPABASE_PROJECT_REF` | Supabase MCP |
 
-### Step 4: 修改 settings.json 中的路径
+### Step 4: 修改配置文件中的路径和占位符
 
-打开 `~/.claude/settings.json`，将以下占位符替换为实际路径：
+#### 4.1 Claude Code settings.json
+
+打开 `~/.claude/settings.json`，将以下占位符替换为实际值：
 
 ```json
 // 替换前
@@ -136,6 +138,26 @@ nano ~/.claude/.env  # 或用其他编辑器
 "filesystem": {
   "args": ["-y", "@modelcontextprotocol/server-filesystem", "C:/Users/你的用户名/projects"]
 }
+```
+
+#### 4.2 Codex config.toml
+
+打开 `~/.codex/config.toml`，修改以下内容：
+
+```toml
+# 如果使用自定义 API 端点，修改 base_url
+[model_providers.sub2api]
+base_url = "https://你的-api-端点/v1"  # 或保持默认
+
+# 添加项目信任 (可选但推荐)
+[projects.'你的用户目录路径']
+trust_level = "trusted"
+
+# macOS/Linux 示例:
+# [projects.'/Users/yourname']
+
+# Windows 示例:
+# [projects.'C:\Users\yourname']
 ```
 
 ### Step 5: 创建 projects 目录

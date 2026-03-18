@@ -1,0 +1,35 @@
+{
+  "name": "",
+  "phase": 1,
+  "created": "",
+  "updated": "",
+  "project_type": "",
+  "target_platform": "",
+  "aspect_ratio": "16:9",
+  "resolution": "1920x1080",
+  "creative_brief_approved": false,
+  "storyboard_approved": false,
+  "video_backend": "",
+  "default_model": "",
+  "music": {
+    "provided": false,
+    "file": null,
+    "bpm": null,
+    "duration": null,
+    "structure": [],
+    "lyrics": []
+  },
+  "characters": [],
+  "shots": [],
+  "post_production": {
+    "transitions": "none",
+    "music_overlay": false,
+    "voiceover": false,
+    "subtitles": false
+  },
+  "output": {
+    "final_file": null,
+    "total_credits_used": 0,
+    "total_attempts": 0
+  }
+}

@@ -14,8 +14,9 @@ name = "sub2api"
 base_url = "${OPENAI_BASE_URL:-https://api.openai.com/v1}"
 wire_api = "responses"
 
-[projects.'${HOME}']
-trust_level = "trusted"
+# Note: Replace ~ with your actual home path if needed
+# On most systems, Codex will automatically trust the home directory
+# If not working, manually add: [projects.'/home/yourusername']
 
 [windows]
 sandbox = "elevated"

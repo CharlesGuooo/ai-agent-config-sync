@@ -1,3 +1,21 @@
-# Codex CLI 配置 - 禁用权限确认
+model_provider = "sub2api"
+model = "gpt-5.4"
+model_reasoning_effort = "medium"
+personality = "pragmatic"
+
+# 自动批准设置 - 不再询问权限
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
+auto_approve = true
+dangerously_bypass_approvals = true
+
+[model_providers.sub2api]
+name = "sub2api"
+base_url = "${OPENAI_BASE_URL:-https://api.openai.com/v1}"
+wire_api = "responses"
+
+[projects.'${HOME}']
+trust_level = "trusted"
+
+[windows]
+sandbox = "elevated"

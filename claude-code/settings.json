@@ -1,42 +1,129 @@
 {
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "${ANTHROPIC_AUTH_TOKEN}",
+    "ANTHROPIC_BASE_URL": "${ANTHROPIC_BASE_URL:-https://api.anthropic.com}",
+    "API_TIMEOUT_MS": "3000000"
+  },
   "permissions": {
-    "allow": [
-      "Bash(*)",
-      "Read(*)",
-      "Write(*)",
-      "Edit(*)",
-      "Glob(*)",
-      "Grep(*)",
-      "Agent(*)",
-      "WebSearch(*)",
-      "mcp__*"
-    ]
+    "defaultMode": "bypassPermissions"
   },
   "model": "opus",
-  "enabledPlugins": {
-    "superpowers@superpowers-marketplace": true,
-    "compound-engineering@compound-engineering-plugin": true
-  },
-  "extraKnownMarketplaces": {
-    "superpowers-marketplace": {
-      "source": {
-        "source": "github",
-        "repo": "obra/superpowers-marketplace"
-      }
-    },
-    "compound-engineering": {
-      "source": {
-        "source": "directory",
-        "path": "C:/Users/Lenovo/.claude/marketplaces"
-      }
-    },
-    "compound-engineering-plugin": {
-      "source": {
-        "source": "directory",
-        "path": "C:\\Users\\Lenovo\\.claude\\marketplaces\\compound-engineering"
-      }
-    }
-  },
   "autoUpdatesChannel": "latest",
-  "skipDangerousModePermissionPrompt": true
+  "skipDangerousModePermissionPrompt": true,
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      }
+    },
+    "firecrawl": {
+      "command": "npx",
+      "args": ["-y", "firecrawl-mcp"],
+      "env": {
+        "FIRECRAWL_API_KEY": "${FIRECRAWL_API_KEY}"
+      }
+    },
+    "supabase": {
+      "command": "npx",
+      "args": ["-y", "@supabase/mcp-server-supabase@latest", "--project-ref=${SUPABASE_PROJECT_REF}"]
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"]
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    },
+    "vercel": {
+      "type": "http",
+      "url": "https://mcp.vercel.com"
+    },
+    "railway": {
+      "command": "npx",
+      "args": ["-y", "@railway/mcp-server"]
+    },
+    "cloudflare-docs": {
+      "type": "http",
+      "url": "https://docs.mcp.cloudflare.com/mcp"
+    },
+    "cloudflare-workers-builds": {
+      "type": "http",
+      "url": "https://builds.mcp.cloudflare.com/mcp"
+    },
+    "cloudflare-workers-bindings": {
+      "type": "http",
+      "url": "https://bindings.mcp.cloudflare.com/mcp"
+    },
+    "cloudflare-observability": {
+      "type": "http",
+      "url": "https://observability.mcp.cloudflare.com/mcp"
+    },
+    "clickhouse": {
+      "type": "http",
+      "url": "https://mcp.clickhouse.cloud/mcp"
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@context7/mcp-server"]
+    },
+    "magic": {
+      "command": "npx",
+      "args": ["-y", "@magicuidesign/mcp@latest"]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "${PROJECTS_DIR:-~/projects}"]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@executeautomation/playwright-mcp-server"]
+    },
+    "fastapi": {
+      "command": "python",
+      "args": ["-m", "fastapi_mcp"]
+    },
+    "postgres": {
+      "command": "postgres-mcp",
+      "args": ["--connection-string", "${DATABASE_URL}"],
+      "disabled": true
+    },
+    "vector-search": {
+      "command": "python",
+      "args": ["-m", "mcp_server_vector_search"],
+      "env": {
+        "NEO4J_URI": "${NEO4J_URI}",
+        "NEO4J_USER": "${NEO4J_USER}",
+        "NEO4J_PASSWORD": "${NEO4J_PASSWORD}",
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+      },
+      "disabled": true
+    },
+    "runpod": {
+      "command": "node",
+      "args": ["${HOME}/.claude/mcp-servers/runpod-mcp-ts/build/index.js"],
+      "env": {
+        "RUNPOD_API_KEY": "${RUNPOD_API_KEY}"
+      },
+      "disabled": true
+    },
+    "semantic-memory": {
+      "command": "npx",
+      "args": ["tsx", "${HOME}/.claude/mcp-servers/claude-code-agentic-semantic-memory-system-mcp/src/index.ts"],
+      "env": {
+        "DATABASE_URL": "${DATABASE_URL}"
+      },
+      "disabled": true
+    },
+    "expo-mcp": {
+      "type": "http",
+      "url": "https://mcp.expo.dev/mcp"
+    },
+    "react-native-guide": {
+      "command": "npx",
+      "args": ["-y", "@mrnitro360/react-native-mcp-guide"]
+    }
+  }
 }

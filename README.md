@@ -51,6 +51,13 @@ nano ~/.claude/.env
 
 ### 3. 运行安装脚本
 
+安装脚本现在只负责同步共享工作环境，不会覆盖本机已经可用的 provider/API 配置：
+
+- 会同步: `CLAUDE.md` / `AGENTS.md`、`shared/skills`、`shared/index`
+- 会保留: `~/.claude/settings.json`、`~/.codex/config.toml`、`~/.config/opencode/opencode.json`
+
+如果你是通过 AI CLI 手动配置，这些脚本是可选的，不是必需的。
+
 **Linux/macOS:**
 ```bash
 chmod +x install.sh
@@ -146,7 +153,7 @@ Layer 3: skills/*/SKILL.md → 完整 skill 按需加载
 
 1. 复制 `.env.example` 到 `~/.claude/.env`
 2. 填入实际的 API keys
-3. 安装脚本会自动将配置文件复制到正确位置
+3. 安装脚本只会自动复制共享配置，不会覆盖本机 provider/API 接入配置
 
 ### 必需的 Keys
 
@@ -166,8 +173,9 @@ Layer 3: skills/*/SKILL.md → 完整 skill 按需加载
 ## 注意事项
 
 1. `settings.local.json` 和敏感信息不会同步
-2. 每个 skill 目录包含 `SKILL.md` 定义文件
-3. 使用三层架构按需加载 skills，避免 token 浪费
+2. `settings.json` / `config.toml` / `opencode.json` 里的 provider、base URL、特殊 API 接入应视为机器本地配置，默认不覆盖
+3. 每个 skill 目录包含 `SKILL.md` 定义文件
+4. 使用三层架构按需加载 skills，避免 token 浪费
 
 ## OpenClaw Skills
 

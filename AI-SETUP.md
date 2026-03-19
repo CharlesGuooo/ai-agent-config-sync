@@ -43,6 +43,23 @@ cd ai-agent-config-sync
 
 ### Step 2: 复制配置文件到本地
 
+原则:
+
+1. 共享工作环境要同步
+2. 本机 provider/API 接入配置不要被覆盖
+
+默认应同步的是:
+
+- `CLAUDE.md` / `AGENTS.md`
+- `shared/skills`
+- `shared/index`（OpenCode 可不强制）
+
+默认不应覆盖的是:
+
+- `~/.claude/settings.json`
+- `~/.codex/config.toml`
+- `~/.config/opencode/opencode.json`
+
 **根据你使用的工具，执行对应命令：**
 
 #### Claude Code
@@ -53,7 +70,10 @@ mkdir -p ~/.claude/skills ~/.claude/index ~/.claude/mcp-servers
 
 # 复制配置
 cp claude-code/CLAUDE.md ~/.claude/CLAUDE.md
+# 如果是新机器首次安装，可以复制模板
 cp claude-code/settings.json ~/.claude/settings.json
+
+# 如果本机已经配好 provider/API，不要覆盖 settings.json
 
 # 复制 skills 和 index
 cp -r shared/skills/* ~/.claude/skills/
@@ -71,7 +91,10 @@ mkdir -p ~/.codex/skills ~/.codex/index
 
 # 复制配置
 cp codex/AGENTS.md ~/.codex/AGENTS.md
+# 如果是新机器首次安装，可以复制模板
 cp codex/config.toml ~/.codex/config.toml
+
+# 如果本机已经配好 provider/API/base_url，不要覆盖 config.toml
 
 # 复制 skills 和 index
 cp -r shared/skills/* ~/.codex/skills/
@@ -86,7 +109,10 @@ mkdir -p ~/.config/opencode/skills
 
 # 复制配置
 cp opencode/AGENTS.md ~/.config/opencode/AGENTS.md
+# 如果是新机器首次安装，可以复制模板
 cp opencode/opencode.json ~/.config/opencode/opencode.json
+
+# 如果本机已经配好 provider/API，不要覆盖 opencode.json
 
 # 复制 skills (OpenCode 也共享 Claude 的 skills)
 cp -r shared/skills/* ~/.config/opencode/skills/
@@ -293,10 +319,11 @@ chmod +x install.sh
 
 脚本会自动：
 - 检查依赖 (Node.js, npx)
-- 复制所有配置文件
-- 替换环境变量占位符
-- 创建 .env 文件
-- 创建 projects 目录
+- 同步共享配置
+- 仅在配置文件不存在时创建模板配置
+- 替换模板中的环境变量占位符
+- 创建 `.env` 文件
+- 创建 `projects` 目录
 
 ---
 

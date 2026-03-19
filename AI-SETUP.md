@@ -41,7 +41,40 @@ git clone https://github.com/CharlesGuooo/ai-agent-config-sync.git
 cd ai-agent-config-sync
 ```
 
-### Step 2: 复制配置文件到本地
+### Step 2: 先判断你属于哪条路径
+
+#### 路径 A: 新电脑首次安装
+
+适用于：
+
+- 刚安装好 Claude Code / Codex / OpenCode
+- 本机还没有成熟可用的 provider/API 接入配置
+- 希望先用 repo 模板初始化工作环境
+
+执行原则：
+
+1. 可以首次创建本机 `settings.json` / `config.toml` / `opencode.json`
+2. 创建后再按你的 provider/API 方案修改
+3. shared 内容和模板配置都可以落地
+
+#### 路径 B: 已有本机配置时同步
+
+适用于：
+
+- 这台机器上的 CLI 已经可用
+- 已经配置好特殊 provider、base URL、模型或 API key 接入
+- 只想同步 skills、index、AGENTS/CLAUDE 等共享工作环境
+
+执行原则：
+
+1. 只同步共享内容
+2. 不覆盖本机 `settings.json`
+3. 不覆盖本机 `config.toml`
+4. 不覆盖本机 `opencode.json`
+
+### Step 3: 按路径执行复制
+
+#### 路径 A: 新电脑首次安装
 
 原则:
 
@@ -118,7 +151,50 @@ cp opencode/opencode.json ~/.config/opencode/opencode.json
 cp -r shared/skills/* ~/.config/opencode/skills/
 ```
 
-### Step 3: 配置 API Keys
+#### 路径 B: 已有本机配置时同步
+
+这条路径只复制共享工作环境，不动本机 provider/API 配置。
+
+#### Claude Code
+
+```bash
+mkdir -p ~/.claude/skills ~/.claude/index ~/.claude/mcp-servers
+cp claude-code/CLAUDE.md ~/.claude/CLAUDE.md
+cp -r shared/skills/* ~/.claude/skills/
+cp -r shared/index/* ~/.claude/index/
+cp -r claude-code/mcp-servers/* ~/.claude/mcp-servers/ 2>/dev/null || true
+```
+
+不要覆盖：
+
+- `~/.claude/settings.json`
+
+#### Codex
+
+```bash
+mkdir -p ~/.codex/skills ~/.codex/index
+cp codex/AGENTS.md ~/.codex/AGENTS.md
+cp -r shared/skills/* ~/.codex/skills/
+cp -r shared/index/* ~/.codex/index/
+```
+
+不要覆盖：
+
+- `~/.codex/config.toml`
+
+#### OpenCode
+
+```bash
+mkdir -p ~/.config/opencode/skills
+cp opencode/AGENTS.md ~/.config/opencode/AGENTS.md
+cp -r shared/skills/* ~/.config/opencode/skills/
+```
+
+不要覆盖：
+
+- `~/.config/opencode/opencode.json`
+
+### Step 4: 配置 API Keys
 
 ```bash
 # 复制模板
@@ -143,7 +219,7 @@ nano ~/.claude/.env  # 或用其他编辑器
 | `FIRECRAWL_API_KEY` | 网页抓取 MCP |
 | `SUPABASE_PROJECT_REF` | Supabase MCP |
 
-### Step 4: 修改配置文件中的路径和占位符
+### Step 5: 只在首次安装时修改模板配置中的路径和占位符
 
 #### 4.1 Claude Code settings.json
 
@@ -186,7 +262,12 @@ trust_level = "trusted"
 # [projects.'C:\Users\yourname']
 ```
 
-### Step 5: 创建 projects 目录
+注意：
+
+- 如果你走的是“已有本机配置时同步”路径，而且当前配置已经可用，这一步通常不需要动
+- 不要为了和 repo 模板完全一致而覆盖本机 provider/API 配置
+
+### Step 6: 创建 projects 目录
 
 ```bash
 # macOS/Linux
@@ -196,7 +277,7 @@ mkdir -p ~/projects
 mkdir "$env:USERPROFILE\projects"
 ```
 
-### Step 6: 重启 AI Agent
+### Step 7: 重启 AI Agent
 
 关闭并重新启动你的 AI agent (Claude Code / Codex / OpenCode)。
 

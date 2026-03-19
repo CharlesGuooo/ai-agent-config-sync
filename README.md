@@ -39,7 +39,40 @@ git clone https://github.com/CharlesGuooo/ai-agent-config-sync.git
 cd ai-agent-config-sync
 ```
 
-### 2. 配置 API Keys
+### 2. 先选路径
+
+这个 repo 现在有两种使用方式，请先判断你属于哪一种：
+
+#### 路径 A: 新电脑首次安装
+
+适用场景：
+
+- 刚装好 Claude Code / Codex / OpenCode
+- 本机还没有稳定可用的 provider/API 配置
+- 你接受先用 repo 模板初始化，再按本机情况调整
+
+建议做法：
+
+1. 运行安装脚本，或按 [AI-SETUP.md](./AI-SETUP.md) 手动复制配置
+2. 首次创建 `settings.json` / `config.toml` / `opencode.json`
+3. 再根据本机 provider/API 需求修改这些配置文件
+
+#### 路径 B: 已有本机配置，做环境同步
+
+适用场景：
+
+- 这台机器上的 CLI 已经能正常使用
+- 你已经配置了特殊 provider / base URL / API key 接入
+- 你只想同步 shared skills、index、全局指令
+
+建议做法：
+
+1. 运行同步脚本，或按 [AI-SETUP.md](./AI-SETUP.md) 只复制共享内容
+2. 保留本机已有的 `~/.claude/settings.json`
+3. 保留本机已有的 `~/.codex/config.toml`
+4. 保留本机已有的 `~/.config/opencode/opencode.json`
+
+### 3. 配置 API Keys
 
 ```bash
 # 复制模板
@@ -49,7 +82,7 @@ cp .env.example ~/.claude/.env
 nano ~/.claude/.env
 ```
 
-### 3. 运行安装脚本
+### 4. 运行安装脚本
 
 安装脚本现在只负责同步共享工作环境，不会覆盖本机已经可用的 provider/API 配置：
 
@@ -75,7 +108,7 @@ chmod +x install.sh
 .\install.ps1 opencode   # 只安装 OpenCode
 ```
 
-### 4. 重启 AI Agent
+### 5. 重启 AI Agent
 
 安装完成后，重启你的 AI agent 即可生效。
 

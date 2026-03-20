@@ -1,5 +1,5 @@
 # AI Agent Config Sync - Windows Installation Script
-# Usage: .\install.ps1 [claude|codex|opencode|all]
+# Usage: .\install.ps1 [claude|codex|opencode|cursor|all]
 # Default: all
 
 param(
@@ -13,6 +13,7 @@ $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $ClaudeDir = "$env:USERPROFILE\.claude"
 $CodexDir = "$env:USERPROFILE\.codex"
 $OpenCodeDir = "$env:USERPROFILE\.config\opencode"
+$CursorDir = "$env:USERPROFILE\.cursor"
 
 function Check-Dependencies {
     Write-Host "Checking dependencies..." -ForegroundColor Cyan
@@ -62,18 +63,6 @@ function Check-Dependencies {
     Write-Host ""
 }
 
-function Replace-EnvPlaceholders {
-    param([string]$File)
-
-    $content = Get-Content $File -Raw
-    $content = $content -replace '\$\{HOME\}', $env:USERPROFILE
-    $content = $content -replace '\$HOME', $env:USERPROFILE
-    $content = $content -replace '\$\{PROJECTS_DIR:-~/projects\}', "$env:USERPROFILE\projects"
-    $content = $content -replace '\$\{PROJECTS_DIR\}', "$env:USERPROFILE\projects"
-
-    Set-Content $File $content -NoNewline
-}
-
 function Copy-IfMissing {
     param(
         [string]$Source,
@@ -100,18 +89,18 @@ function Install-Claude {
 
     Copy-Item "$ScriptDir\claude-code\CLAUDE.md" "$ClaudeDir\CLAUDE.md" -Force
     Copy-IfMissing "$ScriptDir\claude-code\settings.json" "$ClaudeDir\settings.json" "~/.claude/settings.json"
-    if ((Test-Path "$ClaudeDir\settings.json") -and ((Get-FileHash "$ScriptDir\claude-code\settings.json").Hash -eq (Get-FileHash "$ClaudeDir\settings.json").Hash)) {
-        Replace-EnvPlaceholders "$ClaudeDir\settings.json"
-    }
 
     if (Test-Path "$ScriptDir\shared\skills") {
         Get-ChildItem "$ClaudeDir\skills" -ErrorAction SilentlyContinue | Remove-Item -Recurse -Force
         Copy-Item "$ScriptDir\shared\skills\*" "$ClaudeDir\skills\" -Recurse -Force
+        $skillCount = (Get-ChildItem "$ClaudeDir\skills" -Directory).Count
+        Write-Host "  [synced] ~/.claude/skills/ ($skillCount skills)" -ForegroundColor Green
     }
 
     if (Test-Path "$ScriptDir\shared\index") {
         Get-ChildItem "$ClaudeDir\index" -ErrorAction SilentlyContinue | Remove-Item -Recurse -Force
         Copy-Item "$ScriptDir\shared\index\*" "$ClaudeDir\index\" -Recurse -Force
+        Write-Host "  [synced] ~/.claude/index/" -ForegroundColor Green
     }
 
     if (Test-Path "$ScriptDir\claude-code\mcp-servers") {
@@ -121,12 +110,6 @@ function Install-Claude {
     if (-not (Test-Path "$ClaudeDir\.env")) {
         Copy-Item "$ScriptDir\.env.example" "$ClaudeDir\.env"
         Write-Host "  [created] ~/.claude/.env - please fill in your API keys" -ForegroundColor Blue
-    }
-
-    $projectsDir = "$env:USERPROFILE\projects"
-    if (-not (Test-Path $projectsDir)) {
-        New-Item -ItemType Directory -Force -Path $projectsDir | Out-Null
-        Write-Host "  [created] $projectsDir" -ForegroundColor Blue
     }
 
     Write-Host "[ok] Claude Code config installed" -ForegroundColor Green
@@ -145,11 +128,13 @@ function Install-Codex {
     if (Test-Path "$ScriptDir\shared\skills") {
         Get-ChildItem "$CodexDir\skills" -ErrorAction SilentlyContinue | Remove-Item -Recurse -Force
         Copy-Item "$ScriptDir\shared\skills\*" "$CodexDir\skills\" -Recurse -Force
+        Write-Host "  [synced] ~/.codex/skills/" -ForegroundColor Green
     }
 
     if (Test-Path "$ScriptDir\shared\index") {
         Get-ChildItem "$CodexDir\index" -ErrorAction SilentlyContinue | Remove-Item -Recurse -Force
         Copy-Item "$ScriptDir\shared\index\*" "$CodexDir\index\" -Recurse -Force
+        Write-Host "  [synced] ~/.codex/index/" -ForegroundColor Green
     }
 
     Write-Host "[ok] Codex config installed" -ForegroundColor Green
@@ -163,16 +148,27 @@ function Install-OpenCode {
 
     Copy-Item "$ScriptDir\opencode\AGENTS.md" "$OpenCodeDir\AGENTS.md" -Force
     Copy-IfMissing "$ScriptDir\opencode\opencode.json" "$OpenCodeDir\opencode.json" "~/.config/opencode/opencode.json"
-    if ((Test-Path "$OpenCodeDir\opencode.json") -and ((Get-FileHash "$ScriptDir\opencode\opencode.json").Hash -eq (Get-FileHash "$OpenCodeDir\opencode.json").Hash)) {
-        Replace-EnvPlaceholders "$OpenCodeDir\opencode.json"
-    }
 
     if (Test-Path "$ScriptDir\shared\skills") {
         Get-ChildItem "$OpenCodeDir\skills" -ErrorAction SilentlyContinue | Remove-Item -Recurse -Force
         Copy-Item "$ScriptDir\shared\skills\*" "$OpenCodeDir\skills\" -Recurse -Force
+        Write-Host "  [synced] ~/.config/opencode/skills/" -ForegroundColor Green
     }
 
     Write-Host "[ok] OpenCode config installed" -ForegroundColor Green
+}
+
+function Install-Cursor {
+    Write-Host "Installing Cursor IDE config..." -ForegroundColor Yellow
+
+    New-Item -ItemType Directory -Force -Path "$CursorDir\rules" | Out-Null
+
+    Copy-Item "$ScriptDir\cursor\global-rules.md" "$CursorDir\rules\global-rules.md" -Force
+    Copy-IfMissing "$ScriptDir\cursor\mcp.json" "$CursorDir\mcp.json" "~/.cursor/mcp.json"
+
+    Write-Host "[ok] Cursor IDE config installed" -ForegroundColor Green
+    Write-Host "[note] For project-level skills, create symlinks in each project:" -ForegroundColor Blue
+    Write-Host "  New-Item -ItemType Junction -Path 'your-project\.cursor\skills' -Target '$ClaudeDir\skills'"
 }
 
 function Show-PostInstall {
@@ -182,14 +178,17 @@ function Show-PostInstall {
     Write-Host "============================================" -ForegroundColor Green
     Write-Host ""
 
-    $skillCount = (Get-ChildItem "$ClaudeDir\skills" -Directory -ErrorAction SilentlyContinue).Count
-    Write-Host "Skills installed: $skillCount directories" -ForegroundColor Green
+    Write-Host "Four tools configured:" -ForegroundColor Yellow
+    Write-Host "  - Claude Code: ~/.claude/"
+    Write-Host "  - Codex CLI:   ~/.codex/"
+    Write-Host "  - OpenCode:    ~/.config/opencode/"
+    Write-Host "  - Cursor IDE:  ~/.cursor/"
     Write-Host ""
 
     Write-Host "Next Steps:" -ForegroundColor Yellow
     Write-Host ""
     Write-Host "  1. Configure API Keys:" -ForegroundColor Blue
-    Write-Host "     notepad $ClaudeDir\.env" -ForegroundColor Green
+    Write-Host "     notepad $ClaudeDir\.env"
     Write-Host ""
     Write-Host "     Required keys:"
     Write-Host "       - ANTHROPIC_AUTH_TOKEN (Claude Code)"
@@ -203,10 +202,7 @@ function Show-PostInstall {
     Write-Host "     - Claude Code: claude"
     Write-Host "     - Codex: codex"
     Write-Host "     - OpenCode: opencode"
-    Write-Host ""
-    Write-Host "  3. Verify bypass permissions:" -ForegroundColor Blue
-    Write-Host "     - Check $ClaudeDir\settings.json"
-    Write-Host '     - Should have: "defaultMode": "bypassPermissions"'
+    Write-Host "     - Cursor: Open project directory"
     Write-Host ""
     Write-Host "Documentation: https://github.com/CharlesGuooo/ai-agent-config-sync" -ForegroundColor Blue
     Write-Host ""
@@ -218,14 +214,16 @@ switch ($Target.ToLower()) {
     "claude" { Install-Claude }
     "codex" { Install-Codex }
     "opencode" { Install-OpenCode }
+    "cursor" { Install-Cursor }
     "all" {
         Install-Claude
         Install-Codex
         Install-OpenCode
+        Install-Cursor
     }
     default {
         Write-Host "Unknown target: $Target" -ForegroundColor Red
-        Write-Host "Usage: .\install.ps1 [claude|codex|opencode|all]"
+        Write-Host "Usage: .\install.ps1 [claude|codex|opencode|cursor|all]"
         exit 1
     }
 }

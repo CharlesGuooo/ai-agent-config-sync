@@ -1,22 +1,145 @@
-model_provider = "sub2api"
-model = "gpt-5.4"
+# Codex 配置
+# Updated: 2026-03-20
+
+################################################################################
+# Core Model Selection
+# 注意: model_provider 和 base_url 需要根据你的实际情况配置
+################################################################################
+
+model_provider = "openai"
+model = "o3"
 model_reasoning_effort = "medium"
 personality = "pragmatic"
 
-# 自动批准设置 - 不再询问权限
+################################################################################
+# Approval & Sandbox
+################################################################################
+
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
 auto_approve = true
 dangerously_bypass_approvals = true
 
-[model_providers.sub2api]
-name = "sub2api"
+################################################################################
+# Model Providers
+# 注意: base_url 需要根据你的 API 提供商配置
+################################################################################
+
+[model_providers.openai]
+name = "openai"
 base_url = "${OPENAI_BASE_URL:-https://api.openai.com/v1}"
 wire_api = "responses"
 
-# Note: Replace ~ with your actual home path if needed
-# On most systems, Codex will automatically trust the home directory
-# If not working, manually add: [projects.'/home/yourusername']
+# 如果使用其他提供商，取消注释并配置:
+# [model_providers.custom]
+# name = "custom"
+# base_url = "https://your-api-provider.com/v1"
+# wire_api = "responses"
+
+################################################################################
+# Projects
+# 注意: 需要根据你的用户目录路径配置
+################################################################################
+
+# macOS/Linux 示例:
+# [projects.'/home/yourusername']
+# trust_level = "trusted"
+
+# Windows 示例:
+# [projects.'C:\Users\YourUsername']
+# trust_level = "trusted"
 
 [windows]
 sandbox = "elevated"
+
+################################################################################
+# MCP Servers (17个)
+# 核心(4): github, memory, web-reader, zai-mcp-server
+# 可选(13): context7, firecrawl, sequential-thinking, vercel, railway,
+#          cloudflare-*, playwright, supabase, magic, expo-mcp
+################################################################################
+
+# === 核心 MCP (4个) ===
+
+[mcp_servers.github]
+enabled = true
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-github"]
+env_vars = ["GITHUB_PERSONAL_ACCESS_TOKEN"]
+
+[mcp_servers.memory]
+enabled = true
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-memory"]
+
+[mcp_servers.web-reader]
+enabled = true
+command = "npx"
+args = ["-y", "@anthropic-ai/web-reader-mcp"]
+
+[mcp_servers.zai-mcp-server]
+enabled = true
+command = "npx"
+args = ["-y", "@anthropic-ai/zai-mcp-server"]
+
+# === 可选 MCP (13个) ===
+
+[mcp_servers.context7]
+enabled = true
+command = "npx"
+args = ["-y", "@context7/mcp-server"]
+
+[mcp_servers.firecrawl]
+enabled = true
+command = "npx"
+args = ["-y", "firecrawl-mcp"]
+env_vars = ["FIRECRAWL_API_KEY"]
+
+[mcp_servers.sequential-thinking]
+enabled = true
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+
+[mcp_servers.vercel]
+enabled = true
+url = "https://mcp.vercel.com"
+
+[mcp_servers.railway]
+enabled = true
+command = "npx"
+args = ["-y", "@railway/mcp-server"]
+
+[mcp_servers.cloudflare-docs]
+enabled = true
+url = "https://docs.mcp.cloudflare.com/mcp"
+
+[mcp_servers.cloudflare-workers-builds]
+enabled = true
+url = "https://builds.mcp.cloudflare.com/mcp"
+
+[mcp_servers.cloudflare-workers-bindings]
+enabled = true
+url = "https://bindings.mcp.cloudflare.com/mcp"
+
+[mcp_servers.cloudflare-observability]
+enabled = true
+url = "https://observability.mcp.cloudflare.com/mcp"
+
+[mcp_servers.playwright]
+enabled = true
+command = "npx"
+args = ["-y", "@executeautomation/playwright-mcp-server"]
+
+[mcp_servers.supabase]
+enabled = true
+command = "npx"
+args = ["-y", "@supabase/mcp-server-supabase@latest", "--project-ref=${SUPABASE_PROJECT_REF}"]
+
+[mcp_servers.magic]
+enabled = true
+command = "npx"
+args = ["-y", "@magicuidesign/mcp@latest"]
+
+[mcp_servers.expo-mcp]
+enabled = true
+url = "https://mcp.expo.dev/mcp"

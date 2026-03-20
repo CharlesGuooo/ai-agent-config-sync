@@ -16,22 +16,32 @@
       },
       "enabled": true
     },
+    "memory": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-memory"],
+      "enabled": true
+    },
+    "web-reader": {
+      "type": "local",
+      "command": ["npx", "-y", "@anthropic-ai/web-reader-mcp"],
+      "enabled": true
+    },
+    "zai-mcp-server": {
+      "type": "local",
+      "command": ["npx", "-y", "@anthropic-ai/zai-mcp-server"],
+      "enabled": true
+    },
+    "context7": {
+      "type": "local",
+      "command": ["npx", "-y", "@context7/mcp-server"],
+      "enabled": true
+    },
     "firecrawl": {
       "type": "local",
       "command": ["npx", "-y", "firecrawl-mcp"],
       "environment": {
         "FIRECRAWL_API_KEY": "${FIRECRAWL_API_KEY}"
       },
-      "enabled": true
-    },
-    "supabase": {
-      "type": "local",
-      "command": ["npx", "-y", "@supabase/mcp-server-supabase@latest", "--project-ref=${SUPABASE_PROJECT_REF}"],
-      "enabled": true
-    },
-    "memory": {
-      "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/server-memory"],
       "enabled": true
     },
     "sequential-thinking": {
@@ -69,14 +79,14 @@
       "url": "https://observability.mcp.cloudflare.com/mcp",
       "enabled": true
     },
-    "clickhouse": {
-      "type": "remote",
-      "url": "https://mcp.clickhouse.cloud/mcp",
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "-y", "@executeautomation/playwright-mcp-server"],
       "enabled": true
     },
-    "context7": {
+    "supabase": {
       "type": "local",
-      "command": ["npx", "-y", "@context7/mcp-server"],
+      "command": ["npx", "-y", "@supabase/mcp-server-supabase@latest", "--project-ref=${SUPABASE_PROJECT_REF}"],
       "enabled": true
     },
     "magic": {
@@ -84,89 +94,10 @@
       "command": ["npx", "-y", "@magicuidesign/mcp@latest"],
       "enabled": true
     },
-    "filesystem": {
-      "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/server-filesystem", "${PROJECTS_DIR:-~/projects}"],
-      "enabled": true
-    },
-    "playwright": {
-      "type": "local",
-      "command": ["npx", "-y", "@executeautomation/playwright-mcp-server"],
-      "enabled": true
-    },
-    "fastapi": {
-      "type": "local",
-      "command": ["python", "-m", "fastapi_mcp"],
-      "enabled": true
-    },
     "expo-mcp": {
       "type": "remote",
       "url": "https://mcp.expo.dev/mcp",
       "enabled": true
-    },
-    "react-native-guide": {
-      "type": "local",
-      "command": ["npx", "-y", "@mrnitro360/react-native-mcp-guide"],
-      "enabled": true
-    },
-    "postgres": {
-      "type": "local",
-      "command": ["postgres-mcp", "--connection-string", "${DATABASE_URL}"],
-      "enabled": false
-    },
-    "vector-search": {
-      "type": "local",
-      "command": ["python", "-m", "mcp_server_vector_search"],
-      "environment": {
-        "NEO4J_URI": "${NEO4J_URI}",
-        "NEO4J_USER": "${NEO4J_USER}",
-        "NEO4J_PASSWORD": "${NEO4J_PASSWORD}",
-        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
-      },
-      "enabled": false
-    },
-    "runpod": {
-      "type": "local",
-      "command": ["node", "${HOME}/.claude/mcp-servers/runpod-mcp-ts/build/index.js"],
-      "environment": {
-        "RUNPOD_API_KEY": "${RUNPOD_API_KEY}"
-      },
-      "enabled": false
-    },
-    "semantic-memory": {
-      "type": "local",
-      "command": ["npx", "tsx", "${HOME}/.claude/mcp-servers/claude-code-agentic-semantic-memory-system-mcp/src/index.ts"],
-      "environment": {
-        "DATABASE_URL": "${DATABASE_URL}"
-      },
-      "enabled": false
-    },
-    "web-reader": {
-      "type": "local",
-      "command": ["npx", "-y", "@anthropic-ai/web-reader-mcp"],
-      "enabled": true
-    },
-    "4_5v_mcp": {
-      "type": "local",
-      "command": ["npx", "-y", "@anthropic-ai/4-5v-mcp"],
-      "enabled": true
-    },
-    "zai-mcp-server": {
-      "type": "local",
-      "command": ["npx", "-y", "@anthropic-ai/zai-mcp-server"],
-      "enabled": true
     }
-  },
-  "instructions": [
-    "~/.claude/CLAUDE.md",
-    "~/.claude/index/development.md",
-    "~/.claude/index/databases.md",
-    "~/.claude/index/scientific.md",
-    "~/.claude/index/office.md",
-    "~/.claude/index/marketing.md",
-    "~/.claude/index/research.md",
-    "~/.claude/index/data-analysis.md",
-    "~/.claude/index/productivity.md",
-    "~/.claude/index/specialized.md"
-  ]
+  }
 }

@@ -1,25 +1,27 @@
 # AI Agent Config Sync
 
-跨设备同步 Claude Code、Codex、OpenCode 的配置文件。
+跨设备同步 Claude Code、Codex、OpenCode、Cursor 的配置文件。
 
 ## 目录结构
 
 ```
 .
-├── shared/                    # 三个工具共享的配置
-│   ├── skills/                # 231+ 共享 skills
+├── shared/                    # 四个工具共享的配置
+│   ├── skills/                # 244 共享 skills
 │   └── index/                 # 分类索引文件
 ├── claude-code/               # Claude Code 专属配置
 │   ├── CLAUDE.md              # 全局指令
-│   ├── settings.json          # 权限+MCP配置
-│   └── mcp-servers/           # 本地 MCP 服务器
+│   └── settings.json          # 权限+MCP配置 (17个)
 ├── codex/                     # Codex 专属配置
 │   ├── AGENTS.md              # 全局指令
-│   └── config.toml            # 权限+模型配置
+│   └── config.toml            # 权限+MCP配置 (17个)
 ├── opencode/                  # OpenCode 专属配置
 │   ├── AGENTS.md              # 全局指令
-│   └── opencode.json          # 权限+MCP配置
-���── openclaw/                  # OpenClaw Skills 集合
+│   └── opencode.json          # 权限+MCP配置 (17个)
+├── cursor/                    # Cursor IDE 专属配置
+│   ├── mcp.json               # MCP配置 (17个)
+│   └── global-rules.md        # 全局规则
+├── openclaw/                  # OpenClaw Skills 集合
 │   ├── 00-reference/          # 参考资料
 │   ├── 01-meta/               # 元技能
 │   ├── 02-search/             # 搜索相关
@@ -47,14 +49,14 @@ cd ai-agent-config-sync
 
 适用场景：
 
-- 刚装好 Claude Code / Codex / OpenCode
+- 刚装好 Claude Code / Codex / OpenCode / Cursor
 - 本机还没有稳定可用的 provider/API 配置
 - 你接受先用 repo 模板初始化，再按本机情况调整
 
 建议做法：
 
 1. 运行安装脚本，或按 [AI-SETUP.md](./AI-SETUP.md) 手动复制配置
-2. 首次创建 `settings.json` / `config.toml` / `opencode.json`
+2. 首次创建 `settings.json` / `config.toml` / `opencode.json` / `mcp.json`
 3. 再根据本机 provider/API 需求修改这些配置文件
 
 #### 路径 B: 已有本机配置，做环境同步
@@ -68,9 +70,7 @@ cd ai-agent-config-sync
 建议做法：
 
 1. 运行同步脚本，或按 [AI-SETUP.md](./AI-SETUP.md) 只复制共享内容
-2. 保留本机已有的 `~/.claude/settings.json`
-3. 保留本机已有的 `~/.codex/config.toml`
-4. 保留本机已有的 `~/.config/opencode/opencode.json`
+2. 保留本机已有的配置文件（见下方列表）
 
 ### 3. 配置 API Keys
 
@@ -86,8 +86,8 @@ nano ~/.claude/.env
 
 安装脚本现在只负责同步共享工作环境，不会覆盖本机已经可用的 provider/API 配置：
 
-- 会同步: `CLAUDE.md` / `AGENTS.md`、`shared/skills`、`shared/index`
-- 会保留: `~/.claude/settings.json`、`~/.codex/config.toml`、`~/.config/opencode/opencode.json`
+- 会同步: `CLAUDE.md` / `AGENTS.md` / `global-rules.md`、`shared/skills`、`shared/index`
+- 会保留: `~/.claude/settings.json`、`~/.codex/config.toml`、`~/.config/opencode/opencode.json`、`~/.cursor/mcp.json`
 
 如果你是通过 AI CLI 手动配置，这些脚本是可选的，不是必需的。
 
@@ -98,6 +98,7 @@ chmod +x install.sh
 ./install.sh claude     # 只安装 Claude Code
 ./install.sh codex      # 只安装 Codex
 ./install.sh opencode   # 只安装 OpenCode
+./install.sh cursor     # 只安装 Cursor
 ```
 
 **Windows (PowerShell):**
@@ -106,11 +107,64 @@ chmod +x install.sh
 .\install.ps1 claude     # 只安装 Claude Code
 .\install.ps1 codex      # 只安装 Codex
 .\install.ps1 opencode   # 只安装 OpenCode
+.\install.ps1 cursor     # 只安装 Cursor
 ```
 
 ### 5. 重启 AI Agent
 
 安装完成后，重启你的 AI agent 即可生效。
+
+## 四工具统一配置
+
+Claude Code、Codex、OpenCode、Cursor 使用**相同的配置**：
+
+| 工具 | Skills | MCP |
+|------|--------|-----|
+| Claude Code | 全局 18 + 项目级 symlink | 全局 17 个 |
+| Codex CLI | symlink → `.claude/skills/` | 全局 17 个 |
+| OpenCode | symlink → `.claude/skills/` | 全局 17 个 |
+| Cursor IDE | symlink → `.claude/skills/` | 全局 17 个 |
+
+### 使用方式
+
+```bash
+# 四条命令等价，加载相同的 Skills + MCP
+cd ~/dev-project/ && claude
+cd ~/dev-project/ && codex
+cd ~/dev-project/ && opencode
+# Cursor: 打开 ~/dev-project/ 目录
+```
+
+---
+
+## MCP 配置 (17个)
+
+### 核心 MCP (4个)
+| MCP | 功能 |
+|-----|------|
+| memory | 跨会话记忆存储 |
+| github | GitHub API (PR, Issues, 搜索) |
+| web-reader | 读取网页内容转 Markdown |
+| zai-mcp-server | 图像分析、视频分析、OCR、UI 转 code |
+
+### 可选 MCP (13个)
+| MCP | 功能 |
+|-----|------|
+| context7 | 搜索技术文档 |
+| firecrawl | 网页爬取 |
+| sequential-thinking | 结构化思维链 |
+| vercel | Vercel 部署管理 |
+| railway | Railway 部署 |
+| cloudflare-docs | Cloudflare 文档 |
+| cloudflare-workers-builds | Cloudflare Workers 构建 |
+| cloudflare-workers-bindings | Cloudflare Workers 绑定 |
+| cloudflare-observability | Cloudflare 可观测性 |
+| playwright | 浏览器自动化测试 |
+| supabase | Supabase 数据库 |
+| magic | UI 设计生成 |
+| expo-mcp | Expo/React Native |
+
+---
 
 ## 三层渐进式 Skills 架构
 
@@ -144,6 +198,8 @@ Layer 3: skills/*/SKILL.md → 完整 skill 按需加载
 "用 seaborn 画个 heatmap"        → seaborn
 ```
 
+---
+
 ## 配置文件说明
 
 ### Claude Code
@@ -151,7 +207,7 @@ Layer 3: skills/*/SKILL.md → 完整 skill 按需加载
 | 文件 | 用途 |
 |------|------|
 | `CLAUDE.md` | 全局指令，三层架构第一层 |
-| `settings.json` | 权限设置 + MCP 服务器配置 |
+| `settings.json` | 权限设置 + MCP 服务器配置 (17个) |
 | `skills/` | Skills 库 |
 | `index/` | 分类索引 |
 
@@ -160,7 +216,7 @@ Layer 3: skills/*/SKILL.md → 完整 skill 按需加载
 | 文件 | 用途 |
 |------|------|
 | `AGENTS.md` | 全局指令 |
-| `config.toml` | 模型 + 权限配置 |
+| `config.toml` | 模型 + 权限 + MCP配置 (17个) |
 | `skills/` | Skills 库（与 Claude 共享） |
 | `index/` | 分类索引（与 Claude 共享） |
 
@@ -169,16 +225,29 @@ Layer 3: skills/*/SKILL.md → 完整 skill 按需加载
 | 文件 | 用途 |
 |------|------|
 | `AGENTS.md` | 全局指令 |
-| `opencode.json` | 模型 + MCP + 权限配置 |
+| `opencode.json` | 模型 + MCP + 权限配置 (17个) |
 | `skills/` | Skills 库（与 Claude 共享） |
+
+### Cursor
+
+| 文件 | 用途 |
+|------|------|
+| `global-rules.md` | 全局规则 |
+| `mcp.json` | MCP 配置 (17个) |
+| `skills/` | 项目级 symlink |
+
+---
 
 ## 权限设置
 
-所有三个工具都配置了 **bypass permissions** 模式：
+所有四个工具都配置了 **bypass permissions** 模式：
 
 - **Claude Code**: `defaultMode: "bypassPermissions"`
 - **Codex**: `approval_policy = "never"`, `dangerously_bypass_approvals = true`
 - **OpenCode**: `permission: { "*": "allow" }`
+- **Cursor**: 继承 Claude Code 的 settings
+
+---
 
 ## API Keys 管理
 
@@ -203,12 +272,16 @@ Layer 3: skills/*/SKILL.md → 完整 skill 按需加载
 | `FIRECRAWL_API_KEY` | 网页抓取 |
 | `SUPABASE_PROJECT_REF` | Supabase MCP |
 
+---
+
 ## 注意事项
 
 1. `settings.local.json` 和敏感信息不会同步
-2. `settings.json` / `config.toml` / `opencode.json` 里的 provider、base URL、特殊 API 接入应视为机器本地配置，默认不覆盖
+2. `settings.json` / `config.toml` / `opencode.json` / `mcp.json` 里的 provider、base URL、特殊 API 接入应视为机器本地配置，默认不覆盖
 3. 每个 skill 目录包含 `SKILL.md` 定义文件
 4. 使用三层架构按需加载 skills，避免 token 浪费
+
+---
 
 ## OpenClaw Skills
 

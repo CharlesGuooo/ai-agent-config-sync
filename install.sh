@@ -1,6 +1,6 @@
 #!/bin/bash
 # AI Agent Config Sync - installer
-# Usage: ./install.sh [claude|codex|opencode|all]
+# Usage: ./install.sh [claude|codex|opencode|cursor|all]
 # Default: all
 
 set -euo pipefail
@@ -15,6 +15,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CLAUDE_DIR="$HOME/.claude"
 CODEX_DIR="$HOME/.codex"
 OPENCODE_DIR="$HOME/.config/opencode"
+CURSOR_DIR="$HOME/.cursor"
 
 check_dependencies() {
     echo -e "${YELLOW}Checking dependencies...${NC}"
@@ -59,18 +60,11 @@ check_dependencies() {
 replace_env_placeholders() {
     local file="$1"
     local home_path="$HOME"
-    local projects_path="${PROJECTS_DIR:-$HOME/projects}"
-
-    mkdir -p "$projects_path" 2>/dev/null || true
 
     if [[ "$OSTYPE" == "darwin"* ]]; then
         sed -i '' "s|\${HOME}|$home_path|g" "$file"
-        sed -i '' "s|\${PROJECTS_DIR:-~/projects}|$projects_path|g" "$file"
-        sed -i '' "s|\${PROJECTS_DIR}|$projects_path|g" "$file"
     else
         sed -i "s|\${HOME}|$home_path|g" "$file"
-        sed -i "s|\${PROJECTS_DIR:-~/projects}|$projects_path|g" "$file"
-        sed -i "s|\${PROJECTS_DIR}|$projects_path|g" "$file"
     fi
 }
 
@@ -91,22 +85,21 @@ copy_if_missing() {
 install_claude() {
     echo -e "${YELLOW}Installing Claude Code config...${NC}"
 
-    mkdir -p "$CLAUDE_DIR" "$CLAUDE_DIR/skills" "$CLAUDE_DIR/index" "$CLAUDE_DIR/mcp-servers" "$HOME/projects"
+    mkdir -p "$CLAUDE_DIR" "$CLAUDE_DIR/skills" "$CLAUDE_DIR/index" "$CLAUDE_DIR/mcp-servers"
 
     cp "$SCRIPT_DIR/claude-code/CLAUDE.md" "$CLAUDE_DIR/CLAUDE.md"
     copy_if_missing "$SCRIPT_DIR/claude-code/settings.json" "$CLAUDE_DIR/settings.json" "~/.claude/settings.json"
-    if cmp -s "$SCRIPT_DIR/claude-code/settings.json" "$CLAUDE_DIR/settings.json"; then
-        replace_env_placeholders "$CLAUDE_DIR/settings.json"
-    fi
 
     if [ -d "$SCRIPT_DIR/shared/skills" ]; then
         rm -rf "$CLAUDE_DIR/skills"/*
         cp -r "$SCRIPT_DIR/shared/skills"/. "$CLAUDE_DIR/skills/"
+        echo -e "  ${GREEN}[synced]${NC} ~/.claude/skills/ ($(ls "$CLAUDE_DIR/skills" | wc -l | tr -d ' ') skills)"
     fi
 
     if [ -d "$SCRIPT_DIR/shared/index" ]; then
         rm -rf "$CLAUDE_DIR/index"/*
         cp -r "$SCRIPT_DIR/shared/index"/. "$CLAUDE_DIR/index/"
+        echo -e "  ${GREEN}[synced]${NC} ~/.claude/index/"
     fi
 
     if [ -d "$SCRIPT_DIR/claude-code/mcp-servers" ]; then
@@ -132,11 +125,13 @@ install_codex() {
     if [ -d "$SCRIPT_DIR/shared/skills" ]; then
         rm -rf "$CODEX_DIR/skills"/*
         cp -r "$SCRIPT_DIR/shared/skills"/. "$CODEX_DIR/skills/"
+        echo -e "  ${GREEN}[synced]${NC} ~/.codex/skills/"
     fi
 
     if [ -d "$SCRIPT_DIR/shared/index" ]; then
         rm -rf "$CODEX_DIR/index"/*
         cp -r "$SCRIPT_DIR/shared/index"/. "$CODEX_DIR/index/"
+        echo -e "  ${GREEN}[synced]${NC} ~/.codex/index/"
     fi
 
     echo -e "${GREEN}[ok]${NC} Codex config installed"
@@ -149,16 +144,27 @@ install_opencode() {
 
     cp "$SCRIPT_DIR/opencode/AGENTS.md" "$OPENCODE_DIR/AGENTS.md"
     copy_if_missing "$SCRIPT_DIR/opencode/opencode.json" "$OPENCODE_DIR/opencode.json" "~/.config/opencode/opencode.json"
-    if cmp -s "$SCRIPT_DIR/opencode/opencode.json" "$OPENCODE_DIR/opencode.json"; then
-        replace_env_placeholders "$OPENCODE_DIR/opencode.json"
-    fi
 
     if [ -d "$SCRIPT_DIR/shared/skills" ]; then
         rm -rf "$OPENCODE_DIR/skills"/*
         cp -r "$SCRIPT_DIR/shared/skills"/. "$OPENCODE_DIR/skills/"
+        echo -e "  ${GREEN}[synced]${NC} ~/.config/opencode/skills/"
     fi
 
     echo -e "${GREEN}[ok]${NC} OpenCode config installed"
+}
+
+install_cursor() {
+    echo -e "${YELLOW}Installing Cursor IDE config...${NC}"
+
+    mkdir -p "$CURSOR_DIR/rules"
+
+    cp "$SCRIPT_DIR/cursor/global-rules.md" "$CURSOR_DIR/rules/global-rules.md"
+    copy_if_missing "$SCRIPT_DIR/cursor/mcp.json" "$CURSOR_DIR/mcp.json" "~/.cursor/mcp.json"
+
+    echo -e "${GREEN}[ok]${NC} Cursor IDE config installed"
+    echo -e "${BLUE}[note]${NC} For project-level skills, create symlinks in each project:"
+    echo "  ln -s ~/.claude/skills ~/your-project/.cursor/skills"
 }
 
 show_post_install() {
@@ -167,7 +173,14 @@ show_post_install() {
     echo -e "${GREEN}Installation Complete!${NC}"
     echo -e "${GREEN}============================================${NC}"
     echo ""
-    echo -e "${YELLOW}Note:${NC} local provider/API config files were preserved if they already existed."
+    echo -e "${YELLOW}Four tools configured:${NC}"
+    echo "  - Claude Code: ~/.claude/"
+    echo "  - Codex CLI:   ~/.codex/"
+    echo "  - OpenCode:    ~/.config/opencode/"
+    echo "  - Cursor IDE:  ~/.cursor/"
+    echo ""
+    echo -e "${YELLOW}Note:${NC} provider/API config files were preserved if they already existed."
+    echo -e "${YELLOW}Note:${NC} Please configure your API keys in ~/.claude/.env"
 }
 
 TARGET="${1:-all}"
@@ -178,14 +191,16 @@ case "$TARGET" in
     claude) install_claude ;;
     codex) install_codex ;;
     opencode) install_opencode ;;
+    cursor) install_cursor ;;
     all)
         install_claude
         install_codex
         install_opencode
+        install_cursor
         ;;
     *)
         echo -e "${RED}Unknown target: $TARGET${NC}"
-        echo "Usage: $0 [claude|codex|opencode|all]"
+        echo "Usage: $0 [claude|codex|opencode|cursor|all]"
         exit 1
         ;;
 esac

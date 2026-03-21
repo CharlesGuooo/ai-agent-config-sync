@@ -1,4 +1,4 @@
-# Cursor 全局指令
+# Claude Code 全局指令
 
 ## 核心行为准则
 
@@ -13,20 +13,20 @@
 
 | 触发场景 | Skill | 用途 |
 |----------|-------|------|
-| 创意任务开始 | `brainstorming` | 创意发想 |
-| 编写代码 | `test-driven-development` | TDD 开发 |
-| 遇到 bug | `systematic-debugging` | 系统调试 |
-| 完成任务前 | `verification-before-completion` | 结果验证 |
-| 编写计划 | `writing-plans` | 实现计划 |
-| 执行计划 | `executing-plans` | 执行已写计划 |
-| 失败 2+ 次 | `pua` | 穷尽方案 |
-| 需要动力 | `high-agency` | 高主动性 |
+| 创意任务开始 | `/brainstorming` | 创意发想 |
+| 编写代码 | `/test-driven-development` | TDD 开发 |
+| 遇到 bug | `/systematic-debugging` | 系统调试 |
+| 完成任务前 | `/verification-before-completion` | 结果验证 |
+| 编写计划 | `/writing-plans` | 实现计划 |
+| 执行计划 | `/executing-plans` | 执行已写计划 |
+| 失败 2+ 次 | `/pua` | 穷尽方案 |
+| 需要动力 | `/high-agency` | 高主动性 |
 
 ---
 
 ## 项目级 Skills (8个启动目录)
 
-当任务涉及特定领域时，**打开对应项目目录**：
+当任务涉及特定领域时，**切换到对应项目目录启动 Claude Code**：
 
 | 领域 | 目录 | Skills |
 |------|------|--------|
@@ -38,6 +38,16 @@
 | 研究 | `~/research-project/` | 24 (literature-review...) |
 | Office | `~/office-project/` | 7 (pdf, docx, xlsx...) |
 | 生产力 | `~/productivity-project/` | 24 (obsidian, jira...) |
+
+### 使用方式
+
+```bash
+cd ~/scientific-project/ && claude   # 科学计算
+cd ~/dev-project/ && claude          # 开发
+cd ~/database-project/ && claude     # 数据库
+cd ~/marketing-project/ && claude    # 营销
+cd ~/research-project/ && claude     # 研究
+```
 
 ### 领域关键词
 
@@ -82,6 +92,6 @@ cd ~/dev-project/ && opencode
 
 | 项目 | 路径 |
 |------|------|
-| 全局配置 | `~/.cursor/mcp.json` |
-| Skills | 项目级 symlink → `~/*-project/.claude/skills/` |
+| 全局配置 | `~/.claude/settings.json` |
+| Skills | `~/*-project/.claude/skills/` (项目级) |
 | MCP | 全局 17 个 |

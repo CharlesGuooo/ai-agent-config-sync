@@ -6,31 +6,83 @@
 
 ```
 .
-├── shared/                    # 四个工具共享的配置
-│   ├── skills/                # 244 共享 skills
-│   └── index/                 # 分类索引文件
-├── claude-code/               # Claude Code 专属配置
-│   ├── CLAUDE.md              # 全局指令
-│   └── settings.json          # 权限+MCP配置 (17个)
-├── codex/                     # Codex 专属配置
-│   ├── AGENTS.md              # 全局指令
-│   └── config.toml            # 权限+MCP配置 (17个)
-├── opencode/                  # OpenCode 专属配置
-│   ├── AGENTS.md              # 全局指令
-│   └── opencode.json          # 权限+MCP配置 (17个)
-├── cursor/                    # Cursor IDE 专属配置
-│   ├── mcp.json               # MCP配置 (17个)
-│   └── global-rules.md        # 全局规则
-├── openclaw/                  # OpenClaw Skills 集合
-│   ├── 00-reference/          # 参考资料
-│   ├── 01-meta/               # 元技能
-│   ├── 02-search/             # 搜索相关
-│   ├── ...                    # 更多分类
-│   └── video-skills-pack/     # 视频制作技能包
-├── install.sh                 # Linux/macOS 安装脚本
-├── install.ps1                # Windows 安装脚本
-└── .env.example               # API Keys 模板
+├── core-skills/                # Core Skills (16个) - 全局每次启动加载
+│   ├── brainstorming/
+│   ├── systematic-debugging/
+│   ├── pua/
+│   ├── skill-router/
+│   ├── using-superpowers/
+│   └── ...
+├── project-skills/             # 项目级 Skills - 按项目类型加载
+│   ├── scientific-project/     # 46 个 (scanpy, rdkit, pytorch...)
+│   ├── database-project/       # 23 个 (pubmed, openalex...)
+│   ├── data-analysis-project/  # 24 个 (matplotlib, seaborn...)
+│   ├── dev-project/            # 50 个 (frontend, backend...)
+│   ├── marketing-project/      # 32 个 (copywriting, seo...)
+│   ├── research-project/       # 24 个 (literature-review...)
+│   ├── office-project/         # 7 个 (pdf, docx, xlsx...)
+│   └── productivity-project/   # 24 个 (obsidian, jira...)
+├── shared/
+│   └── index/                  # 分类索引文件
+├── claude-code/                # Claude Code 专属配置
+│   ├── CLAUDE.md               # 全局指令
+│   └── settings.json           # 权限+MCP配置 (17个)
+├── codex/                      # Codex 专属配置
+│   ├── AGENTS.md               # 全局指令
+│   └── config.toml             # 权限+MCP配置 (17个)
+├── opencode/                   # OpenCode 专属配置
+│   ├── AGENTS.md               # 全局指令
+│   ├── opencode.json           # 权限+MCP配置 (17个)
+│   └── config.json             # Skills 目录配置
+├── cursor/                     # Cursor IDE 专属配置
+│   ├── mcp.json                # MCP配置 (17个)
+│   └── global-rules.md         # 全局规则
+├── install.sh                  # Linux/macOS 安装脚本
+├── install.ps1                 # Windows 安装脚本
+├── sync.sh                     # Linux/macOS 同步脚本
+├── sync.ps1                    # Windows 同步脚本
+└── .env.example                # API Keys 模板
 ```
+
+## 架构说明
+
+### 两层 Skills 架构
+
+| 层级 | 位置 | 数量 | 加载时机 |
+|------|------|------|---------|
+| **Core Skills** | `~/.claude/skills/` | 16 个 | 全局，每次启动都加载 |
+| **项目级 Skills** | `~/xxx-project/.claude/skills/` | 各不同 | 切换到对应目录时加载 |
+
+### Core Skills (16个)
+
+| 触发场景 | Skill | 用途 |
+|----------|-------|------|
+| 创意任务开始 | `/brainstorming` | 创意发想 |
+| 编写代码 | `/test-driven-development` | TDD 开发 |
+| 遇到 bug | `/systematic-debugging` | 系统调试 |
+| 完成任务前 | `/verification-before-completion` | 结果验证 |
+| 编写计划 | `/writing-plans` | 实现计划 |
+| 执行计划 | `/executing-plans` | 执行已写计划 |
+| 失败 2+ 次 | `/pua` | 穷尽方案 |
+| 需要动力 | `/high-agency` | 高主动性 |
+| 查询可用技能 | `/skill-router` | 路由到正确项目目录 |
+| 开始对话 | `/using-superpowers` | 发现和使用 skills |
+| 创建/修改技能 | `/skill-creator` | Skill 开发工具 |
+
+### 项目级 Skills (8个启动目录)
+
+| 领域 | 目录 | Skills 数量 | 包含 |
+|------|------|-------------|------|
+| 科学计算 | `~/scientific-project/` | 46 个 | scanpy, rdkit, pytorch, biopython... |
+| 数据库查询 | `~/database-project/` | 23 个 | pubmed, openalex, chembl, uniprot... |
+| 数据分析 | `~/data-analysis-project/` | 24 个 | matplotlib, seaborn, pandas, plotly... |
+| 开发 | `~/dev-project/` | 50 个 | frontend, backend, docker, ci-cd... |
+| 营销 | `~/marketing-project/` | 32 个 | copywriting, seo, marketing-reports... |
+| 研究 | `~/research-project/` | 24 个 | literature-review, peer-review, grants... |
+| Office | `~/office-project/` | 7 个 | pdf, docx, xlsx, pptx... |
+| 生产力 | `~/productivity-project/` | 24 个 | obsidian, jira, notion... |
+
+---
 
 ## 快速开始
 
@@ -41,36 +93,20 @@ git clone https://github.com/CharlesGuooo/ai-agent-config-sync.git
 cd ai-agent-config-sync
 ```
 
-### 2. 先选路径
+### 2. 运行安装脚本
 
-这个 repo 现在有两种使用方式，请先判断你属于哪一种：
+**Linux/macOS:**
+```bash
+chmod +x install.sh
+./install.sh all        # 安装全部
+./install.sh claude     # 只安装 Claude Code
+```
 
-#### 路径 A: 新电脑首次安装
-
-适用场景：
-
-- 刚装好 Claude Code / Codex / OpenCode / Cursor
-- 本机还没有稳定可用的 provider/API 配置
-- 你接受先用 repo 模板初始化，再按本机情况调整
-
-建议做法：
-
-1. 运行安装脚本，或按 [AI-SETUP.md](./AI-SETUP.md) 手动复制配置
-2. 首次创建 `settings.json` / `config.toml` / `opencode.json` / `mcp.json`
-3. 再根据本机 provider/API 需求修改这些配置文件
-
-#### 路径 B: 已有本机配置，做环境同步
-
-适用场景：
-
-- 这台机器上的 CLI 已经能正常使用
-- 你已经配置了特殊 provider / base URL / API key 接入
-- 你只想同步 shared skills、index、全局指令
-
-建议做法：
-
-1. 运行同步脚本，或按 [AI-SETUP.md](./AI-SETUP.md) 只复制共享内容
-2. 保留本机已有的配置文件（见下方列表）
+**Windows (PowerShell):**
+```powershell
+.\install.ps1 all
+.\install.ps1 claude
+```
 
 ### 3. 配置 API Keys
 
@@ -82,53 +118,41 @@ cp .env.example ~/.claude/.env
 nano ~/.claude/.env
 ```
 
-### 4. 运行安装脚本
+### 4. 创建项目目录
 
-安装脚本现在只负责同步共享工作环境，不会覆盖本机已经可用的 provider/API 配置：
-
-- 会同步: `CLAUDE.md` / `AGENTS.md` / `global-rules.md`、`shared/skills`、`shared/index`
-- 会保留: `~/.claude/settings.json`、`~/.codex/config.toml`、`~/.config/opencode/opencode.json`、`~/.cursor/mcp.json`
-
-如果你是通过 AI CLI 手动配置，这些脚本是可选的，不是必需的。
-
-**Linux/macOS:**
 ```bash
-chmod +x install.sh
-./install.sh all        # 安装全部
-./install.sh claude     # 只安装 Claude Code
-./install.sh codex      # 只安装 Codex
-./install.sh opencode   # 只安装 OpenCode
-./install.sh cursor     # 只安装 Cursor
+# 创建项目目录并复制对应的 skills
+mkdir -p ~/scientific-project/.claude
+mkdir -p ~/dev-project/.claude
+# ... 其他项目
+
+# 复制项目级 skills
+cp -r project-skills/scientific-project/* ~/scientific-project/.claude/skills/
+cp -r project-skills/dev-project/* ~/dev-project/.claude/skills/
+# ... 其他项目
 ```
 
-**Windows (PowerShell):**
-```powershell
-.\install.ps1 all        # 安装全部
-.\install.ps1 claude     # 只安装 Claude Code
-.\install.ps1 codex      # 只安装 Codex
-.\install.ps1 opencode   # 只安装 OpenCode
-.\install.ps1 cursor     # 只安装 Cursor
+### 5. 使用方式
+
+```bash
+# 启动 Claude Code (加载 Core Skills)
+claude
+
+# 切换到科学计算项目 (加载 Core + 科学计算 Skills)
+cd ~/scientific-project/ && claude
+
+# 切换到开发项目 (加载 Core + 开发 Skills)
+cd ~/dev-project/ && claude
 ```
 
-### 5. 重启 AI Agent
-
-安装完成后，重启你的 AI agent 即可生效。
+---
 
 ## 四工具统一配置
 
 Claude Code、Codex、OpenCode、Cursor 使用**相同的配置**：
 
-| 工具 | Skills | MCP |
-|------|--------|-----|
-| Claude Code | 全局 18 + 项目级 symlink | 全局 17 个 |
-| Codex CLI | symlink → `.claude/skills/` | 全局 17 个 |
-| OpenCode | symlink → `.claude/skills/` | 全局 17 个 |
-| Cursor IDE | symlink → `.claude/skills/` | 全局 17 个 |
-
-### 使用方式
-
 ```bash
-# 四条命令等价，加载相同的 Skills + MCP
+# 四条命令等价，加载相同的 Core Skills + MCP
 cd ~/dev-project/ && claude
 cd ~/dev-project/ && codex
 cd ~/dev-project/ && opencode
@@ -143,15 +167,15 @@ cd ~/dev-project/ && opencode
 | MCP | 功能 |
 |-----|------|
 | memory | 跨会话记忆存储 |
+| filesystem | 文件系统操作 |
 | github | GitHub API (PR, Issues, 搜索) |
-| web-reader | 读取网页内容转 Markdown |
-| zai-mcp-server | 图像分析、视频分析、OCR、UI 转 code |
+| brave-search | 网页搜索 |
 
 ### 可选 MCP (13个)
 | MCP | 功能 |
 |-----|------|
-| context7 | 搜索技术文档 |
-| firecrawl | 网页爬取 |
+| chroma | 向量数据库/RAG |
+| context7 | 技术文档搜索 |
 | sequential-thinking | 结构化思维链 |
 | vercel | Vercel 部署管理 |
 | railway | Railway 部署 |
@@ -166,75 +190,17 @@ cd ~/dev-project/ && opencode
 
 ---
 
-## 三层渐进式 Skills 架构
+## API Keys 管理
 
-```
-Layer 1: CLAUDE.md/AGENTS.md 核心表 (~100 tokens) → 常用 skills 快速发现
-Layer 2: index/*.md 分类索引 → 领域 skills 按需查阅
-Layer 3: skills/*/SKILL.md → 完整 skill 按需加载
-```
+**API keys 不会上传到此仓库。** 请在各设备上单独配置：
 
-**Token 节省**: 正确使用三层架构可节省 98% tokens（相比一次性加载所有 skills）
-
-### 核心工作流 Skills
-
-| 触发场景 | Skill | 用途 |
-|----------|-------|------|
-| 开始实现任务 | `/brainstorming` | 创意发想 |
-| 编写代码 | `/test-driven-development` | 测试驱动开发 |
-| 遇到 bug | `/systematic-debugging` | 系统调试 |
-| 完成任务前 | `/verification-before-completion` | 结果验证 |
-| 编写计划 | `/writing-plans` | 实现计划 |
-| 执行计划 | `/executing-plans` | 执行已写计划 |
-
-### 触发关键词
-
-索引文件中的「触发关键词」列专为语义匹配优化。在需求中提及关键词即可激活对应 skill：
-
-```
-"用 pubmed 搜索 Alzheimer 文献"  → pubmed-database
-"分析这个分子的 drug-likeness"   → rdkit / medchem
-"生成 market research 报告"      → market-research-reports
-"用 seaborn 画个 heatmap"        → seaborn
-```
-
----
-
-## 配置文件说明
-
-### Claude Code
-
-| 文件 | 用途 |
-|------|------|
-| `CLAUDE.md` | 全局指令，三层架构第一层 |
-| `settings.json` | 权限设置 + MCP 服务器配置 (17个) |
-| `skills/` | Skills 库 |
-| `index/` | 分类索引 |
-
-### Codex
-
-| 文件 | 用途 |
-|------|------|
-| `AGENTS.md` | 全局指令 |
-| `config.toml` | 模型 + 权限 + MCP配置 (17个) |
-| `skills/` | Skills 库（与 Claude 共享） |
-| `index/` | 分类索引（与 Claude 共享） |
-
-### OpenCode
-
-| 文件 | 用途 |
-|------|------|
-| `AGENTS.md` | 全局指令 |
-| `opencode.json` | 模型 + MCP + 权限配置 (17个) |
-| `skills/` | Skills 库（与 Claude 共享） |
-
-### Cursor
-
-| 文件 | 用途 |
-|------|------|
-| `global-rules.md` | 全局规则 |
-| `mcp.json` | MCP 配置 (17个) |
-| `skills/` | 项目级 symlink |
+| Key | 用途 | 必需 |
+|-----|------|------|
+| `ANTHROPIC_AUTH_TOKEN` | Claude API | ✅ |
+| `GITHUB_TOKEN` | GitHub MCP | ✅ |
+| `BRAVE_API_KEY` | Brave Search MCP | ✅ |
+| `SUPABASE_ACCESS_TOKEN` | Supabase MCP | 可选 |
+| `EXPO_MCP_TOKEN` | Expo MCP | 可选 |
 
 ---
 
@@ -249,55 +215,32 @@ Layer 3: skills/*/SKILL.md → 完整 skill 按需加载
 
 ---
 
-## API Keys 管理
+## 配置文件位置
 
-**API keys 不会上传到此仓库。** 请在各设备上单独配置：
+### Claude Code
+| 文件 | 位置 |
+|------|------|
+| Core Skills | `~/.claude/skills/` |
+| 全局指令 | `~/.claude/CLAUDE.md` |
+| MCP 配置 | `~/.claude/settings.json` |
 
-1. 复制 `.env.example` 到 `~/.claude/.env`
-2. 填入实际的 API keys
-3. 安装脚本只会自动复制共享配置，不会覆盖本机 provider/API 接入配置
-
-### 必需的 Keys
-
-| Key | 用途 |
-|-----|------|
-| `ANTHROPIC_AUTH_TOKEN` | Claude API |
-| `GITHUB_TOKEN` | GitHub MCP |
-
-### 可选的 Keys
-
-| Key | 用途 |
-|-----|------|
-| `OPENAI_API_KEY` | OpenAI API (Codex) |
-| `FIRECRAWL_API_KEY` | 网页抓取 |
-| `SUPABASE_PROJECT_REF` | Supabase MCP |
+### 项目级 Skills
+| 项目 | 位置 |
+|------|------|
+| 科学计算 | `~/scientific-project/.claude/skills/` |
+| 数据库 | `~/database-project/.claude/skills/` |
+| 数据分析 | `~/data-analysis-project/.claude/skills/` |
+| 开发 | `~/dev-project/.claude/skills/` |
+| 营销 | `~/marketing-project/.claude/skills/` |
+| 研究 | `~/research-project/.claude/skills/` |
+| Office | `~/office-project/.claude/skills/` |
+| 生产力 | `~/productivity-project/.claude/skills/` |
 
 ---
 
 ## 注意事项
 
-1. `settings.local.json` 和敏感信息不会同步
-2. `settings.json` / `config.toml` / `opencode.json` / `mcp.json` 里的 provider、base URL、特殊 API 接入应视为机器本地配置，默认不覆盖
-3. 每个 skill 目录包含 `SKILL.md` 定义文件
-4. 使用三层架构按需加载 skills，避免 token 浪费
-
----
-
-## OpenClaw Skills
-
-`openclaw/` 目录包含来自 ai-skills-collection 的所有技能：
-
-- **01-meta**: 代理自我改进、代理守护、自动更新等元技能
-- **02-search**: 网页搜索、学术搜索、代码搜索
-- **03-coding**: 代码生成、重构、调试、测试
-- **04-devops**: CI/CD、Docker、Kubernetes、云服务
-- **05-research**: 文献综述、数据分析、实验设计
-- **06-writing**: 文档写作、博客、技术文档
-- **07-productivity**: 任务管理、自动化、工作流优化
-- **08-documents**: PDF、Word、Excel 处理
-- **09-media**: 图像、音频、视频处理
-- **10-mcp**: MCP 服务器集成
-- **11-data**: 数据处理、数据库、ETL
-- **12-misc**: 其他杂项技能
-- **director-studio**: 三阶段交互式视频制作工作流
-- **video-skills-pack**: FFmpeg、Remotion、Kling、HeyGen 等视频工具
+1. `settings.json` 里的 API keys 使用环境变量占位符，实际值在 `~/.claude/.env` 中配置
+2. Core Skills 是全局的，每次启动都会加载
+3. 项目级 Skills 只有在对应目录下启动时才会加载
+4. 每个 skill 目录包含 `SKILL.md` 定义文件

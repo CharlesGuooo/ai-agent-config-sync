@@ -1,6 +1,6 @@
 #!/bin/bash
 # AI Agent Config Sync - installer
-# Usage: ./install.sh [claude|codex|opencode|cursor|all]
+# Usage: ./install.sh [claude|codex|opencode|cursor|all|projects]
 # Default: all
 
 set -euo pipefail
@@ -16,6 +16,18 @@ CLAUDE_DIR="$HOME/.claude"
 CODEX_DIR="$HOME/.codex"
 OPENCODE_DIR="$HOME/.config/opencode"
 CURSOR_DIR="$HOME/.cursor"
+
+# 项目目录
+PROJECTS=(
+    "scientific-project"
+    "database-project"
+    "data-analysis-project"
+    "dev-project"
+    "marketing-project"
+    "research-project"
+    "office-project"
+    "productivity-project"
+)
 
 check_dependencies() {
     echo -e "${YELLOW}Checking dependencies...${NC}"
@@ -34,38 +46,16 @@ check_dependencies() {
         echo -e "  ${GREEN}[ok]${NC} npx available"
     fi
 
-    if command -v python3 >/dev/null 2>&1; then
-        echo -e "  ${GREEN}[ok]${NC} $(python3 --version 2>&1)"
-    elif command -v python >/dev/null 2>&1; then
-        echo -e "  ${GREEN}[ok]${NC} $(python --version 2>&1)"
-    else
-        echo -e "  ${BLUE}[info]${NC} Python not found (optional)"
-    fi
-
     if [ ${#missing[@]} -gt 0 ]; then
         echo ""
         echo -e "${RED}Missing required dependencies:${NC}"
         for dep in "${missing[@]}"; do
             echo -e "  ${RED}[missing]${NC} $dep"
         done
-        echo ""
-        echo "Please install them first:"
-        echo "  - Node.js: https://nodejs.org/"
         exit 1
     fi
 
     echo ""
-}
-
-replace_env_placeholders() {
-    local file="$1"
-    local home_path="$HOME"
-
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        sed -i '' "s|\${HOME}|$home_path|g" "$file"
-    else
-        sed -i "s|\${HOME}|$home_path|g" "$file"
-    fi
 }
 
 copy_if_missing() {
@@ -82,28 +72,55 @@ copy_if_missing() {
     echo -e "  ${GREEN}[created]${NC} $label"
 }
 
+install_core_skills() {
+    local target_dir="$1"
+    local tool_name="$2"
+
+    echo -e "${YELLOW}Installing Core Skills for $tool_name...${NC}"
+
+    mkdir -p "$target_dir/skills"
+
+    if [ -d "$SCRIPT_DIR/core-skills" ]; then
+        rm -rf "$target_dir/skills"/*
+        cp -r "$SCRIPT_DIR/core-skills"/. "$target_dir/skills/"
+        local count=$(ls "$target_dir/skills" | wc -l | tr -d ' ')
+        echo -e "  ${GREEN}[synced]${NC} Core Skills ($count items)"
+    fi
+}
+
+install_project_skills() {
+    echo -e "${YELLOW}Installing Project-level Skills...${NC}"
+
+    for project in "${PROJECTS[@]}"; do
+        local project_dir="$HOME/$project/.claude"
+        local source_dir="$SCRIPT_DIR/project-skills/$project"
+
+        if [ -d "$source_dir" ]; then
+            mkdir -p "$project_dir"
+            rm -rf "$project_dir/skills" 2>/dev/null || true
+            cp -r "$source_dir" "$project_dir/skills"
+            local count=$(ls "$project_dir/skills" 2>/dev/null | wc -l | tr -d ' ')
+            echo -e "  ${GREEN}[synced]${NC} ~/$project/.claude/skills/ ($count skills)"
+        fi
+    done
+}
+
 install_claude() {
     echo -e "${YELLOW}Installing Claude Code config...${NC}"
 
-    mkdir -p "$CLAUDE_DIR" "$CLAUDE_DIR/skills" "$CLAUDE_DIR/index" "$CLAUDE_DIR/mcp-servers"
+    mkdir -p "$CLAUDE_DIR" "$CLAUDE_DIR/index" "$CLAUDE_DIR/mcp-servers"
 
     cp "$SCRIPT_DIR/claude-code/CLAUDE.md" "$CLAUDE_DIR/CLAUDE.md"
     copy_if_missing "$SCRIPT_DIR/claude-code/settings.json" "$CLAUDE_DIR/settings.json" "~/.claude/settings.json"
 
-    if [ -d "$SCRIPT_DIR/shared/skills" ]; then
-        rm -rf "$CLAUDE_DIR/skills"/*
-        cp -r "$SCRIPT_DIR/shared/skills"/. "$CLAUDE_DIR/skills/"
-        echo -e "  ${GREEN}[synced]${NC} ~/.claude/skills/ ($(ls "$CLAUDE_DIR/skills" | wc -l | tr -d ' ') skills)"
-    fi
+    # 安装 Core Skills
+    install_core_skills "$CLAUDE_DIR" "Claude Code"
 
+    # 安装索引
     if [ -d "$SCRIPT_DIR/shared/index" ]; then
         rm -rf "$CLAUDE_DIR/index"/*
         cp -r "$SCRIPT_DIR/shared/index"/. "$CLAUDE_DIR/index/"
         echo -e "  ${GREEN}[synced]${NC} ~/.claude/index/"
-    fi
-
-    if [ -d "$SCRIPT_DIR/claude-code/mcp-servers" ]; then
-        cp -r "$SCRIPT_DIR/claude-code/mcp-servers"/. "$CLAUDE_DIR/mcp-servers/" 2>/dev/null || true
     fi
 
     if [ ! -f "$CLAUDE_DIR/.env" ]; then
@@ -117,17 +134,15 @@ install_claude() {
 install_codex() {
     echo -e "${YELLOW}Installing Codex config...${NC}"
 
-    mkdir -p "$CODEX_DIR" "$CODEX_DIR/skills" "$CODEX_DIR/index"
+    mkdir -p "$CODEX_DIR" "$CODEX_DIR/index"
 
     cp "$SCRIPT_DIR/codex/AGENTS.md" "$CODEX_DIR/AGENTS.md"
     copy_if_missing "$SCRIPT_DIR/codex/config.toml" "$CODEX_DIR/config.toml" "~/.codex/config.toml"
 
-    if [ -d "$SCRIPT_DIR/shared/skills" ]; then
-        rm -rf "$CODEX_DIR/skills"/*
-        cp -r "$SCRIPT_DIR/shared/skills"/. "$CODEX_DIR/skills/"
-        echo -e "  ${GREEN}[synced]${NC} ~/.codex/skills/"
-    fi
+    # 安装 Core Skills
+    install_core_skills "$CODEX_DIR" "Codex"
 
+    # 安装索引
     if [ -d "$SCRIPT_DIR/shared/index" ]; then
         rm -rf "$CODEX_DIR/index"/*
         cp -r "$SCRIPT_DIR/shared/index"/. "$CODEX_DIR/index/"
@@ -140,16 +155,20 @@ install_codex() {
 install_opencode() {
     echo -e "${YELLOW}Installing OpenCode config...${NC}"
 
-    mkdir -p "$OPENCODE_DIR" "$OPENCODE_DIR/skills"
+    mkdir -p "$OPENCODE_DIR"
 
     cp "$SCRIPT_DIR/opencode/AGENTS.md" "$OPENCODE_DIR/AGENTS.md"
     copy_if_missing "$SCRIPT_DIR/opencode/opencode.json" "$OPENCODE_DIR/opencode.json" "~/.config/opencode/opencode.json"
 
-    if [ -d "$SCRIPT_DIR/shared/skills" ]; then
-        rm -rf "$OPENCODE_DIR/skills"/*
-        cp -r "$SCRIPT_DIR/shared/skills"/. "$OPENCODE_DIR/skills/"
-        echo -e "  ${GREEN}[synced]${NC} ~/.config/opencode/skills/"
+    # 复制 config.json (skills 目录配置)
+    if [ -f "$SCRIPT_DIR/opencode/config.json" ]; then
+        cp "$SCRIPT_DIR/opencode/config.json" "$HOME/.opencode/config.json"
+        echo -e "  ${GREEN}[synced]${NC} ~/.opencode/config.json"
     fi
+
+    # 安装 Core Skills 到 ~/.opencode/skills/
+    mkdir -p "$HOME/.opencode/skills"
+    install_core_skills "$HOME/.opencode" "OpenCode"
 
     echo -e "${GREEN}[ok]${NC} OpenCode config installed"
 }
@@ -157,14 +176,15 @@ install_opencode() {
 install_cursor() {
     echo -e "${YELLOW}Installing Cursor IDE config...${NC}"
 
-    mkdir -p "$CURSOR_DIR/rules"
+    mkdir -p "$CURSOR_DIR/rules" "$CURSOR_DIR/skills"
 
     cp "$SCRIPT_DIR/cursor/global-rules.md" "$CURSOR_DIR/rules/global-rules.md"
     copy_if_missing "$SCRIPT_DIR/cursor/mcp.json" "$CURSOR_DIR/mcp.json" "~/.cursor/mcp.json"
 
+    # 安装 Core Skills
+    install_core_skills "$CURSOR_DIR" "Cursor"
+
     echo -e "${GREEN}[ok]${NC} Cursor IDE config installed"
-    echo -e "${BLUE}[note]${NC} For project-level skills, create symlinks in each project:"
-    echo "  ln -s ~/.claude/skills ~/your-project/.cursor/skills"
 }
 
 show_post_install() {
@@ -173,14 +193,24 @@ show_post_install() {
     echo -e "${GREEN}Installation Complete!${NC}"
     echo -e "${GREEN}============================================${NC}"
     echo ""
+    echo -e "${YELLOW}Architecture:${NC}"
+    echo "  Core Skills (16):    ~/.claude/skills/ - loaded every session"
+    echo "  Project Skills:      ~/xxx-project/.claude/skills/ - loaded per project"
+    echo ""
     echo -e "${YELLOW}Four tools configured:${NC}"
     echo "  - Claude Code: ~/.claude/"
     echo "  - Codex CLI:   ~/.codex/"
-    echo "  - OpenCode:    ~/.config/opencode/"
+    echo "  - OpenCode:    ~/.opencode/"
     echo "  - Cursor IDE:  ~/.cursor/"
     echo ""
-    echo -e "${YELLOW}Note:${NC} provider/API config files were preserved if they already existed."
-    echo -e "${YELLOW}Note:${NC} Please configure your API keys in ~/.claude/.env"
+    echo -e "${YELLOW}Usage:${NC}"
+    echo "  claude                          # Load Core Skills only"
+    echo "  cd ~/dev-project && claude      # Load Core + Dev Skills"
+    echo "  cd ~/scientific-project && claude  # Load Core + Scientific Skills"
+    echo ""
+    echo -e "${YELLOW}Next steps:${NC}"
+    echo "  1. Configure API keys in ~/.claude/.env"
+    echo "  2. Run './install.sh projects' to install project-level skills"
 }
 
 TARGET="${1:-all}"
@@ -192,6 +222,7 @@ case "$TARGET" in
     codex) install_codex ;;
     opencode) install_opencode ;;
     cursor) install_cursor ;;
+    projects) install_project_skills ;;
     all)
         install_claude
         install_codex
@@ -200,7 +231,7 @@ case "$TARGET" in
         ;;
     *)
         echo -e "${RED}Unknown target: $TARGET${NC}"
-        echo "Usage: $0 [claude|codex|opencode|cursor|all]"
+        echo "Usage: $0 [claude|codex|opencode|cursor|all|projects]"
         exit 1
         ;;
 esac

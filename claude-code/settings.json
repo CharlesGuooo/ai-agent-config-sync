@@ -15,6 +15,10 @@
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-memory"]
     },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "${HOME}"]
+    },
     "github": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-github"],
@@ -22,24 +26,20 @@
         "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
       }
     },
-    "web-reader": {
+    "brave-search": {
       "command": "npx",
-      "args": ["-y", "@anthropic-ai/web-reader-mcp"]
+      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+      "env": {
+        "BRAVE_API_KEY": "${BRAVE_API_KEY}"
+      }
     },
-    "zai-mcp-server": {
+    "chroma": {
       "command": "npx",
-      "args": ["-y", "@anthropic-ai/zai-mcp-server"]
+      "args": ["-y", "@chroma-core/chroma-mcp"]
     },
     "context7": {
       "command": "npx",
-      "args": ["-y", "@context7/mcp-server"]
-    },
-    "firecrawl": {
-      "command": "npx",
-      "args": ["-y", "firecrawl-mcp"],
-      "env": {
-        "FIRECRAWL_API_KEY": "${FIRECRAWL_API_KEY}"
-      }
+      "args": ["-y", "@upstash/context7-mcp"]
     },
     "sequential-thinking": {
       "command": "npx",
@@ -75,7 +75,10 @@
     },
     "supabase": {
       "command": "npx",
-      "args": ["-y", "@supabase/mcp-server-supabase@latest", "--project-ref=${SUPABASE_PROJECT_REF}"]
+      "args": ["-y", "@supabase/mcp-server-supabase@latest"],
+      "env": {
+        "SUPABASE_ACCESS_TOKEN": "${SUPABASE_ACCESS_TOKEN}"
+      }
     },
     "magic": {
       "command": "npx",
@@ -83,7 +86,10 @@
     },
     "expo-mcp": {
       "type": "http",
-      "url": "https://mcp.expo.dev/mcp"
+      "url": "https://mcp.expo.dev/mcp",
+      "headers": {
+        "Authorization": "Bearer ${EXPO_MCP_TOKEN}"
+      }
     }
   }
 }

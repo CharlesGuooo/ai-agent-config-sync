@@ -1,9 +1,8 @@
 # Codex 配置
-# Updated: 2026-03-20
+# Updated: 2026-03-21
 
 ################################################################################
 # Core Model Selection
-# 注意: model_provider 和 base_url 需要根据你的实际情况配置
 ################################################################################
 
 model_provider = "openai"
@@ -22,7 +21,6 @@ dangerously_bypass_approvals = true
 
 ################################################################################
 # Model Providers
-# 注意: base_url 需要根据你的 API 提供商配置
 ################################################################################
 
 [model_providers.openai]
@@ -30,36 +28,30 @@ name = "openai"
 base_url = "${OPENAI_BASE_URL:-https://api.openai.com/v1}"
 wire_api = "responses"
 
-# 如果使用其他提供商，取消注释并配置:
-# [model_providers.custom]
-# name = "custom"
-# base_url = "https://your-api-provider.com/v1"
-# wire_api = "responses"
-
 ################################################################################
-# Projects
-# 注意: 需要根据你的用户目录路径配置
+# Windows Settings
 ################################################################################
-
-# macOS/Linux 示例:
-# [projects.'/home/yourusername']
-# trust_level = "trusted"
-
-# Windows 示例:
-# [projects.'C:\Users\YourUsername']
-# trust_level = "trusted"
 
 [windows]
 sandbox = "elevated"
 
 ################################################################################
 # MCP Servers (17个)
-# 核心(4): github, memory, web-reader, zai-mcp-server
-# 可选(13): context7, firecrawl, sequential-thinking, vercel, railway,
-#          cloudflare-*, playwright, supabase, magic, expo-mcp
+# 核心: memory, filesystem, github, brave-search, chroma, context7
+# 可选: sequential-thinking, vercel, railway, cloudflare-*, playwright, supabase, magic, expo-mcp
 ################################################################################
 
-# === 核心 MCP (4个) ===
+# === 核心 MCP ===
+
+[mcp_servers.memory]
+enabled = true
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-memory"]
+
+[mcp_servers.filesystem]
+enabled = true
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-filesystem", "${HOME}"]
 
 [mcp_servers.github]
 enabled = true
@@ -67,33 +59,23 @@ command = "npx"
 args = ["-y", "@modelcontextprotocol/server-github"]
 env_vars = ["GITHUB_PERSONAL_ACCESS_TOKEN"]
 
-[mcp_servers.memory]
+[mcp_servers.brave-search]
 enabled = true
 command = "npx"
-args = ["-y", "@modelcontextprotocol/server-memory"]
+args = ["-y", "@modelcontextprotocol/server-brave-search"]
+env_vars = ["BRAVE_API_KEY"]
 
-[mcp_servers.web-reader]
+[mcp_servers.chroma]
 enabled = true
 command = "npx"
-args = ["-y", "@anthropic-ai/web-reader-mcp"]
-
-[mcp_servers.zai-mcp-server]
-enabled = true
-command = "npx"
-args = ["-y", "@anthropic-ai/zai-mcp-server"]
-
-# === 可选 MCP (13个) ===
+args = ["-y", "@chroma-core/chroma-mcp"]
 
 [mcp_servers.context7]
 enabled = true
 command = "npx"
-args = ["-y", "@context7/mcp-server"]
+args = ["-y", "@upstash/context7-mcp"]
 
-[mcp_servers.firecrawl]
-enabled = true
-command = "npx"
-args = ["-y", "firecrawl-mcp"]
-env_vars = ["FIRECRAWL_API_KEY"]
+# === 可选 MCP ===
 
 [mcp_servers.sequential-thinking]
 enabled = true
@@ -133,7 +115,8 @@ args = ["-y", "@executeautomation/playwright-mcp-server"]
 [mcp_servers.supabase]
 enabled = true
 command = "npx"
-args = ["-y", "@supabase/mcp-server-supabase@latest", "--project-ref=${SUPABASE_PROJECT_REF}"]
+args = ["-y", "@supabase/mcp-server-supabase@latest"]
+env_vars = ["SUPABASE_ACCESS_TOKEN"]
 
 [mcp_servers.magic]
 enabled = true

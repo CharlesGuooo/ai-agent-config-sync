@@ -1,0 +1,14 @@
+{
+  "name": "opencode-global-skills",
+  "version": "1.0.0",
+  "description": "Global skill configuration for opencode platform",
+  "skillDirectories": [
+    "C:\\Users\\PC\\.opencode\\skills"
+  ],
+  "globalSkills": true,
+  "autoLoadSkills": true,
+  "skillCount": 16,
+  "sourceDirectory": "C:\\Users\\PC\\.opencode\\skills",
+  "created": "2026-01-29",
+  "updated": "2026-03-21"
+}

@@ -1,0 +1,241 @@
+{
+  "version": "2.0",
+  "description": "Global skill activation rules for Claude Code. Global rules should cover process discipline and routing only. Domain-specific guidance belongs in local project skill packs.",
+  "architecture": {
+    "global_layer": "Process and routing only",
+    "local_layer": "Domain guidance, guardrails, and project-specific workflows",
+    "principle": "Do not duplicate domain guardrails in the global layer"
+  },
+  "skills": {
+    "using-superpowers": {
+      "type": "process",
+      "enforcement": "suggest",
+      "priority": "critical",
+      "description": "Entry skill for deciding whether another skill applies before acting."
+    },
+    "skill-router": {
+      "type": "router",
+      "enforcement": "suggest",
+      "priority": "critical",
+      "description": "Route the session to the correct project directory and tell the user where to start the local pack.",
+      "promptTriggers": {
+        "keywords": [
+          "which skill",
+          "which skills",
+          "which project",
+          "which directory",
+          "route this task",
+          "skill router",
+          "switch directory",
+          "change project"
+        ],
+        "intentPatterns": [
+          "(which|what).*?(skill|skills|project|directory)",
+          "(route|switch|move).*?(task|session|project|directory)",
+          "(where should i start|which repo should i use)"
+        ]
+      }
+    },
+    "playwright-interactive": {
+      "type": "workflow",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "description": "Use for persistent browser-based UI debugging and iterative Playwright interaction."
+    },
+    "gh-fix-ci": {
+      "type": "workflow",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "description": "Use when debugging failing GitHub Actions or PR checks."
+    },
+    "gh-address-comments": {
+      "type": "workflow",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "description": "Use when addressing GitHub PR review or issue comments with gh."
+    },
+    "brainstorming": {
+      "type": "process",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Use before creating features, adding functionality, or changing behavior.",
+      "promptTriggers": {
+        "keywords": [
+          "design",
+          "brainstorm",
+          "feature",
+          "new functionality",
+          "new component",
+          "new behavior",
+          "add a feature",
+          "product idea",
+          "user flow"
+        ],
+        "intentPatterns": [
+          "(design|brainstorm|plan).*?(feature|system|workflow|component)",
+          "(create|add|build|implement).*?(feature|functionality|component|behavior)",
+          "(how should we|what is the best way to).*?(build|design|structure)"
+        ]
+      }
+    },
+    "writing-plans": {
+      "type": "process",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Use when requirements are known and a multi-step implementation plan is needed before coding.",
+      "promptTriggers": {
+        "keywords": [
+          "implementation plan",
+          "write a plan",
+          "step by step plan",
+          "roadmap",
+          "task breakdown",
+          "todo list",
+          "execution plan"
+        ],
+        "intentPatterns": [
+          "(write|create|make).*?(plan|roadmap|task list|breakdown)",
+          "(how should we implement|implementation steps)",
+          "(multi-step|phased).*?(implementation|rollout|migration)"
+        ]
+      }
+    },
+    "executing-plans": {
+      "type": "process",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Use when executing an existing written implementation plan.",
+      "promptTriggers": {
+        "keywords": [
+          "execute the plan",
+          "implement the plan",
+          "continue the plan",
+          "work through the plan",
+          "follow the plan"
+        ],
+        "intentPatterns": [
+          "(execute|implement|continue|follow).*?plan",
+          "(start|resume).*?(implementation plan|written plan)"
+        ]
+      }
+    },
+    "systematic-debugging": {
+      "type": "process",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Use for bugs, failing tests, regressions, and unexpected behavior before proposing fixes.",
+      "promptTriggers": {
+        "keywords": [
+          "bug",
+          "debug",
+          "broken",
+          "failing test",
+          "failure",
+          "regression",
+          "unexpected behavior",
+          "not working",
+          "error"
+        ],
+        "intentPatterns": [
+          "(fix|debug|investigate|diagnose).*?(bug|issue|problem|failure|regression|error)",
+          "(why is|why does).*?(fail|break|error|not work)",
+          "(test|build|deploy).*?(fails|failed|failing)"
+        ]
+      }
+    },
+    "test-driven-development": {
+      "type": "process",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Use when implementing or changing code after requirements are already clear.",
+      "promptTriggers": {
+        "keywords": [
+          "implement",
+          "write code",
+          "code change",
+          "refactor",
+          "patch",
+          "add support",
+          "make this work",
+          "build this"
+        ],
+        "intentPatterns": [
+          "(implement|code|build|patch|refactor|modify).*?(this|feature|fix|change)",
+          "(add|update|change).*?(code|logic|handler|endpoint|component)",
+          "(make|turn).*?(this into code|this work)"
+        ]
+      }
+    },
+    "verification-before-completion": {
+      "type": "process",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Use before claiming something is done, fixed, or passing.",
+      "promptTriggers": {
+        "keywords": [
+          "done",
+          "finished",
+          "is it fixed",
+          "is it working",
+          "ready to ship",
+          "ready to merge",
+          "ready for pr",
+          "ready to commit"
+        ],
+        "intentPatterns": [
+          "(is it|are we).*?(done|finished|fixed|ready)",
+          "(can you|should we).*?(commit|merge|ship|close this)",
+          "(verify|confirm|double-check).*?(works|passes|is complete)"
+        ]
+      }
+    },
+    "high-agency": {
+      "type": "process",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "description": "Use for long, high-ownership, quality-sensitive tasks.",
+      "promptTriggers": {
+        "keywords": [
+          "complex task",
+          "long task",
+          "end to end",
+          "own this",
+          "take initiative"
+        ],
+        "intentPatterns": [
+          "(handle|own|drive).*?(end to end|fully)",
+          "(complex|large|long-running).*?(task|migration|debugging|implementation)"
+        ]
+      }
+    },
+    "pua": {
+      "type": "escalation",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "description": "Escalation skill for repeated failure, passivity, or shallow retries.",
+      "promptTriggers": {
+        "keywords": [
+          "try harder",
+          "stop giving up",
+          "you failed again",
+          "try another way"
+        ],
+        "intentPatterns": [
+          "(try harder|do not give up|another approach|keep going)",
+          "(why is this still not working|you failed again)"
+        ]
+      }
+    }
+  },
+  "notes": {
+    "global_rules_only": [
+      "Do not place frontend, backend, data, research, or other domain-specific guardrails here.",
+      "Do not use file path triggers for domain code at the global layer.",
+      "Use local project skill packs for domain-specific skills and enforcement."
+    ],
+    "routing_policy": [
+      "When a task is clearly domain-specific, route first, then load local skills.",
+      "When a task is cross-domain, identify a primary domain and optionally one secondary domain."
+    ]
+  }
+}

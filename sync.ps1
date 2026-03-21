@@ -122,16 +122,39 @@ Sync-Directory (Join-Path $repoRoot "skills/global/common") (Join-Path $homeDir 
 Sync-Directory (Join-Path $repoRoot "skills/global/common") (Join-Path $homeDir ".opencode/skills")
 Sync-Directory (Join-Path $repoRoot "skills/global/codex-system") (Join-Path $homeDir ".codex/skills/.system")
 
+# Skill index (deploy to all 4 agents)
+$indexSource = Join-Path $repoRoot "skills/index"
+if (Test-Path $indexSource) {
+  Sync-Directory $indexSource (Join-Path $homeDir ".claude/index")
+  Sync-Directory $indexSource (Join-Path $homeDir ".codex/index")
+  Sync-Directory $indexSource (Join-Path $homeDir ".opencode/index")
+  Sync-Directory $indexSource (Join-Path $homeDir ".cursor/index")
+}
+
 # Agent-specific extras
 Sync-Directory (Join-Path $repoRoot "agents/cursor/skills-cursor") (Join-Path $homeDir ".cursor/skills-cursor")
 Sync-Directory (Join-Path $repoRoot "agents/opencode/command") (Join-Path $homeDir ".opencode/command")
 Sync-Directory (Join-Path $repoRoot "agents/opencode/command") (Join-Path $homeDir ".config/opencode/command")
+Sync-Directory (Join-Path $repoRoot "agents/claude/commands") (Join-Path $homeDir ".claude/commands")
 
-# Local project packs
+# Local project packs (deploy to all 4 agents)
 foreach ($pack in $projectPacks) {
   $source = Join-Path $repoRoot "skills/project-packs/$pack/skills"
-  $destination = Join-Path $homeDir "$pack/.claude/skills"
-  Sync-Directory $source $destination
+  Sync-Directory $source (Join-Path $homeDir "$pack/.claude/skills")
+  Sync-Directory $source (Join-Path $homeDir "$pack/.codex/skills")
+  Sync-Directory $source (Join-Path $homeDir "$pack/.opencode/skills")
+  Sync-Directory $source (Join-Path $homeDir "$pack/.cursor/skills")
+
+  # Project-level instruction files
+  $instrFile = Join-Path $repoRoot "skills/project-packs/$pack/instructions.md"
+  if (Test-Path $instrFile) {
+    $projDir = Join-Path $homeDir $pack
+    Ensure-Directory (Join-Path $projDir ".claude")
+    Ensure-Directory (Join-Path $projDir ".cursor/rules")
+    Copy-Item -Force $instrFile (Join-Path $projDir ".claude/CLAUDE.md")
+    Copy-Item -Force $instrFile (Join-Path $projDir "AGENTS.md")
+    Copy-Item -Force $instrFile (Join-Path $projDir ".cursor/rules/project.md")
+  }
 }
 
 # Codex
@@ -143,16 +166,22 @@ Copy-Item -Force (Join-Path $repoRoot "agents/codex/profiles/minimal.toml") (Joi
 Copy-Item -Force (Join-Path $repoRoot "agents/codex/profiles/switch.ps1") (Join-Path $homeDir ".codex/profiles/switch.ps1")
 Copy-Item -Force (Join-Path $repoRoot "agents/codex/profiles/switch.sh") (Join-Path $homeDir ".codex/profiles/switch.sh")
 Copy-Item -Force (Join-Path $repoRoot "agents/codex/AGENTS.md") (Join-Path $homeDir "AGENTS.md")
+Copy-Item -Force (Join-Path $repoRoot "agents/codex/AGENTS.local.md") (Join-Path $homeDir ".codex/AGENTS.md")
 
 # Cursor
 Ensure-Directory (Join-Path $homeDir ".cursor")
+Ensure-Directory (Join-Path $homeDir ".cursor/rules")
 Copy-Item -Force (Join-Path $repoRoot "agents/cursor/mcp.json") (Join-Path $homeDir ".cursor/mcp.json")
 Copy-Item -Force (Join-Path $repoRoot "agents/cursor/global-rules.md") (Join-Path $homeDir ".cursor/global-rules.md")
+Copy-Item -Force (Join-Path $repoRoot "agents/cursor/rules/global-rules.md") (Join-Path $homeDir ".cursor/rules/global-rules.md")
 
-# OpenCode
+# OpenCode (deploy to both ~/.config/opencode and ~/.opencode)
 Ensure-Directory (Join-Path $homeDir ".config/opencode")
+Ensure-Directory (Join-Path $homeDir ".opencode")
 Copy-Item -Force (Join-Path $repoRoot "agents/opencode/opencode.json") (Join-Path $homeDir ".config/opencode/opencode.json")
 Copy-Item -Force (Join-Path $repoRoot "agents/opencode/AGENTS.md") (Join-Path $homeDir ".config/opencode/AGENTS.md")
+Copy-Item -Force (Join-Path $repoRoot "agents/opencode/opencode.json") (Join-Path $homeDir ".opencode/opencode.json")
+Copy-Item -Force (Join-Path $repoRoot "agents/opencode/AGENTS.md") (Join-Path $homeDir ".opencode/AGENTS.md")
 
 # Claude instruction file
 Ensure-Directory (Join-Path $homeDir ".claude")
@@ -202,18 +231,19 @@ if ($firecrawlKey) {
   Write-Utf8Json $cursorPath $cursor
 }
 
-# Optional firecrawl for OpenCode
+# Optional firecrawl for OpenCode (both config locations)
 if ($firecrawlKey) {
-  $openCodePath = Join-Path $homeDir ".config/opencode/opencode.json"
-  $openCode = Get-Content -Raw $openCodePath | ConvertFrom-Json
-  $openCode.mcp | Add-Member -Force -NotePropertyName "firecrawl" -NotePropertyValue ([pscustomobject]@{
-    type = "local"
-    command = @("npx", "-y", "firecrawl-mcp")
-    environment = [pscustomobject]@{
-      FIRECRAWL_API_KEY = $firecrawlKey
-    }
-  })
-  Write-Utf8Json $openCodePath $openCode
+  foreach ($openCodePath in @((Join-Path $homeDir ".config/opencode/opencode.json"), (Join-Path $homeDir ".opencode/opencode.json"))) {
+    $openCode = Get-Content -Raw $openCodePath | ConvertFrom-Json
+    $openCode.mcp | Add-Member -Force -NotePropertyName "firecrawl" -NotePropertyValue ([pscustomobject]@{
+      type = "local"
+      command = @("npx", "-y", "firecrawl-mcp")
+      environment = [pscustomobject]@{
+        FIRECRAWL_API_KEY = $firecrawlKey
+      }
+    })
+    Write-Utf8Json $openCodePath $openCode
+  }
 }
 
 Write-Host "Sync complete."

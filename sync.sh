@@ -62,12 +62,35 @@ sync_dir "$repo_root/skills/global/common" "$home_dir/.cursor/skills"
 sync_dir "$repo_root/skills/global/common" "$home_dir/.config/opencode/skills"
 sync_dir "$repo_root/skills/global/common" "$home_dir/.opencode/skills"
 sync_dir "$repo_root/skills/global/codex-system" "$home_dir/.codex/skills/.system"
+
+# Skill index (deploy to all 4 agents)
+if [[ -d "$repo_root/skills/index" ]]; then
+  sync_dir "$repo_root/skills/index" "$home_dir/.claude/index"
+  sync_dir "$repo_root/skills/index" "$home_dir/.codex/index"
+  sync_dir "$repo_root/skills/index" "$home_dir/.opencode/index"
+  sync_dir "$repo_root/skills/index" "$home_dir/.cursor/index"
+fi
+
 sync_dir "$repo_root/agents/cursor/skills-cursor" "$home_dir/.cursor/skills-cursor"
 sync_dir "$repo_root/agents/opencode/command" "$home_dir/.opencode/command"
 sync_dir "$repo_root/agents/opencode/command" "$home_dir/.config/opencode/command"
+sync_dir "$repo_root/agents/claude/commands" "$home_dir/.claude/commands"
 
 for pack in "${project_packs[@]}"; do
   sync_dir "$repo_root/skills/project-packs/$pack/skills" "$home_dir/$pack/.claude/skills"
+  sync_dir "$repo_root/skills/project-packs/$pack/skills" "$home_dir/$pack/.codex/skills"
+  sync_dir "$repo_root/skills/project-packs/$pack/skills" "$home_dir/$pack/.opencode/skills"
+  sync_dir "$repo_root/skills/project-packs/$pack/skills" "$home_dir/$pack/.cursor/skills"
+
+  # Project-level instruction files
+  instr_file="$repo_root/skills/project-packs/$pack/instructions.md"
+  if [[ -f "$instr_file" ]]; then
+    proj_dir="$home_dir/$pack"
+    mkdir -p "$proj_dir/.claude" "$proj_dir/.cursor/rules"
+    cp "$instr_file" "$proj_dir/.claude/CLAUDE.md"
+    cp "$instr_file" "$proj_dir/AGENTS.md"
+    cp "$instr_file" "$proj_dir/.cursor/rules/project.md"
+  fi
 done
 
 mkdir -p "$home_dir/.codex/profiles" "$home_dir/.cursor" "$home_dir/.claude" "$home_dir/.config/opencode"
@@ -77,10 +100,16 @@ cp "$repo_root/agents/codex/profiles/development.toml" "$home_dir/.codex/profile
 cp "$repo_root/agents/codex/profiles/minimal.toml" "$home_dir/.codex/profiles/minimal.toml"
 cp "$repo_root/agents/codex/profiles/switch.sh" "$home_dir/.codex/profiles/switch.sh"
 cp "$repo_root/agents/codex/AGENTS.md" "$home_dir/AGENTS.md"
+cp "$repo_root/agents/codex/AGENTS.local.md" "$home_dir/.codex/AGENTS.md"
 cp "$repo_root/agents/cursor/mcp.json" "$home_dir/.cursor/mcp.json"
 cp "$repo_root/agents/cursor/global-rules.md" "$home_dir/.cursor/global-rules.md"
+mkdir -p "$home_dir/.cursor/rules"
+cp "$repo_root/agents/cursor/rules/global-rules.md" "$home_dir/.cursor/rules/global-rules.md"
 cp "$repo_root/agents/opencode/opencode.json" "$home_dir/.config/opencode/opencode.json"
 cp "$repo_root/agents/opencode/AGENTS.md" "$home_dir/.config/opencode/AGENTS.md"
+mkdir -p "$home_dir/.opencode"
+cp "$repo_root/agents/opencode/opencode.json" "$home_dir/.opencode/opencode.json"
+cp "$repo_root/agents/opencode/AGENTS.md" "$home_dir/.opencode/AGENTS.md"
 cp "$repo_root/agents/claude/CLAUDE.md" "$home_dir/.claude/CLAUDE.md"
 
 claude_template="$(cat "$repo_root/agents/claude/mcp-servers.template.json")"
@@ -108,6 +137,9 @@ if [[ -n "${FIRECRAWL_API_KEY:-}" ]]; then
 
   jq --arg key "$FIRECRAWL_API_KEY" '.mcp.firecrawl = {type:"local",command:["npx","-y","firecrawl-mcp"],environment:{FIRECRAWL_API_KEY:$key}}' "$home_dir/.config/opencode/opencode.json" > "$home_dir/.config/opencode/opencode.json.tmp"
   mv "$home_dir/.config/opencode/opencode.json.tmp" "$home_dir/.config/opencode/opencode.json"
+
+  jq --arg key "$FIRECRAWL_API_KEY" '.mcp.firecrawl = {type:"local",command:["npx","-y","firecrawl-mcp"],environment:{FIRECRAWL_API_KEY:$key}}' "$home_dir/.opencode/opencode.json" > "$home_dir/.opencode/opencode.json.tmp"
+  mv "$home_dir/.opencode/opencode.json.tmp" "$home_dir/.opencode/opencode.json"
 
   jq --arg key "$FIRECRAWL_API_KEY" '.mcpServers.firecrawl = {command:"cmd",args:["/c","npx","-y","firecrawl-mcp"],env:{FIRECRAWL_API_KEY:$key}}' "$home_dir/.claude.json" > "$home_dir/.claude.json.tmp"
   mv "$home_dir/.claude.json.tmp" "$home_dir/.claude.json"

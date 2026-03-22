@@ -9,7 +9,7 @@ model = "o3"
 model_reasoning_effort = "high"
 personality = "pragmatic"
 
-approval_policy = "unless-allow-listed"
+approval_policy = "on-failure"
 sandbox_mode = "full-auto"
 
 [windows]

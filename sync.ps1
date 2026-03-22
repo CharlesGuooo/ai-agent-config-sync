@@ -1,25 +1,21 @@
 param(
-  [switch]$PersistUserEnv
+  [switch]$PersistUserEnv,
+  [switch]$DryRun
 )
 
 $ErrorActionPreference = "Stop"
 
 $repoRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $homeDir = [Environment]::GetFolderPath("UserProfile")
-$projectPacks = @(
-  "scientific-project",
-  "database-project",
-  "data-analysis-project",
-  "dev-project",
-  "marketing-project",
-  "research-project",
-  "office-project",
-  "productivity-project"
-)
+$backupDir = Join-Path $homeDir ".agent-config-backup"
+
+# Auto-discover project packs from repo directory
+$projectPacks = @(Get-ChildItem -Directory (Join-Path $repoRoot "skills/project-packs") | ForEach-Object { $_.Name })
 $requiredEnv = @(
   "GITHUB_PERSONAL_ACCESS_TOKEN",
   "Z_AI_API_KEY",
   "SUPABASE_ACCESS_TOKEN",
+  "SUPABASE_PROJECT_REF",
   "EXPO_TOKEN",
   "BRAVE_API_KEY"
 )
@@ -76,9 +72,25 @@ function Persist-UserEnvValue {
   }
 }
 
+function Backup-Directory {
+  param([string]$Path)
+  if (Test-Path $Path) {
+    $ts = Get-Date -Format "yyyyMMdd-HHmmss"
+    $rel = $Path.Replace($homeDir, "").TrimStart("\", "/").Replace("\", "_").Replace("/", "_")
+    $dest = Join-Path $backupDir "$ts/$rel"
+    Ensure-Directory $dest
+    $null = & robocopy $Path $dest /MIR /NFL /NDL /NJH /NJS /NP
+  }
+}
+
 function Sync-Directory {
   param([string]$Source, [string]$Destination)
 
+  if ($DryRun) {
+    Write-Host "[dry-run] SYNC $Source -> $Destination"
+    return
+  }
+  Backup-Directory $Destination
   Ensure-Directory $Destination
   $null = & robocopy $Source $Destination /MIR /NFL /NDL /NJH /NJS /NP /XD .git __pycache__ /XF *.pyc *.pyo
   if ($LASTEXITCODE -gt 7) {
@@ -195,6 +207,7 @@ $replacements = @{
   "__SUPABASE_ACCESS_TOKEN__" = Get-EnvValue "SUPABASE_ACCESS_TOKEN"
   "__EXPO_TOKEN__" = Get-EnvValue "EXPO_TOKEN"
   "__BRAVE_API_KEY__" = Get-EnvValue "BRAVE_API_KEY"
+  "__SUPABASE_PROJECT_REF__" = Get-EnvValue "SUPABASE_PROJECT_REF"
 }
 foreach ($pair in $replacements.GetEnumerator()) {
   $claudeTemplateText = $claudeTemplateText.Replace($pair.Key, $pair.Value)
@@ -203,7 +216,7 @@ $claudeTemplate = $claudeTemplateText | ConvertFrom-Json
 if ($firecrawlKey) {
   $claudeTemplate.mcpServers | Add-Member -Force -NotePropertyName "firecrawl" -NotePropertyValue ([pscustomobject]@{
     command = "cmd"
-    args = @("/c", "npx", "-y", "firecrawl-mcp")
+    args = @("/c", "npx", "-y", "firecrawl-mcp@3.11.0")
     env = [pscustomobject]@{
       FIRECRAWL_API_KEY = $firecrawlKey
     }
@@ -223,7 +236,7 @@ if ($firecrawlKey) {
   $cursor = Get-Content -Raw $cursorPath | ConvertFrom-Json
   $cursor.mcpServers | Add-Member -Force -NotePropertyName "firecrawl" -NotePropertyValue ([pscustomobject]@{
     command = "npx"
-    args = @("-y", "firecrawl-mcp")
+    args = @("-y", "firecrawl-mcp@3.11.0")
     env = [pscustomobject]@{
       FIRECRAWL_API_KEY = $firecrawlKey
     }
@@ -237,7 +250,7 @@ if ($firecrawlKey) {
     $openCode = Get-Content -Raw $openCodePath | ConvertFrom-Json
     $openCode.mcp | Add-Member -Force -NotePropertyName "firecrawl" -NotePropertyValue ([pscustomobject]@{
       type = "local"
-      command = @("npx", "-y", "firecrawl-mcp")
+      command = @("npx", "-y", "firecrawl-mcp@3.11.0")
       environment = [pscustomobject]@{
         FIRECRAWL_API_KEY = $firecrawlKey
       }
@@ -246,4 +259,8 @@ if ($firecrawlKey) {
   }
 }
 
-Write-Host "Sync complete."
+if ($DryRun) {
+  Write-Host "Dry-run complete. No files were modified."
+} else {
+  Write-Host "Sync complete. Backup at: $backupDir"
+}

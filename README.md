@@ -180,12 +180,54 @@ cp .env.example .env
 GITHUB_PERSONAL_ACCESS_TOKEN=ghp_...
 Z_AI_API_KEY=...
 SUPABASE_ACCESS_TOKEN=sbp_...
+SUPABASE_PROJECT_REF=your-project-ref
 EXPO_TOKEN=Expo_...
 BRAVE_API_KEY=BSA...
 FIRECRAWL_API_KEY=           # 可选，留空则 firecrawl 不启用
 ```
 
 本 repo 不存储模型提供商认证（Claude/OpenAI/Cursor 账号）。这些留在各机器本地。
+
+## 安全设计
+
+### 同步安全
+
+- **自动备份**：每次 sync 前自动备份目标目录到 `~/.agent-config-backup/`
+- **Dry-run 模式**：`sync.ps1 -DryRun` 或 `sync.sh --dry-run` 只打印操作不执行
+- **安全 .env 解析**：sync.sh 使用逐行 key=value 解析，不执行 shell 命令
+
+### 权限默认值
+
+- **Codex 默认安全模式**：`approval_policy = "unless-allow-listed"` + `sandbox_mode = "full-auto"`
+- Danger 模式（`never` + `danger-full-access`）仅存在于 `profiles/full.toml`，需手动切换
+- Claude Code 的权限由用户在 `settings.json` 中自行配置
+
+### 供应链安全
+
+- 所有 `npx` MCP 包均锁定到特定版本号，无 `@latest`
+- 无第三方模型代理 endpoint 硬编码
+- 无硬编码路径或 project_ref，全部通过 `.env` 变量注入
+
+## 高级用法
+
+### Dry-run（预览模式）
+
+```powershell
+.\sync.ps1 -DryRun          # Windows
+./sync.sh --dry-run          # Unix
+```
+
+### Codex Profile 切换
+
+```powershell
+~\.codex\profiles\switch.ps1 full          # 切到全权限模式
+~\.codex\profiles\switch.ps1 development   # 切到开发模式
+~\.codex\profiles\switch.ps1 minimal       # 切到最小模式
+```
+
+### 项目包自动发现
+
+sync 脚本会自动扫描 `skills/project-packs/` 下的所有子目录。新增项目只需在该目录下创建文件夹，无需修改脚本。
 
 ## 注意事项
 

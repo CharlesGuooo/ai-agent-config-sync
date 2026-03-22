@@ -3,14 +3,14 @@
   "mcp": {
     "github": {
       "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/server-github"],
+      "command": ["npx", "-y", "@modelcontextprotocol/server-github@2025.4.8"],
       "environment": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "{env:GITHUB_PERSONAL_ACCESS_TOKEN}"
       }
     },
     "memory": {
       "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/server-memory"]
+      "command": ["npx", "-y", "@modelcontextprotocol/server-memory@2026.1.26"]
     },
     "web-reader": {
       "type": "remote",
@@ -22,7 +22,7 @@
     },
     "zai-mcp-server": {
       "type": "local",
-      "command": ["npx", "-y", "@z_ai/mcp-server"],
+      "command": ["npx", "-y", "@z_ai/mcp-server@0.1.3"],
       "environment": {
         "Z_AI_MODE": "ZAI",
         "Z_AI_API_KEY": "{env:Z_AI_API_KEY}"
@@ -30,11 +30,11 @@
     },
     "context7": {
       "type": "local",
-      "command": ["npx", "-y", "@upstash/context7-mcp"]
+      "command": ["npx", "-y", "@upstash/context7-mcp@2.1.4"]
     },
     "sequential-thinking": {
       "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/server-sequential-thinking"]
+      "command": ["npx", "-y", "@modelcontextprotocol/server-sequential-thinking@2025.12.18"]
     },
     "vercel": {
       "type": "remote",
@@ -42,7 +42,7 @@
     },
     "railway": {
       "type": "local",
-      "command": ["npx", "-y", "@railway/mcp-server"]
+      "command": ["npx", "-y", "@railway/mcp-server@0.1.8"]
     },
     "cloudflare-docs": {
       "type": "remote",
@@ -62,18 +62,18 @@
     },
     "playwright": {
       "type": "local",
-      "command": ["npx", "-y", "@executeautomation/playwright-mcp-server"]
+      "command": ["npx", "-y", "@executeautomation/playwright-mcp-server@1.0.12"]
     },
     "supabase": {
       "type": "remote",
-      "url": "https://mcp.supabase.com/mcp?project_ref=qxgukktwygitluugnijy",
+      "url": "https://mcp.supabase.com/mcp?project_ref=${env:SUPABASE_PROJECT_REF}",
       "headers": {
         "Authorization": "Bearer {env:SUPABASE_ACCESS_TOKEN}"
       }
     },
     "magic": {
       "type": "local",
-      "command": ["npx", "-y", "@magicuidesign/mcp@latest"]
+      "command": ["npx", "-y", "@magicuidesign/mcp@2.0.0"]
     },
     "expo-mcp": {
       "type": "remote",
@@ -85,7 +85,7 @@
     },
     "brave-search": {
       "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/server-brave-search"],
+      "command": ["npx", "-y", "@modelcontextprotocol/server-brave-search@0.6.2"],
       "environment": {
         "BRAVE_API_KEY": "{env:BRAVE_API_KEY}"
       }

@@ -1,7 +1,7 @@
 # Codex minimal profile
 # Smallest practical profile for light tasks.
 
-model_provider = "sub2api"
+model_provider = "openai"
 model = "gpt-5.4"
 model_reasoning_effort = "medium"
 personality = "pragmatic"
@@ -11,13 +11,10 @@ sandbox_mode = "danger-full-access"
 auto_approve = true
 dangerously_bypass_approvals = true
 
-[model_providers.sub2api]
-name = "sub2api"
-base_url = "https://risingsun.top/v1"
+base_url = "https://api.openai.com/v1"
 wire_api = "responses"
 
 [projects.'C:\Users\PC']
-trust_level = "trusted"
 
 [windows]
 sandbox = "elevated"
@@ -25,10 +22,10 @@ sandbox = "elevated"
 [mcp_servers.github]
 enabled = true
 command = "npx"
-args = ["-y", "@modelcontextprotocol/server-github"]
+args = ["-y", "@modelcontextprotocol/server-github@2025.4.8"]
 env_vars = ["GITHUB_PERSONAL_ACCESS_TOKEN"]
 
 [mcp_servers.memory]
 enabled = true
 command = "npx"
-args = ["-y", "@modelcontextprotocol/server-memory"]
+args = ["-y", "@modelcontextprotocol/server-memory@2026.1.26"]

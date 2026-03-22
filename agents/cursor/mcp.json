@@ -2,14 +2,14 @@
   "mcpServers": {
     "github": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "args": ["-y", "@modelcontextprotocol/server-github@2025.4.8"],
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "${env:GITHUB_PERSONAL_ACCESS_TOKEN}"
       }
     },
     "memory": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-memory"]
+      "args": ["-y", "@modelcontextprotocol/server-memory@2026.1.26"]
     },
     "web-reader": {
       "type": "http",
@@ -20,7 +20,7 @@
     },
     "zai-mcp-server": {
       "command": "npx",
-      "args": ["-y", "@z_ai/mcp-server"],
+      "args": ["-y", "@z_ai/mcp-server@0.1.3"],
       "env": {
         "Z_AI_MODE": "ZAI",
         "Z_AI_API_KEY": "${env:Z_AI_API_KEY}"
@@ -28,11 +28,11 @@
     },
     "context7": {
       "command": "npx",
-      "args": ["-y", "@upstash/context7-mcp"]
+      "args": ["-y", "@upstash/context7-mcp@2.1.4"]
     },
     "sequential-thinking": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking@2025.12.18"]
     },
     "vercel": {
       "type": "http",
@@ -40,7 +40,7 @@
     },
     "railway": {
       "command": "npx",
-      "args": ["-y", "@railway/mcp-server"]
+      "args": ["-y", "@railway/mcp-server@0.1.8"]
     },
     "cloudflare-docs": {
       "type": "http",
@@ -60,18 +60,18 @@
     },
     "playwright": {
       "command": "npx",
-      "args": ["-y", "@executeautomation/playwright-mcp-server"]
+      "args": ["-y", "@executeautomation/playwright-mcp-server@1.0.12"]
     },
     "supabase": {
       "type": "http",
-      "url": "https://mcp.supabase.com/mcp?project_ref=qxgukktwygitluugnijy",
+      "url": "https://mcp.supabase.com/mcp?project_ref=${env:SUPABASE_PROJECT_REF}",
       "headers": {
         "Authorization": "Bearer ${env:SUPABASE_ACCESS_TOKEN}"
       }
     },
     "magic": {
       "command": "npx",
-      "args": ["-y", "@magicuidesign/mcp@latest"]
+      "args": ["-y", "@magicuidesign/mcp@2.0.0"]
     },
     "expo-mcp": {
       "type": "http",
@@ -82,7 +82,7 @@
     },
     "brave-search": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+      "args": ["-y", "@modelcontextprotocol/server-brave-search@0.6.2"],
       "env": {
         "BRAVE_API_KEY": "${env:BRAVE_API_KEY}"
       }

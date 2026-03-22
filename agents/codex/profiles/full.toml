@@ -1,23 +1,18 @@
-# Codex full profile
-# Full shared MCP inventory. Firecrawl stays disabled unless keyed.
+# Codex full profile — DANGER MODE
+# Full MCP inventory + unrestricted execution.
+# Only use this on trusted machines where you accept the risk.
+# Switch: ~/.codex/profiles/switch.ps1 full
 
-model_provider = "sub2api"
-model = "gpt-5.4"
+model_provider = "openai"
+model = "o3"
 model_reasoning_effort = "high"
 personality = "pragmatic"
 
+# WARNING: these settings bypass all safety prompts
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
 auto_approve = true
 dangerously_bypass_approvals = true
-
-[model_providers.sub2api]
-name = "sub2api"
-base_url = "https://risingsun.top/v1"
-wire_api = "responses"
-
-[projects.'C:\Users\PC']
-trust_level = "trusted"
 
 [windows]
 sandbox = "elevated"
@@ -25,13 +20,13 @@ sandbox = "elevated"
 [mcp_servers.github]
 enabled = true
 command = "npx"
-args = ["-y", "@modelcontextprotocol/server-github"]
+args = ["-y", "@modelcontextprotocol/server-github@2025.4.8"]
 env_vars = ["GITHUB_PERSONAL_ACCESS_TOKEN"]
 
 [mcp_servers.memory]
 enabled = true
 command = "npx"
-args = ["-y", "@modelcontextprotocol/server-memory"]
+args = ["-y", "@modelcontextprotocol/server-memory@2026.1.26"]
 
 [mcp_servers.web-reader]
 enabled = true
@@ -41,7 +36,7 @@ bearer_token_env_var = "Z_AI_API_KEY"
 [mcp_servers.zai-mcp-server]
 enabled = true
 command = "npx"
-args = ["-y", "@z_ai/mcp-server"]
+args = ["-y", "@z_ai/mcp-server@0.1.3"]
 env_vars = ["Z_AI_API_KEY"]
 
 [mcp_servers.zai-mcp-server.env]
@@ -50,18 +45,18 @@ Z_AI_MODE = "ZAI"
 [mcp_servers.context7]
 enabled = true
 command = "npx"
-args = ["-y", "@upstash/context7-mcp"]
+args = ["-y", "@upstash/context7-mcp@2.1.4"]
 
 [mcp_servers.firecrawl]
 enabled = false
 command = "npx"
-args = ["-y", "firecrawl-mcp"]
+args = ["-y", "firecrawl-mcp@3.11.0"]
 env_vars = ["FIRECRAWL_API_KEY"]
 
 [mcp_servers.sequential-thinking]
 enabled = true
 command = "npx"
-args = ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+args = ["-y", "@modelcontextprotocol/server-sequential-thinking@2025.12.18"]
 
 [mcp_servers.vercel]
 enabled = true
@@ -70,7 +65,7 @@ url = "https://mcp.vercel.com"
 [mcp_servers.railway]
 enabled = true
 command = "npx"
-args = ["-y", "@railway/mcp-server"]
+args = ["-y", "@railway/mcp-server@0.1.8"]
 
 [mcp_servers.cloudflare-docs]
 enabled = true
@@ -91,17 +86,17 @@ url = "https://observability.mcp.cloudflare.com/mcp"
 [mcp_servers.playwright]
 enabled = true
 command = "npx"
-args = ["-y", "@executeautomation/playwright-mcp-server"]
+args = ["-y", "@executeautomation/playwright-mcp-server@1.0.12"]
 
 [mcp_servers.supabase]
 enabled = true
-url = "https://mcp.supabase.com/mcp?project_ref=qxgukktwygitluugnijy"
+url = "https://mcp.supabase.com/mcp?project_ref=${env:SUPABASE_PROJECT_REF}"
 bearer_token_env_var = "SUPABASE_ACCESS_TOKEN"
 
 [mcp_servers.magic]
 enabled = true
 command = "npx"
-args = ["-y", "@magicuidesign/mcp@latest"]
+args = ["-y", "@magicuidesign/mcp@2.0.0"]
 
 [mcp_servers.expo-mcp]
 enabled = true
@@ -111,5 +106,5 @@ bearer_token_env_var = "EXPO_TOKEN"
 [mcp_servers.brave-search]
 enabled = true
 command = "npx"
-args = ["-y", "@modelcontextprotocol/server-brave-search"]
+args = ["-y", "@modelcontextprotocol/server-brave-search@0.6.2"]
 env_vars = ["BRAVE_API_KEY"]

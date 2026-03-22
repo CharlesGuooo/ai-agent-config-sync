@@ -16,9 +16,11 @@ sandbox = "elevated"
 enabled = true
 command = "npx"
 args = ["-y", "@modelcontextprotocol/server-github@2025.4.8"]
+startup_timeout_sec = 30
 env_vars = ["GITHUB_PERSONAL_ACCESS_TOKEN"]
 
 [mcp_servers.memory]
 enabled = true
 command = "npx"
 args = ["-y", "@modelcontextprotocol/server-memory@2026.1.26"]
+startup_timeout_sec = 30

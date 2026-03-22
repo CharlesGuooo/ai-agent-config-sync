@@ -19,12 +19,14 @@ sandbox = "elevated"
 enabled = true
 command = "npx"
 args = ["-y", "@modelcontextprotocol/server-github@2025.4.8"]
+startup_timeout_sec = 30
 env_vars = ["GITHUB_PERSONAL_ACCESS_TOKEN"]
 
 [mcp_servers.memory]
 enabled = true
 command = "npx"
 args = ["-y", "@modelcontextprotocol/server-memory@2026.1.26"]
+startup_timeout_sec = 30
 
 [mcp_servers.web-reader]
 enabled = true
@@ -35,6 +37,7 @@ bearer_token_env_var = "Z_AI_API_KEY"
 enabled = true
 command = "npx"
 args = ["-y", "@z_ai/mcp-server@0.1.3"]
+startup_timeout_sec = 30
 env_vars = ["Z_AI_API_KEY"]
 
 [mcp_servers.zai-mcp-server.env]
@@ -44,11 +47,13 @@ Z_AI_MODE = "ZAI"
 enabled = true
 command = "npx"
 args = ["-y", "@upstash/context7-mcp@2.1.4"]
+startup_timeout_sec = 30
 
 [mcp_servers.sequential-thinking]
 enabled = true
 command = "npx"
 args = ["-y", "@modelcontextprotocol/server-sequential-thinking@2025.12.18"]
+startup_timeout_sec = 30
 
 [mcp_servers.vercel]
 enabled = true
@@ -58,6 +63,7 @@ url = "https://mcp.vercel.com"
 enabled = true
 command = "npx"
 args = ["-y", "@railway/mcp-server@0.1.8"]
+startup_timeout_sec = 30
 
 [mcp_servers.cloudflare-docs]
 enabled = true
@@ -67,6 +73,7 @@ url = "https://docs.mcp.cloudflare.com/mcp"
 enabled = true
 command = "npx"
 args = ["-y", "@executeautomation/playwright-mcp-server@1.0.12"]
+startup_timeout_sec = 30
 
 [mcp_servers.supabase]
 enabled = true
@@ -77,6 +84,7 @@ bearer_token_env_var = "SUPABASE_ACCESS_TOKEN"
 enabled = true
 command = "npx"
 args = ["-y", "@magicuidesign/mcp@2.0.0"]
+startup_timeout_sec = 30
 
 [mcp_servers.expo-mcp]
 enabled = true
@@ -87,4 +95,5 @@ bearer_token_env_var = "EXPO_TOKEN"
 enabled = true
 command = "npx"
 args = ["-y", "@modelcontextprotocol/server-brave-search@0.6.2"]
+startup_timeout_sec = 30
 env_vars = ["BRAVE_API_KEY"]

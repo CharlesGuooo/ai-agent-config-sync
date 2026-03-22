@@ -2,19 +2,12 @@
 # Smallest practical profile for light tasks.
 
 model_provider = "openai"
-model = "gpt-5.4"
+model = "o3"
 model_reasoning_effort = "medium"
 personality = "pragmatic"
 
-approval_policy = "never"
-sandbox_mode = "danger-full-access"
-auto_approve = true
-dangerously_bypass_approvals = true
-
-base_url = "https://api.openai.com/v1"
-wire_api = "responses"
-
-[projects.'C:\Users\PC']
+approval_policy = "unless-allow-listed"
+sandbox_mode = "full-auto"
 
 [windows]
 sandbox = "elevated"

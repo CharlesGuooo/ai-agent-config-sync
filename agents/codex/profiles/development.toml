@@ -1,8 +1,9 @@
-# Codex development profile
+# Codex development profile — DANGER MODE
 # Focused on daily coding and web app work.
+# WARNING: bypasses all safety prompts.
 
 model_provider = "openai"
-model = "gpt-5.4"
+model = "o3"
 model_reasoning_effort = "high"
 personality = "pragmatic"
 
@@ -10,11 +11,6 @@ approval_policy = "never"
 sandbox_mode = "danger-full-access"
 auto_approve = true
 dangerously_bypass_approvals = true
-
-base_url = "https://api.openai.com/v1"
-wire_api = "responses"
-
-[projects.'C:\Users\PC']
 
 [windows]
 sandbox = "elevated"

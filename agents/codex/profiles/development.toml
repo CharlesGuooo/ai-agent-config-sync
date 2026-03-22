@@ -69,6 +69,18 @@ startup_timeout_sec = 30
 enabled = true
 url = "https://docs.mcp.cloudflare.com/mcp"
 
+[mcp_servers.cloudflare-workers-builds]
+enabled = true
+url = "https://builds.mcp.cloudflare.com/mcp"
+
+[mcp_servers.cloudflare-workers-bindings]
+enabled = true
+url = "https://bindings.mcp.cloudflare.com/mcp"
+
+[mcp_servers.cloudflare-observability]
+enabled = true
+url = "https://observability.mcp.cloudflare.com/mcp"
+
 [mcp_servers.playwright]
 enabled = true
 command = "npx"

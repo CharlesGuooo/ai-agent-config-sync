@@ -27,8 +27,10 @@ args = ["-y", "@modelcontextprotocol/server-memory@2026.1.26"]
 startup_timeout_sec = 30
 
 [mcp_servers.web-reader]
-url = "https://api.z.ai/api/mcp/web_reader/mcp"
-bearer_token_env_var = "Z_AI_API_KEY"
+command = "npx"
+args = ["-y", "mcp-remote@latest", "https://api.z.ai/api/mcp/web_reader/mcp", "--header", "Authorization: Bearer ${Z_AI_API_KEY}"]
+env_vars = ["Z_AI_API_KEY"]
+startup_timeout_sec = 30
 
 [mcp_servers.zai-mcp-server]
 command = "npx"
@@ -82,8 +84,10 @@ args = ["-y", "@executeautomation/playwright-mcp-server@1.0.12"]
 startup_timeout_sec = 30
 
 [mcp_servers.supabase]
-url = "https://mcp.supabase.com/mcp?project_ref=${env:SUPABASE_PROJECT_REF}"
-bearer_token_env_var = "SUPABASE_ACCESS_TOKEN"
+command = "npx"
+args = ["-y", "@supabase/mcp-server-supabase@latest", "--project-ref", "${env:SUPABASE_PROJECT_REF}"]
+env_vars = ["SUPABASE_ACCESS_TOKEN"]
+startup_timeout_sec = 30
 
 [mcp_servers.magic]
 command = "npx"

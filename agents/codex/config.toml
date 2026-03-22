@@ -26,7 +26,10 @@ command = "npx"
 args = ["-y", "@modelcontextprotocol/server-memory@2026.1.26"]
 startup_timeout_sec = 30
 
+# web-reader disabled for Codex: Z.AI HTTP endpoint incompatible with RMCP client
+# and mcp-remote bridge. Use zai-mcp-server instead (provides overlapping web capabilities).
 [mcp_servers.web-reader]
+enabled = false
 command = "npx"
 args = ["-y", "mcp-remote@latest", "https://api.z.ai/api/mcp/web_reader/mcp", "--header", "Authorization: Bearer ${Z_AI_API_KEY}"]
 env_vars = ["Z_AI_API_KEY"]

@@ -76,6 +76,17 @@ sync_dir() {
   rsync -a --delete --exclude ".git" --exclude "__pycache__" --exclude "*.pyc" --exclude "*.pyo" "$source"/ "$dest"/
 }
 
+overlay_dir() {
+  local source="$1"
+  local dest="$2"
+  if [[ "$dry_run" -eq 1 ]]; then
+    echo "[dry-run] OVERLAY $source -> $dest"
+    return
+  fi
+  mkdir -p "$dest"
+  rsync -a --exclude ".git" --exclude "__pycache__" --exclude "*.pyc" --exclude "*.pyo" "$source"/ "$dest"/
+}
+
 # Auto-discover project packs from repo directory
 project_packs=()
 for d in "$repo_root"/skills/project-packs/*/; do
@@ -88,6 +99,15 @@ sync_dir "$repo_root/skills/global/common" "$home_dir/.cursor/skills"
 sync_dir "$repo_root/skills/global/common" "$home_dir/.config/opencode/skills"
 sync_dir "$repo_root/skills/global/common" "$home_dir/.opencode/skills"
 sync_dir "$repo_root/skills/global/codex-system" "$home_dir/.codex/skills/.system"
+
+# Home-level design skills (overlay on top of global common)
+if [[ -d "$repo_root/skills/global/home-design" ]]; then
+  overlay_dir "$repo_root/skills/global/home-design" "$home_dir/.claude/skills"
+  overlay_dir "$repo_root/skills/global/home-design" "$home_dir/.codex/skills"
+  overlay_dir "$repo_root/skills/global/home-design" "$home_dir/.cursor/skills"
+  overlay_dir "$repo_root/skills/global/home-design" "$home_dir/.config/opencode/skills"
+  overlay_dir "$repo_root/skills/global/home-design" "$home_dir/.opencode/skills"
+fi
 
 # Skill index (deploy to all 4 agents)
 if [[ -d "$repo_root/skills/index" ]]; then

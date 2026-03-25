@@ -98,6 +98,19 @@ function Sync-Directory {
   }
 }
 
+function Overlay-Directory {
+  param([string]$Source, [string]$Destination)
+  if ($DryRun) {
+    Write-Host "[dry-run] OVERLAY $Source -> $Destination"
+    return
+  }
+  Ensure-Directory $Destination
+  $null = & robocopy $Source $Destination /E /NFL /NDL /NJH /NJS /NP /XD .git __pycache__ /XF *.pyc *.pyo
+  if ($LASTEXITCODE -gt 7) {
+    throw "robocopy overlay failed for $Source -> $Destination with exit code $LASTEXITCODE"
+  }
+}
+
 function Write-Utf8Json {
   param([string]$Path, $Object)
   $json = $Object | ConvertTo-Json -Depth 100
@@ -133,6 +146,16 @@ Sync-Directory (Join-Path $repoRoot "skills/global/common") (Join-Path $homeDir 
 Sync-Directory (Join-Path $repoRoot "skills/global/common") (Join-Path $homeDir ".config/opencode/skills")
 Sync-Directory (Join-Path $repoRoot "skills/global/common") (Join-Path $homeDir ".opencode/skills")
 Sync-Directory (Join-Path $repoRoot "skills/global/codex-system") (Join-Path $homeDir ".codex/skills/.system")
+
+# Home-level design skills (overlay on top of global common)
+$homeDesignSource = Join-Path $repoRoot "skills/global/home-design"
+if (Test-Path $homeDesignSource) {
+  Overlay-Directory $homeDesignSource (Join-Path $homeDir ".claude/skills")
+  Overlay-Directory $homeDesignSource (Join-Path $homeDir ".codex/skills")
+  Overlay-Directory $homeDesignSource (Join-Path $homeDir ".cursor/skills")
+  Overlay-Directory $homeDesignSource (Join-Path $homeDir ".config/opencode/skills")
+  Overlay-Directory $homeDesignSource (Join-Path $homeDir ".opencode/skills")
+}
 
 # Skill index (deploy to all 4 agents)
 $indexSource = Join-Path $repoRoot "skills/index"

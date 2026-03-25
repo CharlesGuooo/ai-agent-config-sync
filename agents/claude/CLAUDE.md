@@ -37,6 +37,15 @@ This keeps the global layer small and stable.
 | Workflow | `playwright-interactive` | Use a persistent browser session for iterative UI debugging and QA |
 | Workflow | `gh-fix-ci` | Investigate and fix failing GitHub Actions and PR checks |
 | Workflow | `gh-address-comments` | Work through GitHub PR review comments with `gh` |
+| Design | `ui-ux-pro-max` | BM25 search engine for UI/UX design decisions (styles, colors, typography, UX guidelines) |
+
+---
+
+## Skill Combinations
+
+| Trigger | Combination | Rule |
+| --- | --- | --- |
+| Frontend spec writing (`openspec-propose`, `openspec-explore`) | + `ui-ux-pro-max` | Always invoke ui-ux-pro-max to search for relevant design patterns, colors, typography, and UX guidelines before finalizing frontend specs. |
 
 ---
 
@@ -54,6 +63,7 @@ When a task becomes domain-specific, switch to the matching project directory an
 | Research | `~/research-project/` |
 | Office | `~/office-project/` |
 | Productivity | `~/productivity-project/` |
+| UI/UX Design (home) | `~/` (home directory, overlay skills: banner-design, brand, design, design-system, slides, ui-styling) |
 
 ---
 

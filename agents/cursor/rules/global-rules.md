@@ -21,6 +21,15 @@
 | 执行计划 | `executing-plans` | 执行已写计划 |
 | 失败 2+ 次 | `pua` | 穷尽方案 |
 | 需要动力 | `high-agency` | 高主动性 |
+| 前端设计查询 | `ui-ux-pro-max` | UI/UX 设计决策搜索 |
+
+---
+
+## Skill 组合规则
+
+| 触发场景 | 组合 | 规则 |
+|----------|------|------|
+| 编写前端规格 (openspec-propose/explore) | + `ui-ux-pro-max` | 编写前端规格时，始终同时调用 ui-ux-pro-max 搜索设计模式、配色、字体和 UX 指南。 |
 
 ---
 

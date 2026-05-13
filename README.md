@@ -4,6 +4,8 @@ One repo to rebuild a uniform 4-agent setup (Claude Code / Cursor / Codex / Open
 
 Optimised for **agent-driven install**: a new-machine agent reads `INVENTORY.md` and either runs the script or copies files directly.
 
+> 想读人话版本的总览（skill 怎么用、什么时候去哪个目录、敲哪条命令）？看 **[AGENTS_OVERVIEW.md](AGENTS_OVERVIEW.md)**。
+
 ## What's inside
 
 | Layer | Count | Purpose |

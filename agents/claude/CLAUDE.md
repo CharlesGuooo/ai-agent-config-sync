@@ -3,9 +3,12 @@
 ## Core Principles
 
 1. Think before acting.
-2. Exhaust reasonable options before claiming something cannot be done.
-3. Verify results before claiming success.
-4. Preserve context and align with the user's actual goal.
+2. When multiple interpretations exist, present them — don't pick silently.
+3. Push back when a simpler approach exists; don't just follow.
+4. Touch only what the task requires — mention unrelated dead code, don't delete.
+5. Exhaust reasonable options before claiming something cannot be done.
+6. Verify results before claiming success.
+7. Preserve context and align with the user's actual goal.
 
 ---
 
@@ -37,6 +40,11 @@ This keeps the global layer small and stable.
 | Workflow | `playwright-interactive` | Use a persistent browser session for iterative UI debugging and QA |
 | Workflow | `gh-fix-ci` | Investigate and fix failing GitHub Actions and PR checks |
 | Workflow | `gh-address-comments` | Work through GitHub PR review comments with `gh` |
+| Document | `pdf` | PDF read, merge, split, OCR, forms |
+| Document | `docx` | Word document creation and editing |
+| Document | `xlsx` | Excel / spreadsheet creation and editing |
+| Document | `pptx` | PowerPoint presentation creation and editing |
+| Document | `markitdown` | Convert files (PDF, DOCX, PPTX, XLSX, images…) to Markdown |
 
 ---
 
@@ -46,13 +54,12 @@ When a task becomes domain-specific, switch to the matching project directory an
 
 | Domain | Directory |
 | --- | --- |
-| Scientific computing | `~/scientific-project/` |
-| Database lookup | `~/database-project/` |
+| ML / DL / RL training | `~/dev-project/ml/` (sklearn / PyTorch / transformers / RL) |
+| Finance / 投资 / 交易 | `~/finance-project/` (container; cd into `trading/` `research/` `macro/` `modeling/` `portfolio/` `advisory/` for actual skills) |
 | Data analysis | `~/data-analysis-project/` |
 | Development | `~/dev-project/` |
 | Marketing | `~/marketing-project/` |
 | Research | `~/research-project/` |
-| Office | `~/office-project/` |
 | Productivity | `~/productivity-project/` |
 
 ---
@@ -78,6 +85,5 @@ Shared MCP inventory:
 - `magic`
 - `expo-mcp`
 - `brave-search`
-- `firecrawl` when keyed
 
 Claude Code should use the same MCP set as Codex, OpenCode, and Cursor.

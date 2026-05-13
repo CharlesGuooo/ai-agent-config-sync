@@ -1,237 +1,97 @@
 # AI Agent Config Sync
 
-一个 repo 搞定四个 AI 编码助手的 Skills、MCP 和路由配置。克隆到新电脑，填 `.env`，跑一行命令，四个工具立刻可用。
+One repo to rebuild a uniform 4-agent setup (Claude Code / Cursor / Codex / OpenCode) on any machine. Clone, fill `.env`, run one install command — the same 30 global skills, 7 project packs, 19 MCPs, and 7-principle system prompts apply across all four CLIs.
 
-支持的工具：
+Optimised for **agent-driven install**: a new-machine agent reads `INVENTORY.md` and either runs the script or copies files directly.
 
-- **Claude Code** — Anthropic CLI
-- **Codex** — OpenAI CLI
-- **OpenCode** — 开源 CLI
-- **Cursor** — VSCode-based AI IDE
+## What's inside
 
-## 架构
+| Layer | Count | Purpose |
+| --- | --- | --- |
+| Global skills | 30 | Process, routing, escalation, code-review, OpenSpec, document handling — identical across 4 agents |
+| Codex `.system/` vendor skills | 5 | Codex-only built-ins (image-gen, plugin-creator, etc.) |
+| Project packs | 7 | Domain expertise — loaded when `cd` into the matching directory |
+| MCP servers (always-on) | 9 | github, memory, filesystem, context7, sequential-thinking, brave-search, playwright, chrome-devtools, web-reader |
+| MCP servers (opt-in templates) | 10 | supabase, vercel, railway, expo-mcp, magic, zai-mcp-server, cloudflare-{docs,workers-builds,workers-bindings,observability} |
+| Agent system prompts | 4 | CLAUDE.md, cursor rules, codex AGENTS.md, opencode AGENTS.md — all aligned to the same 7 core principles |
 
-```
-┌───────────────────────────────────────────────────────┐
-│                  全局层 (始终加载)                      │
-│  18 个流程 Skills + 17 个 MCP + 10 个 Skill Index     │
-└───────────────────┬───────────────────────────────────┘
-                    │ skill-router 路由
-        ┌───────────┼───────────┐
-        ▼           ▼           ▼
-┌──────────┐ ┌──────────┐ ┌──────────┐  ...共 8 个项目
-│dev (50)  │ │sci (46)  │ │data (24) │
-│.claude/  │ │.claude/  │ │.claude/  │
-│.codex/   │ │.codex/   │ │.codex/   │
-│.opencode/│ │.opencode/│ │.opencode/│
-│.cursor/  │ │.cursor/  │ │.cursor/  │
-└──────────┘ └──────────┘ └──────────┘
-```
+## Project packs
 
-### 省 Token 路由
+| Pack | Sub-routing |
+| --- | --- |
+| `dev-project/` | 11 top + frontend(4) + backend(4) + cloud-platform(18) + testing-qa(4) + devops-sre(9) + agent-dev(15) + ml(22) |
+| `finance-project/` | trading(14) + research(21) + macro(16) + modeling(15) + portfolio(21) + quant-methods(15) + advisory/{ib(8),pe(8),wealth(3),fund-admin(6),compliance(2)} |
+| `ios-project/` | 14 skills (Swift / SwiftUI / iOS) |
+| `data-analysis-project/` | 18 skills (EDA, viz, statistics) |
+| `marketing-project/` | 38 skills (SEO, ads, ElevenLabs audio, copywriting) |
+| `research-project/` | 18 skills (papers, grants, peer review) |
+| `productivity-project/` | 20 skills (Obsidian, Jira, Notion, PM) |
 
-每个项目目录只包含自己领域的 Skills。Agent 在 `~/dev-project/` 启动时只加载 50 个开发 Skills，而非全部 230 个。经实测，20 轮对话节省约 355K tokens（68%）。
-
-### 两层 Skill 模型
-
-| 层 | 位置 | 内容 |
-|----|------|------|
-| 全局 | `~/.{claude,codex,opencode,cursor}/skills/` | 18 个流程/路由/升级 Skills，四工具共享 |
-| 项目 | `~/*-project/.{claude,codex,opencode,cursor}/skills/` | 230 个领域 Skills，按项目目录隔离 |
-
-### 项目目录
-
-| 领域 | 目录 | Skills |
-|------|------|--------|
-| 开发 | `~/dev-project/` | 50 (前端、后端、架构、DevOps、AI Agent) |
-| 科学计算 | `~/scientific-project/` | 46 (单细胞、分子、ML、生信) |
-| 数据分析 | `~/data-analysis-project/` | 24 (EDA、统计、可视化) |
-| 数据库查询 | `~/database-project/` | 23 (PubMed、UniProt、金融) |
-| 营销 | `~/marketing-project/` | 32 (SEO、文案、广告) |
-| 研究 | `~/research-project/` | 24 (论文、综述、基金) |
-| 生产力 | `~/productivity-project/` | 24 (Obsidian、Jira、PM) |
-| Office | `~/office-project/` | 7 (PDF、Word、Excel、PPT) |
-
-### 使用方式
-
-```bash
-# 四条命令等价，加载相同的 Skills + MCP
-cd ~/dev-project/ && claude
-cd ~/dev-project/ && codex
-cd ~/dev-project/ && opencode
-# Cursor: 打开 ~/dev-project/ 目录
-```
-
-## Repo 结构
+## Repo layout
 
 ```
 ai-agent-config-sync/
+├── README.md                       ← you are here
+├── INSTALL.md                      ← step-by-step install for an agent to follow
+├── INVENTORY.md                    ← machine-readable source→target map
+├── .env.example                    ← env-var names (no values)
 ├── agents/
-│   ├── claude/
-│   │   ├── CLAUDE.md                  # 全局指令
-│   │   ├── commands/research.md       # /research 命令
-│   │   └── mcp-servers.template.json  # MCP 模板 (__TOKEN__ 占位符)
-│   ├── codex/
-│   │   ├── AGENTS.md                  # 全局指令 (英文)
-│   │   ├── AGENTS.local.md            # 全局指令 (中文) → ~/.codex/AGENTS.md
-│   │   ├── config.toml                # Codex 主配置
-│   │   └── profiles/                  # full/development/minimal 配置
-│   ├── cursor/
-│   │   ├── global-rules.md            # 全局规则 (英文)
-│   │   ├── rules/global-rules.md      # 全局规则 (中文) → ~/.cursor/rules/
-│   │   ├── mcp.json                   # MCP 配置
-│   │   └── skills-cursor/             # Cursor 专属 Skills (5个)
-│   └── opencode/
-│       ├── AGENTS.md                  # 全局指令
-│       ├── opencode.json              # MCP 配置
-│       └── command/                   # OpenCode 专属命令
+│   ├── claude/  CLAUDE.md, commands/, profiles/
+│   ├── cursor/  global-rules.md, rules/, skills-cursor/
+│   ├── codex/   AGENTS.md, AGENTS.local.md, config.toml, profiles/
+│   └── opencode/ AGENTS.md, command/, opencode.json
 ├── skills/
-│   ├── global/
-│   │   ├── common/                    # 18 个全局 Skills (四工具共享)
-│   │   └── codex-system/              # Codex 专属系统 Skills
-│   ├── index/                         # 10 个 Skill 索引文件 (四工具共享)
-│   └── project-packs/
-│       ├── dev-project/
-│       │   ├── skills/                # 50 个领域 Skills
-│       │   └── instructions.md        # 项目指令文件模板
-│       ├── scientific-project/        # 同上
-│       └── ...                        # 共 8 个项目
-├── sync.ps1                           # Windows 同步脚本
-├── sync.sh                            # Unix 同步脚本
-├── install.ps1                        # Windows 安装 (sync + 持久化环境变量)
-├── install.sh                         # Unix 安装
-├── .env.example                       # API Key 模板
-└── .env                               # 本地密钥 (不入库)
+│   ├── global/                     ← 30 skills × 4 agents
+│   ├── codex-system/               ← 5 Codex-only vendor skills
+│   └── project-packs/              ← 7 packs, mirroring live directory layout
+│       ├── dev-project/{frontend,backend,cloud-platform,testing-qa,devops-sre,agent-dev,ml}
+│       ├── finance-project/{trading,research,macro,modeling,portfolio,quant-methods,advisory/{ib,pe,wealth,fund-admin,compliance}}
+│       └── {ios,data-analysis,marketing,research,productivity}-project/
+├── mcp/
+│   ├── always-on/                  ← 4 sanitized templates (one per agent), env-var refs only
+│   └── opt-in/                     ← 10 templates + scenario bundles, copied to ~/MCP-Templates/
+├── claude-mem/README.md            ← persistent memory addon (install steps only, not bundled)
+├── scripts/install.{ps1,sh}        ← entry — supports --agents= --packs= --skip-mcp --global-only
+└── scripts/sync.{ps1,sh}           ← internal copy logic
 ```
 
-## Sync 做了什么
-
-`sync.ps1` / `sync.sh` 执行以下操作：
-
-| 操作 | 源 | 目标 |
-|------|---|------|
-| 全局 Skills | `skills/global/common/` | `~/.{claude,codex,opencode,cursor}/skills/` |
-| Skill Index | `skills/index/` | `~/.{claude,codex,opencode,cursor}/index/` |
-| 项目 Skills | `skills/project-packs/*/skills/` | `~/*-project/.{claude,codex,opencode,cursor}/skills/` |
-| 项目指令 | `skills/project-packs/*/instructions.md` | `.claude/CLAUDE.md` + `AGENTS.md` + `.cursor/rules/project.md` |
-| Claude 指令 | `agents/claude/CLAUDE.md` | `~/.claude/CLAUDE.md` |
-| Claude 命令 | `agents/claude/commands/` | `~/.claude/commands/` |
-| Claude MCP | `agents/claude/mcp-servers.template.json` | `~/.claude.json` + `~/.claude/settings.json` (合并) |
-| Codex 配置 | `agents/codex/config.toml` | `~/.codex/config.toml` |
-| Codex 指令 | `agents/codex/AGENTS.md` + `AGENTS.local.md` | `~/AGENTS.md` + `~/.codex/AGENTS.md` |
-| Cursor MCP | `agents/cursor/mcp.json` | `~/.cursor/mcp.json` |
-| Cursor 规则 | `agents/cursor/global-rules.md` + `rules/` | `~/.cursor/global-rules.md` + `~/.cursor/rules/` |
-| OpenCode 配置 | `agents/opencode/opencode.json` + `AGENTS.md` | `~/.opencode/` + `~/.config/opencode/` |
-
-## MCP 清单
-
-17 个全局 MCP，四工具共享：
-
-| 类型 | 名称 | 认证 |
-|------|------|------|
-| 核心 | `github` | GITHUB_PERSONAL_ACCESS_TOKEN |
-| 核心 | `memory` | 无 |
-| 核心 | `web-reader` | Z_AI_API_KEY |
-| 核心 | `zai-mcp-server` | Z_AI_API_KEY |
-| 可选 | `context7` | 无 |
-| 可选 | `sequential-thinking` | 无 |
-| 可选 | `vercel` | 无 (OAuth) |
-| 可选 | `railway` | 无 |
-| 可选 | `cloudflare-docs` | 无 |
-| 可选 | `cloudflare-workers-builds` | 无 |
-| 可选 | `cloudflare-workers-bindings` | 无 |
-| 可选 | `cloudflare-observability` | 无 |
-| 可选 | `playwright` | 无 |
-| 可选 | `supabase` | SUPABASE_ACCESS_TOKEN |
-| 可选 | `magic` | 无 |
-| 可选 | `expo-mcp` | EXPO_TOKEN |
-| 可选 | `brave-search` | BRAVE_API_KEY |
-| 可选 | `firecrawl` | FIRECRAWL_API_KEY (有 key 才启用) |
-
-## 新电脑安装
-
-### Windows
-
-```powershell
-git clone https://github.com/CharlesGuooo/ai-agent-config-sync.git
-cd ai-agent-config-sync
-Copy-Item .env.example .env
-# 编辑 .env 填入 API Keys
-.\install.ps1
-```
-
-### Unix/macOS
+## How to install on a new machine
 
 ```bash
-git clone https://github.com/CharlesGuooo/ai-agent-config-sync.git
+git clone <this-repo>
 cd ai-agent-config-sync
-cp .env.example .env
-# 编辑 .env 填入 API Keys
-./install.sh
+cp .env.example .env                   # then fill in keys
+./scripts/install.sh                   # everything
+
+# selective:
+./scripts/install.sh --agents=claude   # only Claude Code
+./scripts/install.sh --packs=dev,finance  # only those project packs
+./scripts/install.sh --skip-mcp        # skills + agent configs only
+./scripts/install.sh --global-only     # 30 global skills, no project packs
 ```
 
-依赖：`jq`（JSON 处理）、`rsync`（目录同步）。Windows 使用 `robocopy` 无需额外依赖。
+If you're an AI agent doing the install, read **`INSTALL.md`** + **`INVENTORY.md`** first. You may also `cp` files directly instead of running the script — whichever fits the situation.
 
-## 必需的 API Keys
+## Core principles (embedded in every agent's system prompt)
 
-在 `.env` 中填写：
+1. Think before acting.
+2. When multiple interpretations exist, present them — don't pick silently.
+3. Push back when a simpler approach exists; don't just follow.
+4. Touch only what the task requires — mention unrelated dead code, don't delete.
+5. Exhaust reasonable options before claiming something cannot be done.
+6. Verify results before claiming success.
+7. Preserve context and align with the user's actual goal.
 
-```
-GITHUB_PERSONAL_ACCESS_TOKEN=ghp_...
-Z_AI_API_KEY=...
-SUPABASE_ACCESS_TOKEN=sbp_...
-SUPABASE_PROJECT_REF=your-project-ref
-EXPO_TOKEN=Expo_...
-BRAVE_API_KEY=BSA...
-FIRECRAWL_API_KEY=           # 可选，留空则 firecrawl 不启用
-```
+Loaded at system-prompt level (`CLAUDE.md`, `AGENTS.md`, `global-rules.md`) — zero skill-match cost.
 
-本 repo 不存储模型提供商认证（Claude/OpenAI/Cursor 账号）。这些留在各机器本地。
+## Secrets
 
-## 安全设计
+- `.env` lists API keys for MCP auth. Never commit it (`.gitignore` enforces this).
+- The repo contains **no plaintext secrets** — sanitized MCP templates use env-var references (`${VAR}` / `${env:VAR}` / `{env:VAR}` / `bearer_token_env_var`).
+- On Windows, `install.ps1` persists keys as User-scope environment variables so Cursor/Codex/OpenCode can resolve `${env:VAR}` references.
 
-### 同步安全
+## What's NOT in the repo
 
-- **自动备份**：每次 sync 前自动备份目标目录到 `~/.agent-config-backup/`
-- **Dry-run 模式**：`sync.ps1 -DryRun` 或 `sync.sh --dry-run` 只打印操作不执行
-- **安全 .env 解析**：sync.sh 使用逐行 key=value 解析，不执行 shell 命令
-
-### 权限默认值
-
-- **Codex 默认安全模式**：`approval_policy = "unless-allow-listed"` + `sandbox_mode = "full-auto"`
-- Danger 模式（`never` + `danger-full-access`）仅存在于 `profiles/full.toml`，需手动切换
-- Claude Code 的权限由用户在 `settings.json` 中自行配置
-
-### 供应链安全
-
-- 所有 `npx` MCP 包均锁定到特定版本号，无 `@latest`
-- 无第三方模型代理 endpoint 硬编码
-- 无硬编码路径或 project_ref，全部通过 `.env` 变量注入
-
-## 高级用法
-
-### Dry-run（预览模式）
-
-```powershell
-.\sync.ps1 -DryRun          # Windows
-./sync.sh --dry-run          # Unix
-```
-
-### Codex Profile 切换
-
-```powershell
-~\.codex\profiles\switch.ps1 full          # 切到全权限模式
-~\.codex\profiles\switch.ps1 development   # 切到开发模式
-~\.codex\profiles\switch.ps1 minimal       # 切到最小模式
-```
-
-### 项目包自动发现
-
-sync 脚本会自动扫描 `skills/project-packs/` 下的所有子目录。新增项目只需在该目录下创建文件夹，无需修改脚本。
-
-## 注意事项
-
-- `install.ps1` 会将 API Keys 持久化到 Windows User 环境变量，供 Cursor/Codex/OpenCode 的 `${env:VAR}` 引用
-- Claude Code 的 MCP 配置直接内嵌 key 到 `settings.json`；其他三个工具通过环境变量引用
-- 部分远程 MCP（Vercel、Cloudflare）首次使用需要完成各自的 OAuth 登录流程
-- `firecrawl` 默认禁用，仅当 `.env` 中填了 `FIRECRAWL_API_KEY` 时才启用
+- `claude-mem` (persistent memory) — install separately via `npm install -g claude-mem` (see `claude-mem/README.md`).
+- LM Studio configs — its MCP support is partial/diverging; documented separately on the source machine.
+- Per-machine Claude account state (`~/.claude/auth`, etc.) — stays local.

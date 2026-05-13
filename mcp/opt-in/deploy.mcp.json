@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "vercel": {
+      "type": "http",
+      "url": "https://mcp.vercel.com"
+    },
+    "railway": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@railway/mcp-server@0.1.8"]
+    }
+  }
+}

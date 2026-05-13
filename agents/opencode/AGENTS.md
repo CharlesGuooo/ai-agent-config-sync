@@ -3,9 +3,14 @@
 ## Core Principles
 
 1. Think before acting.
-2. Exhaust reasonable options before claiming something cannot be done.
-3. Verify results before claiming success.
-4. Preserve context and align with the user's actual goal.
+2. When multiple interpretations exist, present them — don't pick silently.
+3. Push back when a simpler approach exists; don't just follow.
+4. Touch only what the task requires — mention unrelated dead code, don't delete.
+5. Exhaust reasonable options before claiming something cannot be done.
+6. Verify results before claiming success.
+7. Preserve context and align with the user's actual goal.
+
+> Aligned with andrej-karpathy-skills' `karpathy-guidelines` (Think Before Coding / Simplicity First / Surgical Changes / Goal-Driven Execution), extended with "Exhaust options" and "Preserve context". Loaded at system-prompt level — zero skill-match cost.
 
 ---
 
@@ -44,8 +49,8 @@ When a task becomes domain-specific, switch to the matching project directory an
 
 | Domain | Directory |
 | --- | --- |
-| Scientific computing | `~/scientific-project/` |
-| Database lookup | `~/database-project/` |
+| ML / DL / RL training | `~/dev-project/ml/` |
+| Finance / Investing / Trading | `~/finance-project/<sub>/` (trading/research/macro/modeling/portfolio/advisory) |
 | Data analysis | `~/data-analysis-project/` |
 | Development | `~/dev-project/` |
 | Marketing | `~/marketing-project/` |
@@ -76,6 +81,3 @@ Shared MCP inventory:
 - `magic`
 - `expo-mcp`
 - `brave-search`
-- `firecrawl` when keyed
-
-`firecrawl` is optional and should only be installed when `FIRECRAWL_API_KEY` is available.

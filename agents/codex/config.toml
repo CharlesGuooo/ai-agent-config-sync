@@ -1,59 +1,53 @@
-# Codex canonical MCP config
-# Source of truth for the shared four-agent setup.
-# For full-access mode, switch to the "full" profile:
-#   ~/.codex/profiles/switch.ps1 full   (Windows)
-#   ~/.codex/profiles/switch.sh full    (Unix)
+# Codex configuration
+# - Model & provider customizations preserved (gpt-5.4 / xhigh / risingsun base_url)
+# - 19 MCP servers (9 always-on + 10 opt-in via `enabled = false`)
+# - All API keys via env_vars / bearer_token_env_var (no plaintext)
+# - Opt-in re-enable: codex -c mcp_servers.<name>.enabled=true
 
-model_provider = "openai"
-model = "o3"
-model_reasoning_effort = "high"
-personality = "pragmatic"
+model_provider = "OpenAI"
+model = "gpt-5.4"
+review_model = "gpt-5.4"
+model_reasoning_effort = "xhigh"
+disable_response_storage = true
+network_access = "enabled"
+windows_wsl_setup_acknowledged = true
+model_context_window = 1000000
+model_auto_compact_token_limit = 900000
+suppress_unstable_features_warning = true
 
-approval_policy = "on-request"
-sandbox_mode = "workspace-write"
+[model_providers.OpenAI]
+name = "OpenAI"
+base_url = "https://risingsun.top/v1"
+wire_api = "responses"
+requires_openai_auth = true
 
 [windows]
 sandbox = "elevated"
 
+[projects.'C:\Users\PC']
+trust_level = "trusted"
+
+# ============================================================
+# Always-on MCP Servers (9)
+# ============================================================
+
 [mcp_servers.github]
-command = "npx"
-args = ["-y", "@modelcontextprotocol/server-github@2025.4.8"]
-env_vars = ["GITHUB_PERSONAL_ACCESS_TOKEN"]
-startup_timeout_sec = 30
+url = "https://api.githubcopilot.com/mcp"
+bearer_token_env_var = "GITHUB_PERSONAL_ACCESS_TOKEN"
 
 [mcp_servers.memory]
 command = "npx"
 args = ["-y", "@modelcontextprotocol/server-memory@2026.1.26"]
 startup_timeout_sec = 30
 
-# web-reader disabled for Codex: Z.AI HTTP endpoint incompatible with RMCP client
-# and mcp-remote bridge. Use zai-mcp-server instead (provides overlapping web capabilities).
-[mcp_servers.web-reader]
-enabled = false
+[mcp_servers.filesystem]
 command = "npx"
-args = ["-y", "mcp-remote@latest", "https://api.z.ai/api/mcp/web_reader/mcp", "--header", "Authorization: Bearer ${Z_AI_API_KEY}"]
-env_vars = ["Z_AI_API_KEY"]
+args = ["-y", "@modelcontextprotocol/server-filesystem@2026.1.14", "C:/Users/PC"]
 startup_timeout_sec = 30
-
-[mcp_servers.zai-mcp-server]
-command = "npx"
-args = ["-y", "@z_ai/mcp-server@0.1.3"]
-env_vars = ["Z_AI_API_KEY"]
-startup_timeout_sec = 30
-
-[mcp_servers.zai-mcp-server.env]
-Z_AI_MODE = "ZAI"
 
 [mcp_servers.context7]
 command = "npx"
-args = ["-y", "@upstash/context7-mcp@2.1.4"]
-startup_timeout_sec = 30
-
-[mcp_servers.firecrawl]
-enabled = false
-command = "npx"
-args = ["-y", "firecrawl-mcp@3.11.0"]
-env_vars = ["FIRECRAWL_API_KEY"]
+args = ["-y", "@upstash/context7-mcp@2.2.5"]
 startup_timeout_sec = 30
 
 [mcp_servers.sequential-thinking]
@@ -61,48 +55,87 @@ command = "npx"
 args = ["-y", "@modelcontextprotocol/server-sequential-thinking@2025.12.18"]
 startup_timeout_sec = 30
 
-[mcp_servers.vercel]
-url = "https://mcp.vercel.com"
-
-[mcp_servers.railway]
+[mcp_servers.brave-search]
 command = "npx"
-args = ["-y", "@railway/mcp-server@0.1.8"]
+args = ["-y", "@brave/brave-search-mcp-server@2.0.80"]
+env_vars = ["BRAVE_API_KEY"]
 startup_timeout_sec = 30
-
-[mcp_servers.cloudflare-docs]
-url = "https://docs.mcp.cloudflare.com/mcp"
-
-[mcp_servers.cloudflare-workers-builds]
-url = "https://builds.mcp.cloudflare.com/mcp"
-
-[mcp_servers.cloudflare-workers-bindings]
-url = "https://bindings.mcp.cloudflare.com/mcp"
-
-[mcp_servers.cloudflare-observability]
-url = "https://observability.mcp.cloudflare.com/mcp"
 
 [mcp_servers.playwright]
 command = "npx"
 args = ["-y", "@executeautomation/playwright-mcp-server@1.0.12"]
 startup_timeout_sec = 30
 
-[mcp_servers.supabase]
+[mcp_servers.chrome-devtools]
 command = "npx"
-args = ["-y", "@supabase/mcp-server-supabase@latest", "--project-ref", "${env:SUPABASE_PROJECT_REF}"]
-env_vars = ["SUPABASE_ACCESS_TOKEN"]
+args = ["-y", "chrome-devtools-mcp@0.26.0"]
 startup_timeout_sec = 30
 
+[mcp_servers.web-reader]
+# Z.AI endpoint historically incompatible with Codex MCP HTTP client; kept disabled in Codex.
+enabled = false
+url = "https://api.z.ai/api/mcp/web_reader/mcp"
+bearer_token_env_var = "Z_AI_API_KEY"
+
+# ============================================================
+# Opt-in MCP Servers (10) — enable per-invocation:
+#   codex -c mcp_servers.<name>.enabled=true
+# ============================================================
+
+[mcp_servers.zai-mcp-server]
+enabled = false
+command = "npx"
+args = ["-y", "@z_ai/mcp-server@0.1.4"]
+env = { Z_AI_MODE = "ZAI" }
+env_vars = ["Z_AI_API_KEY"]
+startup_timeout_sec = 30
+
+[mcp_servers.supabase]
+enabled = false
+url = "https://mcp.supabase.com/mcp?project_ref=qxgukktwygitluugnijy"
+bearer_token_env_var = "SUPABASE_ACCESS_TOKEN"
+
+[mcp_servers.vercel]
+enabled = false
+url = "https://mcp.vercel.com"
+
+[mcp_servers.railway]
+enabled = false
+command = "npx"
+args = ["-y", "@railway/mcp-server@0.1.8"]
+startup_timeout_sec = 30
+
+[mcp_servers.expo-mcp]
+enabled = false
+url = "https://mcp.expo.dev/mcp"
+bearer_token_env_var = "EXPO_TOKEN"
+
 [mcp_servers.magic]
+enabled = false
 command = "npx"
 args = ["-y", "@magicuidesign/mcp@2.0.0"]
 startup_timeout_sec = 30
 
-[mcp_servers.expo-mcp]
-url = "https://mcp.expo.dev/mcp"
-bearer_token_env_var = "EXPO_TOKEN"
+[mcp_servers.cloudflare-docs]
+enabled = false
+url = "https://docs.mcp.cloudflare.com/mcp"
 
-[mcp_servers.brave-search]
-command = "npx"
-args = ["-y", "@modelcontextprotocol/server-brave-search@0.6.2"]
-env_vars = ["BRAVE_API_KEY"]
-startup_timeout_sec = 30
+[mcp_servers.cloudflare-workers-builds]
+enabled = false
+url = "https://builds.mcp.cloudflare.com/mcp"
+
+[mcp_servers.cloudflare-workers-bindings]
+enabled = false
+url = "https://bindings.mcp.cloudflare.com/mcp"
+
+[mcp_servers.cloudflare-observability]
+enabled = false
+url = "https://observability.mcp.cloudflare.com/mcp"
+
+[marketplaces.claude-mem-local]
+last_updated = "2026-05-13T00:12:55Z"
+source_type = "local"
+source = '\\?\C:\Users\PC\.claude\plugins\marketplaces\thedotmack'
+
+[features]
+plugin_hooks = true

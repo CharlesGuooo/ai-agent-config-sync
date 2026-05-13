@@ -1,97 +1,83 @@
-# Codex 全局指令
+# Codex Global Instructions
 
-## 核心行为准则
+## Core Principles
 
-1. **主动思考** - 在执行任务前先分析需求和最佳方案
-2. **穷尽方案** - 不轻易说"无法解决"，先尝试所有可能
-3. **验证优先** - 完成任务后验证结果，不自假设成功
-4. **上下文意识** - 理解项目背景和用户意图
+1. Think before acting.
+2. When multiple interpretations exist, present them — don't pick silently.
+3. Push back when a simpler approach exists; don't just follow.
+4. Touch only what the task requires — mention unrelated dead code, don't delete.
+5. Exhaust reasonable options before claiming something cannot be done.
+6. Verify results before claiming success.
+7. Preserve context and align with the user's actual goal.
 
----
-
-## 全局核心 Skills（8个）
-
-| 触发场景 | Skill | 用途 |
-|----------|-------|------|
-| 创意任务开始 | `brainstorming` | 创意发想 |
-| 编写代码 | `test-driven-development` | TDD 开发 |
-| 遇到 bug | `systematic-debugging` | 系统调试 |
-| 完成任务前 | `verification-before-completion` | 结果验证 |
-| 编写计划 | `writing-plans` | 实现计划 |
-| 执行计划 | `executing-plans` | 执行已写计划 |
-| 失败 2+ 次 | `pua` | 穷尽方案 |
-| 需要动力 | `high-agency` | 高主动性 |
+> Aligned with andrej-karpathy-skills' `karpathy-guidelines` (Think Before Coding / Simplicity First / Surgical Changes / Goal-Driven Execution), extended with "Exhaust options" and "Preserve context". Loaded at system-prompt level — zero skill-match cost.
 
 ---
 
-## 项目级 Skills (8个启动目录)
+## Global Skills
 
-当任务涉及特定领域时，**切换到对应项目目录启动 Codex**：
+The global layer is intentionally small. It handles process, routing, escalation, and repeatable workflows.
 
-| 领域 | 目录 | Skills |
-|------|------|--------|
-| 科学计算 | `~/scientific-project/` | 46 (scanpy, rdkit, pytorch...) |
-| 数据库查询 | `~/database-project/` | 23 (pubmed, openalex...) |
-| 数据分析 | `~/data-analysis-project/` | 24 (matplotlib, seaborn...) |
-| 开发 | `~/dev-project/` | 50 (frontend, backend...) |
-| 营销 | `~/marketing-project/` | 32 (copywriting, seo...) |
-| 研究 | `~/research-project/` | 24 (literature-review...) |
-| Office | `~/office-project/` | 7 (pdf, docx, xlsx...) |
-| 生产力 | `~/productivity-project/` | 24 (obsidian, jira...) |
+| Type | Skill | Purpose |
+| --- | --- | --- |
+| Process | `brainstorming` | Clarify design before creative or behavior-changing work |
+| Process | `test-driven-development` | Use TDD when implementing or changing code |
+| Process | `systematic-debugging` | Investigate bugs and unexpected behavior methodically |
+| Process | `writing-plans` | Write implementation plans before multi-step execution |
+| Process | `executing-plans` | Execute an existing written plan |
+| Process | `verification-before-completion` | Verify with evidence before claiming completion |
+| Escalation | `high-agency` | Maintain ownership and initiative on complex work |
+| Escalation | `pua` | Escalate after repeated failure or passive looping |
+| Workflow | `playwright-interactive` | Use a persistent browser session for iterative UI debugging and QA |
+| Workflow | `gh-fix-ci` | Investigate and fix failing GitHub Actions and PR checks |
+| Workflow | `gh-address-comments` | Work through GitHub PR review comments with `gh` |
 
-### 使用方式
+---
+
+## Local Skill Packs
+
+When a task becomes domain-specific, switch to the matching project directory and use the local pack there.
+
+| Domain | Directory | Examples |
+| --- | --- | --- |
+| ML / DL / RL training | `~/dev-project/ml/` | sklearn / PyTorch / transformers / RL (sub-folder under dev-project) |
+| Finance / Investing / Trading | `~/finance-project/<sub>/` | trading / research / macro / modeling / portfolio / advisory (6-way sub-routing) |
+| Data analysis | `~/data-analysis-project/` | EDA, visualization, statistics, forecasting |
+| Development | `~/dev-project/` | frontend, backend, API, Docker, CI/CD, React |
+| Marketing | `~/marketing-project/` | SEO, ad copy, content strategy, campaigns |
+| Research | `~/research-project/` | papers, reviews, grants, peer review |
+| Office | `~/office-project/` | PDF, Word, Excel, PowerPoint |
+| Productivity | `~/productivity-project/` | Obsidian, Jira, Google Workspace, PM workflows |
+
+The global layer should route to the right directory and stop there. Local packs own domain guidance.
+
+---
+
+## MCP Layout
+
+MCP stays global and shared across tools.
+
+- Core MCP: `github`, `memory`, `web-reader`, `zai-mcp-server`
+- Shared optional MCP: `context7`, `sequential-thinking`, `vercel`, `railway`, `cloudflare-docs`, `cloudflare-workers-builds`, `cloudflare-workers-bindings`, `cloudflare-observability`, `playwright`, `supabase`, `magic`, `expo-mcp`, `brave-search`
+
+That is 17 total MCP entries shared across all four agents.
+
+---
+
+## Cross-Tool Consistency
+
+Claude Code, Codex, OpenCode, and Cursor are expected to share:
+
+- the same project-directory routing model
+- the same global-vs-local skill split
+- the same MCP inventory
+
+Typical usage:
 
 ```bash
-cd ~/scientific-project/ && codex   # 科学计算
-cd ~/dev-project/ && codex          # 开发
-cd ~/database-project/ && codex     # 数据库
-cd ~/marketing-project/ && codex    # 营销
-cd ~/research-project/ && codex     # 研究
+cd ~/dev-project && claude
+cd ~/dev-project && codex
+cd ~/dev-project && opencode
 ```
 
-### 领域关键词
-
-| 关键词 | 项目目录 |
-|--------|----------|
-| 单细胞, RNA-seq, 基因, 蛋白质, 分子, ML, 深度学习 | `~/scientific-project/` |
-| 文献, PubMed, OpenAlex, 化合物, 蛋白质查询 | `~/database-project/` |
-| DataFrame, 统计, 可视化, 图表, EDA | `~/data-analysis-project/` |
-| 前端, 后端, Docker, CI/CD, API, React | `~/dev-project/` |
-| 文案, SEO, 广告, 社交媒体 | `~/marketing-project/` |
-| 论文, 综述, 基金, 同行评审 | `~/research-project/` |
-| PDF, Word, Excel, PPT | `~/office-project/` |
-| Obsidian, Jira, Google Workspace | `~/productivity-project/` |
-
----
-
-## 全局 MCP (17个)
-
-所有 MCP 全局配置，启动不耗 token，按需调用：
-
-**核心 (4个)**: memory, github, web-reader, zai-mcp-server
-
-**可选 (13个)**: context7, firecrawl, sequential-thinking, vercel, railway, cloudflare-* (4个), playwright, supabase, magic, expo-mcp
-
----
-
-## 四工具统一
-
-Claude Code、Codex、OpenCode、Cursor 使用**相同的目录和配置**：
-
-```bash
-# 四条命令等价，加载相同的 Skills + MCP
-cd ~/dev-project/ && claude
-cd ~/dev-project/ && codex
-cd ~/dev-project/ && opencode
-# Cursor: 打开 ~/dev-project/ 目录
-```
-
----
-
-## 配置位置
-
-| 项目 | 路径 |
-|------|------|
-| 全局配置 | `~/.codex/config.toml` |
-| Skills | `~/.codex/skills/` (全局) + `~/*-project/.codex/skills/` (项目) |
-| MCP | 全局 17 个 |
+Cursor should open the same project directory directly.

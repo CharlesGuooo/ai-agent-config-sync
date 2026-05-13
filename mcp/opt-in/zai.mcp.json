@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "zai-mcp-server": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@z_ai/mcp-server@0.1.4"],
+      "env": {
+        "Z_AI_MODE": "ZAI",
+        "Z_AI_API_KEY": "${Z_AI_API_KEY}"
+      }
+    }
+  }
+}

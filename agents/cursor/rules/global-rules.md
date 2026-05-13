@@ -1,87 +1,87 @@
-# Cursor 全局指令
+# Cursor Global Rules
 
-## 核心行为准则
+## Core Principles
 
-1. **主动思考** - 在执行任务前先分析需求和最佳方案
-2. **穷尽方案** - 不轻易说"无法解决"，先尝试所有可能
-3. **验证优先** - 完成任务后验证结果，不自假设成功
-4. **上下文意识** - 理解项目背景和用户意图
+1. Think before acting.
+2. When multiple interpretations exist, present them — don't pick silently.
+3. Push back when a simpler approach exists; don't just follow.
+4. Touch only what the task requires — mention unrelated dead code, don't delete.
+5. Exhaust reasonable options before claiming something cannot be done.
+6. Verify results before claiming success.
+7. Preserve context and align with the user's actual goal.
 
----
-
-## 全局核心 Skills（8个）
-
-| 触发场景 | Skill | 用途 |
-|----------|-------|------|
-| 创意任务开始 | `brainstorming` | 创意发想 |
-| 编写代码 | `test-driven-development` | TDD 开发 |
-| 遇到 bug | `systematic-debugging` | 系统调试 |
-| 完成任务前 | `verification-before-completion` | 结果验证 |
-| 编写计划 | `writing-plans` | 实现计划 |
-| 执行计划 | `executing-plans` | 执行已写计划 |
-| 失败 2+ 次 | `pua` | 穷尽方案 |
-| 需要动力 | `high-agency` | 高主动性 |
+> Aligned with andrej-karpathy-skills' `karpathy-guidelines` (Think Before Coding / Simplicity First / Surgical Changes / Goal-Driven Execution), extended with "Exhaust options" and "Preserve context". Loaded at system-prompt level — zero skill-match cost.
 
 ---
 
-## 项目级 Skills (8个启动目录)
+## Global Skills (30)
 
-当任务涉及特定领域时，**打开对应项目目录**：
+The global layer covers process, routing, escalation, workflows, and document handling. Identical across Claude / Cursor / OpenCode / Codex.
 
-| 领域 | 目录 | Skills |
-|------|------|--------|
-| 科学计算 | `~/scientific-project/` | 46 (scanpy, rdkit, pytorch...) |
-| 数据库查询 | `~/database-project/` | 23 (pubmed, openalex...) |
-| 数据分析 | `~/data-analysis-project/` | 24 (matplotlib, seaborn...) |
-| 开发 | `~/dev-project/` | 50 (frontend, backend...) |
-| 营销 | `~/marketing-project/` | 32 (copywriting, seo...) |
-| 研究 | `~/research-project/` | 24 (literature-review...) |
-| Office | `~/office-project/` | 7 (pdf, docx, xlsx...) |
-| 生产力 | `~/productivity-project/` | 24 (obsidian, jira...) |
-
-### 领域关键词
-
-| 关键词 | 项目目录 |
-|--------|----------|
-| 单细胞, RNA-seq, 基因, 蛋白质, 分子, ML, 深度学习 | `~/scientific-project/` |
-| 文献, PubMed, OpenAlex, 化合物, 蛋白质查询 | `~/database-project/` |
-| DataFrame, 统计, 可视化, 图表, EDA | `~/data-analysis-project/` |
-| 前端, 后端, Docker, CI/CD, API, React | `~/dev-project/` |
-| 文案, SEO, 广告, 社交媒体 | `~/marketing-project/` |
-| 论文, 综述, 基金, 同行评审 | `~/research-project/` |
-| PDF, Word, Excel, PPT | `~/office-project/` |
-| Obsidian, Jira, Google Workspace | `~/productivity-project/` |
+- **Process** (10): using-superpowers, brainstorming, writing-plans, executing-plans, test-driven-development, systematic-debugging, verification-before-completion, subagent-driven-development, dispatching-parallel-agents, using-git-worktrees
+- **Escalation** (2): high-agency, pua
+- **Routing & Meta** (3): skill-router, skill-creator, skill-scanner
+- **Workflow** (3): playwright-interactive, gh-fix-ci, gh-address-comments
+- **Code Review** (3): requesting-code-review, receiving-code-review, finishing-a-development-branch
+- **OpenSpec** (4): openspec-{explore,propose,apply-change,archive-change}
+- **Document** (5): pdf, docx, xlsx, pptx, markitdown
 
 ---
 
-## 全局 MCP (17个)
+## Local Project Packs
 
-所有 MCP 全局配置，启动不耗 token，按需调用：
+When a task is domain-specific, open the matching project directory in Cursor and the local skill pack loads.
 
-**核心 (4个)**: memory, github, web-reader, zai-mcp-server
+| Domain | Directory |
+| --- | --- |
+| Software dev (general / workflow) | `~/dev-project/` |
+| Frontend / Web UI | `~/dev-project/frontend/` |
+| Backend / Architecture | `~/dev-project/backend/` |
+| Cloud / Platform (AWS / CF / Stripe / Supabase / PostHog) | `~/dev-project/cloud-platform/` |
+| Testing / QA | `~/dev-project/testing-qa/` |
+| DevOps / SRE | `~/dev-project/devops-sre/` |
+| AI Agent dev (LangChain / LangGraph / Deep / MCP) | `~/dev-project/agent-dev/` |
+| ML / DL / RL training | `~/dev-project/ml/` |
+| Finance (container, cd a sub) | `~/finance-project/{trading,research,macro,modeling,portfolio,quant-methods,advisory/{ib,pe,wealth,fund-admin,compliance}}/` |
+| Data analysis | `~/data-analysis-project/` |
+| Marketing | `~/marketing-project/` |
+| Research / Academic | `~/research-project/` |
+| Productivity / PM | `~/productivity-project/` |
+| iOS / Swift / SwiftUI | `~/ios-project/` |
 
-**可选 (13个)**: context7, firecrawl, sequential-thinking, vercel, railway, cloudflare-* (4个), playwright, supabase, magic, expo-mcp
+> Document tasks (PDF/Word/Excel/PowerPoint) use **global** skills directly.
 
 ---
 
-## 四工具统一
+## Global MCP (19)
 
-Claude Code、Codex、OpenCode、Cursor 使用**相同的目录和配置**：
+19 MCP servers — **9 always-on, 10 opt-in** (via per-project `.cursor/mcp.json` or `claude --mcp-config` flag).
+
+- **Always-on (9)**: github, memory, filesystem, context7, sequential-thinking, brave-search, playwright, chrome-devtools, web-reader
+- **Opt-in (10)**: supabase, vercel, railway, expo-mcp, magic, zai-mcp-server, cloudflare-{docs, workers-builds, workers-bindings, observability}
+
+Templates for `.cursor/mcp.json` files in `C:\Users\PC\MCP-Templates\`.
+
+---
+
+## Cross-Agent Unified
+
+Claude Code, Codex, OpenCode, Cursor share the **same skill directories and MCP set**:
 
 ```bash
-# 四条命令等价，加载相同的 Skills + MCP
 cd ~/dev-project/ && claude
 cd ~/dev-project/ && codex
 cd ~/dev-project/ && opencode
-# Cursor: 打开 ~/dev-project/ 目录
+# Cursor: open ~/dev-project/
 ```
 
 ---
 
-## 配置位置
+## Config Locations
 
-| 项目 | 路径 |
-|------|------|
-| 全局配置 | `~/.cursor/mcp.json` |
-| Skills | 项目级 symlink → `~/*-project/.claude/skills/` |
-| MCP | 全局 17 个 |
+| Item | Path |
+| --- | --- |
+| MCP | `~/.cursor/mcp.json` |
+| Skills (global) | `~/.cursor/skills/` |
+| Skills (project) | `~/<project>/.cursor/skills/` |
+| Cursor-specific skills | `~/.cursor/skills-cursor/` (canvas / hooks / rules / etc.) |

@@ -1,0 +1,90 @@
+# INVENTORY — Source → Target file map
+
+Machine-readable map of every file/directory and where it lands.
+
+`{agent}` expands to one of `claude, cursor, codex, opencode`.
+`{user_home}` is `~` on Unix, `C:\Users\<user>` on Windows.
+
+## Skills
+
+| Source (repo) | Target (machine) | Required? | Notes |
+| --- | --- | --- | --- |
+| `skills/global/*/` | `{user_home}/.{agent}/skills/` for each agent | yes | 30 skills, identical 4 agents |
+| `skills/codex-system/*/` | `{user_home}/.codex/skills/.system/` | yes (Codex only) | 5 vendor skills |
+
+## Project packs
+
+Each pack mirrors the live folder layout. Top-level pack → `~/<pack>/.{agent}/skills/`. Sub-pack → `~/<pack>/<sub>/.{agent}/skills/`.
+
+| Source (repo) | Target (machine) | Required? |
+| --- | --- | --- |
+| `skills/project-packs/dev-project/skills/` | `~/dev-project/.{agent}/skills/` | optional (pack=dev) |
+| `skills/project-packs/dev-project/frontend/skills/` | `~/dev-project/frontend/.{agent}/skills/` | optional (pack=dev) |
+| `skills/project-packs/dev-project/backend/skills/` | `~/dev-project/backend/.{agent}/skills/` | optional (pack=dev) |
+| `skills/project-packs/dev-project/cloud-platform/skills/` | `~/dev-project/cloud-platform/.{agent}/skills/` | optional (pack=dev) |
+| `skills/project-packs/dev-project/testing-qa/skills/` | `~/dev-project/testing-qa/.{agent}/skills/` | optional (pack=dev) |
+| `skills/project-packs/dev-project/devops-sre/skills/` | `~/dev-project/devops-sre/.{agent}/skills/` | optional (pack=dev) |
+| `skills/project-packs/dev-project/agent-dev/skills/` | `~/dev-project/agent-dev/.{agent}/skills/` | optional (pack=dev) |
+| `skills/project-packs/dev-project/ml/skills/` | `~/dev-project/ml/.{agent}/skills/` | optional (pack=dev) |
+| `skills/project-packs/finance-project/trading/skills/` | `~/finance-project/trading/.{agent}/skills/` | optional (pack=finance) |
+| `skills/project-packs/finance-project/research/skills/` | `~/finance-project/research/.{agent}/skills/` | optional (pack=finance) |
+| `skills/project-packs/finance-project/macro/skills/` | `~/finance-project/macro/.{agent}/skills/` | optional (pack=finance) |
+| `skills/project-packs/finance-project/modeling/skills/` | `~/finance-project/modeling/.{agent}/skills/` | optional (pack=finance) |
+| `skills/project-packs/finance-project/portfolio/skills/` | `~/finance-project/portfolio/.{agent}/skills/` | optional (pack=finance) |
+| `skills/project-packs/finance-project/quant-methods/skills/` | `~/finance-project/quant-methods/.{agent}/skills/` | optional (pack=finance) |
+| `skills/project-packs/finance-project/advisory/ib/skills/` | `~/finance-project/advisory/ib/.{agent}/skills/` | optional (pack=finance) |
+| `skills/project-packs/finance-project/advisory/pe/skills/` | `~/finance-project/advisory/pe/.{agent}/skills/` | optional (pack=finance) |
+| `skills/project-packs/finance-project/advisory/wealth/skills/` | `~/finance-project/advisory/wealth/.{agent}/skills/` | optional (pack=finance) |
+| `skills/project-packs/finance-project/advisory/fund-admin/skills/` | `~/finance-project/advisory/fund-admin/.{agent}/skills/` | optional (pack=finance) |
+| `skills/project-packs/finance-project/advisory/compliance/skills/` | `~/finance-project/advisory/compliance/.{agent}/skills/` | optional (pack=finance) |
+| `skills/project-packs/ios-project/skills/` | `~/ios-project/.{agent}/skills/` | optional (pack=ios) |
+| `skills/project-packs/data-analysis-project/skills/` | `~/data-analysis-project/.{agent}/skills/` | optional (pack=data) |
+| `skills/project-packs/marketing-project/skills/` | `~/marketing-project/.{agent}/skills/` | optional (pack=marketing) |
+| `skills/project-packs/research-project/skills/` | `~/research-project/.{agent}/skills/` | optional (pack=research) |
+| `skills/project-packs/productivity-project/skills/` | `~/productivity-project/.{agent}/skills/` | optional (pack=productivity) |
+
+## Agent system prompts + configs
+
+| Source (repo) | Target (machine) | Required? |
+| --- | --- | --- |
+| `agents/claude/CLAUDE.md` | `~/.claude/CLAUDE.md` | yes (agent=claude) |
+| `agents/claude/commands/*.md` | `~/.claude/commands/` | yes (agent=claude) |
+| `agents/cursor/rules/global-rules.md` | `~/.cursor/rules/global-rules.md` | yes (agent=cursor) |
+| `agents/cursor/global-rules.md` | `~/.cursor/global-rules.md` | yes (agent=cursor) |
+| `agents/cursor/skills-cursor/` | `~/.cursor/skills-cursor/` | yes (agent=cursor) |
+| `agents/codex/AGENTS.md` | `~/.codex/AGENTS.md` | yes (agent=codex) |
+| `agents/codex/AGENTS.local.md` | `~/AGENTS.md` | yes (agent=codex) |
+| `agents/codex/config.toml` | `~/.codex/config.toml` | yes (agent=codex) |
+| `agents/codex/profiles/*.toml` | `~/.codex/profiles/` | yes (agent=codex) |
+| `agents/opencode/AGENTS.md` | `~/.opencode/AGENTS.md` AND `~/.config/opencode/AGENTS.md` | yes (agent=opencode) |
+| `agents/opencode/command/*` | `~/.opencode/command/` AND `~/.config/opencode/command/` | yes (agent=opencode) |
+| `agents/opencode/opencode.json` | `~/.opencode/opencode.json` AND `~/.config/opencode/opencode.json` | yes (agent=opencode) |
+
+## MCP server configs
+
+All four templates use env-var references only. No plaintext secrets.
+
+| Source (repo) | Target (machine) | Required? | Notes |
+| --- | --- | --- | --- |
+| `mcp/always-on/claude.template.json` | merge `mcpServers` into `~/.claude.json` | unless `--skip-mcp` | 9 always-on |
+| `mcp/always-on/cursor.template.json` | write `~/.cursor/mcp.json` | unless `--skip-mcp` | 9 always-on + 10 opt-in (enabled=false) |
+| `mcp/always-on/codex.template.toml` | append blocks to `~/.codex/config.toml` | unless `--skip-mcp` | 9 always-on + 10 opt-in (enabled=false) |
+| `mcp/always-on/opencode.template.json` | write `~/.opencode/opencode.json` (mcp block) | unless `--skip-mcp` | 9 always-on + 10 opt-in (enabled=false) |
+| `mcp/opt-in/*.mcp.json` | `~/MCP-Templates/` | unless `--skip-mcp` | Per-project opt-in via `.mcp.json` or `--mcp-config` |
+| `mcp/opt-in/README.md` | `~/MCP-Templates/README.md` | unless `--skip-mcp` | Usage cheat sheet |
+
+## Env-var conventions per agent
+
+| Agent | Syntax |
+| --- | --- |
+| Claude (`.claude.json`) | `${VAR}` |
+| Cursor (`.cursor/mcp.json`) | `${env:VAR}` |
+| Codex (`.codex/config.toml`) | `bearer_token_env_var = "VAR"` / `env_vars = ["VAR"]` / `${env:VAR}` in http_headers |
+| OpenCode (`.opencode/opencode.json`) | `{env:VAR}` |
+
+## What we DON'T install
+
+- `claude-mem` — separate install (`claude-mem/README.md`)
+- Per-machine credentials (`~/.claude/auth.json`, `~/.codex/auth.json`)
+- LM Studio configs (different MCP model; partial coverage)
+- Git config, shell rc files, OS settings

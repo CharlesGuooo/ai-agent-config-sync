@@ -2,29 +2,103 @@
 
 ## Core Principles
 
-1. Think before acting.
-2. When multiple interpretations exist, present them — don't pick silently.
-3. Push back when a simpler approach exists; don't just follow.
-4. Touch only what the task requires — mention unrelated dead code, don't delete.
-5. Exhaust reasonable options before claiming something cannot be done.
-6. Verify results before claiming success.
-7. Preserve context and align with the user's actual goal.
+Guidelines that bias toward caution over speed. For trivial tasks, use judgment.
+
+**1. Think before acting.** State assumptions explicitly; if uncertain, ask. When multiple interpretations exist, present them — don't pick silently. If something is unclear, stop and name what's confusing before proceeding.
+
+**2. Simplicity first.** Write the minimum code that solves the problem; nothing speculative. No abstractions for single-use code, no flexibility nobody asked for, no error handling for impossible cases. If a simpler approach exists, say so and push back. Test: would a senior engineer call this overcomplicated? If 200 lines could be 50, rewrite.
+
+**3. Surgical changes.** Touch only what the task requires. Don't refactor what isn't broken; match the surrounding style even if you'd do it differently. Remove only the imports/variables your change orphaned — mention unrelated dead code, don't delete it. Test: every changed line traces directly to the request.
+
+**4. Exhaust options before giving up.** Try the reasonable alternatives before claiming something can't be done. "It doesn't work" is a hypothesis to test, not a conclusion to report.
+
+**5. Verify before claiming success.** Define success criteria, then prove them with evidence — run it, test it, observe it. Never report "done" or "fixed" on code you haven't exercised. "Fix the bug" means: write a test that reproduces it, then make it pass.
+
+**6. Preserve context and align with the goal.** Keep the user's actual objective in view; don't win a subtask at the expense of the real goal.
 
 > Aligned with andrej-karpathy-skills' `karpathy-guidelines` (Think Before Coding / Simplicity First / Surgical Changes / Goal-Driven Execution), extended with "Exhaust options" and "Preserve context". Loaded at system-prompt level — zero skill-match cost.
 
 ---
 
-## Global Skills (30)
+<!-- SKILLS:BEGIN -->
 
-The global layer covers process, routing, escalation, repeatable workflows, and document handling. Identical content across Claude / Cursor / OpenCode / Codex.
+## Global Skills (31)
 
-- **Process** (10): using-superpowers, brainstorming, writing-plans, executing-plans, test-driven-development, systematic-debugging, verification-before-completion, subagent-driven-development, dispatching-parallel-agents, using-git-worktrees
-- **Escalation** (2): high-agency, pua
-- **Routing & Meta** (3): skill-router, skill-creator, skill-scanner
-- **Workflow** (3): playwright-interactive, gh-fix-ci, gh-address-comments
-- **Code Review** (3): requesting-code-review, receiving-code-review, finishing-a-development-branch
-- **OpenSpec** (4): openspec-{explore,propose,apply-change,archive-change}
-- **Document** (5): pdf, docx, xlsx, pptx, markitdown
+> Auto-generated from `skills/global/` by `scripts/gen-skill-table.mjs`.
+> Do not edit between the SKILLS markers by hand — run the generator instead.
+
+### Process (10) — Process discipline
+
+| Skill | When to use |
+| --- | --- |
+| `using-superpowers` | Decide whether a skill applies before acting |
+| `brainstorming` | Clarify intent/requirements/design before building or changing behavior |
+| `writing-plans` | Write a multi-step implementation plan before coding |
+| `executing-plans` | Execute an existing written plan step by step |
+| `test-driven-development` | Write tests before implementing or fixing |
+| `systematic-debugging` | Structured root-cause investigation for bugs |
+| `verification-before-completion` | Verify with evidence before claiming done |
+| `subagent-driven-development` | Dispatch subagents per plan step with spec/quality reviewers |
+| `dispatching-parallel-agents` | Run 2+ independent tasks via parallel subagents with a merge protocol |
+| `using-git-worktrees` | Isolated worktrees for parallel agents / high-risk refactors |
+
+### Escalation (2) — Drive / pressure
+
+| Skill | When to use |
+| --- | --- |
+| `high-agency` | Stay proactive and own complex long tasks |
+| `pua` | High-pressure escalation after repeated failure or passivity |
+
+### Routing & Meta (3) — Routing + skill tooling
+
+| Skill | When to use |
+| --- | --- |
+| `skill-router` | Route the task to the correct local project pack |
+| `skill-creator` | Create, edit, or evaluate a skill |
+| `skill-scanner` | Security-scan a community skill before installing it |
+
+### Workflow (3) — External collaboration
+
+| Skill | When to use |
+| --- | --- |
+| `playwright-interactive` | Persistent browser session for iterative UI debugging |
+| `gh-fix-ci` | Investigate and fix failing GitHub Actions / PR checks with gh |
+| `gh-address-comments` | Work through GitHub PR review comments with gh |
+
+### Code Review (3) — Review discipline
+
+| Skill | When to use |
+| --- | --- |
+| `requesting-code-review` | Self-review before merge/completion |
+| `receiving-code-review` | Respond technically to review feedback |
+| `finishing-a-development-branch` | Wrap up a dev branch (rebase/squash/PR) |
+
+### OpenSpec (4) — Spec-driven development
+
+| Skill | When to use |
+| --- | --- |
+| `openspec-explore` | Think through a spec before writing it |
+| `openspec-propose` | Generate a full change proposal (design/specs/tasks) in one step |
+| `openspec-apply-change` | Implement an OpenSpec change task by task |
+| `openspec-archive-change` | Archive a completed OpenSpec change |
+
+### Document (5) — Office / document I/O
+
+| Skill | When to use |
+| --- | --- |
+| `pdf` | PDF read/merge/split/OCR/forms |
+| `docx` | Word document creation and editing |
+| `xlsx` | Excel / CSV creation and editing |
+| `pptx` | PowerPoint creation and editing |
+| `markitdown` | Convert PDF/Office/images/AV to Markdown |
+
+### Learning (1) — Interactive teaching
+
+| Skill | When to use |
+| --- | --- |
+| `teach` | Interactive multi-turn tutoring with persistent learner state |
+
+<!-- SKILLS:END -->
 
 ---
 

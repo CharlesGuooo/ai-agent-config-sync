@@ -114,6 +114,23 @@ agent_skill_dir() {
   esac
 }
 
+# ---- 0. Regenerate skill tables from the single source (skills/global/) ----
+# Keeps every agent's "Global Skills" table in lockstep with the actual skill
+# directories. In dry-run we only verify (non-mutating); drift aborts the run.
+gen_script="$repo_root/scripts/gen-skill-table.mjs"
+if [[ -f "$gen_script" ]]; then
+  if command -v node >/dev/null 2>&1; then
+    log "Regenerating skill tables..."
+    if [[ "$dry_run" -eq 1 ]]; then
+      node "$gen_script" --check || { echo "skill tables out of date — run: node scripts/gen-skill-table.mjs" >&2; exit 1; }
+    else
+      node "$gen_script"
+    fi
+  else
+    echo "[sync] node not found — skipping skill-table regen (using committed tables)" >&2
+  fi
+fi
+
 # ---- 1. Global skills (30) → all 4 agents ----
 log "Syncing global skills..."
 for a in "${AGENTS[@]}"; do
@@ -182,6 +199,22 @@ if agent_in opencode; then
   sync_dir  "$repo_root/agents/opencode/command"        "$home_dir/.config/opencode/command"
 fi
 
+# ---- 4b. Hooks: shared guard + formatter scripts, plus Claude settings merge ----
+hooks_dir="$home_dir/.agent-hooks"
+log "Installing hook scripts -> $hooks_dir"
+sync_dir "$repo_root/scripts/hooks" "$hooks_dir"
+if agent_in claude; then
+  frag="$repo_root/agents/claude/settings.fragment.json"
+  merge="$repo_root/scripts/merge-claude-settings.mjs"
+  target="$home_dir/.claude/settings.json"
+  if command -v node >/dev/null 2>&1; then
+    log "Merging Claude settings fragment (LSP plugins + hooks)..."
+    if [[ "$dry_run" -eq 1 ]]; then node "$merge" "$frag" "$target" "$hooks_dir" --dry-run; else node "$merge" "$frag" "$target" "$hooks_dir"; fi
+  else
+    echo "[sync] node not found — skipping Claude settings merge (LSP + hooks)" >&2
+  fi
+fi
+
 # ---- 5. MCP + main config files (skipped if --skip-mcp) ----
 # Cursor's mcp.json, Codex's config.toml, and OpenCode's opencode.json all carry
 # MCP blocks. The full live versions are at agents/<agent>/<file>; the extracted
@@ -205,7 +238,13 @@ if [[ "$skip_mcp" -eq 0 ]]; then
     copy_file "$repo_root/agents/cursor/mcp.json" "$home_dir/.cursor/mcp.json"
   fi
   if agent_in codex; then
-    copy_file "$repo_root/agents/codex/config.toml" "$home_dir/.codex/config.toml"
+    codex_target="$home_dir/.codex/config.toml"
+    copy_file "$repo_root/agents/codex/config.toml" "$codex_target"
+    # Resolve the {{HOOKS_DIR}} placeholder in the copied config.
+    if [[ "$dry_run" -eq 0 && -f "$codex_target" ]]; then
+      hd="${hooks_dir//\\//}"
+      sed -i.bak "s|{{HOOKS_DIR}}|$hd|g" "$codex_target" && rm -f "${codex_target}.bak"
+    fi
   fi
   if agent_in opencode; then
     copy_file "$repo_root/agents/opencode/opencode.json" "$home_dir/.opencode/opencode.json"

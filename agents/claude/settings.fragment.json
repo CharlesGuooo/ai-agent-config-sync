@@ -1,0 +1,27 @@
+{
+  "__comment": "Secrets-free fragment DEEP-MERGED into ~/.claude/settings.json by scripts/merge-claude-settings.mjs (invoked from sync). Only the keys present here are managed; everything else in the live settings.json (env, permissions, API keys, other plugins, existing hooks) is preserved. Never put secrets in this file — it is committed to git.",
+  "enabledPlugins": {
+    "pyright-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "gopls-lsp@claude-plugins-official": true,
+    "rust-analyzer-lsp@claude-plugins-official": true
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Read|Edit|Write|MultiEdit",
+        "hooks": [
+          { "type": "command", "command": "node {{HOOKS_DIR}}/guard.mjs" }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          { "type": "command", "command": "node {{HOOKS_DIR}}/format.mjs" }
+        ]
+      }
+    ]
+  }
+}

@@ -89,6 +89,28 @@ function Copy-File($src, $dst) {
 
 Load-EnvFile
 
+# ---- 0. Regenerate skill tables from the single source (skills/global/) ----
+# Keeps every agent's "Global Skills" table in lockstep with the actual skill
+# directories. In dry-run we only verify (non-mutating); a drift failure aborts.
+function Invoke-SkillTableGen {
+    $gen = Join-Path $repoRoot 'scripts\gen-skill-table.mjs'
+    if (-not (Test-Path $gen)) { return }
+    if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
+        Write-Warning "node not found — skipping skill-table regen (using committed tables)"
+        return
+    }
+    if ($DryRun) {
+        Write-Host "[dry-run] node scripts/gen-skill-table.mjs --check"
+        & node $gen --check
+        if ($LASTEXITCODE -ne 0) { throw "skill tables are out of date — run: node scripts/gen-skill-table.mjs" }
+    } else {
+        & node $gen
+        if ($LASTEXITCODE -ne 0) { throw "skill-table generation failed (exit=$LASTEXITCODE)" }
+    }
+}
+Log "Regenerating skill tables..."
+Invoke-SkillTableGen
+
 # ---- 1. Global skills ----
 Log "Syncing global skills..."
 foreach ($a in $Agents) {
@@ -147,6 +169,23 @@ if ($Agents -contains 'opencode') {
     Sync-Dir  (Join-Path $repoRoot 'agents\opencode\command') (Join-Path $homeDir '.config\opencode\command')
 }
 
+# ---- 4b. Hooks: shared guard + formatter scripts, plus Claude settings merge ----
+$hooksDir = Join-Path $homeDir '.agent-hooks'
+Log "Installing hook scripts -> $hooksDir"
+Sync-Dir (Join-Path $repoRoot 'scripts\hooks') $hooksDir
+if ($Agents -contains 'claude') {
+    $frag   = Join-Path $repoRoot 'agents\claude\settings.fragment.json'
+    $merge  = Join-Path $repoRoot 'scripts\merge-claude-settings.mjs'
+    $target = Join-Path $homeDir '.claude\settings.json'
+    if (Get-Command node -ErrorAction SilentlyContinue) {
+        Log "Merging Claude settings fragment (LSP plugins + hooks)..."
+        if ($DryRun) { & node $merge $frag $target $hooksDir --dry-run }
+        else { & node $merge $frag $target $hooksDir }
+    } else {
+        Write-Warning "node not found — skipping Claude settings merge (LSP + hooks)"
+    }
+}
+
 # ---- 5. MCP + main config files (skipped if -SkipMcp) ----
 # Cursor's mcp.json, Codex's config.toml, and OpenCode's opencode.json carry
 # the MCP blocks. The full live versions at agents/<agent>/<file> are the source
@@ -168,7 +207,13 @@ if (-not $SkipMcp) {
         Copy-File (Join-Path $repoRoot 'agents\cursor\mcp.json') (Join-Path $homeDir '.cursor\mcp.json')
     }
     if ($Agents -contains 'codex') {
-        Copy-File (Join-Path $repoRoot 'agents\codex\config.toml') (Join-Path $homeDir '.codex\config.toml')
+        $codexTarget = Join-Path $homeDir '.codex\config.toml'
+        Copy-File (Join-Path $repoRoot 'agents\codex\config.toml') $codexTarget
+        # Resolve the {{HOOKS_DIR}} placeholder in the copied config.
+        if (-not $DryRun -and (Test-Path $codexTarget)) {
+            $hd = (Join-Path $homeDir '.agent-hooks') -replace '\\', '/'
+            (Get-Content $codexTarget -Raw).Replace('{{HOOKS_DIR}}', $hd) | Set-Content -Path $codexTarget -Encoding UTF8
+        }
     }
     if ($Agents -contains 'opencode') {
         Copy-File (Join-Path $repoRoot 'agents\opencode\opencode.json') (Join-Path $homeDir '.opencode\opencode.json')

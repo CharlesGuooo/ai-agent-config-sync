@@ -139,3 +139,19 @@ source = '\\?\C:\Users\PC\.claude\plugins\marketplaces\thedotmack'
 
 [features]
 plugin_hooks = true
+
+# Shared safety guard + defensive formatter (same scripts as the other agents).
+# {{HOOKS_DIR}} is replaced with the absolute ~/.agent-hooks path by sync after
+# this file is copied. Codex uses the same PreToolUse/PostToolUse schema as
+# Claude's hooks.json, so guard.mjs / format.mjs are reused verbatim.
+[[hooks.PreToolUse]]
+matcher = "Bash|Read|Edit|Write|MultiEdit"
+[[hooks.PreToolUse.hooks]]
+type = "command"
+command = "node {{HOOKS_DIR}}/guard.mjs"
+
+[[hooks.PostToolUse]]
+matcher = "Edit|Write|MultiEdit"
+[[hooks.PostToolUse.hooks]]
+type = "command"
+command = "node {{HOOKS_DIR}}/format.mjs"

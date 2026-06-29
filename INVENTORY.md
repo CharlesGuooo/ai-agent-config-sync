@@ -9,7 +9,8 @@ Machine-readable map of every file/directory and where it lands.
 
 | Source (repo) | Target (machine) | Required? | Notes |
 | --- | --- | --- | --- |
-| `skills/global/*/` | `{user_home}/.{agent}/skills/` for each agent | yes | 30 skills, identical 4 agents |
+| `skills/global/*/` | `{user_home}/.{agent}/skills/` for each agent | yes | 31 skills, identical 4 agents (incl. `teach`) |
+| `skills/global/catalog.json` | mirrored with the skills dir | yes | Single source for the generated skill tables (see below) |
 | `skills/codex-system/*/` | `{user_home}/.codex/skills/.system/` | yes (Codex only) | 5 vendor skills |
 
 ## Project packs
@@ -81,6 +82,49 @@ All four templates use env-var references only. No plaintext secrets.
 | Cursor (`.cursor/mcp.json`) | `${env:VAR}` |
 | Codex (`.codex/config.toml`) | `bearer_token_env_var = "VAR"` / `env_vars = ["VAR"]` / `${env:VAR}` in http_headers |
 | OpenCode (`.opencode/opencode.json`) | `{env:VAR}` |
+
+## Generated skill tables
+
+The "Global Skills" table inside every agent instruction file is **generated**, not
+hand-written, from `skills/global/` + `skills/global/catalog.json` by
+`scripts/gen-skill-table.mjs` (requires Node 20+). The content sits between
+`<!-- SKILLS:BEGIN -->` / `<!-- SKILLS:END -->` markers in:
+`agents/claude/CLAUDE.md`, `agents/codex/AGENTS.md`, `agents/codex/AGENTS.local.md`,
+`agents/opencode/AGENTS.md`, `agents/cursor/rules/global-rules.md`,
+`agents/cursor/global-rules.md`.
+
+`sync` regenerates before copying; `node scripts/gen-skill-table.mjs --check` is a
+drift gate (CI-friendly) that fails if any skill dir is missing from the catalog or
+a table is stale. Do not hand-edit between the markers.
+
+## Hooks (shared guard + formatter)
+
+| Source (repo) | Target (machine) | Notes |
+| --- | --- | --- |
+| `scripts/hooks/guard.mjs` | `{user_home}/.agent-hooks/guard.mjs` | PreToolUse: blocks secret-file access + destructive shell commands |
+| `scripts/hooks/format.mjs` | `{user_home}/.agent-hooks/format.mjs` | PostToolUse: formats edited files only if the project opts in |
+| `agents/claude/settings.fragment.json` | **deep-merged** into `~/.claude/settings.json` via `scripts/merge-claude-settings.mjs` | secrets-free; preserves existing keys/plugins/hooks |
+| (Codex) inline `[[hooks.*]]` in `agents/codex/config.toml` | `~/.codex/config.toml` | `{{HOOKS_DIR}}` placeholder resolved by sync |
+
+Hook wiring is **additive** — the existing `SessionStart → any-buddy` hook (Claude,
+Codex) is preserved by the merge. Cursor and OpenCode hook wiring is not yet
+included (different hook models — Cursor's claude-mem `hooks.json`, OpenCode's JS
+plugin API).
+
+## LSP (code intelligence)
+
+LSP is **not uniform** across agents — each has a different mechanism:
+
+| Agent | Mechanism | Managed by repo |
+| --- | --- | --- |
+| Claude Code | marketplace plugins in `settings.fragment.json` → `enabledPlugins` | `pyright-lsp`, `typescript-lsp`, `gopls-lsp`, `rust-analyzer-lsp` |
+| OpenCode | native `"lsp": true` in `opencode.json` (auto-downloads 40+ servers) | yes |
+| Cursor | built into the editor | n/a (nothing to configure) |
+| Codex | no LSP mechanism | n/a (cannot add) |
+
+Bash LSP is available on OpenCode (native `bash-language-server`) but **not** as a
+Claude marketplace plugin. Claude LSP plugins need the language toolchain installed
+(Node for pyright/ts, Go for gopls, Rust for rust-analyzer).
 
 ## What we DON'T install
 

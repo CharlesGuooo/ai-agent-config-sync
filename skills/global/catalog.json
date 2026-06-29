@@ -1,0 +1,54 @@
+{
+  "version": "1.0",
+  "description": "Curated catalog of global skills: the single source for the generated skill tables in each agent's instruction file. The generator (scripts/gen-skill-table.mjs) reconciles this against the actual skills/global/*/ directories and fails if they disagree, so a new skill cannot silently drift out of the tables.",
+  "categories": [
+    { "key": "process",     "title": "Process",        "blurb": "Process discipline" },
+    { "key": "escalation",  "title": "Escalation",     "blurb": "Drive / pressure" },
+    { "key": "routing",     "title": "Routing & Meta", "blurb": "Routing + skill tooling" },
+    { "key": "workflow",    "title": "Workflow",       "blurb": "External collaboration" },
+    { "key": "code-review", "title": "Code Review",    "blurb": "Review discipline" },
+    { "key": "openspec",    "title": "OpenSpec",       "blurb": "Spec-driven development" },
+    { "key": "document",    "title": "Document",       "blurb": "Office / document I/O" },
+    { "key": "learning",    "title": "Learning",       "blurb": "Interactive teaching" }
+  ],
+  "skills": {
+    "using-superpowers":             { "category": "process",     "tagline": "Decide whether a skill applies before acting" },
+    "brainstorming":                 { "category": "process",     "tagline": "Clarify intent/requirements/design before building or changing behavior" },
+    "writing-plans":                 { "category": "process",     "tagline": "Write a multi-step implementation plan before coding" },
+    "executing-plans":               { "category": "process",     "tagline": "Execute an existing written plan step by step" },
+    "test-driven-development":       { "category": "process",     "tagline": "Write tests before implementing or fixing" },
+    "systematic-debugging":          { "category": "process",     "tagline": "Structured root-cause investigation for bugs" },
+    "verification-before-completion":{ "category": "process",     "tagline": "Verify with evidence before claiming done" },
+    "subagent-driven-development":   { "category": "process",     "tagline": "Dispatch subagents per plan step with spec/quality reviewers" },
+    "dispatching-parallel-agents":   { "category": "process",     "tagline": "Run 2+ independent tasks via parallel subagents with a merge protocol" },
+    "using-git-worktrees":           { "category": "process",     "tagline": "Isolated worktrees for parallel agents / high-risk refactors" },
+
+    "high-agency":                   { "category": "escalation",  "tagline": "Stay proactive and own complex long tasks" },
+    "pua":                           { "category": "escalation",  "tagline": "High-pressure escalation after repeated failure or passivity" },
+
+    "skill-router":                  { "category": "routing",     "tagline": "Route the task to the correct local project pack" },
+    "skill-creator":                 { "category": "routing",     "tagline": "Create, edit, or evaluate a skill" },
+    "skill-scanner":                 { "category": "routing",     "tagline": "Security-scan a community skill before installing it" },
+
+    "playwright-interactive":        { "category": "workflow",    "tagline": "Persistent browser session for iterative UI debugging" },
+    "gh-fix-ci":                     { "category": "workflow",    "tagline": "Investigate and fix failing GitHub Actions / PR checks with gh" },
+    "gh-address-comments":           { "category": "workflow",    "tagline": "Work through GitHub PR review comments with gh" },
+
+    "requesting-code-review":        { "category": "code-review", "tagline": "Self-review before merge/completion" },
+    "receiving-code-review":         { "category": "code-review", "tagline": "Respond technically to review feedback" },
+    "finishing-a-development-branch":{ "category": "code-review", "tagline": "Wrap up a dev branch (rebase/squash/PR)" },
+
+    "openspec-explore":              { "category": "openspec",    "tagline": "Think through a spec before writing it" },
+    "openspec-propose":              { "category": "openspec",    "tagline": "Generate a full change proposal (design/specs/tasks) in one step" },
+    "openspec-apply-change":         { "category": "openspec",    "tagline": "Implement an OpenSpec change task by task" },
+    "openspec-archive-change":       { "category": "openspec",    "tagline": "Archive a completed OpenSpec change" },
+
+    "pdf":                           { "category": "document",    "tagline": "PDF read/merge/split/OCR/forms" },
+    "docx":                          { "category": "document",    "tagline": "Word document creation and editing" },
+    "xlsx":                          { "category": "document",    "tagline": "Excel / CSV creation and editing" },
+    "pptx":                          { "category": "document",    "tagline": "PowerPoint creation and editing" },
+    "markitdown":                    { "category": "document",    "tagline": "Convert PDF/Office/images/AV to Markdown" },
+
+    "teach":                         { "category": "learning",    "tagline": "Interactive multi-turn tutoring with persistent learner state" }
+  }
+}

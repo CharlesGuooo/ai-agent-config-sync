@@ -34,9 +34,11 @@
 
 ---
 
-# Part A — Global Skills（30 个，4 agent 共享）
+# Part A — Global Skills（31 个，4 agent 共享）
 
 位置：`~/.{claude,cursor,opencode,codex}/skills/`。**每次启动自动可用，描述匹配触发**。
+
+> 各 agent instruction 文件里的 skill 表由 `scripts/gen-skill-table.mjs` 从 `skills/global/` + `catalog.json` **自动生成**（单一源头，防漂移）。改 skill 目录后跑一次生成器即可全量同步。
 
 ## 🧠 Process（流程纪律，10 个）
 
@@ -102,6 +104,12 @@
 | `xlsx` | Excel / CSV 创建编辑 |
 | `pptx` | PowerPoint 创建编辑 |
 | `markitdown` | PDF / Office / 图像 / 音视频 → Markdown |
+
+## 🎓 Learning（1 个）
+
+| Skill | 何时用 |
+| --- | --- |
+| `teach` | 多轮互动式教学 / 辅导，跨 session 维护学习者状态 |
 
 ---
 

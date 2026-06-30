@@ -135,8 +135,8 @@ When a task is domain-specific, `cd` into the matching project directory and Cod
 | Finance / Advisory (Compliance) | `~/finance-project/advisory/compliance/` | 2 |
 | Data analysis | `~/data-analysis-project/` | 18 |
 | Marketing | `~/marketing-project/` | 39 |
-| Research / Academic | `~/research-project/` | 20 |
-| Productivity / PM | `~/productivity-project/` | 22 |
+| Research / Academic | `~/research-project/` | 19 |
+| Productivity / PM | `~/productivity-project/` | 23 |
 | iOS / Swift / SwiftUI | `~/ios-project/` | 14 |
 | Craft (writing / design, cross-cutting) | `~/craft-project/<sub>/` | 3 |
 

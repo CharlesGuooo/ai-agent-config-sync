@@ -33,7 +33,7 @@ Open the correct project directory first. Let the local pack drive domain work.
 
 <!-- SKILLS:BEGIN -->
 
-## Global Skills (31)
+## Global Skills (32)
 
 > Auto-generated from `skills/global/` by `scripts/gen-skill-table.mjs`.
 > Do not edit between the SKILLS markers by hand — run the generator instead.
@@ -52,6 +52,12 @@ Open the correct project directory first. Let the local pack drive domain work.
 | `subagent-driven-development` | Dispatch subagents per plan step with spec/quality reviewers |
 | `dispatching-parallel-agents` | Run 2+ independent tasks via parallel subagents with a merge protocol |
 | `using-git-worktrees` | Isolated worktrees for parallel agents / high-risk refactors |
+
+### Thinking (1) — Reasoning frameworks
+
+| Skill | When to use |
+| --- | --- |
+| `first-principles-thinking` | Reason from base truths instead of by analogy; question inherited assumptions |
 
 ### Escalation (2) — Drive / pressure
 
@@ -124,6 +130,7 @@ Use these directories as entry points:
 - `~/research-project/`
 - `~/office-project/`
 - `~/productivity-project/`
+- `~/craft-project/` (container: cd into `writing/` / `design/`)
 
 ---
 

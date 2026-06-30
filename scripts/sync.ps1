@@ -4,7 +4,7 @@
 [CmdletBinding()]
 param(
     [string[]]$Agents = @('claude','cursor','codex','opencode'),
-    [string[]]$Packs = @('dev','finance','ios','data','marketing','research','productivity'),
+    [string[]]$Packs = @('dev','finance','ios','data','marketing','research','productivity','craft'),
     [switch]$SkipMcp,
     [switch]$GlobalOnly,
     [switch]$DryRun,
@@ -27,6 +27,7 @@ $packDirMap = @{
     'marketing'    = 'marketing-project'
     'research'     = 'research-project'
     'productivity' = 'productivity-project'
+    'craft'        = 'craft-project'
 }
 
 function Get-AgentSkillDir($agent) {

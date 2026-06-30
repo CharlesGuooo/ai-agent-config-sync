@@ -9,7 +9,7 @@ Machine-readable map of every file/directory and where it lands.
 
 | Source (repo) | Target (machine) | Required? | Notes |
 | --- | --- | --- | --- |
-| `skills/global/*/` | `{user_home}/.{agent}/skills/` for each agent | yes | 31 skills, identical 4 agents (incl. `teach`) |
+| `skills/global/*/` | `{user_home}/.{agent}/skills/` for each agent | yes | 32 skills, identical 4 agents (incl. `teach`, `first-principles-thinking`) |
 | `skills/global/catalog.json` | mirrored with the skills dir | yes | Single source for the generated skill tables (see below) |
 | `skills/codex-system/*/` | `{user_home}/.codex/skills/.system/` | yes (Codex only) | 5 vendor skills |
 
@@ -43,6 +43,8 @@ Each pack mirrors the live folder layout. Top-level pack → `~/<pack>/.{agent}/
 | `skills/project-packs/marketing-project/skills/` | `~/marketing-project/.{agent}/skills/` | optional (pack=marketing) |
 | `skills/project-packs/research-project/skills/` | `~/research-project/.{agent}/skills/` | optional (pack=research) |
 | `skills/project-packs/productivity-project/skills/` | `~/productivity-project/.{agent}/skills/` | optional (pack=productivity) |
+| `skills/project-packs/craft-project/writing/skills/` | `~/craft-project/writing/.{agent}/skills/` | optional (pack=craft) |
+| `skills/project-packs/craft-project/design/skills/` | `~/craft-project/design/.{agent}/skills/` | optional (pack=craft) |
 
 ## Agent system prompts + configs
 

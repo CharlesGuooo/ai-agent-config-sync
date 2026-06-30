@@ -22,7 +22,7 @@ Guidelines that bias toward caution over speed. For trivial tasks, use judgment.
 
 <!-- SKILLS:BEGIN -->
 
-## Global Skills (31)
+## Global Skills (32)
 
 > Auto-generated from `skills/global/` by `scripts/gen-skill-table.mjs`.
 > Do not edit between the SKILLS markers by hand — run the generator instead.
@@ -41,6 +41,12 @@ Guidelines that bias toward caution over speed. For trivial tasks, use judgment.
 | `subagent-driven-development` | Dispatch subagents per plan step with spec/quality reviewers |
 | `dispatching-parallel-agents` | Run 2+ independent tasks via parallel subagents with a merge protocol |
 | `using-git-worktrees` | Isolated worktrees for parallel agents / high-risk refactors |
+
+### Thinking (1) — Reasoning frameworks
+
+| Skill | When to use |
+| --- | --- |
+| `first-principles-thinking` | Reason from base truths instead of by analogy; question inherited assumptions |
 
 ### Escalation (2) — Drive / pressure
 
@@ -122,6 +128,7 @@ When a task is domain-specific, open the matching project directory in Cursor an
 | Research / Academic | `~/research-project/` |
 | Productivity / PM | `~/productivity-project/` |
 | iOS / Swift / SwiftUI | `~/ios-project/` |
+| Craft (writing / design, cross-cutting) | `~/craft-project/{writing,design}/` |
 
 > Document tasks (PDF/Word/Excel/PowerPoint) use **global** skills directly.
 

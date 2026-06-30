@@ -33,7 +33,7 @@ OpenCode should follow the same split as Codex, Claude Code, and Cursor.
 
 <!-- SKILLS:BEGIN -->
 
-## Global Skills (31)
+## Global Skills (32)
 
 > Auto-generated from `skills/global/` by `scripts/gen-skill-table.mjs`.
 > Do not edit between the SKILLS markers by hand — run the generator instead.
@@ -52,6 +52,12 @@ OpenCode should follow the same split as Codex, Claude Code, and Cursor.
 | `subagent-driven-development` | Dispatch subagents per plan step with spec/quality reviewers |
 | `dispatching-parallel-agents` | Run 2+ independent tasks via parallel subagents with a merge protocol |
 | `using-git-worktrees` | Isolated worktrees for parallel agents / high-risk refactors |
+
+### Thinking (1) — Reasoning frameworks
+
+| Skill | When to use |
+| --- | --- |
+| `first-principles-thinking` | Reason from base truths instead of by analogy; question inherited assumptions |
 
 ### Escalation (2) — Drive / pressure
 
@@ -127,6 +133,7 @@ When a task becomes domain-specific, switch to the matching project directory an
 | Research | `~/research-project/` |
 | Office | `~/office-project/` |
 | Productivity | `~/productivity-project/` |
+| Craft (cross-cutting) | `~/craft-project/` (cd into `writing/` `design/`) |
 
 ---
 

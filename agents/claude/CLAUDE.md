@@ -31,7 +31,7 @@ This keeps the global layer small and stable.
 
 <!-- SKILLS:BEGIN -->
 
-## Global Skills (31)
+## Global Skills (32)
 
 > Auto-generated from `skills/global/` by `scripts/gen-skill-table.mjs`.
 > Do not edit between the SKILLS markers by hand — run the generator instead.
@@ -50,6 +50,12 @@ This keeps the global layer small and stable.
 | `subagent-driven-development` | Dispatch subagents per plan step with spec/quality reviewers |
 | `dispatching-parallel-agents` | Run 2+ independent tasks via parallel subagents with a merge protocol |
 | `using-git-worktrees` | Isolated worktrees for parallel agents / high-risk refactors |
+
+### Thinking (1) — Reasoning frameworks
+
+| Skill | When to use |
+| --- | --- |
+| `first-principles-thinking` | Reason from base truths instead of by analogy; question inherited assumptions |
 
 ### Escalation (2) — Drive / pressure
 
@@ -124,6 +130,7 @@ When a task becomes domain-specific, switch to the matching project directory an
 | Marketing | `~/marketing-project/` |
 | Research | `~/research-project/` |
 | Productivity | `~/productivity-project/` |
+| Craft / 表达功力 (cross-cutting) | `~/craft-project/` (container; cd into `writing/` `design/`) |
 
 ---
 

@@ -9,7 +9,7 @@ backup_dir="$home_dir/.agent-config-backup/$(date +%Y%m%d-%H%M%S)"
 
 # ---- Parse flags ----
 agents="claude,cursor,codex,opencode"
-packs="dev,finance,ios,data,marketing,research,productivity"
+packs="dev,finance,ios,data,marketing,research,productivity,craft"
 skip_mcp=0
 global_only=0
 dry_run=0
@@ -153,6 +153,7 @@ declare -A PACK_DIR=(
   [marketing]=marketing-project
   [research]=research-project
   [productivity]=productivity-project
+  [craft]=craft-project
 )
 
 if [[ "$global_only" -eq 0 ]]; then

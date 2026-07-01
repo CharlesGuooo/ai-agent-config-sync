@@ -112,6 +112,23 @@ function Invoke-SkillTableGen {
 Log "Regenerating skill tables..."
 Invoke-SkillTableGen
 
+# ---- 0b. Regenerate HARNESS.md pack index, then copy it to home ----
+function Invoke-HarnessGen {
+    $gen = Join-Path $repoRoot 'scripts\gen-harness.mjs'
+    if (-not (Test-Path $gen)) { return }
+    if (-not (Get-Command node -ErrorAction SilentlyContinue)) { return }
+    if ($DryRun) {
+        & node $gen --check
+        if ($LASTEXITCODE -ne 0) { throw "HARNESS.md is out of date — run: node scripts/gen-harness.mjs" }
+    } else {
+        & node $gen
+        if ($LASTEXITCODE -ne 0) { throw "gen-harness failed (exit=$LASTEXITCODE)" }
+    }
+}
+Invoke-HarnessGen
+Log "Copying HARNESS.md -> home..."
+Copy-File (Join-Path $repoRoot 'HARNESS.md') (Join-Path $homeDir 'HARNESS.md')
+
 # ---- 1. Global skills ----
 Log "Syncing global skills..."
 foreach ($a in $Agents) {

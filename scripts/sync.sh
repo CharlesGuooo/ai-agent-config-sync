@@ -131,6 +131,17 @@ if [[ -f "$gen_script" ]]; then
   fi
 fi
 
+# ---- 0b. Regenerate HARNESS.md pack index, then copy it to home ----
+harness_gen="$repo_root/scripts/gen-harness.mjs"
+if [[ -f "$harness_gen" ]] && command -v node >/dev/null 2>&1; then
+  if [[ "$dry_run" -eq 1 ]]; then
+    node "$harness_gen" --check || { echo "HARNESS.md out of date — run: node scripts/gen-harness.mjs" >&2; exit 1; }
+  else
+    node "$harness_gen"
+  fi
+fi
+copy_file "$repo_root/HARNESS.md" "$home_dir/HARNESS.md"
+
 # ---- 1. Global skills (30) → all 4 agents ----
 log "Syncing global skills..."
 for a in "${AGENTS[@]}"; do

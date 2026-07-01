@@ -33,9 +33,9 @@ The single entry script `scripts/install.sh` (or `install.ps1`) supports:
 
 ```
 --agents=claude,cursor,codex,opencode    # subset; default = all four
---packs=dev,finance,ios,data,marketing,research,productivity   # subset; default = all
+--packs=dev,finance,ios,data,marketing,research,productivity,craft   # subset; default = all
 --skip-mcp                                # skip MCP server config (skills + system prompts only)
---global-only                             # 30 global skills only, no project packs
+--global-only                             # 33 global skills only, no project packs
 --dry-run                                 # print planned ops without writing
 ```
 
@@ -51,18 +51,20 @@ Examples:
 # Only dev + finance packs
 ./scripts/install.sh --packs=dev,finance
 
-# Just the 30 global skills, nothing else
+# Just the 33 global skills, nothing else
 ./scripts/install.sh --global-only
 ```
 
 ## What each step does
 
+0. **Regenerate** — `node scripts/gen-skill-table.mjs` + `gen-harness.mjs` refresh the per-agent skill tables and `HARNESS.md` from the single source (`catalog.json` + the skill dirs) before anything is copied; a `--check` drift gate aborts a dirty dry-run.
 1. **Validate env** — confirm required env vars from `.env` are present.
 2. **Backup** — snapshot any existing target dirs to `~/.agent-config-backup/<timestamp>/`.
 3. **Copy global skills** — `skills/global/*` → `~/.{claude,cursor,codex,opencode}/skills/` (per `--agents`).
 4. **Copy Codex `.system`** — `skills/codex-system/*` → `~/.codex/skills/.system/` (Codex only).
 5. **Copy project packs** — `skills/project-packs/<pack>/skills/` and any sub-pack `<pack>/<sub>/skills/` → corresponding `~/<pack>/[<sub>/].{claude,cursor,codex,opencode}/skills/` (per `--packs`).
 6. **Copy agent system prompts** — `agents/<agent>/<prompt-file>` → live machine paths (see `INVENTORY.md`).
+6b. **Hooks + Claude settings + HARNESS** — copy `scripts/hooks/{guard,format}.mjs` → `~/.agent-hooks/`; deep-merge `agents/claude/settings.fragment.json` (LSP plugins + guard/format hooks) into `~/.claude/settings.json` (preserving existing keys/hooks); resolve the Codex `{{HOOKS_DIR}}` placeholder in `config.toml`; copy `HARNESS.md` → `~/HARNESS.md`.
 7. **Merge MCP configs** — unless `--skip-mcp`:
    - Claude → merge `mcp/always-on/claude.template.json` into `~/.claude.json` (and `~/.claude/settings.json` if present).
    - Cursor → write `~/.cursor/mcp.json` from `cursor.template.json`.
@@ -75,16 +77,19 @@ Examples:
 
 ```bash
 # Skill counts
-ls ~/.claude/skills/ | wc -l           # → 30
+ls ~/.claude/skills/ | wc -l           # → 33 (+ agent-specific extras)
 ls ~/.codex/skills/.system/ | wc -l    # → 5
-ls ~/dev-project/.claude/skills/ | wc -l   # → 11 (top-level)
-ls ~/finance-project/quant-methods/.claude/skills/ | wc -l  # → 15
+ls ~/ios-project/.claude/skills/ | wc -l   # → 21
 
 # Claude MCP
 cat ~/.claude.json | jq '.mcpServers | keys'   # → 9 always-on
 
+# Hooks + agent-facing manifest
+ls ~/.agent-hooks/                     # guard.mjs, format.mjs
+test -f ~/HARNESS.md && echo "HARNESS present"
+
 # System prompt sanity
-head -10 ~/.claude/CLAUDE.md   # should show "1. Think before acting."
+head -6 ~/.claude/CLAUDE.md   # should show the Core Principles
 ```
 
 ## Optional add-on: claude-mem

@@ -1,360 +1,224 @@
-# Agents Overview — Skills 使用手册
+# Agents Overview — 人看的总览手册
 
-本机所有 AI agent 的 skill / MCP / 配置查询手册。**一看就知道用什么、去哪个目录、敲哪条命令。**
+本仓库把**一套** skill / MCP / harness 配置同步给本机 4 个 AI agent(Claude Code · Codex ·
+Cursor · OpenCode)。这份 README 是**给人看的概览**:是什么、怎么组织、怎么用。
+
+> **给 agent 看的运行时路由**在 `HARNESS.md`(自动生成,权威、不漂移)。
+> **装机指南**在 `INSTALL.md`,**精确文件映射**在 `INVENTORY.md`。
+> 本文刻意**不逐个枚举** ~365 个 skill —— 那份清单在 `HARNESS.md`,改一个 skill 就自动更新。
 
 ---
 
-## 🤖 5 个 Agent
+## 🤖 Agents
 
-| Agent | 入口 | 配置文件 |
+| Agent | 入口 | 主配置 |
 | --- | --- | --- |
-| **Claude Code** | `claude` | `~/.claude/CLAUDE.md` |
+| **Claude Code** | `claude` | `~/.claude/CLAUDE.md` + `settings.json` |
 | **Codex CLI** | `codex` | `~/.codex/AGENTS.md` + `config.toml` |
 | **Cursor** | 打开目录 | `~/.cursor/rules/global-rules.md` |
 | **OpenCode** | `opencode` | `~/.opencode/AGENTS.md` |
-| **LM Studio** | 应用 | `~/.lmstudio/mcp.json`（仅 MCP） |
+| **LM Studio** | 应用 | `~/.lmstudio/mcp.json`(仅 MCP) |
 
-前 4 家**共享同一套 skill 和 MCP** —— `claude` / `codex` / `opencode` 任意切换 = 同样的工具。
-
----
-
-## 📜 System-Level 配置（CLAUDE.md / AGENTS.md）
-
-**所有 agent 的 7 条核心原则**（启动即载入，零 token 匹配开销）：
-
-1. Think before acting
-2. Multiple interpretations → present them, don't pick silently
-3. Push back when a simpler approach exists
-4. Surgical changes — only touch what the task requires
-5. Exhaust reasonable options before saying "can't"
-6. Verify results before claiming success
-7. Preserve context and align with user's actual goal
-
-> 等价于 andrej-karpathy-skills 的 `karpathy-guidelines` 框架，但装在 system-prompt 层，无须 skill 加载。
+前 4 家**共享同一套 skill + MCP**(full parity)。仓库是 source of truth,`scripts/sync.ps1`
+/ `sync.sh` 下发到本机。
 
 ---
 
-# Part A — Global Skills（31 个，4 agent 共享）
+## 📜 Core Principles(6 条,启动即载入)
 
-位置：`~/.{claude,cursor,opencode,codex}/skills/`。**每次启动自动可用，描述匹配触发**。
+每个 agent 的 system prompt 顶部是 6 条**可执行**原则(不是抽象口号,带自检):
 
-> 各 agent instruction 文件里的 skill 表由 `scripts/gen-skill-table.mjs` 从 `skills/global/` + `catalog.json` **自动生成**（单一源头，防漂移）。改 skill 目录后跑一次生成器即可全量同步。
+1. **Think before acting** — 说清假设;多种解释都摆出来,不默默选一个。
+2. **Simplicity first** — 最小可行代码;200 行能 50 行做完就重写。
+3. **Surgical changes** — 只碰任务需要的;每一行改动都能追溯到需求。
+4. **Exhaust options before giving up** — "不行"是待验证的假设,不是结论。
+5. **Verify before claiming success** — 用证据(跑/测/看)证明,再说"完成"。
+6. **Preserve context and align with the goal** — 不为子任务牺牲真实目标。
 
-## 🧠 Process（流程纪律，10 个）
-
-| Skill | 何时用 |
-| --- | --- |
-| `using-superpowers` | 动手前先判断要不要调用某个 skill |
-| `brainstorming` | 写代码 / 设计前澄清意图、需求、设计（含 inline Spec Self-Review） |
-| `writing-plans` | 多步任务先写实现计划再动手（含 No Placeholders 红旗 + Self-Review） |
-| `executing-plans` | 按已有计划逐项落地 |
-| `test-driven-development` | 实现 / 修复前先写测试 |
-| `systematic-debugging` | 遇到 bug 用结构化排查根因 |
-| `verification-before-completion` | 宣称完成前必须用证据验证 |
-| `subagent-driven-development` | 派 subagent 跑 plan 每一步，带 spec / 质量 reviewer |
-| `dispatching-parallel-agents` | 2+ 独立任务并行派 subagent + 合并协议 |
-| `using-git-worktrees` | 隔离 worktree 跑并行 agent / 高风险重构 |
-
-## 🔥 Escalation（动力 / 高压，2 个）
-
-| Skill | 何时用 |
-| --- | --- |
-| `high-agency` | 复杂长任务保持主动 / ownership（常驻内驱） |
-| `pua` | 反复失败 / 偷懒时高压逼自己重做（外部加压） |
-
-## 🧭 Routing & Meta（路由 + skill 工具，3 个）
-
-| Skill | 何时用 |
-| --- | --- |
-| `skill-router` | 把任务路由到正确的 local project pack |
-| `skill-creator` | 创建 / 编辑 / 评估新 skill |
-| `skill-scanner` | **装新社区 skill 前先扫安全**（prompt injection / 恶意脚本 / 凭证泄露） |
-
-## 🔧 Workflow（外部协作，3 个）
-
-| Skill | 何时用 |
-| --- | --- |
-| `playwright-interactive` | 持久浏览器 session 迭代调 UI |
-| `gh-fix-ci` | 用 `gh` 排查并修复 GitHub Actions 失败 |
-| `gh-address-comments` | 用 `gh` 处理 PR review 评论 |
-
-## 👀 Code Review（3 个，obra/superpowers）
-
-| Skill | 何时用 |
-| --- | --- |
-| `requesting-code-review` | 完成任务 / 合并前自查 |
-| `receiving-code-review` | 收到 review 反馈如何技术化回应 |
-| `finishing-a-development-branch` | 完成开发分支收尾（rebase / squash / PR） |
-
-## 📋 OpenSpec（规格驱动开发，4 个）
-
-| Skill | 何时用 |
-| --- | --- |
-| `openspec-explore` | 思考模式 —— 落规格前先想清楚 |
-| `openspec-propose` | 一步生成完整 change proposal（设计 / 规格 / 任务） |
-| `openspec-apply-change` | 按 OpenSpec change tasks 逐项实施 |
-| `openspec-archive-change` | 完成后归档 change |
-
-## 📄 Document（5 个，Anthropic 官方）
-
-| Skill | 何时用 |
-| --- | --- |
-| `pdf` | PDF 读 / 合并 / 拆分 / OCR / 表单 |
-| `docx` | Word 文档创建编辑 |
-| `xlsx` | Excel / CSV 创建编辑 |
-| `pptx` | PowerPoint 创建编辑 |
-| `markitdown` | PDF / Office / 图像 / 音视频 → Markdown |
-
-## 🎓 Learning（1 个）
-
-| Skill | 何时用 |
-| --- | --- |
-| `teach` | 多轮互动式教学 / 辅导，跨 session 维护学习者状态 |
+> 对齐 andrej-karpathy-skills 的 `karpathy-guidelines`,装在 system-prompt 层,零 skill-match 开销。
 
 ---
 
-## 🎁 Agent 专属 Skills（不跨家）
+## 🏗️ Harness 架构(5 扩展点 + 2 补充)
 
-- **Claude Code 内置 slash skills**（10 个）：`update-config`, `keybindings-help`, `simplify`, `less-permission-prompts`, `loop`, `schedule`, `claude-api`, `init`, `review`, `security-review`
-- **Cursor 专属 skills** `~/.cursor/skills-cursor/`（13 个）：`canvas`, `create-hook`, `create-rule`, `create-skill`, `create-subagent`, `migrate-to-skills`, `sdk`, `shell`, `split-to-prs`, `statusline`, `update-cli-config`, `update-cursor-settings`, `babysit`
-- **Codex 厂商 skills** `~/.codex/skills/.system/`（5 个）：`imagegen`, `openai-docs`, `plugin-creator`, `skill-creator`, `skill-installer`
+按 Anthropic 的框架,harness = 围绕模型的整套脚手架。本仓库配了:
+
+- **CLAUDE.md / AGENTS.md** — 分层上下文,每会话自动加载(6 原则 + 路由)。
+- **Hooks** — `guard.mjs`(PreToolUse:拦密钥文件 / 危险命令)+ `format.mjs`(PostToolUse:
+  项目 opt-in 才格式化),跑在 **Claude + Codex**。(Cursor/OpenCode 走各自机制,待补。)
+- **Skills** — 渐进式披露:33 个全局 skill 描述匹配自动触发;~365 个 local pack skill 进目录才加载。
+- **LSP** — Claude:pyright / typescript / gopls / rust-analyzer;OpenCode:原生(`lsp:true`,40+ 语言);
+  Cursor:编辑器内建;Codex:无。
+- **MCP** — 9 always-on + 10 opt-in(见下),API key 全走 Windows env var。
+- **Subagents** — Explore(只读搜索)/ Plan(设计)/ general-purpose 等,委托探索不挤占主上下文。
+
+**防漂移基建(本仓库的关键工程)**:skill 表和 HARNESS.md 都从**单一源头生成** ——
+`scripts/gen-skill-table.mjs`(从 `skills/global/catalog.json`)和 `scripts/gen-harness.mjs`
+(扫 `skills/project-packs/`),各带 `--check` 漂移门,接进 sync。**手抄清单一律不留**。
 
 ---
 
-# Part B — Local Project Packs（256 skills）
+## 🌐 Global Skills(33 个,4 agent 共享,启动自动可用)
 
-按"动作 / 领域"组织。**`cd` 进项目目录，agent 自动加载该 pack 的 skills**（token 成本最低）。
+位置 `~/.{claude,cursor,codex,opencode}/skills/`。按分类(权威清单见 `HARNESS.md` / `catalog.json`):
 
-## 🍎 ios-project（14 skills）— iOS / SwiftUI 开发
-
-`C:\Users\PC\ios-project\`
-
-| 类 | Skills |
-| --- | --- |
-| Build / 工具 | `app-store-changelog`, `github-issue-fix`, `ios-debugger`, `native-profiling` |
-| 架构 / 测试 | `ios-architecture`, `ios-testing`, `ios-foundation-models`（iOS 26） |
-| Swift 语言 | `swift-concurrency`, `swift-style` |
-| SwiftUI | `swiftui-components`, `swiftui-liquid-glass`（iOS 26+）, `swiftui-performance`, `swiftui-ui-patterns`, `swiftui-view-refactor` |
-
-## 💰 finance-project（128 skills，多层路由）— 金融 / 投资 / 交易
-
-`C:\Users\PC\finance-project\` 是**容器**，cd 进子目录用。
-
-| 子目录 | 数 | 何时去 |
+| 分类 | 数 | 是什么 |
 | --- | --- | --- |
-| `trading/` | 14 | 主动交易、选股（VCP / CANSLIM / PEAD / Kanchi 股息） |
-| `research/` | 21 | 个股 / 行业研报、立题、catalyst tracking |
-| `macro/` | 16 | 市场环境 / 顶底信号 / 宏观 regime / Druckenmiller |
-| `modeling/` | 15 | DCF / LBO / comps / 3-statement / merger 模型 |
-| `portfolio/` | 21 | 仓位 sizing / 期权 / 回测 / 再平衡 / 固收 RV |
-| `advisory/ib/` | 8 | 投行：CIM / teaser / pitch deck / buyer list |
-| `advisory/pe/` | 8 | PE：deal sourcing / DD / IC memo / value-creation |
-| `advisory/wealth/` | 3 | 财富管理：client review / report / proposal |
-| `advisory/fund-admin/` | 6 | 基金后台：GL / NAV / accruals / roll-forward |
-| `advisory/compliance/` | 2 | KYC：doc-parse / rules |
-| **`quant-methods/`** ⭐ | 15 | López de Prado AFML：PBO / 防泄漏 CV / Triple Barrier / 因子 / GARCH / 组合优化 / 回测框架选型 / 执行成本 |
-
-## 💻 dev-project（87 skills，8 层路由）— 软件开发
-
-`C:\Users\PC\dev-project\`
-
-| 子目录 | 数 | 何时去 |
-| --- | --- | --- |
-| `(top)` | 11 | 仓库工作流（changelog / tech-debt / release）、跨切（find-bugs / drawio）、安全 |
-| `frontend/` | 4 | React / Next / Tailwind / web-artifacts + frontend-design（Anthropic ⭐） |
-| `backend/` | 4 | senior-backend / architect / fullstack / guidelines |
-| `cloud-platform/` | 18 | AWS / Cloudflare（5）/ Stripe（4）/ Supabase（2）/ PostHog（7） |
-| `testing-qa/` | 4 | api-test / route-tester / senior-qa / webapp-testing |
-| `devops-sre/` | 9 | CI/CD / Docker / Terraform / 5 个可观测 SRE |
-| `agent-dev/` | 15 | LLM 编排：LangChain / LangGraph / Deep / MCP / Claude SDK / prompt-optimizer / CF agents-sdk |
-| `ml/` | 22 | ML 训练：sklearn / PyTorch / transformers / RL + **HuggingFace 13 件套** + 资源检测 |
-
-## 📢 marketing-project（38 skills）— 营销 / SEO / 增长 / 音频
-
-`C:\Users\PC\marketing-project\`
-
-| 类 | Skills |
-| --- | --- |
-| 文案 | copywriting, copy-editing, ad-creative, cold-email, email-sequence |
-| SEO | ai-seo, seo-audit, programmatic-seo, schema-markup, competitor-alternatives |
-| 策略 | content-strategy, launch-strategy, pricing-strategy, marketing-ideas, marketing-psychology |
-| 付费 / 分析 | paid-ads, analytics-tracking, revops |
-| 增长 | churn-prevention, referral-program, free-tool-strategy |
-| 视觉 | canvas-design, generate-image, theme-factory |
-| 销售 | sales-enablement, product-marketing-context |
-| 社交 | social-content |
-| 报告 | market-research-reports |
-| 中文 | wechat-ai-publisher |
-| **音频** ⭐ | ElevenLabs 9 件套（agents / music / TTS / STT / 转录 / 声效 / voice-changer / voice-isolator / api-key） |
-
-## 📚 research-project（18 skills）— 学术研究 / 写作
-
-`C:\Users\PC\research-project\`
-
-| 类 | Skills |
-| --- | --- |
-| 文献 | citation-management, literature-review, pyzotero, research-lookup |
-| 写作 / 评议 | scientific-writing, peer-review, scholar-evaluation |
-| 立题 | scientific-brainstorming, scientific-critical-thinking, hypothesis-generation |
-| 基金 / 投稿 | research-grants, venue-templates |
-| 演示 / 海报 | scientific-slides, scientific-schematics, scientific-visualization, latex-posters, pptx-posters |
-| 转换 | paper-2-web |
-
-## 📊 data-analysis-project（18 skills）— 数据分析 / EDA / 统计
-
-`C:\Users\PC\data-analysis-project\`
-
-| 类 | Skills |
-| --- | --- |
-| DataFrame | polars, dask, vaex, zarr-python |
-| 可视化 | matplotlib, seaborn, plotly, infographics |
-| 统计 | exploratory-data-analysis, statistical-analysis, statsmodels |
-| 数学 | sympy, pymc |
-| 时序 / 图 | timesfm-forecasting, networkx |
-| Web 抓取 | defuddle, parallel-web, perplexity-search |
-
-## ⏰ productivity-project（20 skills）— 工作流 / PM / 协作
-
-`C:\Users\PC\productivity-project\`
-
-| 类 | Skills |
-| --- | --- |
-| Obsidian | obsidian-bases, obsidian-cli, obsidian-markdown |
-| Google Workspace | gws |
-| PM / Jira | jira-expert, scrum-master, senior-pm |
-| **Atlassian 官方** ⭐ | spec-to-backlog, triage-issue, generate-status-report, capture-tasks-from-meeting-notes, search-company-knowledge |
-| **Notion 官方** ⭐ | notion-cli |
-| 决策 / 规划 | planning-with-files, what-if-oracle, markdown-mermaid-writing |
-| 写作 / 协作 | doc-coauthoring, internal-comms, json-canvas |
-| Notebook | open-notebook |
+| Process | 10 | 流程纪律:using-superpowers / brainstorming / writing-plans / TDD / systematic-debugging / verification … |
+| Thinking | 1 | `first-principles-thinking` —— 从第一性原理推理 |
+| Escalation | 2 | `high-agency` / `pua` |
+| Routing & Meta | 4 | `skill-router` / `skill-creator` / `skill-scanner` / `writing-great-skills` |
+| Workflow | 3 | `playwright-interactive` / `gh-fix-ci` / `gh-address-comments` |
+| Code Review | 3 | requesting / receiving / finishing-a-development-branch |
+| OpenSpec | 4 | explore / propose / apply-change / archive-change |
+| Document | 5 | pdf / docx / xlsx / pptx / markitdown |
+| Learning | 1 | `teach` —— 多轮互动式辅导 |
 
 ---
 
-# Part C — MCP Servers（19 个）
+## 📦 Local Project Packs(8 个,~365 skills)
 
-四家 agent 跑同一套，**API key 全部走 Windows User-scope env var**（`${VAR}` / `${env:VAR}` / `bearer_token_env_var`）。
+按领域组织。**`cd` 进目录,agent 自动加载该 pack 的 skills**(token 成本最低)。
+**每个 pack 的完整 skill 清单见 `HARNESS.md`**(生成、不漂移)——下表只给领域和规模:
 
-## ✅ Always-on（9 个，启动自动加载）
+| Pack | 规模 | 领域 / 何时进 |
+| --- | --- | --- |
+| `~/dev-project/` | 87 | 软件开发(8 层:frontend / backend / cloud-platform / testing-qa / devops-sre / agent-dev / ml + 根) |
+| `~/finance-project/` | 129 | 金融/投资/交易(容器:trading / research / macro / modeling / portfolio / quant-methods / advisory) |
+| `~/research-project/` | 45 | 学术/科研(AI/CS 取向:文献 / 写作 / latex / 图表 / paper-library / repro-pack / 深度检索管线) |
+| `~/marketing-project/` | 39 | 营销/SEO/增长/音频(ElevenLabs 套件)/ 小红书 · WeChat |
+| `~/productivity-project/` | 23 | 工作流/PM(Jira / Notion / Obsidian / Google Workspace) |
+| `~/data-analysis-project/` | 18 | 数据分析/EDA/统计/可视化 |
+| `~/ios-project/` | 21 | iOS/SwiftUI(widget/Live Activity / Rive / 动画 / HIG 设计 / Mac 构建 runbook) |
+| `~/craft-project/` | 3 | 跨领域「功力」(writing:去 AI 味;design:审美/anti-slop) |
 
-| MCP | 用处 |
-| --- | --- |
-| `github` | GitHub 仓库 / issue / PR（HTTP @ `api.githubcopilot.com/mcp` + Bearer PAT） |
-| `memory` | 跨会话 entity-relation 持久化记忆 |
-| `filesystem` | 跨项目本地文件读写（root: `C:/Users/PC`） |
-| `context7` | 任意开源库实时文档与代码示例 |
-| `sequential-thinking` | 强制结构化分步推理 |
-| `brave-search` | Brave 搜索（web / image / news / 本地 POI） |
-| `playwright` | 跨浏览器自动化 |
-| `chrome-devtools` | Chrome 运行时观测：console / network / Lighthouse |
-| `web-reader` | Z.AI URL → markdown（Codex 禁用，兼容性问题） |
+新开一个任意项目时:让 agent 读 `C:\Users\PC\HARNESS.md`,它据此决定 cd 进哪个 pack。
 
-## 💤 Opt-in（10 个，按项目启用）
+---
 
-| MCP | 何时启用 |
-| --- | --- |
-| `supabase` | Supabase 项目 |
-| `vercel` | Vercel 部署 |
-| `railway` | Railway 部署 |
-| `expo-mcp` | Expo / EAS 移动 |
-| `magic` | MagicUI 组件代码生成 |
-| `zai-mcp-server` | Z.AI 综合搜索 / 抓取 |
-| `cloudflare-docs` | CF 官方文档 |
-| `cloudflare-workers-builds` | CF Worker 构建状态 |
-| `cloudflare-workers-bindings` | CF Worker bindings |
-| `cloudflare-observability` | CF Worker 日志 |
+## 🔌 MCP Servers
 
-### 如何启用 opt-in MCP
+四家跑同一套,API key 全走 Windows User-scope env var(`${VAR}` / `${env:VAR}` / `bearer_token_env_var`)。
 
+**✅ Always-on(9,启动自动)**:`github` · `memory` · `filesystem` · `context7` ·
+`sequential-thinking` · `brave-search` · `playwright` · `chrome-devtools` ·
+`web-reader`(Codex 禁用)。
+
+**💤 Opt-in(10,按项目启用)**:`supabase` · `vercel` · `railway` · `expo-mcp` · `magic` ·
+`zai-mcp-server` · `cloudflare-{docs,workers-builds,workers-bindings,observability}`。
+
+**🍎 iOS/macOS opt-in 模板(3,仅 Mac)**:`xcodebuildmcp` · `ios-simulator` · `revenuecat`。
+
+### 启用 opt-in
 | Agent | 方法 |
 | --- | --- |
-| **Codex** | `codex -c mcp_servers.<name>.enabled=true` （无须重启）|
-| **Cursor** | 编辑 `~/.cursor/mcp.json` 改 `"enabled": true` + reload window |
-| **OpenCode** | 编辑 `~/.opencode/opencode.json` 改 `"enabled": true` + restart |
-| **Claude Code** | Opt-in 已从全局移除；用项目级 `.mcp.json` 或 `claude mcp add --scope user ...` |
+| Claude Code | 项目级 `.mcp.json`,或 `claude --mcp-config <template>` |
+| Codex | `codex -c mcp_servers.<name>.enabled=true` |
+| Cursor | 编辑 `~/.cursor/mcp.json` 改 `"enabled": true` + reload |
+| OpenCode | 编辑 `~/.opencode/opencode.json` 改 `"enabled": true` + restart |
 
-### 📦 MCP 模板库
-
-`C:\Users\PC\MCP-Templates\` 有 10 个预制 `.mcp.json` 模板（supabase / vercel / cloudflare / mobile / magic / zai / deploy / fullstack / everything）。**长期项目 `copy <template>.mcp.json <project>\.mcp.json` 完事**。
+**模板库** `C:\Users\PC\MCP-Templates\`(13 个 `.mcp.json`)。长期项目:`copy <template>.mcp.json <project>\.mcp.json`。
 
 ---
 
-# Part D — claude-mem 记忆层
+## 🪝 Hooks & 🧠 claude-mem
 
-**自动跨 session 记忆系统**。每次 tool use 自动压缩成 observations，用 SQLite + Chroma 向量库存 `~/.claude-mem/`。新 session 自动注入相关历史。
-
-| Agent | 集成 | 文件 |
-| --- | --- | --- |
-| **Claude Code** | ✅ Plugin marketplace | `~/.claude/plugins/marketplaces/thedotmack/` |
-| **Cursor** | ✅ 5 hooks | `~/.cursor/hooks.json` |
-| **Codex** | ✅ marketplace + plugin_hooks | `~/.codex/config.toml` 中 `[marketplaces.claude-mem-local]` |
-| **OpenCode** | ✅ plugin file | `~/.config/opencode/plugins/claude-mem.js` |
-| **LM Studio** | ❌ 无 hook 系统 | — |
-
-**特点**：
-- Worker 通过 SessionStart hook 自动启动（idempotent，已跑就跳过）
-- **不需要手动启动、不需要开机自启、重启电脑无影响**
-- web viewer: http://localhost:37777
-- Auth: Claude Code OAuth subscription，零 API 配额消耗
+- **Hooks**:`~/.agent-hooks/{guard,format}.mjs` —— guard 拦密钥文件 + `rm -rf /`/`curl|sh`/force-push
+  等危险命令;format 仅当项目有 formatter 配置才格式化。装在 Claude + Codex(additive merge,保留
+  已有的 any-buddy / claude-mem hooks)。
+- **claude-mem**:自动跨 session 记忆(SessionStart hook 启动 worker,SQLite+Chroma 存 `~/.claude-mem/`,
+  web viewer http://localhost:37777)。Claude/Cursor/Codex/OpenCode 各有集成;LM Studio 无。仓库**不装**它(单独 add-on)。
 
 ---
 
-# Part E — 常用命令速查
-
-## 启动 agent
+## ⌨️ 常用命令
 
 ```powershell
-cd C:\Users\PC\<project>\<sub>     # 进对应 pack
-claude                              # 或 codex / opencode
-# Cursor: 直接打开目录
+cd C:\Users\PC\<project>\<sub> && claude    # 进 pack(或 codex / opencode;Cursor 打开目录)
+claude  →  /mcp                              # 看激活的 MCP
+copy "C:\Users\PC\MCP-Templates\<x>.mcp.json" ".mcp.json"   # 项目级 opt-in MCP
+.\scripts\sync.ps1 -DryRun                   # 从仓库下发到本机(先 dry-run)
 ```
-
-## 看激活的 skill / MCP
-
-```powershell
-claude  →  /mcp          # interactive 模式，列 MCP
-codex mcp list           # Codex
-```
-
-## 项目级 MCP 模板
-
-```powershell
-# 拷模板进项目
-copy "C:\Users\PC\MCP-Templates\cloudflare.mcp.json" ".mcp.json"
-# 临时一次性
-claude --mcp-config "C:\Users\PC\MCP-Templates\supabase.mcp.json"
-```
-
-## 装新社区 skill 前
-
-```
-先调 skill-scanner 扫一遍安全（prompt injection / 凭证泄露）
-```
+装新社区 skill 前:先用 `skill-scanner` 扫安全(injection / 凭证泄露)。
 
 ---
 
-# Part F — 配置位置一览
+## 📁 配置位置
 
 | 项 | 位置 |
 | --- | --- |
 | 全局 skill | `~/.{claude,cursor,opencode,codex}/skills/` |
 | 项目 skill | `~/<project>/<sub>/.{agent}/skills/` |
-| System prompt（7 原则） | `~/.claude/CLAUDE.md` / `~/.{codex,opencode}/AGENTS.md` / `~/.cursor/rules/global-rules.md` |
-| Claude MCP | `~/.claude.json`（`mcpServers` 块） |
-| Cursor MCP | `~/.cursor/mcp.json` |
-| OpenCode MCP | `~/.opencode/opencode.json`（`mcp` 块） |
-| Codex MCP | `~/.codex/config.toml`（`[mcp_servers.*]`） |
-| LM Studio MCP | `~/.lmstudio/mcp.json`（子集） |
+| System prompt | `~/.claude/CLAUDE.md` · `~/.{codex,opencode}/AGENTS.md` · `~/.cursor/rules/global-rules.md` |
+| Hooks | `~/.agent-hooks/` + Claude `settings.json` / Codex `config.toml` |
+| MCP | Claude `~/.claude.json` · Cursor `~/.cursor/mcp.json` · OpenCode `opencode.json` · Codex `config.toml` |
 | MCP 模板 | `C:\Users\PC\MCP-Templates\` |
-| Opt-in MCP env vars | Windows User scope（`HKCU\Environment`） |
+| Agent 路由清单 | `C:\Users\PC\HARNESS.md` |
 
 ---
 
-# Part G — 全栈数据
+## 📊 全栈数据
 
 | 维度 | 数量 |
 | --- | --- |
-| 主 agent | 4（Claude / Cursor / Codex / OpenCode）+ 1（LM Studio，仅 MCP） |
-| 全局 skills | 30 |
-| 项目本地 skills | 256（ios 14 + finance 128 + dev 87 + marketing 38 + research 18 + data 18 + productivity 20，去重） |
-| MCP 服务器 | 19（9 always-on + 10 opt-in） |
-| 4 agent 完全 parity | ✅ |
+| 主 agent | 4(Claude / Cursor / Codex / OpenCode)+ 1(LM Studio,仅 MCP) |
+| 全局 skills | **33**(9 分类) |
+| 项目本地 skills | **~365**(8 packs;权威清单见 `HARNESS.md`) |
+| MCP | 9 always-on + 10 opt-in（+3 iOS/macOS 模板） |
+| 4 agent parity | ✅ |
+
+---
+
+# 📖 Meta:如何写好一个 Skill(Matt Pocock)
+
+> 出自 Matt Pocock 的演讲 *"The Missing Manual: How to Write Great Skills"*。这套标尺本身也做成了
+> skill —— `skills/global/writing-great-skills/`(+ `GLOSSARY.md`),agent 可直接用它审/写 skill。
+> 下面是给**人**看的浓缩版。核心目标叫 **Predictability**:让 agent 每次走**同一套过程**(不是同一个输出)。
+
+## 四个维度
+
+**① Triggering(怎么被调用)**
+- **model-invoked**:保留 `description`,agent 自动触发、别的 skill 也能调 —— 但每条 description
+  常驻上下文,增加 **context load**。
+- **user-invoked**(`disable-model-invocation: true`):只有人敲名字能调,**零 context load**,
+  但增加 **cognitive load**(你得记得它存在)。太多时用一个 **router skill** 统管。
+- **写 description**:把**引导词前置**;**一个 branch 一个触发**(同义词重复 = duplication,合并);
+  砍掉正文已有的身份介绍。
+
+**② Structure(内部布局)**
+- 两种内容:**steps**(有序动作)和 **reference**(支撑资料),可自由混合。
+- **信息层级阶梯**:in-skill step → in-skill reference → **external reference(context 指针)**。
+  只在主 `SKILL.md` 放**每个 branch 都要**的;只有某 branch 用的,推到 `references/*.md` 后面挂指针
+  (**progressive disclosure**)。
+- 每个 step 收在一个**完成判据**上,要**可检验**且(必要时)**穷尽**("每个改过的 model 都交代了",
+  不是"产出一个变更列表")—— 模糊判据会招致 **premature completion**。
+
+**③ Steering(让它照你的意思做)**
+- **引导词(leading words)**:模型预训练里已有的紧凑概念(*vertical slice* / *tight* / *red* /
+  *tracer bullets*),写进 skill 反复出现,用最少 token 锚定一整片行为。可在推理轨迹里**验证**它被采纳。
+- **拆步骤隐藏未来**:agent 常在准备步骤(如"提澄清问题")偷懒赶着去做最终目标。把后续步骤**拆成独立
+  skill**、当前只让它看到这一步,能逼它在当前步多投入。
+
+**④ Trimming(修剪)**
+- **单一权威源**:每个含义只有一处,改行为 = 改一处。
+- **相关性**:每行还切题吗?
+- **no-op 删除测试**(逐句):删掉这句,行为会变吗?不变就整句删,**要狠**。
+
+## 五个失败模式(拿来自查)
+- **Premature completion** —— 步骤没真做完就收(注意力滑向"完成")。先磨判据,再考虑拆步骤。
+- **Duplication** —— 同一含义多处出现,费 token 又抬高它的层级权重。
+- **Sediment(沉积)** —— 加着安全、删着危险,于是攒下过时废料。没有修剪纪律的默认下场。
+- **Sprawl** —— 单纯太长(哪怕每行都活)。解药是阶梯:reference 推到指针后、按 branch/序列拆。
+- **No-op** —— 模型本来就会做的话,白占 load。弱引导词(*be thorough*,它本来就 thorough)= no-op,
+  换更强的词(*relentless*),不是换技巧。
+
+---
+
+# 🗂️ 文档地图
+
+| 文档 | 给谁 | 干嘛 |
+| --- | --- | --- |
+| **README.md**(本文) | 人 | 概览 / 架构 / 怎么用 + skill meta 知识 |
+| **HARNESS.md** | agent | 运行时路由(生成:pack 索引 + harness 一览) |
+| **INSTALL.md** | 装机的人/agent | 新机器怎么装 |
+| **INVENTORY.md** | 选装 | 精确 source→target 文件映射 + "不装什么" |

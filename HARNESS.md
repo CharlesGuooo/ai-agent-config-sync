@@ -443,9 +443,10 @@ index anymore.
 - `triage-issue` — Intelligently triage bug reports and error messages by searching for duplicates in Jira and offering to create new issues or add comments...
 - `what-if-oracle` — Run structured What-If scenario analysis with multi-branch possibility exploration.
 
-#### ios-project (19)
+#### ios-project (21)
 - `alarmkit` — Build alarms and timers with iOS 26's AlarmKit.
 - `app-store-changelog` — Generate App Store release notes from git history.
+- `apple-hig-design` — Make an iOS/SwiftUI screen look beautiful and native (Apple Human Interface Guidelines).
 - `fastlane` — Set up and run fastlane for iOS signing, TestFlight, and App Store submission on macOS.
 - `github-issue-fix` — GitHub issue fix workflow.
 - `ios-architecture` — iOS app architecture design and review.
@@ -457,6 +458,7 @@ index anymore.
 - `rive-ios` — Integrate Rive animations into a native iOS/SwiftUI app.
 - `swift-concurrency` — Swift Concurrency review and fixes.
 - `swift-style` — Swift code style check and formatting.
+- `swiftui-animation` — Advanced SwiftUI animations — springs, custom transitions, matchedGeometryEffect hero animations, PhaseAnimator/KeyframeAnimator, and Met...
 - `swiftui-components` — SwiftUI component design and implementation.
 - `swiftui-liquid-glass` — iOS 26+ Liquid Glass API implementation and review.
 - `swiftui-performance` — SwiftUI performance diagnosis and optimization.

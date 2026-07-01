@@ -137,7 +137,7 @@ When a task is domain-specific, `cd` into the matching project directory and Cod
 | Marketing | `~/marketing-project/` | 39 |
 | Research / Academic | `~/research-project/` | 29 |
 | Productivity / PM | `~/productivity-project/` | 23 |
-| iOS / Swift / SwiftUI | `~/ios-project/` | 14 |
+| iOS / Swift / SwiftUI | `~/ios-project/` | 19 |
 | Craft (writing / design, cross-cutting) | `~/craft-project/<sub>/` | 3 |
 
 > Document tasks (PDF/Word/Excel/PowerPoint) use **global** skills directly — no project switch needed.

@@ -443,14 +443,18 @@ index anymore.
 - `triage-issue` — Intelligently triage bug reports and error messages by searching for duplicates in Jira and offering to create new issues or add comments...
 - `what-if-oracle` — Run structured What-If scenario analysis with multi-branch possibility exploration.
 
-#### ios-project (14)
+#### ios-project (19)
+- `alarmkit` — Build alarms/timers with iOS 26's AlarmKit — authorization, AlarmManager scheduling, full-screen alerts, and tying the alarm to a Live Ac...
 - `app-store-changelog` — Generate App Store release notes from git history.
+- `fastlane` — Set up and run fastlane for iOS signing, TestFlight, and App Store submission on macOS.
 - `github-issue-fix` — GitHub issue fix workflow.
 - `ios-architecture` — iOS app architecture design and review.
 - `ios-debugger` — iOS app build, simulator, debug support.
 - `ios-foundation-models` — iOS 26 Foundation Models, Apple Intelligence, HealthKit State of Mind, Swift Charts, StoreKit 2.
 - `ios-testing` — iOS testing expert.
+- `mac-dev-setup` — One-time setup runbook for agentic native iOS/macOS development after migrating to a Mac — install Xcode + XcodeBuildMCP + xcode-build-se...
 - `native-profiling` — CLI Time Profiler via xctrace.
+- `rive-ios` — Integrate Rive animations into a native iOS/SwiftUI app — SPM setup, RiveViewModel + state machines, artboard/skin swapping, and (critica...
 - `swift-concurrency` — Swift Concurrency review and fixes.
 - `swift-style` — Swift code style check and formatting.
 - `swiftui-components` — SwiftUI component design and implementation.
@@ -458,6 +462,7 @@ index anymore.
 - `swiftui-performance` — SwiftUI performance diagnosis and optimization.
 - `swiftui-ui-patterns` — SwiftUI best practices and patterns.
 - `swiftui-view-refactor` — SwiftUI view refactoring.
+- `widgetkit-liveactivity` — Build or review iOS home/lock-screen widgets (WidgetKit), Live Activities (ActivityKit), and Dynamic Island.
 
 #### craft-project (3)
 - **design/**

@@ -37,6 +37,20 @@ copy "C:\Users\PC\MCP-Templates\.mcp.json" ".mcp.json"
 
 ---
 
+## 🍎 iOS / macOS 模板（仅 Mac 可用，3 个）
+
+给 Pawket 等原生 iOS 开发用。**这些 MCP 只能在 macOS 上跑**（需 Xcode / idb），所以它们用的是 **Unix 启动形式**（`command: npx`），不是上面 Windows 模板的 `cmd /c` 形式 —— 迁到 Mac 后启用。配套 setup 见 `~/ios-project` 的 `mac-dev-setup` skill。
+
+| 文件 | 包含的 MCP | 何时用 |
+| --- | --- | --- |
+| `xcodebuildmcp.mcp.json` | XcodeBuildMCP（build/run/test/模拟器/截图，~80 工具） | agentic iOS 开发地基（🔴 必装） |
+| `ios-simulator.mcp.json` | ios-simulator-mcp（tap/type/swipe/截图/a11y tree） | 需要更细的模拟器 UI 自动化时（先用 XcodeBuildMCP 自带的） |
+| `revenuecat.mcp.json` | RevenueCat（远程 MCP，订阅后台配置） | 变现阶段；需 **RevenueCat API v2 key** 存到 `REVENUECAT_API_V2_KEY` env |
+
+> ⚠️ RevenueCat 是**远程 MCP**（`https://mcp.revenuecat.ai/mcp` + Bearer）。若你的客户端不支持远程 MCP 的 `url` 字段，用 `mcp-remote` 包裹：`npx -y mcp-remote <url> --header "Authorization: Bearer <key>"`。用前请核对 v2 key 的权限范围。
+
+---
+
 ## 🚀 三种用法
 
 ### 用法 1：项目级（**推荐用于长期项目**）

@@ -1,6 +1,6 @@
 ---
 name: "database-schema-designer"
-description: "Database Schema Designer"
+description: "Design or review a database schema — tables, relationships, indexes, normalization, migrations. Use when the user is modeling data, designing a schema, or planning migrations."
 ---
 
 # Database Schema Designer

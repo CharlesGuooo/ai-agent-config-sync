@@ -1,6 +1,6 @@
 ---
 name: "codebase-onboarding"
-description: "Codebase Onboarding"
+description: "Produce onboarding docs and a guided tour of an unfamiliar codebase. Use when the user is new to a repo, wants a codebase walkthrough, an architecture overview, or 'where do I start' orientation."
 ---
 
 # Codebase Onboarding

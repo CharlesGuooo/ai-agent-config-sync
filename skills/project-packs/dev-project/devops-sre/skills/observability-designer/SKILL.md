@@ -1,6 +1,6 @@
 ---
 name: "observability-designer"
-description: "Observability Designer (POWERFUL)"
+description: "Design observability for production systems — SLI/SLO frameworks, alerting, dashboards, metrics/logs/tracing. Use when the user is setting up monitoring, SLOs, alerts, or an observability strategy."
 ---
 
 # Observability Designer (POWERFUL)

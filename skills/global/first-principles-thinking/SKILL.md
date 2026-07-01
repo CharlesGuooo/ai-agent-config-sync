@@ -1,16 +1,12 @@
 ---
 name: first-principles-thinking
 description: >-
-  Reason from base truths instead of by analogy. Use when a problem is being
-  solved by copying how others did it, when an answer rests on inherited
-  assumptions, when stuck because "that's how it's done", when estimating what
-  is actually possible (cost, performance, scope) rather than what is
-  conventional, or when the user asks to "think from first principles",
-  "question the assumptions", "why do we believe this", "break it down to
-  fundamentals", or "is this actually true". Apply before committing to an
-  approach whose justification is precedent rather than evidence. Do NOT use for
-  routine execution where the path is known and uncontested, or when the user
-  just wants a quick factual answer.
+  Reason from base truths instead of by analogy. Use when an approach is
+  justified by precedent or inherited assumptions rather than evidence, when
+  stuck because "that's how it's done", when estimating what is actually
+  possible (cost/performance/scope) vs. conventional, or when the user asks to
+  think from first principles / question the assumptions. NOT for routine
+  execution on a known path, or a quick factual answer.
 category: thinking
 ---
 

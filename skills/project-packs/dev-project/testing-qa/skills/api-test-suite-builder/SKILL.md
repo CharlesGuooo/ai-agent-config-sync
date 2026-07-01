@@ -1,6 +1,6 @@
 ---
 name: "api-test-suite-builder"
-description: "API Test Suite Builder"
+description: "Build an automated API test suite — endpoint tests, auth, fixtures, contract/integration coverage. Use when the user wants API tests, a test suite for endpoints, or API test coverage."
 ---
 
 # API Test Suite Builder

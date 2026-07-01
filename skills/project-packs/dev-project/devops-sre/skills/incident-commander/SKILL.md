@@ -1,6 +1,6 @@
 ---
 name: "incident-commander"
-description: "Incident Commander Skill"
+description: "Coordinate incident response as incident commander — triage, severity, comms, roles, timeline, postmortem. Use during a production incident/outage or when organizing incident response."
 ---
 
 # Incident Commander Skill

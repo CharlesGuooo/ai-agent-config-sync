@@ -1,6 +1,6 @@
 ---
 name: "dependency-auditor"
-description: "Dependency Auditor"
+description: "Audit project dependencies for security vulnerabilities, outdated/abandoned packages, and license issues. Use when the user wants to check dependencies, CVEs, upgrade paths, or supply-chain risk."
 ---
 
 # Dependency Auditor

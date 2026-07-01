@@ -1,6 +1,6 @@
 ---
 name: "performance-profiler"
-description: "Performance Profiler"
+description: "Profile and optimize application performance — bottlenecks, hot paths, CPU/memory, latency. Use when the user wants to profile, speed up, or diagnose a slow app/service."
 ---
 
 # Performance Profiler

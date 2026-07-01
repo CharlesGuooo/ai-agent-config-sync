@@ -1,6 +1,6 @@
 ---
 name: "release-manager"
-description: "Release Manager"
+description: "Plan and coordinate a software release — versioning, release checklist, tagging, rollout. Use when the user is preparing a release, cutting a version, or needs a release process."
 ---
 
 # Release Manager

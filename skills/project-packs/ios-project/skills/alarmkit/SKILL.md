@@ -1,6 +1,6 @@
 ---
 name: alarmkit
-description: Build alarms/timers with iOS 26's AlarmKit — authorization, AlarmManager scheduling, full-screen alerts, and tying the alarm to a Live Activity / Dynamic Island. Use for any "alarm", "闹钟", "wake up", timer-with-alert, or AlarmKit task. AlarmKit is new (WWDC 2025) — this skill is intentionally thin and defers to live docs.
+description: Build alarms and timers with iOS 26's AlarmKit. Use for an alarm, 闹钟, wake-up, or a timer-with-alert that must break through silent mode / Focus.
 allowed-tools:
   - Read
   - Grep

@@ -1,6 +1,6 @@
 ---
 name: "stripe-integration-expert"
-description: "Stripe Integration Expert"
+description: "Integrate Stripe payments end-to-end — checkout, subscriptions, webhooks, customer portal, invoicing. Use for any Stripe integration, billing, subscription, or payment-flow task."
 ---
 
 # Stripe Integration Expert

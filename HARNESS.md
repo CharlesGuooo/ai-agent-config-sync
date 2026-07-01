@@ -68,18 +68,18 @@ index anymore.
 > Auto-generated from `skills/project-packs/` by `scripts/gen-harness.mjs`.
 > Do not edit between the PACKS markers by hand — run the generator.
 
-**Global skills (32, auto-exposed at startup — no need to route):** Process 10 · Thinking 1 · Escalation 2 · Routing & Meta 3 · Workflow 3 · Code Review 3 · OpenSpec 4 · Document 5 · Learning 1.
+**Global skills (33, auto-exposed at startup — no need to route):** Process 10 · Thinking 1 · Escalation 2 · Routing & Meta 4 · Workflow 3 · Code Review 3 · OpenSpec 4 · Document 5 · Learning 1.
 
 ### Local skill packs — index
 
 #### dev-project (87)
-- `changelog-generator` — Changelog Generator
-- `codebase-onboarding` — Codebase Onboarding
-- `database-schema-designer` — Database Schema Designer
-- `dependency-auditor` — Dependency Auditor
+- `changelog-generator` — Generate changelogs and release notes from git history/commits.
+- `codebase-onboarding` — Produce onboarding docs and a guided tour of an unfamiliar codebase.
+- `database-schema-designer` — Design or review a database schema — tables, relationships, indexes, normalization, migrations.
+- `dependency-auditor` — Audit project dependencies for security vulnerabilities, outdated/abandoned packages, and license issues.
 - `drawio-skill` — Use when user requests diagrams, flowcharts, architecture charts, or visualizations.
 - `find-bugs` — Find bugs, security vulnerabilities, and code quality issues in local branch changes.
-- `release-manager` — Release Manager
+- `release-manager` — Plan and coordinate a software release — versioning, release checklist, tagging, rollout.
 - `remotion` — Best practices for Remotion - Video creation in React
 - `senior-security` — Security engineering toolkit for threat modeling, vulnerability analysis, secure architecture, and penetration testing.
 - `site-architecture` — When the user wants to plan, map, or restructure their website's page hierarchy, navigation, URL structure, or internal linking.
@@ -116,7 +116,7 @@ index anymore.
   - `posthog-feature-flags-python` — PostHog feature flags for Python applications
   - `posthog-feature-flags-react` — PostHog feature flags for React applications
   - `stripe-best-practices` — Guides Stripe integration decisions — API selection (Checkout Sessions vs PaymentIntents), Connect platform setup (Accounts v2, controlle...
-  - `stripe-integration-expert` — Stripe Integration Expert
+  - `stripe-integration-expert` — Integrate Stripe payments end-to-end — checkout, subscriptions, webhooks, customer portal, invoicing.
   - `stripe-projects` — Use when the user needs to provision a third-party service available on https://projects.dev/providers; create or retrieve a provider/ser...
   - `supabase` — Use when doing ANY task involving Supabase.
   - `supabase-postgres-best-practices` — Postgres performance optimization and best practices from Supabase.
@@ -128,10 +128,10 @@ index anymore.
   - `ci-cd-pipeline-builder` — CI/CD Pipeline Builder
   - `docker-development` — Docker and container development agent skill and plugin for Dockerfile optimization, docker-compose orchestration, multi-stage builds, an...
   - `error-tracking` — Add Sentry v8 error tracking and performance monitoring to your project services.
-  - `incident-commander` — Incident Commander Skill
-  - `observability-designer` — Observability Designer (POWERFUL)
-  - `performance-profiler` — Performance Profiler
-  - `runbook-generator` — Runbook Generator
+  - `incident-commander` — Coordinate incident response as incident commander — triage, severity, comms, roles, timeline, postmortem.
+  - `observability-designer` — Design observability for production systems — SLI/SLO frameworks, alerting, dashboards, metrics/logs/tracing.
+  - `performance-profiler` — Profile and optimize application performance — bottlenecks, hot paths, CPU/memory, latency.
+  - `runbook-generator` — Generate operational runbooks — procedures, on-call steps, recovery playbooks.
   - `senior-devops` — Comprehensive DevOps skill for CI/CD, infrastructure automation, containerization, and cloud platforms (AWS, GCP, Azure).
   - `terraform-patterns` — Terraform infrastructure-as-code agent skill and plugin for Claude Code, Codex, Gemini CLI, Cursor, OpenClaw.
 - **frontend/**
@@ -163,7 +163,7 @@ index anymore.
   - `transformers-js` — Use Transformers.js to run state-of-the-art machine learning models directly in JavaScript/TypeScript.
   - `umap-learn` — UMAP dimensionality reduction.
 - **testing-qa/**
-  - `api-test-suite-builder` — API Test Suite Builder
+  - `api-test-suite-builder` — Build an automated API test suite — endpoint tests, auth, fixtures, contract/integration coverage.
   - `route-tester` — Test authenticated routes in the your project using cookie-based authentication.
   - `senior-qa` — Generates unit tests, integration tests, and E2E tests for React/Next.js applications.
   - `webapp-testing` — Toolkit for interacting with and testing local web applications using Playwright.
@@ -318,7 +318,7 @@ index anymore.
 - `latex-posters` — Create professional research posters in LaTeX using beamerposter, tikzposter, or baposter.
 - `literature-review` — Conduct comprehensive, systematic literature reviews using multiple academic databases (PubMed, arXiv, bioRxiv, Semantic Scholar, etc.).
 - `paper-2-web` — This skill should be used when converting academic papers into promotional and presentation formats including interactive websites (Paper...
-- `paper-library` — Search and reason over a LOCAL library of research papers (your downloaded arXiv/conference PDFs).
+- `paper-library` — Search and reason over a LOCAL library of collected research papers (downloaded arXiv/conference PDFs).
 - `paper-reading-guide` — Use this whenever the user wants to read, understand, or be walked through an academic paper — whether they share a PDF, arxiv/URL link, ...
 - `paper-stress-test` — Adversarially stress-test YOUR OWN paper draft before submission — as the harshest fair reviewer would.
 - `peer-review` — Structured manuscript/grant review with checklist-based evaluation.
@@ -444,7 +444,7 @@ index anymore.
 - `what-if-oracle` — Run structured What-If scenario analysis with multi-branch possibility exploration.
 
 #### ios-project (19)
-- `alarmkit` — Build alarms/timers with iOS 26's AlarmKit — authorization, AlarmManager scheduling, full-screen alerts, and tying the alarm to a Live Ac...
+- `alarmkit` — Build alarms and timers with iOS 26's AlarmKit.
 - `app-store-changelog` — Generate App Store release notes from git history.
 - `fastlane` — Set up and run fastlane for iOS signing, TestFlight, and App Store submission on macOS.
 - `github-issue-fix` — GitHub issue fix workflow.
@@ -454,7 +454,7 @@ index anymore.
 - `ios-testing` — iOS testing expert.
 - `mac-dev-setup` — One-time setup runbook for agentic native iOS/macOS development after migrating to a Mac — install Xcode + XcodeBuildMCP + xcode-build-se...
 - `native-profiling` — CLI Time Profiler via xctrace.
-- `rive-ios` — Integrate Rive animations into a native iOS/SwiftUI app — SPM setup, RiveViewModel + state machines, artboard/skin swapping, and (critica...
+- `rive-ios` — Integrate Rive animations into a native iOS/SwiftUI app.
 - `swift-concurrency` — Swift Concurrency review and fixes.
 - `swift-style` — Swift code style check and formatting.
 - `swiftui-components` — SwiftUI component design and implementation.
@@ -462,7 +462,7 @@ index anymore.
 - `swiftui-performance` — SwiftUI performance diagnosis and optimization.
 - `swiftui-ui-patterns` — SwiftUI best practices and patterns.
 - `swiftui-view-refactor` — SwiftUI view refactoring.
-- `widgetkit-liveactivity` — Build or review iOS home/lock-screen widgets (WidgetKit), Live Activities (ActivityKit), and Dynamic Island.
+- `widgetkit-liveactivity` — Build or review iOS widgets (WidgetKit), Live Activities (ActivityKit), and the Dynamic Island.
 
 #### craft-project (3)
 - **design/**

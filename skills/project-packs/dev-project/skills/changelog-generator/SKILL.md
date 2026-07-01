@@ -1,6 +1,6 @@
 ---
 name: "changelog-generator"
-description: "Changelog Generator"
+description: "Generate changelogs and release notes from git history/commits. Use when the user wants a changelog, release notes, or a summary of what changed between versions."
 ---
 
 # Changelog Generator

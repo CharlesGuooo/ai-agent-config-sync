@@ -1,6 +1,6 @@
 ---
 name: "runbook-generator"
-description: "Runbook Generator"
+description: "Generate operational runbooks — procedures, on-call steps, recovery playbooks. Use when the user wants a runbook, on-call docs, or documented operational procedures."
 ---
 
 # Runbook Generator

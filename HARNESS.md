@@ -72,13 +72,19 @@ index anymore.
 
 ### Local skill packs — index
 
-#### dev-project (87)
+#### dev-project (94)
 - `changelog-generator` — Generate changelogs and release notes from git history/commits.
 - `codebase-onboarding` — Produce onboarding docs and a guided tour of an unfamiliar codebase.
 - `database-schema-designer` — Design or review a database schema — tables, relationships, indexes, normalization, migrations.
 - `dependency-auditor` — Audit project dependencies for security vulnerabilities, outdated/abandoned packages, and license issues.
 - `drawio-skill` — Use when user requests diagrams, flowcharts, architecture charts, or visualizations.
 - `find-bugs` — Find bugs, security vulnerabilities, and code quality issues in local branch changes.
+- `ponytail` — Forces the laziest solution that actually works, simplest, shortest, most minimal.
+- `ponytail-audit` — Whole-repo audit for over-engineering.
+- `ponytail-debt` — Harvest every `ponytail:` comment in the codebase into a debt ledger, so the deliberate shortcuts and deferrals ponytail leaves behind ge...
+- `ponytail-gain` — Show ponytail's measured impact as a compact scoreboard: less code, less cost, more speed, from the benchmark medians.
+- `ponytail-help` — Quick-reference card for all ponytail modes, skills, and commands.
+- `ponytail-review` — Code review focused exclusively on over-engineering.
 - `release-manager` — Plan and coordinate a software release — versioning, release checklist, tagging, rollout.
 - `remotion` — Best practices for Remotion - Video creation in React
 - `senior-security` — Security engineering toolkit for threat modeling, vulnerability analysis, secure architecture, and penetration testing.
@@ -138,6 +144,7 @@ index anymore.
   - `frontend-design` — Create distinctive, production-grade frontend interfaces with high design quality.
   - `frontend-dev-guidelines` — Frontend development guidelines for React/TypeScript applications.
   - `senior-frontend` — Frontend development skill for React, Next.js, TypeScript, and Tailwind CSS applications.
+  - `ui-ux-pro-max` — UI/UX design intelligence for web and mobile.
   - `web-artifacts-builder` — Suite of tools for creating elaborate, multi-component claude.ai HTML artifacts using modern frontend web technologies (React, Tailwind C...
 - **ml/**
   - `get-available-resources` — This skill should be used at the start of any computationally intensive scientific task to detect and report available system resources (...
@@ -377,7 +384,7 @@ index anymore.
 - `vaex` — Use this skill for processing and analyzing large tabular datasets (billions of rows) that exceed available RAM.
 - `zarr-python` — Chunked N-D arrays for cloud storage.
 
-#### marketing-project (39)
+#### marketing-project (40)
 - `ad-creative` — When the user wants to generate, iterate, or scale ad creative — headlines, descriptions, primary text, or full ad variations — for any p...
 - `ai-seo` — When the user wants to optimize content for AI search engines, get cited by LLMs, or appear in AI-generated answers.
 - `analytics-tracking` — When the user wants to set up, improve, or audit analytics tracking and measurement.
@@ -400,6 +407,7 @@ index anymore.
 - `email-sequence` — When the user wants to create or optimize an email sequence, drip campaign, automated email flow, or lifecycle email program.
 - `free-tool-strategy` — When the user wants to plan, evaluate, or build a free tool for marketing purposes — lead generation, SEO value, or brand awareness.
 - `generate-image` — Generate or edit images using AI models (FLUX, Nano Banana 2).
+- `last30days` — Research what people actually say about any topic in the last 30 days.
 - `launch-strategy` — When the user wants to plan a product launch, feature announcement, or release strategy.
 - `market-research-reports` — Generate comprehensive market research reports (50+ pages) in the style of top consulting firms (McKinsey, BCG, Gartner).
 - `marketing-ideas` — When the user needs marketing ideas, inspiration, or strategies for their SaaS or software product.
@@ -466,10 +474,16 @@ index anymore.
 - `swiftui-view-refactor` — SwiftUI view refactoring.
 - `widgetkit-liveactivity` — Build or review iOS widgets (WidgetKit), Live Activities (ActivityKit), and the Dynamic Island.
 
-#### craft-project (3)
+#### craft-project (9)
 - **design/**
+  - `banner-design` — Design banners for social media, ads, website heroes, creative assets, and print.
+  - `brand` — Brand voice, visual identity, messaging frameworks, asset management, brand consistency.
+  - `design` — Comprehensive design skill: brand identity, design tokens, UI styling, logo generation (55 styles, Gemini AI), corporate identity program...
+  - `design-system` — Token architecture, component specifications, and slide generation.
   - `impeccable` — Give an AI coding agent real design craft: a shared design vocabulary, live in-browser iteration, and 44 deterministic checks that catch ...
+  - `slides` — Create strategic HTML presentations with Chart.js, design tokens, responsive layouts, copywriting formulas, and contextual slide strategies.
   - `taste-skill` — Anti-slop frontend skill for landing pages, portfolios, and redesigns.
+  - `ui-styling` — Create beautiful, accessible user interfaces with shadcn/ui components (built on Radix UI + Tailwind), Tailwind CSS utility-first styling...
 - **writing/**
   - `humanizer` — Remove signs of AI-generated writing from text.
 

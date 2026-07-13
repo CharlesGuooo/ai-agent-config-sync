@@ -9,6 +9,7 @@ description: >-
   read as incremental". Distinct from scientific-writing (drafting prose from a
   blank page), paper-stress-test (adversarial claim/rejection audit), and
   latex-paper-en (de-AI tone, tense, venue LaTeX).
+allowed-tools: Read Write Edit
 metadata:
   category: research
   tags: [writing, revision, reverse-outline, narrative, structure, ml-cv-nlp]

@@ -10,6 +10,7 @@ description: >-
   another model red-team this and iterate". Requires a second model reachable
   from this machine (Codex CLI, Gemini CLI, or manual paste). Distinct from
   paper-stress-test, which is a one-shot SELF-review by this same model.
+allowed-tools: Read Write Edit Bash
 metadata:
   category: research
   tags: [autonomous, cross-model, review-loop, adversarial, codex, iteration]

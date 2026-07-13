@@ -2,7 +2,7 @@
 
 ## Overview
 
-IMRAD (Introduction, Methods, Results, And Discussion) is the predominant organizational structure for scientific journal articles of original research. Adopted as the majority format since the 1970s, it is now the standard in medical, health, biological, chemical, engineering, and computer sciences.
+IMRAD (Introduction, Methods, Results, And Discussion) is the predominant organizational structure for scientific journal articles of original research. Adopted as the majority format since the 1970s, it is now the standard across computer science, engineering, and the natural sciences.
 
 ## Why IMRAD?
 
@@ -42,9 +42,9 @@ Attract readers and accurately represent the paper's content.
 - Include key search terms for discoverability
 
 ### Examples
-- Good: "Effects of High-Intensity Interval Training on Cardiovascular Function in Older Adults"
-- Too vague: "Exercise and Health"
-- Too detailed: "A Randomized Controlled Trial Examining the Effects of High-Intensity Interval Training Compared to Moderate Continuous Training on Cardiovascular Function Measured by VO2 Max in Adults Aged 60-75 Years"
+- Good: "Effects of Sparse Attention on Long-Context Accuracy in Transformer Language Models"
+- Too vague: "Deep Learning and Performance"
+- Too detailed: "A Controlled Study Examining the Effects of Sparse Attention Compared to Dense Attention on Long-Context Accuracy Measured by Perplexity in Transformer Models with 100M-1B Parameters"
 
 ## Abstract
 
@@ -59,25 +59,24 @@ Most scientific papers use **unstructured abstracts** written as one or two cohe
 
 ❌ **WRONG - Structured abstract with labels:**
 ```
-Background: Hospital-acquired infections remain a major cause of morbidity.
-Methods: We conducted a 12-month before-after study...
-Results: Post-intervention, surface contamination decreased by 47%...
-Conclusions: UV-C disinfection significantly reduced infection rates.
+Background: Long-context inference in transformers remains computationally expensive.
+Methods: We propose a sparse attention mechanism and evaluate it on five benchmarks...
+Results: The method reduces latency by 47% with no loss in accuracy...
+Conclusions: Sparse attention significantly improves inference efficiency.
 ```
 
 ✅ **CORRECT - Flowing paragraph style:**
 ```
-Hospital-acquired infections remain a major cause of morbidity, yet optimal 
-disinfection strategies remain unclear. We conducted a 12-month before-after 
-study in a 500-bed teaching hospital to evaluate UV-C disinfection added to 
-standard cleaning protocols. Environmental surfaces were cultured monthly and 
-infection rates tracked via surveillance data. Post-intervention, surface 
-contamination decreased by 47% (95% CI: 38-56%, p<0.001), and catheter-associated 
-urinary tract infections declined from 3.2 to 1.8 per 1000 catheter-days (RR=0.56, 
-95% CI: 0.38-0.83, p=0.004). No adverse effects were observed. These findings 
-demonstrate that UV-C disinfection significantly reduces environmental contamination 
-and infection rates, suggesting it may be a valuable addition to hospital infection 
-control programs.
+Long-context inference in transformer models remains computationally expensive, yet 
+efficient attention mechanisms often trade away accuracy. We propose a sparse attention 
+mechanism and evaluate it on five long-context benchmarks against dense-attention and 
+low-rank baselines, training each configuration with five random seeds. Across 
+benchmarks, our method reduced inference latency by 47% (95% CI: 38-56%, p<0.001) while 
+matching dense-attention accuracy, and improved long-document retrieval from 3.2 to 1.8 
+errors per 1000 queries (relative reduction 0.56, 95% CI: 0.38-0.83, p=0.004). No 
+degradation was observed on short-context tasks. These findings demonstrate that sparse 
+attention significantly improves inference efficiency without sacrificing accuracy, 
+suggesting it may be a valuable component of long-context language models.
 ```
 
 ### Abstract Structure (as unified paragraph)
@@ -107,28 +106,26 @@ While written as flowing prose, the abstract should cover these elements in orde
 
 Only use labeled sections (Background/Objective, Methods, Results, Conclusions) when:
 - The journal **explicitly requires** structured abstracts in their author guidelines
-- Common in some medical journals (JAMA, BMJ, Annals of Internal Medicine)
-- Always check journal requirements before formatting
+- Uncommon in CS/ML venues; a few applied or interdisciplinary journals request them
+- Always check venue requirements before formatting
 
 Even for structured abstracts, write each section as complete sentences, not fragments.
 
 ### Example: Flowing Paragraph Abstract
 
 ```
-Transcriptomic aging clocks offer unique advantages for assessing biological age by 
-capturing dynamic cellular states and acute responses to perturbations. Using the 
-ARCHS4 database containing uniformly processed RNA-seq data from over 1.2 million 
-human samples, we developed deep neural network models to predict chronological age 
-from gene expression profiles. Our best-performing model achieved a mean absolute 
-error of 4.2 years (R² = 0.89) on held-out test data, substantially outperforming 
-traditional machine learning approaches including elastic net regression (MAE = 6.8 
-years) and random forests (MAE = 5.9 years). Feature importance analysis identified 
-genes enriched in senescence, inflammation, and mitochondrial function pathways as 
-the strongest predictors. Cross-tissue validation revealed that lung and blood 
-samples yielded the most accurate predictions, while liver showed the highest 
-variance. These findings establish deep learning as a powerful approach for 
-transcriptomic age prediction and identify candidate biomarkers for biological 
-aging assessment.
+Learned performance models offer unique advantages for compiler optimization by 
+capturing complex interactions between code and hardware. Using a corpus of over 1.2 
+million compiled functions with measured execution times, we developed deep neural 
+network models to predict runtime from static code features. Our best-performing model 
+achieved a mean absolute error of 4.2% (R² = 0.89) on held-out test data, substantially 
+outperforming traditional machine learning approaches including elastic net regression 
+(MAE = 6.8%) and random forests (MAE = 5.9%). Feature importance analysis identified 
+loop structure, memory-access patterns, and instruction mix as the strongest predictors. 
+Cross-architecture validation revealed that x86 and ARM targets yielded the most accurate 
+predictions, while GPU kernels showed the highest variance. These findings establish deep 
+learning as a powerful approach for runtime prediction and identify candidate features 
+for hardware-aware performance modeling.
 ```
 
 ## Introduction
@@ -197,16 +194,16 @@ Another expert in the field should be able to repeat your experiment exactly as 
 ### Standard Subsections
 
 #### Study Design
-- State the overall design (e.g., randomized controlled trial, cohort study, cross-sectional survey)
+- State the overall design (e.g., controlled experiment, ablation study, benchmark evaluation, user study)
 - Justify the design choice if not obvious
-- Mention blinding, randomization, or controls if applicable
+- Mention baselines, controls, and how conditions were held fixed if applicable
 
-#### Participants/Subjects/Sample
-- Define the population of interest
-- Describe inclusion and exclusion criteria precisely
-- Report sample size and how it was determined (power analysis)
-- Explain recruitment methods and setting
-- For animals: specify species, strain, age, sex, housing conditions
+#### Datasets/Participants/Sample
+- Define the datasets or population of interest
+- Describe inclusion and exclusion (or filtering) criteria precisely
+- Report dataset size / sample size and how it was determined
+- Explain data sources, collection, or recruitment methods and setting
+- For datasets: specify version, splits, preprocessing, license, and any known biases (e.g., a Datasheet)
 
 #### Materials and Equipment
 - List all materials, reagents, and equipment used
@@ -237,10 +234,10 @@ Another expert in the field should be able to repeat your experiment exactly as 
 - Mention adjustments for multiple comparisons if applicable
 
 #### Ethical Considerations
-- State IRB/ethics committee approval (with approval number)
-- Mention informed consent procedures
-- For human studies: state adherence to Helsinki Declaration
-- For animal studies: state adherence to relevant guidelines (e.g., ARRIVE)
+- For human-subjects studies (e.g., user studies): state IRB/ethics approval (with approval number)
+- Mention informed consent procedures where applicable
+- For datasets: document provenance, consent, licensing, and PII handling (e.g., a Datasheet)
+- Include a broader-impacts / ethics statement where the venue requires it (e.g., NeurIPS)
 
 ### Length
 - Typically 2-4 pages
@@ -269,9 +266,9 @@ Show, don't interpret. Save interpretation for the Discussion.
 ### Structure and Content
 
 **Opening Paragraph**
-- Describe the participants/sample characteristics
-- Report recruitment flow (e.g., screened, enrolled, completed)
-- Consider including a CONSORT-style flow diagram
+- Describe the dataset/sample characteristics
+- Report data flow (e.g., collected, filtered, split into train/val/test)
+- Consider including a data/experiment pipeline diagram
 
 **Subsequent Paragraphs**
 - Present results in logical order (usually primary outcome first)
@@ -286,7 +283,7 @@ Show, don't interpret. Save interpretation for the Discussion.
 - The statistical significance
 - The confidence interval
 
-**Example**: "Mean systolic blood pressure decreased by 12 mmHg in the intervention group compared to 3 mmHg in controls (difference: 9 mmHg, 95% CI: 4-14 mmHg, p=0.002)."
+**Example**: "Top-1 accuracy improved by 12 points for the proposed model compared to 3 points for the baseline (difference: 9 points, 95% CI: 4-14, p=0.002)."
 
 ### Integration with Figures and Tables
 
@@ -386,7 +383,7 @@ Interpret findings, relate them to existing knowledge, acknowledge limitations, 
 - Avoid generic limitations ("larger sample needed")—be specific
 
 **Paragraph 6: Implications**
-- Clinical implications (for medical research)
+- Practical / deployment implications (for applied research)
 - Practical applications
 - Policy implications
 - Theoretical contributions
@@ -409,25 +406,25 @@ Interpret findings, relate them to existing knowledge, acknowledge limitations, 
 
 **Comparing to Prior Work:**
 ```
-"Our finding of a 30% reduction in symptoms aligns with Smith et al. (2023), who
-reported a 28% reduction using a similar intervention. However, Jones et al. (2022)
-found no significant effect, possibly due to their use of a less intensive protocol."
+"Our finding of a 30% reduction in error aligns with Smith et al. (2023), who
+reported a 28% reduction using a similar method. However, Jones et al. (2022)
+found no significant improvement, possibly due to their smaller training budget."
 ```
 
 **Proposing Mechanisms:**
 ```
-"The observed improvement in cognitive function may result from increased cerebral
-blood flow, as evidenced by the concurrent increase in functional MRI signals in the
-prefrontal cortex. This interpretation is consistent with the vascular hypothesis of
-cognitive enhancement."
+"The observed improvement in accuracy may result from the sparse attention mechanism
+focusing on more relevant tokens, as evidenced by the concurrent increase in attention
+mass on salient positions in later layers. This interpretation is consistent with the
+hypothesis that redundant attention limits long-context performance."
 ```
 
 **Acknowledging Limitations:**
 ```
-"The cross-sectional design prevents causal inference. Additionally, the convenience
-sample from a single academic medical center may limit generalizability to community
-settings. Self-reported measures may introduce recall bias, though we attempted to
-minimize this through structured interviews."
+"Evaluating on a single benchmark prevents strong generalization claims. Additionally, using
+one model family trained on a single corpus may limit generalizability to other domains.
+Automatic metrics may not capture all aspects of quality, though we attempted to
+mitigate this with a human evaluation."
 ```
 
 ### Common Mistakes
@@ -466,12 +463,11 @@ Provide a concise summary of key findings and their significance.
 
 ### Example
 ```
-This randomized trial demonstrates that a 12-week mindfulness intervention significantly
-reduces anxiety symptoms in college students, with effects persisting at 6-month follow-up.
-These findings support the integration of mindfulness-based programs into university mental
-health services. Given the scalability and cost-effectiveness of group-based mindfulness
-training, this approach offers a promising strategy to address the growing mental health
-crisis in higher education.
+This study demonstrates that sparse attention significantly reduces inference latency in
+long-context transformers while matching dense-attention accuracy, with gains persisting
+across five benchmarks. These findings support integrating sparse attention into production
+long-context models. Given the efficiency and simplicity of the approach, it offers a
+promising strategy to address the growing cost of long-context inference at scale.
 ```
 
 ## Additional Sections
@@ -530,25 +526,25 @@ crisis in higher education.
 
 ## Adapting IMRAD to Different Study Types
 
-### Clinical Trials
-- Add CONSORT flow diagram in Results
-- Include trial registration number in Methods
-- Report adverse events in Results
+### Empirical ML Papers
+- Add a data/experiment pipeline diagram in Results/Experiments
+- Include dataset versions, splits, and seeds in Methods
+- Report ablations and failure cases in Results
 
-### Systematic Reviews/Meta-Analyses
+### Systematic Reviews/Surveys
 - Methods describes search strategy and inclusion criteria
-- Results includes PRISMA flow diagram and synthesis
-- May have additional sections (risk of bias assessment)
+- Results includes a search & screening flow diagram and synthesis
+- May have additional sections (taxonomy, quality/rigor assessment)
 
-### Case Reports
-- Introduction: background on the condition
-- Case Presentation: replaces Methods and Results
-- Discussion: relates case to literature
+### Case Studies / Deployment Reports
+- Introduction: background on the system or deployment setting
+- System Description: replaces Methods and Results
+- Discussion: relates the case to prior work
 
-### Observational Studies
-- Follow STROBE guidelines
-- Careful attention to potential confounders in Methods
-- Discussion addresses causality limitations
+### Systems / Measurement Studies
+- Follow reproducibility reporting standards (e.g., the NeurIPS checklist)
+- Careful attention to confounds (hardware, warm-up, variance) in Methods
+- Discussion addresses threats to validity and generalizability
 
 ## Venue-Specific Structure Expectations
 
@@ -557,7 +553,7 @@ crisis in higher education.
 | Venue Type | Length | Structure | Methods Placement | Key Focus |
 |-----------|--------|-----------|-------------------|-----------|
 | **Nature/Science** | 2,000-4,500 words | Modified IMRAD | Supplement | Broad significance |
-| **Medical** | 2,700-3,500 words | Strict IMRAD | Main text | Clinical outcomes |
+| **CS journals (TPAMI/JMLR)** | 8,000-12,000 words | Standard IMRAD | Main text | Rigor and reproducibility |
 | **Field journals** | 3,000-6,000 words | Standard IMRAD | Main text | Technical depth |
 | **ML conferences** | 8-9 pages (~6,000 words) | Intro-Method-Experiments-Conclusion | Main text (concise) | Novel contribution |
 
@@ -585,15 +581,15 @@ crisis in higher education.
 | Venue | Intro | Methods | Results/Experiments | Discussion/Conclusion |
 |-------|-------|---------|---------------------|----------------------|
 | **Nature/Science** | 10% | 15%* | 40% | 35% |
-| **Medical (NEJM/JAMA)** | 10% | 25% | 30% | 35% |
+| **CS journals (TPAMI/JMLR)** | 10% | 25% | 30% | 35% |
 | **Field journals** | 20% | 25% | 30% | 25% |
 | **ML conferences** | 12-15% | 30-35% | 40-45% | 5-8% |
 
 *Methods often in supplement for Nature/Science
 
-**Key medical journal features:**
-- NEJM/Lancet/JAMA: Strict IMRAD; clinical focus; structured Discussion; CONSORT/STROBE compliance
-- Clear primary/secondary outcomes; statistical pre-specification
+**Key CS journal features:**
+- TPAMI/JMLR/CACM: Standard IMRAD; rigor focus; thorough Discussion; reproducibility-checklist compliance
+- Clear primary/secondary metrics; pre-specified evaluation protocol
 
 **Key ML conference features:**
 - Numbered contribution list in intro
@@ -607,7 +603,7 @@ crisis in higher education.
 | Venue | Audience | Intro Focus | Methods Detail | Results/Experiments | Discussion/Conclusion |
 |-------|----------|-------------|----------------|---------------------|----------------------|
 | **Nature/Science** | Non-specialists | Broad significance | Brief, supplement | Story-driven | Broad implications |
-| **Medical** | Clinicians | Clinical problem | Comprehensive | Primary outcome first | Clinical relevance |
+| **CS journals** | CS researchers | Problem framing | Comprehensive | Primary metric first | Deployment relevance |
 | **Specialized** | Experts | Field context | Full technical | By experiment | Mechanistic depth |
 | **ML conferences** | ML researchers | Novel contribution | Reproducible | Baselines, ablations | Brief, limitations |
 

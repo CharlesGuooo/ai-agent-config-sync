@@ -34,7 +34,7 @@
 ### What Type of Study is Appropriate?
 
 **Experimental (Intervention) Studies:**
-- [ ] **Randomized Controlled Trial (RCT):** Gold standard for causation
+- [ ] **Controlled experiment with strong baselines and ablations:** Gold standard for causal/attribution claims
 - [ ] **Quasi-experimental:** Non-random assignment but manipulation
 - [ ] **Within-subjects:** Same participants in all conditions
 - [ ] **Between-subjects:** Different participants per condition
@@ -152,7 +152,7 @@
 - [ ] **Triple-blind:** Participants, researchers, and data analysts don't know
 - [ ] **Blinding feasibility:**
   - Is true blinding possible?
-  - Placebo/sham controls needed?
+  - Ablated/no-op variant as control needed?
   - Identical appearance of interventions?
 - [ ] **Blinding check:**
   - Assess whether blinding maintained
@@ -162,7 +162,7 @@
 
 ### What Type of Control?
 - [ ] **No treatment control:** Natural course of condition
-- [ ] **Placebo control:** Inert treatment for comparison
+- [ ] **Ablated/no-op variant as control:** Component removed for comparison
 - [ ] **Active control:** Standard treatment comparison
 - [ ] **Wait-list control:** Delayed treatment
 - [ ] **Attention control:** Matches contact time without active ingredient
@@ -332,7 +332,7 @@
 
 ### Ethical Approval
 - [ ] IRB/Ethics committee approval obtained
-- [ ] Study registered (ClinicalTrials.gov, etc.) if applicable
+- [ ] Study/benchmark registered (OSF, etc.) if applicable
 - [ ] Protocol follows Declaration of Helsinki or equivalent
 
 ### Informed Consent
@@ -390,18 +390,18 @@
 ## Reporting and Transparency
 
 ### Preregistration
-- [ ] Study preregistered (OSF, ClinicalTrials.gov, AsPredicted)
+- [ ] Study preregistered (OSF, AsPredicted)
 - [ ] Hypotheses stated a priori
 - [ ] Analysis plan documented
 - [ ] Distinguishes confirmatory from exploratory
 
 ### Reporting Guidelines
-- [ ] **RCTs:** CONSORT checklist
-- [ ] **Observational studies:** STROBE checklist
-- [ ] **Systematic reviews:** PRISMA checklist
-- [ ] **Diagnostic studies:** STARD checklist
-- [ ] **Qualitative research:** COREQ checklist
-- [ ] **Case reports:** CARE guidelines
+- [ ] **Empirical papers:** NeurIPS/ICML reproducibility checklist
+- [ ] **Benchmarks:** datasheet + eval protocol
+- [ ] **Systematic reviews:** search & screening flow
+- [ ] **Model releases:** model card
+- [ ] **Qualitative analysis:** documented example-selection criteria
+- [ ] **Case studies:** setup and configuration disclosure
 
 ### Transparency
 - [ ] All measures reported
@@ -433,7 +433,7 @@
 - [ ] Limitations acknowledged
 - [ ] Alternative explanations considered
 - [ ] Generalizability discussed
-- [ ] Clinical/practical significance addressed
+- [ ] Practical significance addressed
 
 ### Dissemination
 - [ ] Publish regardless of results (reduce publication bias)
@@ -446,7 +446,7 @@
 - [ ] Replication needed?
 - [ ] Follow-up studies identified
 - [ ] Mechanism studies planned
-- [ ] Clinical applications considered
+- [ ] Deployment considerations
 
 ## Common Pitfalls to Avoid
 

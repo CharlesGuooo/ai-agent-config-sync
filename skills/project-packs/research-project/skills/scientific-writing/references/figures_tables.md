@@ -14,15 +14,15 @@ A recent Nature Cell Biology checklist (2025) emphasizes that creating clear and
 - Showing detailed statistical outputs
 - Data cannot be adequately summarized in 1-2 sentences
 - Readers need access to specific data points
-- Displaying demographic or baseline characteristics
+- Displaying dataset or model configuration details
 - Presenting multiple related statistical tests
 
 **Example use cases:**
-- Baseline participant characteristics (age, sex, diagnosis, etc.)
-- Detailed statistical model outputs (coefficients, p-values, confidence intervals)
-- Dose-response data with exact values
-- Gene expression levels for specific genes
-- Chemical compositions or concentrations
+- Dataset statistics (size, number of classes, splits, label balance)
+- Detailed model outputs (per-class scores, coefficients, confidence intervals)
+- Benchmark leaderboards with exact metric values
+- Per-layer parameter counts or FLOPs for specific modules
+- Hyperparameter grids or configuration settings
 
 ### Use Figures When:
 - Showing trends over time
@@ -34,13 +34,13 @@ A recent Nature Cell Biology checklist (2025) emphasizes that creating clear and
 - Displaying workflows, diagrams, or schematics
 
 **Example use cases:**
-- Growth curves or time series
-- Dose-response curves
+- Training/validation loss curves over epochs
+- Accuracy vs. model size (scaling) curves
 - Scatter plots showing correlations
-- Bar graphs comparing treatment groups
+- Bar graphs comparing baseline and proposed methods
 - Histograms showing distributions
-- Heatmaps displaying patterns across conditions
-- Microscopy images or Western blots
+- Heatmaps displaying patterns across conditions (e.g., attention maps)
+- Qualitative example outputs or confusion matrices
 
 ### General Decision Rule
 
@@ -65,10 +65,10 @@ A recent Nature Cell Biology checklist (2025) emphasizes that creating clear and
 
 **Example of self-explanatory caption:**
 ```
-Figure 1. Mean systolic blood pressure (SBP) over 12 weeks in intervention and control groups.
-Error bars represent standard error of the mean (SEM). Asterisks indicate significant
-differences between groups at each time point (*p < 0.05, **p < 0.01, ***p < 0.001,
-two-tailed t-tests). n = 48 per group. BP = blood pressure; SEM = standard error of mean.
+Figure 1. Mean validation accuracy over 100 training epochs for the proposed model and baseline.
+Error bars represent standard error of the mean (SEM) across seeds. Asterisks indicate significant
+differences between models at each checkpoint (*p < 0.05, **p < 0.01, ***p < 0.001,
+two-tailed t-tests). n = 5 seeds per model. Acc = top-1 accuracy; SEM = standard error of mean.
 ```
 
 ### 2. Avoid Redundancy
@@ -77,15 +77,15 @@ two-tailed t-tests). n = 48 per group. BP = blood pressure; SEM = standard error
 
 **Bad practice:**
 ```
-"Mean age was 45.2 years in Group A and 47.8 years in Group B. Mean BMI was 26.3 in
-Group A and 28.1 in Group B. Mean systolic blood pressure was 132 mmHg in Group A..."
+"Model A reached 84.2% accuracy and Model B reached 85.1%. Model A used 12M parameters
+and Model B used 14M. Model A trained in 6.2 GPU-hours while Model B took 7.1..."
 [Also shown in Table 1]
 ```
 
 **Good practice:**
 ```
-"Baseline characteristics were similar between groups (Table 1), with no significant
-differences in age, BMI, or blood pressure (all p > 0.15)."
+"The two models achieved comparable accuracy (Table 1), with no significant
+differences in parameter count or training cost (all p > 0.15)."
 [Details in Table 1]
 ```
 
@@ -148,16 +148,16 @@ differences in age, BMI, or blood pressure (all p > 0.15)."
 - Missing error bars
 
 **Example applications:**
-- Mean gene expression across tissue types
-- Treatment group comparisons
-- Frequency of adverse events
+- Mean accuracy across model architectures
+- Baseline vs. proposed method comparisons
+- Frequency of error types
 
 ### Line Graphs
 
 **Best for:**
-- Showing trends over continuous variables (usually time)
-- Displaying multiple groups on same axes
-- Illustrating dose-response relationships
+- Showing trends over continuous variables (usually training steps or time)
+- Displaying multiple models on same axes
+- Illustrating scaling (performance vs. model/data size) relationships
 
 **Design guidelines:**
 - Use different line styles or colors for groups
@@ -172,10 +172,10 @@ differences in age, BMI, or blood pressure (all p > 0.15)."
 - Inconsistent time intervals without indication
 
 **Example applications:**
-- Growth curves
-- Time course experiments
-- Survival curves (Kaplan-Meier plots)
-- Pharmacokinetic profiles
+- Training/validation loss curves
+- Learning-rate or schedule sweeps
+- Accuracy vs. training-set size (data-scaling curves)
+- Throughput vs. batch size profiles
 
 ### Scatter Plots
 
@@ -197,9 +197,9 @@ differences in age, BMI, or blood pressure (all p > 0.15)."
 - Missing correlation statistics
 
 **Example applications:**
-- Correlation between biomarkers
-- Relationship between dose and response
-- Method comparison (Bland-Altman plots)
+- Correlation between two evaluation metrics
+- Relationship between model size and accuracy
+- Predicted vs. actual value plots
 
 ### Box Plots (Box-and-Whisker Plots)
 
@@ -220,9 +220,9 @@ differences in age, BMI, or blood pressure (all p > 0.15)."
 - Not marking outliers
 
 **Example applications:**
-- Comparing distributions across treatment groups
+- Comparing metric distributions across models or seeds
 - Showing variability in measurements
-- Quality control data
+- Ablation or hyperparameter sensitivity data
 
 ### Heatmaps
 
@@ -244,36 +244,36 @@ differences in age, BMI, or blood pressure (all p > 0.15)."
 - No color scale bar
 
 **Example applications:**
-- Gene expression across samples
+- Attention weights across tokens or heads
 - Correlation matrices
-- Time-series data across multiple variables
+- Metric values across hyperparameter grids
 
-### Images (Microscopy, Gels, Blots)
+### Images (Qualitative Visual Results)
 
 **Best for:**
-- Showing representative examples
-- Demonstrating morphology or localization
-- Presenting gel electrophoresis or Western blots
+- Showing representative model outputs
+- Demonstrating qualitative behavior or failure cases
+- Presenting generated samples or segmentation overlays
 
 **Design guidelines:**
-- Include scale bars (not magnification in caption)
-- Show representative images with quantification in separate panel
-- Label important features with arrows or labels
+- Include input/ground-truth/prediction panels side by side
+- Show representative examples with quantitative metrics in a separate panel
+- Label important regions with arrows or boxes
 - Ensure adequate resolution (usually 300+ dpi)
-- Show full, unmanipulated images with cropping noted
-- Include all relevant controls
+- Show uncherry-picked examples, with any cropping noted
+- Include relevant baselines for comparison
 
 **Common mistakes:**
-- No scale bar
-- Over-processed or manipulated images
-- Cherry-picking best images without quantification
+- No baseline for side-by-side comparison
+- Over-selected (cherry-picked) best-case examples
+- Showing successes without failure cases
 - Insufficient resolution
 
 **Example applications:**
-- Histological sections
-- Immunofluorescence
-- Western blots
-- Gel electrophoresis
+- Generated images or text samples
+- Segmentation / detection overlays
+- Saliency or attention visualizations
+- Reconstruction / super-resolution outputs
 
 ### Forest Plots
 
@@ -296,12 +296,12 @@ differences in age, BMI, or blood pressure (all p > 0.15)."
 ### Flow Diagrams
 
 **Best for:**
-- Study participant flow (CONSORT diagrams)
-- Systematic review search process (PRISMA diagrams)
-- Experimental workflows
+- Systematic-review search and screening flow (identification → screening → included)
+- Data/training pipeline and experimental workflows
+- Model architecture and dataflow diagrams
 
 **Design guidelines:**
-- Follow reporting guideline templates (CONSORT, PRISMA)
+- For surveys, follow a search & screening flow diagram (report counts per source)
 - Use consistent shapes and connectors
 - Include numbers at each stage
 - Clearly show inclusions and exclusions
@@ -345,20 +345,19 @@ differences in age, BMI, or blood pressure (all p > 0.15)."
 ### Example Table Format
 
 ```
-Table 1. Baseline Characteristics of Study Participants
+Table 1. Performance Comparison Across Seeds
 
-Characteristic          Intervention (n=50)   Control (n=48)    p-value
+Metric                   Proposed (n=5)       Baseline (n=5)    p-value
 ─────────────────────────────────────────────────────────────────────────
-Age, years               45.3 ± 8.2           47.1 ± 9.1        0.28
-Male sex, n (%)          28 (56)              25 (52)           0.71
-BMI, kg/m²               26.3 ± 3.8           27.1 ± 4.2        0.32
-Current smoker, n (%)    12 (24)              15 (31)           0.42
-Systolic BP, mmHg        132 ± 15             134 ± 18          0.54
+Top-1 accuracy, %        85.3 ± 0.8           83.1 ± 0.9        0.03
+F1 score, %              84.6 ± 0.7           82.4 ± 1.0        0.04
+Parameters, M            12.4                 14.1              —
+Training time, GPU-h     6.2 ± 0.3            7.1 ± 0.4         0.02
+Inference latency, ms    18 ± 2               21 ± 3           0.05
 ─────────────────────────────────────────────────────────────────────────
 
-Data presented as mean ± SD or n (%). p-values from independent t-tests for
-continuous variables and χ² tests for categorical variables. BMI = body mass
-index; BP = blood pressure; SD = standard deviation.
+Data presented as mean ± SD over 5 seeds. p-values from independent t-tests for
+continuous metrics. Acc = top-1 accuracy; GPU-h = GPU-hours; SD = standard deviation.
 ```
 
 ### Common Table Mistakes
@@ -521,7 +520,7 @@ n.s. or NS = not significant
 **Format:**
 ```
 "Results are shown in Figure 1."
-"Participant characteristics are presented in Table 2."
+"Dataset statistics are presented in Table 2."
 "Multiple analyses confirmed this finding (Figures 3-5)."
 ```
 
@@ -562,13 +561,12 @@ Table 1. [Descriptive Title]
 
 **Example comprehensive caption:**
 ```
-Figure 3. Cognitive performance improves with treatment over 12 weeks. (A) Mean Mini-Mental
-State Examination (MMSE) scores at baseline, 6 weeks, and 12 weeks for treatment (blue) and
-placebo (gray) groups. (B) Individual participant trajectories for treatment group. Error bars
-represent 95% confidence intervals. Asterisks indicate significant between-group differences
-(*p < 0.05, **p < 0.01, ***p < 0.001; repeated measures ANOVA with Bonferroni correction).
-n = 42 treatment, n = 40 placebo. MMSE scores range from 0-30, with higher scores indicating
-better cognitive function.
+Figure 3. Validation accuracy improves with the proposed method over 100 epochs. (A) Mean top-1
+accuracy at epochs 0, 50, and 100 for the proposed model (blue) and baseline (gray). (B) Individual
+per-seed accuracy trajectories for the proposed model. Error bars represent 95% confidence intervals
+over seeds. Asterisks indicate significant between-model differences (*p < 0.05, **p < 0.01,
+***p < 0.001; paired t-tests with Bonferroni correction). n = 5 seeds per model. Accuracy ranges
+from 0-100%, with higher scores indicating better performance.
 ```
 
 ## Journal-Specific Requirements
@@ -666,7 +664,7 @@ better cognitive function.
 | Venue Type | Display Limit | Format | Resolution | Key Features |
 |-----------|--------------|--------|------------|--------------|
 | **Nature/Science** | 4-6 main | EPS/PDF/TIFF | 300+ dpi | Extended data allowed; multi-panel figures |
-| **Medical journals** | 3-5 | TIFF/EPS | 300-600 dpi | CONSORT diagrams; conservative design |
+| **IEEE/ACM journals** | 3-8 | EPS/PDF | 300-600 dpi | Pipeline/architecture diagrams; column-fit sizing |
 | **PLOS ONE** | Unlimited | TIFF/EPS/PDF | 300+ dpi | Must work in grayscale |
 | **ML conferences** | 4-6 in 8-page limit | PDF (vector preferred) | Print quality | Compact design; info-dense figures |
 
@@ -722,8 +720,8 @@ better cognitive function.
 | Venue Type | Style | Example Features |
 |-----------|-------|------------------|
 | **Nature/Science** | Concise | Brief; *P<0.05; minimal methods |
-| **Medical** | Formal | Title case; 95% CIs; statistical tests spelled out |
-| **PLOS/BMC** | Detailed | Complete sentences; all abbreviations defined |
+| **IEEE/ACM journals** | Formal | Title case; 95% CIs; statistical tests spelled out |
+| **JMLR/open-access** | Detailed | Complete sentences; all abbreviations defined |
 | **ML conferences** | Technical | Architecture details; hyperparameters; dataset info |
 
 **ML conference caption example:**

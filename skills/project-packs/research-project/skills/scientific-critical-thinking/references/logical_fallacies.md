@@ -48,7 +48,7 @@
 
 **Examples:**
 - "My uncle smoked and lived to 90, so smoking isn't dangerous."
-- "This drug worked in 5 patients, so it's effective for everyone."
+- "This method beat the baseline on 5 examples, so it's better everywhere."
 - "I saw three black swans, so all swans are black."
 
 **Why fallacious:** Small, unrepresentative samples don't support universal claims.
@@ -131,7 +131,7 @@
 **Description:** Judging something based on its origin rather than its merits.
 
 **Examples:**
-- "This idea came from a drug company, so it's wrong."
+- "This idea came from a big tech company, so it's wrong."
 - "Ancient Greeks believed this, so it's outdated."
 
 **Better approach:** Evaluate evidence regardless of source.
@@ -141,7 +141,7 @@
 
 **Types:**
 - **Appeal to fear:** "If you don't vaccinate, your child will die."
-- **Appeal to pity:** "Think of the suffering patients who need this unproven treatment."
+- **Appeal to pity:** "Think of the grad students who spent months on this method; we should accept the result even without a proper baseline."
 - **Appeal to flattery:** "Smart people like you know that..."
 
 **Why fallacious:** Emotional reactions don't determine truth.
@@ -376,7 +376,7 @@
 
 **Examples:**
 - "My anecdotes count as evidence, but yours don't."
-- "Mainstream medicine needs RCTs, but my alternative doesn't."
+- "Published methods need ablations, but my method doesn't."
 - "Correlation doesn't imply causation—except when it supports my view."
 
 **Why fallacious:** Evidence standards should apply consistently.
@@ -397,8 +397,8 @@
 **Description:** If A, then B. B is true. Therefore, A is true.
 
 **Example:**
-- "If the drug works, symptoms improve. Symptoms improved. Therefore, the drug worked."
-- (Could be placebo, natural history, regression to mean)
+- "If the method works, the score improves. The score improved. Therefore, the method worked."
+- (Could be a lucky seed, cherry-picked run, or regression to the mean)
 
 **Why fallacious:** Other causes could produce the same outcome.
 

@@ -118,7 +118,7 @@
 - **Sampling bias:** Non-random sample
 - **Attrition bias:** Systematic dropout
 - **Volunteer bias:** Self-selected participants differ
-- **Berkson's bias:** Hospital patients differ from general population
+- **Benchmark selection bias:** Curated benchmark examples over-represent easy cases vs. real-world inputs
 - **Survivorship bias:** Only examining "survivors"
 
 **Detection:**
@@ -157,7 +157,7 @@
 **Mitigation:**
 - Standardize all procedures
 - Blind participants and providers
-- Use placebo controls
+- Use ablated/no-op controls
 - Monitor protocol adherence
 
 ### 12. Measurement Bias (Information Bias)
@@ -351,7 +351,7 @@
 
 ### Reporting
 1. Complete transparency
-2. CONSORT, PRISMA, or similar guidelines
+2. Reproducibility checklists (e.g. NeurIPS/ICML)
 3. Report all outcomes
 4. Distinguish exploratory from confirmatory
 5. Share data and code

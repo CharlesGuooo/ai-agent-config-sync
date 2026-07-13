@@ -89,9 +89,9 @@ Use for major findings and important discoveries:
 \begin{keyfindings}[Research Highlights]
 Our analysis revealed three significant findings:
 \begin{enumerate}
-    \item Treatment A was 40% more effective than control (\pvalue{0.001})
-    \item Effect sizes were clinically meaningful (\effectsize{d}{0.82})
-    \item Benefits persisted at 12-month follow-up
+    \item Method A was 40% more accurate than the baseline (\pvalue{0.001})
+    \item Effect sizes were practically meaningful (\effectsize{d}{0.82})
+    \item Gains persisted across all five benchmarks
 \end{enumerate}
 \end{keyfindings}
 ```
@@ -108,10 +108,10 @@ Use for highlighting methods and procedures:
 
 ```latex
 \begin{methodology}[Study Design]
-This double-blind, randomized controlled trial employed a 2×2 factorial
-design. Participants (\samplesize{450}) were randomized to one of four
-conditions: (1) Treatment A, (2) Treatment B, (3) Combined A+B, or
-(4) Placebo control.
+This study employed a 2×2 factorial design over four training
+configurations. Runs (\samplesize{450}) were assigned across four
+conditions: (1) Method A, (2) Method B, (3) Combined A+B, or
+(4) Baseline.
 \end{methodology}
 ```
 
@@ -127,10 +127,10 @@ Use for highlighting specific statistical results:
 
 ```latex
 \begin{resultsbox}[Primary Outcome Analysis]
-Mixed-effects regression revealed a significant treatment × time
+Mixed-effects regression revealed a significant method × epoch
 interaction, \effectsize{F(3, 446)}{8.72}, \psig{< 0.001},
 $\eta^2_p$ = 0.055, indicating differential improvement across
-treatment conditions over the study period.
+configurations over the training period.
 \end{resultsbox}
 ```
 
@@ -145,14 +145,14 @@ treatment conditions over the study period.
 Use for recommendations and implications:
 
 ```latex
-\begin{recommendations}[Clinical Practice Guidelines]
+\begin{recommendations}[Deployment Guidelines]
 Based on our findings, we recommend:
 \begin{enumerate}
-    \item \textbf{Primary recommendation:} Implement screening protocol
-        for high-risk populations.
-    \item \textbf{Secondary recommendation:} Adjust treatment intensity
-        based on baseline severity scores.
-    \item \textbf{Monitoring:} Reassess at 3-month intervals.
+    \item \textbf{Primary recommendation:} Enable the caching layer
+        for high-throughput workloads.
+    \item \textbf{Secondary recommendation:} Adjust batch size
+        based on available GPU memory.
+    \item \textbf{Monitoring:} Re-evaluate accuracy at each model update.
 \end{enumerate}
 \end{recommendations}
 ```
@@ -171,11 +171,11 @@ Use for limitations, caveats, and cautions:
 \begin{limitations}[Study Limitations]
 Several limitations should be considered:
 \begin{itemize}
-    \item \textbf{Sample:} Participants were recruited from academic
-        medical centers, limiting generalizability to community settings.
-    \item \textbf{Design:} The observational design precludes causal
-        inference about treatment effects.
-    \item \textbf{Attrition:} 15% dropout rate may introduce bias.
+    \item \textbf{Data:} Experiments used a single benchmark suite,
+        limiting generalizability to other domains.
+    \item \textbf{Design:} The observational comparison precludes causal
+        claims about the source of the gains.
+    \item \textbf{Variance:} Results over 5 seeds; more seeds would tighten estimates.
 \end{itemize}
 \end{limitations}
 ```
@@ -191,10 +191,10 @@ Several limitations should be considered:
 Use for critical warnings or safety information:
 
 ```latex
-\begin{criticalnotice}[Safety Warning]
-\textbf{Contraindication:} This intervention is contraindicated for
-patients with [condition]. Monitor for [adverse effects] and discontinue
-immediately if [symptoms] occur. Report serious adverse events to [contact].
+\begin{criticalnotice}[Usage Caveat]
+\textbf{Not recommended:} This model is not recommended for
+[out-of-distribution inputs]. Monitor for [failure modes] and disable
+the feature if [degradation] occurs. Report serious regressions to [contact].
 \end{criticalnotice}
 ```
 
@@ -241,20 +241,20 @@ correlations.
 ```latex
 \begin{table}[htbp]
 \centering
-\caption{Demographic Characteristics by Treatment Group}
+\caption{Configuration Details by Model}
 \label{tab:demographics}
 \begin{tabular}{@{}lcc@{}}
 \toprule
-\textbf{Characteristic} & \textbf{Treatment} & \textbf{Control} \\
+\textbf{Characteristic} & \textbf{Proposed} & \textbf{Baseline} \\
  & (\samplesize{225}) & (\samplesize{225}) \\
 \midrule
-Age, years, \meansd{M}{SD} & \meansd{42.3}{12.5} & \meansd{43.1}{11.8} \\
-\rowcolor{tablealt} Female, n (\%) & 128 (56.9) & 121 (53.8) \\
-Education, years, \meansd{M}{SD} & \meansd{14.2}{2.8} & \meansd{14.5}{2.6} \\
-\rowcolor{tablealt} Baseline score, \meansd{M}{SD} & \meansd{52.4}{15.3} & \meansd{51.8}{14.9} \\
+Parameters, M, \meansd{M}{SD} & \meansd{42.3}{12.5} & \meansd{43.1}{11.8} \\
+\rowcolor{tablealt} Sparse layers, n (\%) & 128 (56.9) & 121 (53.8) \\
+Training epochs, \meansd{M}{SD} & \meansd{14.2}{2.8} & \meansd{14.5}{2.6} \\
+\rowcolor{tablealt} Init. loss, \meansd{M}{SD} & \meansd{52.4}{15.3} & \meansd{51.8}{14.9} \\
 \bottomrule
 \end{tabular}
-\figurenote{No significant differences between groups at baseline (all \textit{p} > .10).}
+\figurenote{No significant differences between models at initialization (all \textit{p} > .10).}
 \end{table}
 ```
 
@@ -263,14 +263,14 @@ Education, years, \meansd{M}{SD} & \meansd{14.2}{2.8} & \meansd{14.5}{2.6} \\
 ```latex
 \begin{table}[htbp]
 \centering
-\caption{Treatment Effects on Primary and Secondary Outcomes}
+\caption{Method Effects on Primary and Secondary Metrics}
 \label{tab:results}
 \begin{tabular}{@{}lcccc@{}}
 \toprule
-\textbf{Outcome} & \textbf{Treatment} & \textbf{Control} & \textbf{Effect} & \textbf{p} \\
+\textbf{Metric} & \textbf{Proposed} & \textbf{Baseline} & \textbf{Effect} & \textbf{p} \\
  & \meansd{M}{SD} & \meansd{M}{SD} & \textbf{(d)} & \\
 \midrule
-Primary outcome & \meansd{68.4}{14.2} & \meansd{54.1}{15.8} & 0.95\sigthree & <.001 \\
+Primary metric & \meansd{68.4}{14.2} & \meansd{54.1}{15.8} & 0.95\sigthree & <.001 \\
 \rowcolor{tablealt} Secondary A & \meansd{4.2}{1.1} & \meansd{3.5}{1.2} & 0.61\sigtwo & .003 \\
 Secondary B & \meansd{22.8}{5.4} & \meansd{21.2}{5.1} & 0.31\sigone & .042 \\
 \rowcolor{tablealt} Secondary C & \meansd{8.9}{2.3} & \meansd{8.5}{2.4} & 0.17\signs & .285 \\
@@ -293,10 +293,10 @@ Secondary B & \meansd{22.8}{5.4} & \meansd{21.2}{5.1} & 0.31\sigone & .042 \\
 \toprule
 \textbf{Study} & \textbf{Design} & \textbf{N} & \textbf{Quality} & \textbf{Evidence} \\
 \midrule
-Smith et al. (2024) & RCT & 450 & \qualityhigh & \evidencestrong \\
-\rowcolor{tablealt} Jones et al. (2023) & Cohort & 1,250 & \qualitymedium & \evidencemoderate \\
-Chen et al. (2023) & Case-control & 320 & \qualitymedium & \evidencemoderate \\
-\rowcolor{tablealt} Lee et al. (2022) & Cross-sectional & 890 & \qualitylow & \evidenceweak \\
+Smith et al. (2024) & Controlled benchmark & 450 & \qualityhigh & \evidencestrong \\
+\rowcolor{tablealt} Jones et al. (2023) & Ablation study & 1,250 & \qualitymedium & \evidencemoderate \\
+Chen et al. (2023) & Observational eval & 320 & \qualitymedium & \evidencemoderate \\
+\rowcolor{tablealt} Lee et al. (2022) & Single-run report & 890 & \qualitylow & \evidenceweak \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -319,7 +319,7 @@ The style package automatically formats captions with:
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.9\textwidth]{../figures/results_comparison.png}
-\caption{Comparison of Outcome Scores by Treatment Condition and Time Point}
+\caption{Comparison of Accuracy by Model and Training Step}
 \label{fig:results}
 \end{figure}
 ```
@@ -469,10 +469,10 @@ The research addressed [key question] using [methodology].
 
 \begin{keyfindings}
 \begin{enumerate}
-    \item The primary intervention demonstrated a large effect
+    \item The proposed method demonstrated a large effect
           (\effectsize{d}{0.82}, \psig{< 0.001}).
-    \item Benefits were maintained at 12-month follow-up.
-    \item Cost-effectiveness analysis supports implementation.
+    \item Gains were maintained across all evaluated benchmarks.
+    \item Cost-efficiency analysis supports deployment.
 \end{enumerate}
 \end{keyfindings}
 
@@ -481,9 +481,9 @@ The research addressed [key question] using [methodology].
 \begin{recommendations}
 Based on these findings, we recommend:
 \begin{enumerate}
-    \item Implement the intervention in [settings].
-    \item Train practitioners using the standardized protocol.
-    \item Monitor outcomes using the validated measures.
+    \item Deploy the proposed method in [settings].
+    \item Onboard engineers using the standardized runbook.
+    \item Monitor outcomes using the validated metrics.
 \end{enumerate}
 \end{recommendations}
 ```
@@ -494,27 +494,27 @@ Based on these findings, we recommend:
 \chapter{Methods}
 
 \begin{methodology}[Study Overview]
-This randomized controlled trial employed a parallel-group design with
-1:1 allocation to intervention or control conditions. The study was
-conducted across 12 sites between January 2023 and December 2024.
+This study employed a controlled comparison with matched settings for the
+proposed method and baseline. Experiments were run across 12 benchmark
+tasks between January 2023 and December 2024.
 \end{methodology}
 
-\section{Participants}
+\section{Datasets}
 
-A total of \samplesize{450} participants were enrolled. Eligibility
+A total of \samplesize{450} evaluation instances were used. Inclusion
 criteria were:
 
 \begin{itemize}
-    \item Age 18--65 years
-    \item Diagnosis of [condition] per [criteria]
-    \item No contraindications to [intervention]
+    \item Sequence length 18--65k tokens
+    \item Task type in [target set] per [criteria]
+    \item No overlap with the training corpus
 \end{itemize}
 
-Table~\ref{tab:participants} presents participant characteristics.
+Table~\ref{tab:participants} presents dataset characteristics.
 
-\begin{limitations}[Recruitment Challenges]
-Recruitment was slower than anticipated due to [reasons]. The final
-sample was 10% below target, which may affect statistical power for
+\begin{limitations}[Data Challenges]
+Data collection was slower than anticipated due to [reasons]. The final
+set was 10% below target, which may affect statistical power for
 secondary analyses.
 \end{limitations}
 ```
@@ -527,19 +527,19 @@ secondary analyses.
 \section{Primary Outcome}
 
 \begin{resultsbox}[Primary Analysis]
-Mixed-effects regression revealed a significant treatment effect,
+Mixed-effects regression revealed a significant method effect,
 \effectsize{F(1, 448)}{42.18}, \psig{< 0.001}, with a large effect
-size (\effectsize{d}{0.82}). The treatment group showed significantly
-greater improvement (\meansd{16.4}{5.2} points) compared to control
+size (\effectsize{d}{0.82}). The proposed model showed significantly
+greater improvement (\meansd{16.4}{5.2} points) compared to the baseline
 (\meansd{8.1}{4.8} points).
 \end{resultsbox}
 
-Figure~\ref{fig:primary} illustrates the treatment effects over time.
+Figure~\ref{fig:primary} illustrates the method effects over training.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.9\textwidth]{../figures/primary_outcome.png}
-\caption{Primary Outcome Scores by Treatment Group and Time Point}
+\caption{Primary Metric by Model and Training Step}
 \figurenote{Error bars represent 95\% confidence intervals.}
 \label{fig:primary}
 \end{figure}
@@ -558,9 +558,9 @@ Results for secondary outcomes are presented in Table~\ref{tab:secondary}.
 
 \begin{keyfindings}[Main Conclusions]
 \begin{enumerate}
-    \item The intervention was highly effective (primary hypothesis
+    \item The proposed method was highly effective (primary hypothesis
           \highlight{supported})
-    \item Effects were clinically meaningful and durable
+    \item Effects were practically meaningful and consistent
     \item Evidence strength: \evidencestrong
 \end{enumerate}
 \end{keyfindings}
@@ -570,10 +570,10 @@ Results for secondary outcomes are presented in Table~\ref{tab:secondary}.
 \begin{limitations}
 Several limitations warrant consideration:
 \begin{itemize}
-    \item The sample was predominantly [demographic], limiting
+    \item The evaluation was predominantly on [domain], limiting
           generalizability.
-    \item Attrition was higher in the control group (18\% vs. 12\%).
-    \item Self-report measures may be subject to response bias.
+    \item Variance was higher for the baseline (18\% vs. 12\%).
+    \item Automatic metrics may be subject to measurement bias.
 \end{itemize}
 \end{limitations}
 
@@ -581,17 +581,17 @@ Several limitations warrant consideration:
 
 \begin{recommendations}[Research Implications]
 \begin{enumerate}
-    \item Replicate in diverse populations
-    \item Investigate mechanisms of change
-    \item Test implementation strategies
+    \item Replicate on diverse datasets
+    \item Investigate mechanisms behind the gains
+    \item Test additional deployment strategies
 \end{enumerate}
 \end{recommendations}
 
 \begin{recommendations}[Practice Implications]
 \begin{enumerate}
-    \item Adopt the intervention in [settings]
-    \item Train providers using standardized protocols
-    \item Monitor fidelity and outcomes
+    \item Deploy the proposed method in [settings]
+    \item Onboard engineers using standardized runbooks
+    \item Monitor reliability and outcomes
 \end{enumerate}
 \end{recommendations}
 ```

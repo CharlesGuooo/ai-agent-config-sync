@@ -1,6 +1,6 @@
 ---
 name: scientific-writing
-description: Core skill for the deep research and writing tool. Write scientific manuscripts in full paragraphs (never bullet points). Use two-stage process with (1) section outlines with key points using research-lookup then (2) convert to flowing prose. IMRAD structure, citations (APA/AMA/Vancouver), figures/tables, reporting guidelines (CONSORT/STROBE/PRISMA), for research papers and journal submissions.
+description: Core skill for the deep research and writing tool. Write scientific manuscripts in full paragraphs (never bullet points). Use two-stage process with (1) section outlines with key points using research-lookup then (2) convert to flowing prose. IMRAD structure, citations (APA/IEEE/ACM), figures/tables, and venue reproducibility/checklist requirements (e.g. NeurIPS/ICML), for research papers and conference/journal submissions.
 allowed-tools: Read Write Edit Bash
 license: MIT license
 metadata:
@@ -13,7 +13,7 @@ metadata:
 
 **This is the core skill for the deep research and writing tool**—combining AI-driven deep research with well-formatted written outputs. Every document produced is backed by comprehensive literature search and verified citations through the research-lookup skill.
 
-Scientific writing is a process for communicating research with precision and clarity. Write manuscripts using IMRAD structure, citations (APA/AMA/Vancouver), figures/tables, and reporting guidelines (CONSORT/STROBE/PRISMA). Apply this skill for research papers and journal submissions.
+Scientific writing is a process for communicating research with precision and clarity. Write manuscripts using IMRAD structure, citations (APA/IEEE/ACM), figures/tables, and venue reproducibility/checklist requirements (e.g. NeurIPS/ICML). Apply this skill for research papers and journal submissions.
 
 **Critical Principle: Always write in full paragraphs with flowing prose. Never submit bullet points in the final manuscript.** Use a two-stage process: first create section outlines with key points using research-lookup, then convert those outlines into complete paragraphs.
 
@@ -22,9 +22,9 @@ Scientific writing is a process for communicating research with precision and cl
 This skill should be used when:
 - Writing or revising any section of a scientific manuscript (abstract, introduction, methods, results, discussion)
 - Structuring a research paper using IMRAD or other standard formats
-- Formatting citations and references in specific styles (APA, AMA, Vancouver, Chicago, IEEE)
+- Formatting citations and references in specific styles (APA, IEEE, ACM, Chicago)
 - Creating, formatting, or improving figures, tables, and data visualizations
-- Applying study-specific reporting guidelines (CONSORT for trials, STROBE for observational studies, PRISMA for reviews)
+- Applying venue reproducibility and submission checklists (e.g., NeurIPS/ICML reproducibility checklist, experimental-setup and ablation reporting)
 - Drafting abstracts that meet journal requirements (structured or unstructured)
 - Preparing manuscripts for submission to specific journals
 - Improving writing clarity, conciseness, and precision
@@ -76,14 +76,14 @@ Every document should be richly illustrated. Generate figures liberally - when i
 | Presentations | 1/slide | 1-2/slide |
 | Posters | 6 | 8-10 |
 | Grants | 4 | 5-7 |
-| Clinical Reports | 3 | 4-6 |
+| Technical Reports | 3 | 4-6 |
 
 **Use scientific-schematics EXTENSIVELY for technical diagrams:**
 ```bash
 python scripts/generate_schematic.py "your diagram description" -o figures/output.png
 ```
 
-- Study design and methodology flowcharts (CONSORT, PRISMA, STROBE)
+- Experimental design and methodology flowcharts (search & screening, ablation setup)
 - Conceptual framework diagrams
 - Experimental workflow illustrations
 - Data analysis pipeline diagrams
@@ -100,7 +100,7 @@ python scripts/generate_image.py "your image description" -o figures/output.png
 ```
 
 - Photorealistic illustrations of concepts
-- Medical/anatomical illustrations
+- Architecture / pipeline diagrams
 - Environmental/ecological scenes
 - Equipment and lab setup visualizations
 - Artistic visualizations, infographics
@@ -139,8 +139,8 @@ For detailed guidance on IMRAD structure, refer to `references/imrad_structure.m
 
 **Alternative Structures**: Support discipline-specific formats including:
 - Review articles (narrative, systematic, scoping)
-- Case reports and case series
-- Meta-analyses and pooled analyses
+- Benchmark and dataset papers
+- Reproducibility and empirical studies
 - Theoretical/modeling papers
 - Methods papers and protocols
 
@@ -180,11 +180,10 @@ For detailed guidance on IMRAD structure, refer to `references/imrad_structure.m
 Apply citation styles correctly across disciplines. For comprehensive style guides, refer to `references/citation_styles.md`.
 
 **Major Citation Styles:**
-- **AMA (American Medical Association)**: Numbered superscript citations, common in medicine
-- **Vancouver**: Numbered citations in square brackets, biomedical standard
-- **APA (American Psychological Association)**: Author-date in-text citations, common in social sciences
-- **Chicago**: Notes-bibliography or author-date, humanities and sciences
+- **APA (American Psychological Association)**: Author-date in-text citations, common in ML and social sciences
 - **IEEE**: Numbered square brackets, engineering and computer science
+- **ACM**: Numbered citations, standard across many computer science venues
+- **Chicago**: Notes-bibliography or author-date, humanities and sciences
 
 **Best Practices:**
 - Cite primary sources when possible
@@ -216,23 +215,23 @@ Create effective data visualizations that enhance comprehension. For detailed be
 - Box plots: Showing distributions and outliers
 - Heatmaps: Visualizing matrices and patterns
 
-### 5. Reporting Guidelines by Study Type
+### 5. Reproducibility and Reporting Standards
 
-Ensure completeness and transparency by following established reporting standards. For comprehensive guideline details, refer to `references/reporting_guidelines.md`.
+Ensure completeness and transparency by following established reproducibility and reporting standards. For comprehensive details, refer to `references/reporting_guidelines.md`.
 
-**Key Guidelines:**
-- **CONSORT**: Randomized controlled trials
-- **STROBE**: Observational studies (cohort, case-control, cross-sectional)
-- **PRISMA**: Systematic reviews and meta-analyses
-- **STARD**: Diagnostic accuracy studies
-- **TRIPOD**: Prediction model studies
-- **ARRIVE**: Animal research
-- **CARE**: Case reports
-- **SQUIRE**: Quality improvement studies
-- **SPIRIT**: Study protocols for clinical trials
-- **CHEERS**: Economic evaluations
+**Key Checklists and Standards:**
+- **NeurIPS/ICML Reproducibility Checklist**: Model, data, and experimental details for conference submissions
+- **Experimental-setup reporting**: Baselines, hyperparameters, and compute budget
+- **Ablation study reporting**: Isolate the contribution of each component
+- **Statistical significance**: Report variance across seeds and confidence intervals
+- **Evaluation-protocol reporting**: Metrics, dataset splits, and evaluation conditions
+- **Model Cards**: Model documentation, intended use, and limitations
+- **Datasheets for Datasets**: Dataset documentation and provenance
+- **Search & screening flow diagram**: For survey and literature-review papers
+- **Pre-registration / experimental protocol**: Pre-committed hypotheses and analysis plans
+- **Compute and efficiency reporting**: FLOPs, energy, and wall-clock time
 
-Each guideline provides checklists ensuring all critical methodological elements are reported.
+Each standard provides checklists ensuring all critical methodological elements are reported.
 
 ### 6. Writing Principles and Style
 
@@ -313,7 +312,7 @@ traditional experimental approaches remain slow and resource-intensive, often re
 years of laboratory work and substantial financial investment. However, the application 
 of AI to rare diseases has been limited, with only two prior studies demonstrating 
 proof-of-concept results (Lee, 2022; Chen, 2023). The primary obstacle has been the 
-scarcity of training data for conditions affecting small patient populations. 
+scarcity of training data for conditions affecting small populations. 
 
 To address this challenge, we developed a transfer learning approach that leverages 
 knowledge from well-characterized common diseases to predict therapeutic targets for 
@@ -412,7 +411,7 @@ Description of methods and procedures.
 \end{methodology}
 
 % Recommendations (purple) - for action items
-\begin{recommendations}[Clinical Implications]
+\begin{recommendations}[Practical Implications]
 \begin{enumerate}
     \item Specific recommendation 1
     \item Specific recommendation 2
@@ -506,13 +505,13 @@ Adapt language, terminology, and conventions to match the specific scientific di
 - Identify preferred terms (e.g., "participants" vs. "subjects," "compound" vs. "drug," "specimens" vs. "samples")
 - Observe how methods, organisms, or techniques are typically described
 
-**Biomedical and Clinical Sciences:**
-- Use precise anatomical and clinical terminology (e.g., "myocardial infarction" not "heart attack" in formal writing)
-- Follow standardized disease nomenclature (ICD, DSM, SNOMED-CT)
-- Specify drug names using generic names first, brand names in parentheses if needed
-- Use "patients" for clinical studies, "participants" for community-based research
-- Follow Human Genome Variation Society (HGVS) nomenclature for genetic variants
-- Report lab values with standard units (SI units in most international journals)
+**Machine Learning and Computer Science:**
+- Use precise model and method names (e.g., "Transformer" not "the network" in formal writing)
+- Follow standardized dataset and benchmark naming (e.g., ImageNet, GLUE, MS COCO)
+- Report metrics using their standard definitions (e.g., top-1 accuracy, BLEU, F1, mAP)
+- Distinguish "training set," "validation set," and "test set" precisely and consistently
+- Specify hyperparameters, random seeds, and hardware to enable reproducibility
+- Report results with variance across runs (e.g., mean ± std over multiple seeds)
 
 **Molecular Biology and Genetics:**
 - Use italics for gene symbols (e.g., *TP53*), regular font for proteins (e.g., p53)
@@ -571,12 +570,12 @@ Adapt language, terminology, and conventions to match the specific scientific di
 - Create a glossary if numerous specialized terms are unavoidable
 
 **Maintain Consistency:**
-- Use the same term for the same concept throughout (don't alternate between "medication," "drug," and "pharmaceutical")
+- Use the same term for the same concept throughout (don't alternate between "model," "network," and "architecture")
 - Follow a consistent system for abbreviations (decide on "PCR" or "polymerase chain reaction" after first definition)
 - Apply the same nomenclature system throughout (especially for genes, species, chemicals)
 
 **Avoid Field Mixing Errors:**
-- Don't use clinical terminology for basic science (e.g., don't call mice "patients")
+- Don't borrow terminology from a subfield where it doesn't apply (e.g., don't call an offline benchmark evaluation a "production deployment")
 - Avoid colloquialisms or overly general terms in place of precise field terminology
 - Don't import terminology from adjacent fields without ensuring proper usage
 
@@ -609,7 +608,7 @@ Adapt language, terminology, and conventions to match the specific scientific di
 
 **Stage 1: Planning**
 1. Identify target journal and review author guidelines
-2. Determine applicable reporting guideline (CONSORT, STROBE, etc.)
+2. Determine the applicable reproducibility checklist (e.g., NeurIPS/ICML)
 3. Outline manuscript structure (usually IMRAD)
 4. Plan figures and tables as the backbone of the paper
 
@@ -673,13 +672,13 @@ This skill works effectively with:
 Different venues have dramatically different writing expectations:
 - **Nature/Science**: Accessible, story-driven, broad significance
 - **Cell Press**: Mechanistic depth, graphical abstracts, Highlights
-- **Medical journals (NEJM, Lancet)**: Structured abstracts, evidence language
+- **CV venues (CVPR, ICCV)**: Benchmark-driven, extensive ablations, quantitative comparison tables
 - **ML conferences (NeurIPS, ICML)**: Contribution bullets, ablation studies
 - **CS conferences (CHI, ACL)**: Field-specific conventions
 
 The venue-templates skill provides:
 - `venue_writing_styles.md`: Master style comparison
-- Venue-specific guides: `nature_science_style.md`, `cell_press_style.md`, `medical_journal_styles.md`, `ml_conference_style.md`, `cs_conference_style.md`
+- Venue-specific guides: `nature_science_style.md`, `cell_press_style.md`, `ml_conference_style.md`, `cs_conference_style.md`
 - `reviewer_expectations.md`: What reviewers look for at each venue
 - Writing examples in `assets/examples/`
 
@@ -690,7 +689,7 @@ The venue-templates skill provides:
 This skill includes comprehensive reference files covering specific aspects of scientific writing:
 
 - `references/imrad_structure.md`: Detailed guide to IMRAD format and section-specific content
-- `references/citation_styles.md`: Complete citation style guides (APA, AMA, Vancouver, Chicago, IEEE)
+- `references/citation_styles.md`: Complete citation style guides (APA, IEEE, ACM, Chicago)
 - `references/figures_tables.md`: Best practices for creating effective data visualizations
 - `references/reporting_guidelines.md`: Study-specific reporting standards and checklists
 - `references/writing_principles.md`: Core principles of effective scientific communication
@@ -712,7 +711,7 @@ This skill includes LaTeX style packages and templates for professional report f
 - Scientific notation commands for p-values, effect sizes, confidence intervals
 - Professional headers and footers
 
-**For venue-specific writing styles** (tone, voice, abstract format, reviewer expectations), see the **venue-templates** skill which provides comprehensive style guides for Nature/Science, Cell Press, medical journals, ML conferences, and CS conferences.
+**For venue-specific writing styles** (tone, voice, abstract format, reviewer expectations), see the **venue-templates** skill which provides comprehensive style guides for Nature/Science, Cell Press, ML conferences, CV venues, and CS conferences.
 
 Load these references as needed when working on specific aspects of scientific writing.
 

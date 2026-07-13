@@ -1,6 +1,6 @@
 ---
 name: peer-review
-description: Structured manuscript/grant review with checklist-based evaluation. Use when writing formal peer reviews with specific criteria methodology assessment, statistical validity, reporting standards compliance (CONSORT/STROBE), and constructive feedback. Best for actual review writing, manuscript revision. For evaluating claims/evidence quality use scientific-critical-thinking; for quantitative scoring frameworks use scholar-evaluation.
+description: Structured manuscript/grant review with checklist-based evaluation. Use when writing formal peer reviews with specific criteria: methodology assessment, statistical validity, reproducibility and reporting-checklist compliance (e.g. NeurIPS/ICML checklists), and constructive feedback. Best for actual review writing, manuscript revision. For evaluating claims/evidence quality use scientific-critical-thinking; for quantitative scoring frameworks use scholar-evaluation.
 allowed-tools: Read Write Edit Bash
 license: MIT license
 metadata:
@@ -21,7 +21,7 @@ This skill should be used when:
 - Assessing methodology and experimental design rigor
 - Reviewing statistical analyses and reporting standards
 - Evaluating reproducibility and data availability
-- Checking compliance with reporting guidelines (CONSORT, STROBE, PRISMA)
+- Checking compliance with venue reporting/reproducibility checklists (e.g. NeurIPS/ICML reproducibility checklists)
 - Providing constructive feedback on scientific writing
 
 ## Visual Enhancement with Scientific Schematics
@@ -96,7 +96,7 @@ Conduct a thorough evaluation of each manuscript section, documenting specific c
 #### Methods
 - **Reproducibility:** Can another researcher replicate the study from the description provided?
 - **Rigor:** Are the methods appropriate for addressing the research questions?
-- **Detail:** Are protocols, reagents, equipment, and parameters sufficiently described?
+- **Detail:** Are protocols, datasets, hardware, and hyperparameters sufficiently described?
 - **Ethics:** Are ethical approvals, consent, and data handling properly documented?
 - **Statistics:** Are statistical methods appropriate, clearly described, and justified?
 - **Validation:** Are controls, replicates, and validation approaches adequate?
@@ -163,19 +163,19 @@ Evaluate the technical quality and rigor of the research with particular attenti
 
 **Experimental Design:**
 - Are controls appropriate and adequate?
-- Is replication sufficient (biological and technical)?
+- Is replication sufficient (multiple random seeds and independent runs)?
 - Are potential confounders identified and controlled?
 - Is randomization properly implemented?
 - Are blinding procedures adequate?
 - Is the experimental design optimal for the research question?
 
-**Computational/Bioinformatics:**
+**Computational/ML Methods:**
 - Are computational methods clearly described and justified?
 - Are software versions and parameters documented?
 - Is code made available for reproducibility?
 - Are algorithms and models validated appropriately?
 - Are assumptions of computational methods met?
-- Is batch correction applied appropriately?
+- Are data splits free of leakage between train/validation/test?
 
 ### Stage 4: Reproducibility and Transparency
 
@@ -183,8 +183,8 @@ Assess whether the research meets modern standards for reproducibility and open 
 
 **Data Availability:**
 - Are raw data deposited in appropriate repositories?
-- Are accession numbers provided for public databases?
-- Are data sharing restrictions justified (e.g., patient privacy)?
+- Are dataset identifiers or DOIs provided for public repositories?
+- Are data-sharing restrictions justified (e.g., data licensing, PII, or sensitive-data constraints)?
 - Are data formats standard and accessible?
 
 **Code and Materials:**
@@ -193,7 +193,7 @@ Assess whether the research meets modern standards for reproducibility and open 
 - Are protocols detailed in sufficient depth?
 
 **Reporting Standards:**
-- Does the manuscript follow discipline-specific reporting guidelines (CONSORT, PRISMA, ARRIVE, MIAME, MINSEQE, etc.)?
+- Does the manuscript follow the venue's reporting/reproducibility checklists (e.g. NeurIPS/ICML reproducibility checklist, datasheet/model-card disclosure, experimental-setup and compute reporting)?
 - See `references/reporting_standards.md` for common guidelines
 - Are all elements of the appropriate checklist addressed?
 
@@ -212,7 +212,7 @@ Evaluate the quality, clarity, and integrity of data visualization.
 
 **Integrity Checks:**
 - Are there signs of image manipulation (duplications, splicing)?
-- Are Western blots and gels appropriately presented?
+- Are plots and result tables free of misleading scaling or truncation?
 - Are representative images truly representative?
 - Are all conditions shown (no selective presentation)?
 
@@ -230,14 +230,14 @@ Verify that the research meets ethical standards and guidelines.
 - Is IRB/ethics approval documented?
 - Is informed consent described?
 - Are vulnerable populations appropriately protected?
-- Is patient privacy adequately protected?
+- Is data privacy (PII, sensitive attributes) adequately protected?
 - Are potential conflicts of interest disclosed?
 
-**Animal Research:**
-- Is IACUC or equivalent approval documented?
-- Are procedures humane and justified?
-- Are the 3Rs (replacement, reduction, refinement) considered?
-- Are euthanasia methods appropriate?
+**Data and Societal Impact:**
+- Is dataset provenance and licensing documented?
+- Is annotation/crowdworker sourcing described and fairly compensated?
+- Are potential dual-use or misuse risks discussed?
+- Are broader societal impacts and deployment risks considered?
 
 **Research Integrity:**
 - Are there concerns about data fabrication or falsification?
@@ -362,12 +362,12 @@ Maintain a constructive, professional, and collegial tone throughout the review.
 - Verify that conclusions are data-driven
 - Check for complete methods and appropriate controls
 
-### Reviews and Meta-Analyses
-- Evaluate comprehensiveness of literature coverage
+### Surveys, Benchmarks, and Reproducibility Studies
+- Evaluate comprehensiveness of literature or benchmark coverage
 - Assess search strategy and inclusion/exclusion criteria
 - Verify systematic approach and lack of bias
 - Check for critical analysis vs. mere summarization
-- For meta-analyses, evaluate statistical approach and heterogeneity
+- For benchmark meta-studies, evaluate aggregation methodology and variance across datasets and seeds
 
 ### Methods Papers
 - Emphasize validation and comparison to existing methods
@@ -545,7 +545,7 @@ Slide 18: Alignment - title not centered
 This skill includes reference materials to support comprehensive peer review:
 
 ### references/reporting_standards.md
-Guidelines for major reporting standards across disciplines (CONSORT, PRISMA, ARRIVE, MIAME, STROBE, etc.) to evaluate completeness of methods and results reporting.
+Guidelines for venue reporting and reproducibility checklists (e.g. NeurIPS/ICML reproducibility checklists, datasheets, model cards) to evaluate completeness of methods, experimental-setup, and results reporting.
 
 ### references/common_issues.md
 Catalog of frequent methodological and statistical issues encountered in peer review, with guidance on identifying and addressing them.

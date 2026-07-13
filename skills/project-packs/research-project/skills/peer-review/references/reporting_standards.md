@@ -1,290 +1,184 @@
-# Scientific Reporting Standards and Guidelines
+# Reproducibility and Reporting Standards for AI/ML Research
 
-This document catalogs major reporting standards and guidelines across scientific disciplines. When reviewing manuscripts, verify that authors have followed the appropriate guidelines for their study type and discipline.
+This document catalogs major reproducibility and reporting standards used across AI, machine learning, and computer science research. When reviewing submissions, verify that authors have followed the appropriate guidelines for their contribution type (empirical model, dataset, benchmark, systems artifact) and venue.
 
-## Clinical Trials and Medical Research
+## Machine Learning Reproducibility Checklists
 
-### CONSORT (Consolidated Standards of Reporting Trials)
-**Purpose:** Randomized controlled trials (RCTs)
+### NeurIPS Reproducibility Checklist / Paper Checklist
+**Purpose:** Empirical ML papers (models, training, evaluation) at major ML venues
 **Key Requirements:**
-- Trial design, participants, and interventions clearly described
-- Primary and secondary outcomes specified
-- Sample size calculation and statistical methods
-- Participant flow through trial (enrollment, allocation, follow-up, analysis)
-- Baseline characteristics of participants
-- Numbers analyzed in each group
-- Outcomes and estimation with confidence intervals
-- Adverse events
-- Trial registration number and protocol access
+- Claims in abstract/intro match theoretical and experimental results
+- Full set of assumptions and complete proofs for theoretical results
+- Training details: data splits, hyperparameters, how they were chosen, optimizer
+- Compute reporting (hardware type, memory, wall-clock time, number of runs)
+- Code and data disclosed, or clear justification for not disclosing
+- Error bars / variance reported and how they were computed (seeds, runs)
+- Existing assets (datasets, models, code) properly credited and licensed
+- Limitations and potential negative societal impacts discussed
 
-**Reference:** http://www.consort-statement.org/
+**Reference:** https://neurips.cc/public/guides/PaperChecklist
 
-### STROBE (Strengthening the Reporting of Observational Studies in Epidemiology)
-**Purpose:** Observational studies (cohort, case-control, cross-sectional)
+### ML Reproducibility Checklist (Pineau et al.)
+**Purpose:** Any empirical machine learning contribution; basis for many venue checklists
 **Key Requirements:**
-- Study design clearly stated
-- Setting, eligibility criteria, and participant sources
-- Variables clearly defined
-- Data sources and measurement methods
-- Bias assessment
-- Sample size justification
-- Statistical methods including handling of missing data
-- Participant flow and characteristics
-- Main results with confidence intervals
-- Limitations discussed
+- Clear description of the mathematical setting, algorithm, and model
+- Description of computing infrastructure used
+- Average runtime for each result or estimated energy cost
+- Number of parameters in each model
+- Bounds for each hyperparameter and the method used to select final values
+- Exact number of training/evaluation runs
+- A description of how results were aggregated (mean, best-of, variance)
+- Link to downloadable source code, with specification of dependencies
+- Description of data collection / preprocessing / splits, and access
 
-**Reference:** https://www.strobe-statement.org/
+**Reference:** https://www.cs.mcgill.ca/~jpineau/ReproducibilityChecklist.pdf
 
-### PRISMA (Preferred Reporting Items for Systematic Reviews and Meta-Analyses)
-**Purpose:** Systematic reviews and meta-analyses
+## Model and Dataset Documentation
+
+### Model Cards
+**Purpose:** Transparent documentation of trained models and their intended use
 **Key Requirements:**
-- Protocol registration
-- Systematic search strategy across multiple databases
-- Inclusion/exclusion criteria
-- Study selection process
-- Data extraction methods
-- Quality assessment of included studies
-- Statistical methods for meta-analysis
-- Assessment of publication bias
-- Heterogeneity assessment
-- PRISMA flow diagram showing study selection
-- Summary of findings tables
+- Model details (architecture, version, training date, owners)
+- Intended use and out-of-scope / misuse cases
+- Training data and evaluation data described
+- Metrics and decision thresholds, with disaggregated evaluation
+- Quantitative results broken down by relevant subgroups
+- Ethical considerations, caveats, and known limitations
 
-**Reference:** http://www.prisma-statement.org/
+**Reference:** https://arxiv.org/abs/1810.03993
 
-### SPIRIT (Standard Protocol Items: Recommendations for Interventional Trials)
-**Purpose:** Clinical trial protocols
+### Datasheets for Datasets
+**Purpose:** Documentation accompanying datasets
 **Key Requirements:**
-- Administrative information (title, registration, funding)
-- Introduction (rationale, objectives)
-- Methods (design, participants, interventions, outcomes, sample size)
-- Ethics and dissemination
-- Trial schedule and assessments
+- Motivation (why the dataset was created, by whom, funding)
+- Composition (what instances represent, number, labels, missing data)
+- Collection process (how data was acquired, sampling, consent)
+- Preprocessing / cleaning / labeling steps
+- Uses (tasks the dataset is/could be used for, tasks to avoid)
+- Distribution and licensing
+- Maintenance (who maintains, update and versioning plan)
 
-**Reference:** https://www.spirit-statement.org/
+**Reference:** https://arxiv.org/abs/1803.09010
 
-### CARE (CAse REport guidelines)
-**Purpose:** Case reports
+### Data Statements (for NLP)
+**Purpose:** Documenting the provenance and demographics of language datasets
 **Key Requirements:**
-- Patient information and demographics
-- Clinical findings
-- Timeline of events
-- Diagnostic assessment
-- Therapeutic interventions
-- Follow-up and outcomes
-- Patient perspective
-- Informed consent
+- Curation rationale and language variety
+- Speaker and annotator characteristics
+- Speech situation and text characteristics
+- Recording / collection quality
+- Known limitations of representativeness
 
-**Reference:** https://www.care-statement.org/
+**Reference:** https://aclanthology.org/Q18-1041/
 
-## Animal Research
+## Code, Data, and Artifact Availability
 
-### ARRIVE (Animal Research: Reporting of In Vivo Experiments)
-**Purpose:** Studies involving animal research
+### Code and Data Availability
+**Purpose:** Enabling independent replication of computational results
 **Key Requirements:**
-- Title indicates study involves animals
-- Abstract provides accurate summary
-- Background and objectives clearly stated
-- Ethical statement and approval
-- Housing and husbandry details
-- Animal details (species, strain, sex, age, weight)
-- Experimental procedures in detail
-- Experimental animals (number, allocation, welfare assessment)
-- Statistical methods appropriate
-- Exclusion criteria stated
-- Sample size determination
-- Randomization and blinding described
-- Outcome measures defined
-- Adverse events reported
+- Public repository (or anonymized repo during review) for training/eval code
+- Dependency specification (requirements.txt, environment.yml, Dockerfile, lockfile)
+- Exact commands and configs to reproduce each reported result
+- Dataset access, versioning, and splits, or scripts to regenerate them
+- Random seeds and instructions for deterministic execution where feasible
+- Persistent archival with a DOI (Zenodo, figshare) for the release used
 
-**Reference:** https://arriveguidelines.org/
+**Reference:** https://www.acm.org/publications/policies/artifact-review-and-badging-current
 
-## Genomics and Molecular Biology
-
-### MIAME (Minimum Information About a Microarray Experiment)
-**Purpose:** Microarray experiments
+### ACM Artifact Review and Badging
+**Purpose:** Independent evaluation of research artifacts by a committee
 **Key Requirements:**
-- Experimental design clearly described
-- Array design information
-- Samples (origin, preparation, labeling)
-- Hybridization procedures and parameters
-- Image acquisition and quantification
-- Normalization and data transformation
-- Raw and processed data availability
-- Database accession numbers
+- Artifact packaged with documentation and a getting-started guide
+- "Artifacts Available" - placed in a public archival repository
+- "Artifacts Evaluated - Functional" - complete, documented, and exercisable
+- "Artifacts Evaluated - Reusable" - well documented for reuse and extension
+- "Results Reproduced" - key results independently obtained by evaluators
+- Clear mapping from artifact steps to the paper's tables/figures
 
-**Reference:** http://fged.org/projects/miame/
+**Reference:** https://www.acm.org/publications/policies/artifact-review-and-badging-current
 
-### MINSEQE (Minimum Information about a high-throughput Nucleotide Sequencing Experiment)
-**Purpose:** High-throughput sequencing (RNA-seq, ChIP-seq, etc.)
+## Experimental Setup and Compute Reporting
+
+### Experimental Setup and Compute
+**Purpose:** Making empirical results interpretable and comparable
 **Key Requirements:**
-- Experimental design and biological context
-- Sample information (source, preparation, QC)
-- Library preparation (protocol, adapters, size selection)
-- Sequencing platform and parameters
-- Data processing pipeline (alignment, quantification, normalization)
-- Quality control metrics
-- Raw data deposition (SRA, GEO, ENA)
-- Processed data and analysis code availability
+- Datasets, train/validation/test splits, and preprocessing fully specified
+- Baselines described with sources; comparable tuning budget across methods
+- Hyperparameter search space, method, and budget reported
+- Hardware (GPU/TPU/CPU type, count, memory) and software versions
+- Wall-clock training/inference time and total compute (e.g., GPU-hours)
+- Ablations isolating the contribution of each component
+- Number of runs/seeds and how final numbers were selected
 
-### MIGS/MIMS (Minimum Information about a Genome/Metagenome Sequence)
-**Purpose:** Genome and metagenome sequencing
+**Reference:** https://arxiv.org/abs/2003.12206
+
+### Efficiency and Compute Transparency ("Green AI")
+**Purpose:** Reporting the computational cost of results
 **Key Requirements:**
-- Sample origin and environmental context
-- Sequencing methods and coverage
-- Assembly methods and quality metrics
-- Annotation approach
-- Quality control and contamination screening
-- Data deposition in INSDC databases
+- Report floating-point operations or GPU-hours for main experiments
+- Report model size (parameters) and inference cost
+- Report hyperparameter search cost, not just the final run
+- Where relevant, estimate energy consumption / carbon footprint
 
-**Reference:** https://gensc.org/
+**Reference:** https://arxiv.org/abs/1907.10597
 
-## Structural Biology
+## Statistical Rigor and Variance Reporting
 
-### PDB (Protein Data Bank) Deposition Requirements
-**Purpose:** Macromolecular structure determination
+### Statistical Significance and Variance Reporting
+**Purpose:** Distinguishing real improvements from noise
 **Key Requirements:**
-- Atomic coordinates deposited
-- Structure factors for X-ray structures
-- Restraints and experimental data for NMR
-- EM maps and metadata for cryo-EM
-- Model quality validation metrics
-- Experimental conditions (crystallization, sample preparation)
-- Data collection parameters
-- Refinement statistics
+- Multiple runs with different random seeds for stochastic methods
+- Report mean and a measure of spread (standard deviation, confidence interval)
+- State how many runs and how they were aggregated (mean vs. best-of-N)
+- Significance testing for claimed improvements, with correction for multiple comparisons
+- Distinguish practical (effect-size) significance from statistical significance
+- Report full score distributions, not just the maximum
 
-**Reference:** https://www.wwpdb.org/
+**Reference:** https://arxiv.org/abs/2109.14545
 
-## Proteomics and Mass Spectrometry
+## Pre-Registration and Open Science
 
-### MIAPE (Minimum Information About a Proteomics Experiment)
-**Purpose:** Proteomics experiments
+### Pre-Registration
+**Purpose:** Reducing HARKing and selective reporting in empirical studies
 **Key Requirements:**
-- Sample processing and fractionation
-- Separation methods (2D gel, LC)
-- Mass spectrometry parameters (instrument, acquisition)
-- Database search and validation parameters
-- Peptide and protein identification criteria
-- Quantification methods
-- Statistical analysis
-- Data deposition (PRIDE, PeptideAtlas)
+- Hypotheses and primary evaluation metrics fixed before running experiments
+- Analysis plan and success criteria specified in advance
+- Clear separation of confirmatory vs. exploratory results
+- Deviations from the plan documented and justified
 
-**Reference:** http://www.psidev.info/
+**Reference:** https://preregister.science/
 
-## Neuroscience
-
-### COBIDAS (Committee on Best Practices in Data Analysis and Sharing)
-**Purpose:** MRI and fMRI studies
-**Key Requirements:**
-- Scanner and sequence parameters
-- Preprocessing pipeline details
-- Software versions and parameters
-- Statistical analysis approach
-- Multiple comparison correction
-- ROI definitions
-- Data sharing (raw data, analysis scripts)
-
-**Reference:** https://www.humanbrainmapping.org/cobidas
-
-## Flow Cytometry
-
-### MIFlowCyt (Minimum Information about a Flow Cytometry Experiment)
-**Purpose:** Flow cytometry experiments
-**Key Requirements:**
-- Experimental overview and purpose
-- Sample characteristics and preparation
-- Instrument information and settings
-- Reagents (antibodies, fluorophores, concentrations)
-- Compensation and controls
-- Gating strategy
-- Data analysis approach
-- Data availability
-
-**Reference:** http://flowcyt.org/
-
-## Ecology and Environmental Science
-
-### MIAPPE (Minimum Information About a Plant Phenotyping Experiment)
-**Purpose:** Plant phenotyping studies
-**Key Requirements:**
-- Investigation and study metadata
-- Biological material information
-- Environmental parameters
-- Experimental design and factors
-- Phenotypic measurements and methods
-- Data file descriptions
-
-**Reference:** https://www.miappe.org/
-
-## Chemistry and Chemical Biology
-
-### MIRIBEL (Minimum Information Reporting in Bio-Nano Experimental Literature)
-**Purpose:** Nanomaterial characterization
-**Key Requirements:**
-- Nanomaterial composition and structure
-- Size, shape, and morphology characterization
-- Surface chemistry and functionalization
-- Purity and stability
-- Experimental conditions
-- Characterization methods
-
-## Quality Assessment and Bias
-
-### CAMARADES (Collaborative Approach to Meta-Analysis and Review of Animal Data from Experimental Studies)
-**Purpose:** Quality assessment for animal studies in systematic reviews
-**Key Items:**
-- Publication in peer-reviewed journal
-- Statement of temperature control
-- Randomization to treatment
-- Blinded assessment of outcome
-- Avoidance of anesthetic with marked intrinsic properties
-- Use of appropriate animal model
-- Sample size calculation
-- Compliance with regulatory requirements
-- Statement of conflict of interest
-- Study pre-registration
-
-### SYRCLE's Risk of Bias Tool
-**Purpose:** Assessing risk of bias in animal intervention studies
-**Domains:**
-- Selection bias (sequence generation, baseline characteristics, allocation concealment)
-- Performance bias (random housing, blinding of personnel)
-- Detection bias (random outcome assessment, blinding of assessors)
-- Attrition bias (incomplete outcome data)
-- Reporting bias (selective outcome reporting)
-- Other sources of bias
-
-## General Principles Across Guidelines
+## General Principles Across Standards
 
 ### Common Requirements
-1. **Transparency:** All methods, materials, and analyses fully described
-2. **Reproducibility:** Sufficient detail for independent replication
-3. **Data Availability:** Raw data and analysis code shared or deposited
-4. **Registration:** Studies pre-registered where applicable
-5. **Ethics:** Appropriate approvals and consent documented
+1. **Transparency:** All methods, models, data, and analyses fully described
+2. **Reproducibility:** Sufficient detail (code, configs, seeds) for independent replication
+3. **Availability:** Code and data shared or archived with a persistent identifier
+4. **Pre-Specification:** Hypotheses and metrics fixed in advance where applicable
+5. **Attribution:** Datasets, models, and code properly cited and licensed
 6. **Conflicts of Interest:** Disclosed for all authors
-7. **Statistical Rigor:** Methods appropriate and fully described
-8. **Completeness:** All outcomes reported, including negative results
+7. **Statistical Rigor:** Variance reported over seeds/runs; comparisons tested
+8. **Completeness:** All results reported, including negative and ablation results
 
 ### Red Flags for Non-Compliance
-- Methods section lacks critical details
-- No mention of following reporting guidelines
-- Data availability statement missing or vague
-- No database accession numbers for omics data
-- No trial registration for clinical studies
-- Sample size not justified
-- Statistical methods inadequately described
-- Missing flow diagrams (CONSORT, PRISMA)
-- Selective reporting of outcomes
+- Methods section lacks critical details (splits, hyperparameters, optimizer)
+- No mention of following a reproducibility checklist
+- Code/data availability statement missing or vague ("available upon request")
+- No repository, seeds, or configs for computational results
+- Single run with no variance reported over seeds
+- Compute and hardware not reported; runtime and cost unknown
+- Baselines under-tuned relative to the proposed method
+- Missing search & screening flow for a survey/systematic review
+- Selective reporting of results (best-of-N without disclosure)
 
 ## How to Use This Reference
 
-When reviewing a manuscript:
-1. Identify the study type and discipline
-2. Find the relevant reporting guideline(s)
-3. Check if authors mention following the guideline
-4. Verify that key requirements are addressed
+When reviewing a submission:
+1. Identify the contribution type (empirical model, dataset, benchmark, systems artifact, theory)
+2. Find the relevant reporting standard(s) and venue checklist
+3. Check if authors completed and honored the venue's reproducibility checklist
+4. Verify that key requirements are addressed (code, data, compute, seeds, variance)
 5. Note any missing elements in your review
-6. Suggest the appropriate guideline if not mentioned
+6. Suggest the appropriate standard if not mentioned
 
-Many journals require authors to complete reporting checklists at submission. Reviewers should verify compliance even if a checklist was submitted.
+Many venues require authors to complete a reproducibility checklist at submission and offer artifact-evaluation badges. Reviewers should verify compliance even if a checklist was submitted.

@@ -1,484 +1,482 @@
 # Evidence Hierarchy and Quality Assessment
 
-## Traditional Evidence Hierarchy (Medical/Clinical)
+## Evidence Hierarchy for Computational Claims (CS/ML)
 
-### Level 1: Systematic Reviews and Meta-Analyses
-**Description:** Comprehensive synthesis of all available evidence on a question.
-
-**Strengths:**
-- Combines multiple studies for greater power
-- Reduces impact of single-study anomalies
-- Can identify patterns across studies
-- Quantifies overall effect size
-
-**Weaknesses:**
-- Quality depends on included studies ("garbage in, garbage out")
-- Publication bias can distort findings
-- Heterogeneity may make pooling inappropriate
-- Can mask important differences between studies
-
-**Critical evaluation:**
-- Was search comprehensive (multiple databases, grey literature)?
-- Were inclusion criteria appropriate and prespecified?
-- Was study quality assessed?
-- Was heterogeneity explored?
-- Was publication bias assessed (funnel plots, fail-safe N)?
-- Were appropriate statistical methods used?
-
-### Level 2: Randomized Controlled Trials (RCTs)
-**Description:** Experimental studies with random assignment to conditions.
+### Level 1: Independently Reproduced Results (Across Groups and Seeds)
+**Description:** A finding confirmed by independent teams, on independent codebases, across many random seeds and data splits.
 
 **Strengths:**
-- Gold standard for establishing causation
-- Controls for known and unknown confounders
-- Minimizes selection bias
-- Enables causal inference
+- Combines multiple independent runs for greater confidence
+- Reduces impact of single-run or single-implementation anomalies
+- Can identify which effects survive across setups
+- Quantifies the overall effect size and its variance
 
 **Weaknesses:**
-- May not be ethical or feasible
-- Artificial settings may limit generalizability
-- Often short-term with selected populations
-- Expensive and time-consuming
+- Quality depends on the underlying runs ("garbage in, garbage out")
+- Publication bias toward positive results can distort the picture
+- Heterogeneity in setups may make pooling inappropriate
+- Can mask important differences between implementations
 
 **Critical evaluation:**
-- Was randomization adequate (sequence generation, allocation concealment)?
-- Was blinding implemented (participants, providers, assessors)?
-- Was sample size adequate (power analysis)?
-- Was intention-to-treat analysis used?
-- Was attrition rate acceptable and balanced?
-- Are results generalizable?
+- Was the reproduction truly independent (separate code, separate team)?
+- Were the same datasets, splits, and metrics used?
+- Was reproduction attempted across multiple seeds?
+- Was variance across seeds and setups explored?
+- Was reporting bias assessed (are failed reproductions visible)?
+- Were appropriate aggregation methods used?
 
-### Level 3: Cohort Studies
-**Description:** Observational studies following groups over time.
+### Level 2: Controlled Experiments with Strong Baselines and Ablations
+**Description:** Experiments that isolate the contribution of a component by comparing against strong baselines and ablated variants under matched conditions.
+
+**Strengths:**
+- Gold standard for attribution/causal claims about *what* drives a result
+- Controls for confounds (data, compute, tuning) by matching them
+- Isolates the effect of a single change via ablation
+- Enables causal inference about the proposed component
+
+**Weaknesses:**
+- May be expensive or infeasible at large scale
+- Artificial or small-scale settings may limit generalization
+- Often run under one budget with selected hyperparameters
+- Compute- and engineering-intensive
+
+**Critical evaluation:**
+- Were baselines strong, current, and equally tuned?
+- Was compute/hyperparameter budget matched across conditions?
+- Were ablations comprehensive (one factor changed at a time)?
+- Was the sample of seeds/runs adequate for a powered comparison?
+- Was any run excluded, and on what basis?
+- Do the results generalize beyond the tested setting?
+
+### Level 3: Large-Scale Benchmark Evaluations with Variance Reporting
+**Description:** Evaluations across many datasets/tasks, reporting means with variance or confidence intervals.
 
 **Types:**
-- **Prospective:** Follow forward from exposure to outcome
-- **Retrospective:** Look backward at existing data
+- **Multi-benchmark:** Evaluated across a broad suite of tasks
+- **Held-out:** Evaluated on splits not touched during development
 
 **Strengths:**
-- Can study multiple outcomes
-- Establishes temporal sequence
-- Can calculate incidence and relative risk
-- More feasible than RCTs for many questions
+- Can characterize behavior across many conditions
+- Establishes breadth of applicability
+- Can report distributional results (mean, variance, CIs)
+- More scalable than exhaustive controlled experiments
 
 **Weaknesses:**
-- Susceptible to confounding
-- Selection bias possible
-- Attrition can bias results
-- Cannot prove causation definitively
+- Susceptible to confounds (data leakage, tuning on the test suite)
+- Selection of benchmarks can bias conclusions
+- Benchmark saturation can bias results
+- Cannot by itself prove *why* a method works
 
 **Critical evaluation:**
-- Were cohorts comparable at baseline?
-- Was exposure measured reliably?
-- Was follow-up adequate and complete?
-- Were potential confounders measured and controlled?
-- Was outcome assessment blinded to exposure?
+- Were benchmarks comparable and standard for the claim?
+- Was the metric measured reliably and consistently?
+- Was the evaluation protocol complete and disclosed?
+- Were confounds (leakage, contamination) measured and controlled?
+- Was evaluation blind to the test set during development?
 
-### Level 4: Case-Control Studies
-**Description:** Compare people with outcome (cases) to those without (controls), looking back at exposures.
+### Level 4: Multi-Seed Results on a Single Benchmark
+**Description:** Repeated runs on one dataset/task, reporting spread across seeds.
 
 **Strengths:**
-- Efficient for rare outcomes
+- Efficient for characterizing run-to-run variability
 - Relatively quick and inexpensive
-- Can study multiple exposures
+- Can study sensitivity to initialization and data order
 - Useful for generating hypotheses
 
 **Weaknesses:**
-- Cannot calculate incidence
-- Susceptible to recall bias
-- Selection of controls is challenging
-- Cannot prove causation
+- Cannot establish breadth across tasks
+- Susceptible to overfitting a single benchmark
+- Choice of the single benchmark is challenging
+- Cannot by itself prove general improvement
 
 **Critical evaluation:**
-- Were cases and controls defined clearly?
-- Were controls appropriate (same source population)?
-- Was matching appropriate?
-- How was exposure ascertained (records vs. recall)?
-- Were potential confounders controlled?
-- Could recall bias explain findings?
+- Were the task and metric defined clearly?
+- Was the benchmark representative of the claim's scope?
+- Was the number of seeds adequate?
+- How was variance reported (std, CI, min/max)?
+- Were confounds controlled?
+- Could benchmark-specific tuning explain the result?
 
-### Level 5: Cross-Sectional Studies
-**Description:** Snapshot observation at single point in time.
+### Level 5: Single-Run Benchmark Results
+**Description:** A single run on a benchmark reported at one point in configuration space.
 
 **Strengths:**
 - Quick and inexpensive
-- Can assess prevalence
+- Can indicate feasibility
 - Useful for hypothesis generation
-- Can study multiple outcomes and exposures
+- Can cover multiple metrics at once
 
 **Weaknesses:**
-- Cannot establish temporal sequence
-- Cannot determine causation
-- Prevalence-incidence bias
-- Survival bias
+- Cannot distinguish signal from seed luck
+- Cannot estimate variance
+- Selection (best-of-N) bias
+- Survivorship of the one reported run
 
 **Critical evaluation:**
-- Was sample representative?
-- Were measures validated?
-- Could reverse causation explain findings?
-- Are confounders acknowledged?
+- Was the run representative or best-of-many?
+- Were metrics validated and standard?
+- Could a different seed reverse the finding?
+- Is variance acknowledged?
 
-### Level 6: Case Series and Case Reports
-**Description:** Description of observations in clinical practice.
+### Level 6: Cherry-Picked Qualitative Examples and Demos
+**Description:** Hand-selected outputs or demonstrations shown in a paper, blog post, or figure.
 
 **Strengths:**
-- Can identify new diseases or effects
+- Can reveal new capabilities or failure modes
 - Hypothesis-generating
-- Details rare phenomena
-- Quick to report
+- Illustrates rare or striking phenomena
+- Quick to produce
 
 **Weaknesses:**
-- No control group
+- No control comparison
 - No statistical inference possible
-- Highly susceptible to bias
-- Cannot establish causation or frequency
+- Highly susceptible to selection bias
+- Cannot establish frequency or reliability
 
-**Use:** Primarily for hypothesis generation and clinical description.
+**Use:** Primarily for hypothesis generation and illustration.
 
-### Level 7: Expert Opinion
-**Description:** Statements by recognized authorities.
+### Level 7: Intuition and Author Assertion
+**Description:** Claims asserted from experience or design reasoning, without measurement.
 
 **Strengths:**
-- Synthesizes experience
-- Useful when no research available
-- May integrate multiple sources
+- Synthesizes practitioner experience
+- Useful when no evaluation is available yet
+- May integrate multiple informal observations
 
 **Weaknesses:**
 - Subjective and potentially biased
-- May not reflect current evidence
-- Appeal to authority fallacy risk
-- Individual expertise varies
+- May not reflect measured behavior
+- Appeal-to-authority risk
+- Individual intuition varies
 
-**Use:** Lowest level of evidence; should be supported by data when possible.
+**Use:** Lowest level of evidence; should be supported by measurement when possible.
 
-## Nuances and Limitations of Traditional Hierarchy
+## Nuances and Limitations of the Hierarchy
 
 ### When Lower-Level Evidence Can Be Strong
-1. **Well-designed observational studies** with:
-   - Large effects (hard to confound)
-   - Dose-response relationships
-   - Consistent findings across contexts
-   - Biological plausibility
-   - No plausible confounders
+1. **Well-designed single-benchmark studies** with:
+   - Large effects (hard to explain by noise)
+   - Monotonic trends (e.g., scaling curves)
+   - Consistent findings across configurations
+   - A plausible mechanism
+   - No obvious confounds
 
-2. **Multiple converging lines of evidence** from different study types
+2. **Multiple converging lines of evidence** from different tasks and metrics
 
-3. **Natural experiments** approximating randomization
+3. **Natural experiments** (e.g., pre/post a single controlled change in a system)
 
 ### When Higher-Level Evidence Can Be Weak
-1. **Poor-quality RCTs** with:
-   - Inadequate randomization
-   - High attrition
-   - No blinding when feasible
-   - Conflicts of interest
+1. **Poor controlled experiments** with:
+   - Weak or under-tuned baselines
+   - High run-to-run variance ignored
+   - No ablation when feasible
+   - Undisclosed conflicts (e.g., tuned on test)
 
-2. **Biased meta-analyses**:
-   - Publication bias
-   - Selective inclusion
-   - Inappropriate pooling
-   - Poor search strategy
+2. **Biased meta-analyses / leaderboards**:
+   - Publication bias toward positive results
+   - Selective inclusion of favorable runs
+   - Inappropriate pooling across incomparable setups
+   - Poor search / missing failed reproductions
 
 3. **Not addressing the right question**:
-   - Wrong population
-   - Wrong comparison
-   - Wrong outcome
-   - Too artificial to generalize
+   - Wrong dataset
+   - Wrong baseline comparison
+   - Wrong metric
+   - Too narrow to generalize
 
-## Alternative: GRADE System
+## Alternative: Rigor Grading for Computational Evidence
 
-GRADE (Grading of Recommendations Assessment, Development and Evaluation) assesses evidence quality across four levels:
+A confidence framework for empirical CS/ML claims assesses evidence quality across four levels, based on reproducibility and experimental rigor rather than study type.
 
-### High Quality
-**Definition:** Very confident that true effect is close to estimated effect.
+### High Confidence
+**Definition:** Very confident that the reported effect is close to the true effect.
 
 **Characteristics:**
-- Well-conducted RCTs
-- Overwhelming evidence from observational studies
-- Large, consistent effects
-- No serious limitations
+- Strong, well-tuned baselines and comprehensive ablations
+- Multi-seed results with variance/CIs and significance testing
+- Independent reproduction available
+- No serious rigor limitations
 
-### Moderate Quality
-**Definition:** Moderately confident; true effect likely close to estimated, but could be substantially different.
+### Moderate Confidence
+**Definition:** Moderately confident; true effect likely close to reported, but could differ.
 
 **Downgrades from high:**
-- Some risk of bias
-- Inconsistency across studies
-- Indirectness (different populations/interventions)
-- Imprecision (wide confidence intervals)
-- Publication bias suspected
+- Weak or under-tuned baselines
+- Inconsistency across seeds or benchmarks
+- Indirectness (different data/setting than the claim)
+- Imprecision (wide CIs, few seeds)
+- Reporting bias suspected (best-of-N reporting)
 
-### Low Quality
+### Low Confidence
 **Definition:** Limited confidence; true effect may be substantially different.
 
 **Downgrades:**
-- Serious limitations in above factors
-- Observational studies without special strengths
+- Serious limitations in the above factors
+- Single-run results without variance
 
-### Very Low Quality
+### Very Low Confidence
 **Definition:** Very limited confidence; true effect likely substantially different.
 
 **Characteristics:**
 - Very serious limitations
-- Expert opinion
-- Multiple serious flaws
+- Intuition or cherry-picked demos only
+- Multiple serious flaws (e.g., leakage plus no baseline)
 
-## Study Quality Assessment Criteria
+## Reproducibility and Rigor Assessment Criteria
 
-### Internal Validity (Bias Control)
+### Internal Validity (Confound Control)
 **Questions:**
-- Was randomization adequate?
-- Was allocation concealed?
-- Were groups similar at baseline?
-- Was blinding implemented?
-- Was attrition minimal and balanced?
-- Was intention-to-treat used?
-- Were all outcomes reported?
+- Were baselines strong and equally tuned?
+- Was compute/hyperparameter budget matched across conditions?
+- Were data splits fixed and leak-free?
+- Were ablations run to isolate the claimed component?
+- Was run-to-run variance reported and non-trivial?
+- Were all runs (not just the best) accounted for?
+- Were all evaluated metrics reported?
 
 ### External Validity (Generalizability)
 **Questions:**
-- Is sample representative of target population?
-- Are inclusion/exclusion criteria too restrictive?
-- Is setting realistic?
-- Are results applicable to other populations?
-- Are effects consistent across subgroups?
+- Is the evaluation set representative of the intended use?
+- Are the benchmarks too narrow or saturated?
+- Is the deployment/inference setting realistic?
+- Do results transfer to other datasets or domains?
+- Are effects consistent across data slices?
 
 ### Statistical Conclusion Validity
 **Questions:**
-- Was sample size adequate (power)?
-- Were statistical tests appropriate?
-- Were assumptions checked?
+- Were enough seeds/runs used for a powered comparison?
+- Were appropriate significance tests applied?
+- Were assumptions (independence, distribution) checked?
 - Were effect sizes and confidence intervals reported?
-- Were multiple comparisons addressed?
-- Was analysis prespecified?
+- Were multiple comparisons across benchmarks corrected?
+- Was the evaluation protocol prespecified?
 
 ### Construct Validity (Measurement)
 **Questions:**
-- Were measures validated and reliable?
-- Was outcome defined clearly and appropriately?
-- Were assessors blinded?
-- Were exposures measured accurately?
-- Was timing of measurement appropriate?
+- Do the metrics actually capture the capability of interest?
+- Was the task defined clearly and appropriately?
+- Was evaluation blind to the test set during development?
+- Were inputs and data provenance documented?
+- Was the measurement timing/protocol appropriate?
 
-## Critical Appraisal Tools
+## Reproducibility Checklists and Tools
 
-### For Different Study Types
+### For Different Artifact Types
 
-**RCTs:**
-- Cochrane Risk of Bias Tool
-- Jadad Scale
-- PEDro Scale (for trials in physical therapy)
+**Empirical papers:**
+- ML Reproducibility Checklist (https://www.cs.mcgill.ca/~jpineau/ReproducibilityChecklist.pdf)
+- NeurIPS Paper Checklist (https://neurips.cc/public/guides/PaperChecklist)
+- ICML / venue reproducibility guidelines
 
-**Observational Studies:**
-- Newcastle-Ottawa Scale
-- ROBINS-I (Risk of Bias in Non-randomized Studies)
+**Datasets:**
+- Datasheets for Datasets (Gebru et al., https://arxiv.org/abs/1803.09010)
+- Dataset cards and documented eval splits
 
-**Diagnostic Studies:**
-- QUADAS-2 (Quality Assessment of Diagnostic Accuracy Studies)
+**Models:**
+- Model Cards (Mitchell et al., https://arxiv.org/abs/1810.03474)
 
-**Systematic Reviews:**
-- AMSTAR-2 (A Measurement Tool to Assess Systematic Reviews)
+**Leaderboards and results tracking:**
+- Papers with Code (https://paperswithcode.com)
 
-**All Study Types:**
-- CASP Checklists (Critical Appraisal Skills Programme)
+**All artifact types:**
+- Released code, configs, seeds, and environment specs (containers/lockfiles)
 
 ## Domain-Specific Considerations
 
-### Basic Science Research
+### Systems and Performance Research
 **Hierarchy differs:**
-1. Multiple convergent lines of evidence
-2. Mechanistic understanding
-3. Reproducible experiments
-4. Established theoretical framework
+1. Multiple convergent measurements across hardware
+2. Mechanistic understanding of the bottleneck
+3. Reproducible microbenchmarks and end-to-end runs
+4. Established measurement methodology
 
 **Key considerations:**
-- Replication essential
-- Mechanistic plausibility
-- Consistency across model systems
-- Convergence of methods
+- Replication across machines essential
+- Mechanistic plausibility (profiles, counters)
+- Consistency across workloads
+- Warmup, variance, and tail-latency reporting
 
-### Psychological Research
+### Natural Language Processing (NLP)
 **Additional concerns:**
-- Replication crisis
-- Publication bias particularly problematic
-- Small effect sizes often expected
-- Cultural context matters
-- Measures often indirect (self-report)
+- Reproducibility crisis around prompts and decoding settings
+- Test-set contamination in large pretraining corpora
+- Small, noisy gains often over-interpreted
+- Metric validity (n-gram overlap vs. human judgment)
 
 **Strong evidence includes:**
-- Preregistered studies
-- Large samples
-- Multiple measures
-- Behavioral (not just self-report) outcomes
-- Cross-cultural replication
+- Contamination checks against training data
+- Multiple decoding seeds/temperatures
+- Multiple benchmarks and metrics
+- Human evaluation alongside automatic metrics
+- Held-out and out-of-distribution test sets
 
-### Epidemiology
-**Causal inference frameworks:**
-- Bradford Hill criteria
-- Rothman's causal pies
-- Directed Acyclic Graphs (DAGs)
+### Computer Vision (CV)
+**Causal-attribution frameworks:**
+- Controlled ablations of architecture vs. augmentation vs. data
+- Matched training budgets across models
+- Directed reasoning about what a change actually affects
 
-**Strong observational evidence:**
-- Dose-response relationships
-- Temporal consistency
-- Biological plausibility
-- Specificity
-- Consistency across populations
-- Large effects unlikely due to confounding
+**Strong empirical evidence:**
+- Consistent gains across datasets and resolutions
+- Reporting under matched compute/data
+- Robustness and distribution-shift evaluations
+- Variance across seeds
+- Effects unlikely to be explained by extra tuning
 
-### Social Sciences
+### Reinforcement Learning (RL)
 **Challenges:**
-- Complex interventions
-- Context-dependent effects
-- Measurement challenges
-- Ethical constraints on RCTs
+- High variance across seeds
+- Sensitivity to hyperparameters and implementation details
+- Environment/version differences
+- Evaluation-protocol ambiguity
 
 **Strengthening evidence:**
-- Mixed methods
-- Natural experiments
-- Instrumental variables
-- Regression discontinuity designs
-- Multiple operationalizations
+- Many seeds with confidence intervals
+- Standardized environments and versions
+- Reporting learning curves, not just final returns
+- Ablations over implementation details
+- Multiple environments/tasks
 
 ## Synthesizing Evidence Across Studies
 
 ### Consistency
 **Strong evidence:**
-- Multiple studies, different investigators
-- Different populations and settings
-- Different research designs converge
-- Different measurement methods
+- Multiple papers, different teams
+- Different datasets and settings
+- Different architectures/approaches converge
+- Different metrics agree
 
 **Weak evidence:**
-- Single study
+- Single run or single paper
 - Only one research group
 - Conflicting results
-- Publication bias evident
+- Reporting bias evident
 
-### Biological/Theoretical Plausibility
+### Mechanistic/Theoretical Plausibility
 **Strengthens evidence:**
-- Known mechanism
-- Consistent with other knowledge
-- Dose-response relationship
-- Coherent with animal/in vitro data
+- Known mechanism (why the change should help)
+- Consistent with established theory
+- Monotonic dose-response (e.g., scaling trend)
+- Coherent with controlled diagnostics
 
 **Weakens evidence:**
 - No plausible mechanism
-- Contradicts established knowledge
-- Biological implausibility
+- Contradicts well-established results
+- Theoretical implausibility
 
-### Temporality
-**Essential for causation:**
-- Cause must precede effect
-- Cross-sectional studies cannot establish
-- Reverse causation must be ruled out
+### Temporality / Directionality
+**Essential for attribution:**
+- The intervention must precede the measured effect
+- Correlational leaderboard gaps cannot establish it
+- Reverse explanations (e.g., more compute, not the method) must be ruled out
 
 ### Specificity
 **Moderate indicator:**
-- Specific cause → specific effect strengthens causation
-- But lack of specificity doesn't rule out causation
-- Most causes have multiple effects
+- A specific change → specific effect strengthens attribution
+- But lack of specificity doesn't rule out an effect
+- Most changes affect multiple metrics
 
-### Strength of Association
+### Strength of Effect
 **Strong evidence:**
-- Large effects unlikely to be due to confounding
-- Dose-response relationships
-- All-or-none effects
+- Large effects unlikely to be explained by noise
+- Monotonic trends across a control variable
+- All-or-none behavior
 
 **Caution:**
 - Small effects may still be real
-- Large effects can still be confounded
+- Large effects can still be confounded (e.g., extra tuning)
 
 ## Red Flags in Evidence Quality
 
-### Study Design Red Flags
-- No control group
-- Self-selected participants
-- No randomization when feasible
-- No blinding when feasible
-- Very small sample
-- Inappropriate statistical tests
+### Experimental Design Red Flags
+- No baseline comparison
+- Best-of-N runs reported as typical
+- No ablation when feasible
+- No seeds / single run
+- Very few evaluation examples
+- Inappropriate or non-standard metrics
 
 ### Reporting Red Flags
-- Selective outcome reporting
-- No study registration/protocol
-- Missing methodological details
-- No conflicts of interest statement
-- Cherry-picked citations
-- Results don't match methods
+- Selective metric reporting
+- No released code or configs
+- Missing training/eval details
+- No mention of contamination/leakage checks
+- Cherry-picked qualitative examples
+- Results don't match the described method
 
 ### Interpretation Red Flags
-- Causal language from correlational data
-- Claiming "proof"
-- Ignoring limitations
-- Overgeneralizing
-- Spinning negative results
+- Causal/attribution language from leaderboard correlations
+- Claiming "proof" of superiority
+- Ignoring variance and limitations
+- Overgeneralizing beyond the tested setting
+- Spinning null or negative results
 - Post hoc rationalization
 
 ### Context Red Flags
-- Industry funding without independence
-- Single study in isolation
-- Contradicts preponderance of evidence
-- No replication
-- Published in predatory journal
-- Press release before peer review
+- Vendor benchmarks without independent replication
+- Single result in isolation
+- Contradicts the preponderance of evidence
+- No reproduction
+- Published without artifact review
+- Announcement before any evaluation detail
 
 ## Practical Decision Framework
 
 ### When Evaluating Evidence, Ask:
 
-1. **What type of study is this?** (Design)
-2. **How well was it conducted?** (Quality)
-3. **What does it actually show?** (Results)
-4. **How likely is bias?** (Internal validity)
-5. **Does it apply to my question?** (External validity)
-6. **How does it fit with other evidence?** (Context)
+1. **What kind of result is this?** (Single run? Multi-seed? Reproduced?)
+2. **How rigorously was it run?** (Baselines, ablations, variance)
+3. **What does it actually show?** (Metrics and deltas)
+4. **How likely is a confound?** (Leakage, unfair budget)
+5. **Does it apply to my setting?** (External validity)
+6. **How does it fit other evidence?** (Context)
 7. **Are the conclusions justified?** (Interpretation)
 8. **What are the limitations?** (Uncertainty)
 
 ### Making Decisions with Imperfect Evidence
 
-**High-quality evidence:**
-- Strong confidence in acting on findings
-- Reasonable to change practice/policy
+**High-confidence evidence:**
+- Strong confidence in acting on the finding
+- Reasonable to adopt the method/component
 
-**Moderate-quality evidence:**
+**Moderate-confidence evidence:**
 - Provisional conclusions
-- Consider in conjunction with other factors
-- May warrant action depending on stakes
+- Consider alongside other factors
+- May warrant a pilot depending on stakes
 
-**Low-quality evidence:**
+**Low-confidence evidence:**
 - Weak confidence
 - Hypothesis-generating
 - Insufficient for major decisions alone
-- Consider cost/benefit of waiting for better evidence
+- Weigh cost/benefit of running a stronger evaluation
 
-**Very low-quality evidence:**
+**Very-low-confidence evidence:**
 - Very uncertain
 - Should not drive decisions alone
-- Useful for identifying gaps and research needs
+- Useful for identifying gaps and follow-up experiments
 
 ### When Evidence is Conflicting
 
 **Strategies:**
-1. Weight by study quality
-2. Look for systematic differences (population, methods)
-3. Consider publication bias
-4. Update with most recent, rigorous evidence
-5. Conduct/await systematic review
-6. Consider if question is well-formed
+1. Weight by experimental rigor
+2. Look for systematic differences (data, budget, metric)
+3. Consider reporting/publication bias
+4. Update with the most recent, most rigorous evidence
+5. Run or await an independent reproduction
+6. Consider whether the question is well-formed
 
 ## Communicating Evidence Strength
 
 **Avoid:**
-- Absolute certainty ("proves")
+- Absolute certainty ("proves state of the art")
 - False balance (equal weight to unequal evidence)
-- Ignoring uncertainty
-- Cherry-picking studies
+- Ignoring variance and uncertainty
+- Cherry-picking runs
 
 **Better:**
-- Quantify uncertainty
+- Quantify uncertainty (CIs, seeds)
 - Describe strength of evidence
 - Acknowledge limitations
-- Present range of evidence
+- Present the range of results
 - Distinguish established from emerging findings
 - Be clear about what is/isn't known

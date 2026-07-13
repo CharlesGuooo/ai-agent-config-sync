@@ -69,8 +69,8 @@ For major findings, discoveries, and important results.
 
 ```latex
 \begin{keyfindings}[Custom Title]
-This study found that treatment A significantly outperformed
-treatment B (\pvalue{0.001}, \effectsize{d}{0.75}).
+This study found that method A significantly outperformed
+method B (\pvalue{0.001}, \effectsize{d}{0.75}).
 \end{keyfindings}
 ```
 
@@ -80,8 +80,8 @@ For methods, procedures, and study design highlights.
 
 ```latex
 \begin{methodology}[Study Design]
-This randomized controlled trial employed a 2×2 factorial design
-with pre-post measurements and 6-month follow-up.
+This study employed a 2×2 factorial design over training
+configurations with checkpoint and end-of-training measurements.
 \end{methodology}
 ```
 
@@ -101,11 +101,11 @@ Analysis revealed a significant main effect, F(2, 147) = 12.45,
 For recommendations, implications, and action items.
 
 ```latex
-\begin{recommendations}[Clinical Implications]
+\begin{recommendations}[Practical Implications]
 \begin{enumerate}
-    \item Implement screening protocol for high-risk patients
-    \item Adjust treatment dosage based on biomarker levels
-    \item Monitor patients at 3-month intervals
+    \item Enable the caching layer for high-throughput workloads
+    \item Adjust batch size based on available GPU memory
+    \item Re-evaluate accuracy at each model update
 \end{enumerate}
 \end{recommendations}
 ```
@@ -117,9 +117,9 @@ For limitations, cautions, and caveats.
 ```latex
 \begin{limitations}[Study Limitations]
 \begin{itemize}
-    \item Sample limited to urban populations
-    \item Cross-sectional design precludes causal inference
-    \item Self-report measures may introduce bias
+    \item Evaluation limited to a single benchmark suite
+    \item Observational comparison precludes causal claims
+    \item Automatic metrics may introduce measurement bias
 \end{itemize}
 \end{limitations}
 ```
@@ -129,9 +129,9 @@ For limitations, cautions, and caveats.
 For critical warnings, important notices, or safety information.
 
 ```latex
-\begin{criticalnotice}[Safety Warning]
-Patients with contraindication X should not receive this treatment.
-Consult specialist before proceeding.
+\begin{criticalnotice}[Usage Caveat]
+Inputs of type X are outside this model's supported range and should not be served.
+Validate against the supported range before proceeding.
 \end{criticalnotice}
 ```
 
@@ -163,8 +163,8 @@ For stating research hypotheses.
 
 ```latex
 \begin{hypothesis}[Primary Hypothesis]
-We hypothesize that intervention X will significantly improve
-outcome Y compared to control conditions.
+We hypothesize that method X will significantly improve
+metric Y compared to the baseline.
 \end{hypothesis}
 ```
 
@@ -304,9 +304,9 @@ Score 2 & \meansd{22.8}{5.1} & \meansd{23.4}{4.8} & .42 \\
 \toprule
 \textbf{Study} & \textbf{Design} & \textbf{Quality} & \textbf{Evidence} \\
 \midrule
-Smith et al. (2023) & RCT & \qualityhigh & \evidencestrong \\
-\rowcolor{tablealt} Jones et al. (2022) & Cohort & \qualitymedium & \evidencemoderate \\
-Lee et al. (2021) & Cross-sectional & \qualitylow & \evidenceweak \\
+Smith et al. (2023) & Controlled benchmark & \qualityhigh & \evidencestrong \\
+\rowcolor{tablealt} Jones et al. (2022) & Ablation study & \qualitymedium & \evidencemoderate \\
+Lee et al. (2021) & Single-run report & \qualitylow & \evidenceweak \\
 \bottomrule
 \end{tabular}
 ```
@@ -335,7 +335,7 @@ Score C & 7.8 & 7.9 & \trendflat +1\% \\
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.9\textwidth]{../figures/results_chart.png}
-\caption{Comparison of Outcome Scores Across Treatment Conditions}
+\caption{Comparison of Accuracy Across Model Configurations}
 \label{fig:results}
 \end{figure}
 ```
@@ -463,8 +463,8 @@ lualatex report.tex
 \section{Primary Outcomes}
 
 \begin{resultsbox}[Main Finding]
-The intervention group showed significantly higher scores than
-the control group, \effectsize{t(98)}{3.45}, \psig{< 0.001},
+The proposed model showed significantly higher scores than
+the baseline, \effectsize{t(98)}{3.45}, \psig{< 0.001},
 \effectsize{d}{0.69}, \CI{0.42}{0.96}.
 \end{resultsbox}
 

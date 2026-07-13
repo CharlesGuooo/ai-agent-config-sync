@@ -1,6 +1,6 @@
 ---
 name: scientific-critical-thinking
-description: Evaluate scientific claims and evidence quality. Use for assessing experimental design validity, identifying biases and confounders, applying evidence grading frameworks (GRADE, Cochrane Risk of Bias), or teaching critical analysis. Best for understanding evidence quality, identifying flaws. For formal peer review writing use peer-review.
+description: Evaluate scientific claims and evidence quality. Use for assessing experimental design validity, identifying biases and confounders, applying evidence-quality and reproducibility criteria (ablation rigor, baseline fairness, statistical significance, variance reporting), or teaching critical analysis. Best for understanding evidence quality, identifying flaws. For formal peer review writing use peer-review.
 allowed-tools: Read Write Edit Bash
 license: MIT license
 metadata:
@@ -11,7 +11,7 @@ metadata:
 
 ## Overview
 
-Critical thinking is a systematic process for evaluating scientific rigor. Assess methodology, experimental design, statistical validity, biases, confounding, and evidence quality using GRADE and Cochrane ROB frameworks. Apply this skill for critical analysis of scientific claims.
+Critical thinking is a systematic process for evaluating scientific rigor. Assess methodology, experimental design, statistical validity, biases, confounding, and evidence quality using reproducibility and experimental-rigor criteria (ablations, baselines, significance, variance). Apply this skill for critical analysis of scientific claims.
 
 ## When to Use This Skill
 
@@ -20,8 +20,8 @@ This skill should be used when:
 - Assessing statistical validity and evidence quality
 - Identifying biases and confounding in studies
 - Reviewing scientific claims and conclusions
-- Conducting systematic reviews or meta-analyses
-- Applying GRADE or Cochrane risk of bias assessments
+- Conducting systematic reviews or reproducibility studies
+- Applying reproducibility and experimental-rigor criteria (ablations, baselines, significance)
 - Providing critical analysis of research papers
 
 ## Visual Enhancement with Scientific Schematics
@@ -50,7 +50,7 @@ The AI will automatically:
 - Critical thinking framework diagrams
 - Bias identification decision trees
 - Evidence quality assessment flowcharts
-- GRADE assessment methodology diagrams
+- Reproducibility and experimental-rigor assessment diagrams
 - Risk of bias evaluation frameworks
 - Validity assessment visualizations
 - Any complex concept that benefits from visualization
@@ -101,7 +101,7 @@ Evaluate research methodology for rigor, validity, and potential flaws.
 3. **Control and Blinding**
    - Was randomization properly implemented (sequence generation, allocation concealment)?
    - Was blinding feasible and implemented (participants, providers, assessors)?
-   - Are control conditions appropriate (placebo, active control, no treatment)?
+   - Are control conditions appropriate (unmodified baseline, ablated variant, no-op control)?
    - Could performance or detection bias affect results?
 
 4. **Measurement Quality**
@@ -167,8 +167,8 @@ Critically assess statistical methods, interpretation, and reporting.
 **Apply when:**
 - Reviewing quantitative research
 - Evaluating data-driven claims
-- Assessing clinical trial results
-- Reviewing meta-analyses
+- Assessing benchmark and ablation results
+- Reviewing reproducibility studies
 
 **Statistical review checklist:**
 
@@ -237,34 +237,34 @@ Evaluate the strength and quality of evidence systematically.
 **Evidence evaluation framework:**
 
 1. **Study Design Hierarchy**
-   - Systematic reviews/meta-analyses (highest for intervention effects)
-   - Randomized controlled trials
-   - Cohort studies
-   - Case-control studies
-   - Cross-sectional studies
-   - Case series/reports
-   - Expert opinion (lowest)
+   - Independently reproduced, multi-seed results across labs (highest)
+   - Well-controlled experiments with fair baselines and ablations
+   - Large-scale benchmark evaluations with variance/CI reporting
+   - Controlled comparisons on standard public benchmarks
+   - Single-run results on a single benchmark
+   - Qualitative case studies / cherry-picked examples
+   - Intuition or expert opinion (lowest)
 
-   **Important:** Higher-level designs aren't always better quality. A well-designed observational study can be stronger than a poorly-conducted RCT.
+   **Important:** Higher-level designs aren't always better quality. A well-designed single-benchmark experiment can be stronger than a poorly-controlled large-scale evaluation.
 
 2. **Quality Within Design Type**
-   - Risk of bias assessment (use appropriate tool: Cochrane ROB, Newcastle-Ottawa, etc.)
+   - Risk of bias assessment (e.g., baseline fairness, seed/hyperparameter sensitivity, data-leakage checks)
    - Methodological rigor
    - Transparency and reporting completeness
    - Conflicts of interest
 
-3. **GRADE Considerations (if applicable)**
-   - Start with design type (RCT = high, observational = low)
+3. **Reproducibility & Rigor Considerations (if applicable)**
+   - Start with experimental control (multi-seed with strong baselines = high, single-run anecdote = low)
    - **Downgrade for:**
-     - Risk of bias
-     - Inconsistency across studies
-     - Indirectness (wrong population/intervention/outcome)
-     - Imprecision (wide confidence intervals, small samples)
-     - Publication bias
+     - Weak or unfair baselines
+     - Inconsistency across seeds or datasets
+     - Indirectness (wrong benchmark, task, or metric)
+     - Imprecision (no variance/CIs, single seed, small test sets)
+     - Data leakage or publication bias
    - **Upgrade for:**
-     - Large effect sizes
-     - Dose-response relationships
-     - Confounders would reduce (not increase) effect
+     - Large, consistent gains across benchmarks
+     - Scaling / dose-response trends (with data or model size)
+     - Plausible confounds would reduce (not inflate) the observed gain
 
 4. **Convergence of Evidence**
    - **Stronger when:**
@@ -279,13 +279,13 @@ Evaluate the strength and quality of evidence systematically.
      - No replication attempts
 
 5. **Contextual Factors**
-   - Biological/theoretical plausibility
+   - Theoretical/mechanistic plausibility
    - Consistency with established knowledge
    - Temporality (cause precedes effect)
    - Specificity of relationship
    - Strength of association
 
-**Reference:** See `references/evidence_hierarchy.md` for detailed hierarchy, GRADE system, and quality assessment tools.
+**Reference:** See `references/evidence_hierarchy.md` for detailed hierarchy, reproducibility and experimental-rigor criteria, and quality assessment tools.
 
 ### 5. Logical Fallacy Identification
 
@@ -398,7 +398,7 @@ Provide constructive guidance for planning rigorous studies.
 
 7. **Transparency and Rigor**
    - Preregister study and analysis plan
-   - Use reporting guidelines (CONSORT, STROBE, PRISMA)
+   - Use venue reproducibility checklists (e.g., NeurIPS/ICML)
    - Plan to report all outcomes, not just significant ones
    - Distinguish confirmatory from exploratory analyses
    - Commit to data/code sharing
@@ -530,7 +530,7 @@ This skill includes comprehensive reference materials that provide detailed fram
 
 - **`references/statistical_pitfalls.md`** - Common statistical errors and misinterpretations including p-value misunderstandings, multiple comparisons problems, sample size issues, effect size mistakes, correlation/causation confusion, regression pitfalls, and meta-analysis issues
 
-- **`references/evidence_hierarchy.md`** - Traditional evidence hierarchy, GRADE system, study quality assessment criteria, domain-specific considerations, evidence synthesis principles, and practical decision frameworks
+- **`references/evidence_hierarchy.md`** - Evidence hierarchy for computational research, reproducibility and experimental-rigor criteria, study quality assessment criteria, domain-specific considerations, evidence synthesis principles, and practical decision frameworks
 
 - **`references/logical_fallacies.md`** - Logical fallacies common in scientific discourse organized by type (causation, generalization, authority, relevance, structure, statistical) with examples and detection strategies
 

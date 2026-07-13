@@ -4,106 +4,104 @@ This document provides comprehensive guidance for searching multiple literature 
 
 ## Available Databases and Skills
 
-### Biomedical & Life Sciences
+### AI / ML / CS
 
-#### PubMed / PubMed Central
-- **Access**: Use `gget` skill or WebFetch tool
-- **Coverage**: 35M+ citations in biomedical literature
-- **Best for**: Clinical studies, biomedical research, genetics, molecular biology
-- **Search tips**: Use MeSH terms, Boolean operators (AND, OR, NOT), field tags [Title], [Author]
-- **Example**: `"CRISPR"[Title] AND "gene editing"[Title/Abstract] AND 2020:2024[Publication Date]`
+#### arXiv
+- **Access**: Use the `paper-library` skill or the arXiv API (`http://export.arxiv.org/api/query`)
+- **Coverage**: 2M+ preprints in computer science, machine learning, statistics, math, physics
+- **Best for**: Latest methods and results, ML/AI/NLP/CV/systems research, fast-moving fields
+- **Search tips**: Use category filters (cs.LG, cs.CL, cs.CV, cs.AI, stat.ML), field prefixes `ti:`, `abs:`, `au:`, and Boolean operators (AND, OR, ANDNOT)
+- **Example**: `cat:cs.LG AND ti:"retrieval augmented generation" AND abs:"language model"`
 
-#### bioRxiv / medRxiv
-- **Access**: Use `gget` skill or direct API
-- **Coverage**: Preprints in biology and medicine
-- **Best for**: Latest unpublished research, cutting-edge findings
-- **Note**: Not peer-reviewed; verify findings with caution
-- **Search tips**: Search by category (bioinformatics, genomics, etc.)
+#### Semantic Scholar
+- **Access**: Direct API (Semantic Scholar Academic Graph / `api.semanticscholar.org`; API key recommended)
+- **Coverage**: 200M+ papers across all fields, rich citation graph
+- **Best for**: Cross-disciplinary searches, citation graphs, influential-citation ranking, paper recommendations
+- **Features**: Highly Influential Citations, TLDR summaries, related papers, citation velocity
+- **Example**: query `retrieval augmented generation` with `fields=title,year,citationCount,influentialCitationCount`
+- **Rate limits**: ~100 requests/5 minutes with API key
+
+#### ACL Anthology
+- **Access**: Direct site / BibTeX export (`aclanthology.org`)
+- **Coverage**: Comprehensive NLP/CL proceedings (ACL, EMNLP, NAACL, COLING, TACL, CL journal)
+- **Best for**: Natural language processing, computational linguistics, authoritative NLP citations
+- **Example**: browse by venue/year, e.g. `EMNLP 2023` main track; download per-paper BibTeX
+
+#### DBLP
+- **Access**: Direct API (`dblp.org/search/publ/api`, free, no key)
+- **Coverage**: 7M+ CS publications, complete venue and author bibliographies
+- **Best for**: Author disambiguation, venue completeness, verifying publication metadata
+- **Example**: `https://dblp.org/search/publ/api?q=mixture+of+experts&format=json`
+
+#### OpenReview
+- **Access**: Direct API (`api.openreview.net`)
+- **Coverage**: Open peer reviews and submissions (ICLR, NeurIPS, and many workshops)
+- **Best for**: Reviews, rebuttals, scores, accepted/rejected status, camera-ready versions
+- **Example**: query submissions for `ICLR.cc/2024/Conference` and filter by decision
+
+#### Papers with Code
+- **Access**: Direct API (`paperswithcode.com/api/v1`, free)
+- **Coverage**: Papers linked to code repositories, benchmark leaderboards, datasets
+- **Best for**: Finding implementations, state-of-the-art on a benchmark, reproducibility
+- **Example**: look up the leaderboard for a task (e.g. `question-answering` on a given benchmark)
+
+#### IEEE Xplore
+- **Access**: IEEE Xplore API (subscription/API key) or web search
+- **Coverage**: IEEE and IET journals, conferences, standards
+- **Best for**: Systems, signal processing, robotics, communications, TPAMI and related venues
+- **Example**: `("Abstract":"graph neural network") AND ("Publication Year":2020-2024)`
+
+#### ACM Digital Library
+- **Access**: ACM DL web search / institutional access
+- **Coverage**: ACM journals (CACM, JACM, TOG, ...) and conference proceedings (SIGGRAPH, KDD, ...)
+- **Best for**: Systems, HCI, graphics, databases, theory, authoritative ACM citations
+- **Example**: `[Abstract: "differential privacy"] AND [Publication Date: (2019 TO 2024)]`
 
 ### General Scientific Literature
 
-#### arXiv
-- **Access**: Direct API access
-- **Coverage**: Preprints in physics, mathematics, computer science, quantitative biology
-- **Best for**: Computational methods, bioinformatics algorithms, theoretical work
-- **Categories**: q-bio (Quantitative Biology), cs.LG (Machine Learning), stat.ML (Statistics)
-- **Search format**: `cat:q-bio.QM AND title:"single cell"`
-
-#### Semantic Scholar
-- **Access**: Direct API (requires API key)
-- **Coverage**: 200M+ papers across all fields
-- **Best for**: Cross-disciplinary searches, citation graphs, paper recommendations
-- **Features**: Influential citations, paper summaries, related papers
-- **Rate limits**: 100 requests/5 minutes with API key
+#### OpenAlex
+- **Access**: Direct API (`api.openalex.org`, free, no key required)
+- **Coverage**: 250M+ works with comprehensive metadata and citation links
+- **Best for**: Citation analysis, author disambiguation, institutional/bibliometric research
+- **Features**: Open access, concepts/topics tagging, excellent for bibliometrics
+- **Example**: `https://api.openalex.org/works?search=diffusion%20model&filter=from_publication_date:2021-01-01`
 
 #### Google Scholar
 - **Access**: Web scraping (use cautiously) or manual search
 - **Coverage**: Comprehensive across all fields
-- **Best for**: Finding highly cited papers, conference proceedings, theses
+- **Best for**: Finding highly cited papers, conference proceedings, theses, grey literature
 - **Limitations**: No official API, rate limiting
-- **Export**: Use "Cite" feature for formatted citations
+- **Export**: Use the "Cite" feature for formatted citations
 
-### Specialized Databases
+#### DOAJ / CORE
+- **Access**: Direct APIs (free)
+- **Coverage**: Open-access journals (DOAJ) and aggregated open full texts (CORE, 250M+)
+- **Best for**: Retrieving open full-text PDFs and open-access metadata at scale
 
-#### ChEMBL / PubChem
-- **Access**: Use `gget` skill or `bioservices` skill
-- **Coverage**: Chemical compounds, bioactivity data, drug molecules
-- **Best for**: Drug discovery, chemical biology, medicinal chemistry
-- **ChEMBL**: 2M+ compounds, bioactivity data
-- **PubChem**: 110M+ compounds, assay data
+### Benchmarks, Code & Data
 
-#### UniProt
-- **Access**: Use `gget` skill or `bioservices` skill
-- **Coverage**: Protein sequence and functional information
-- **Best for**: Protein research, sequence analysis, functional annotations
-- **Search by**: Protein name, gene name, organism, function
+#### Hugging Face Hub
+- **Access**: Direct API (`huggingface.co/api`)
+- **Coverage**: Models, datasets, and Spaces with cards and metrics
+- **Best for**: Reproducing results, locating datasets and pretrained checkpoints referenced in papers
 
-#### KEGG (Kyoto Encyclopedia of Genes and Genomes)
-- **Access**: Use `bioservices` skill
-- **Coverage**: Pathways, diseases, drugs, genes
-- **Best for**: Pathway analysis, systems biology, metabolic research
-
-#### COSMIC (Catalogue of Somatic Mutations in Cancer)
-- **Access**: Use `gget` skill or direct download
-- **Coverage**: Cancer genomics, somatic mutations
-- **Best for**: Cancer research, mutation analysis
-
-#### AlphaFold Database
-- **Access**: Use `gget` skill with `alphafold` command
-- **Coverage**: 200M+ protein structure predictions
-- **Best for**: Structural biology, protein modeling
-
-#### PDB (Protein Data Bank)
-- **Access**: Use `gget` or direct API
-- **Coverage**: Experimental 3D structures of proteins, nucleic acids
-- **Best for**: Structural biology, drug design, molecular modeling
-
-### Citation & Reference Management
-
-#### OpenAlex
-- **Access**: Direct API (free, no key required)
-- **Coverage**: 250M+ works, comprehensive metadata
-- **Best for**: Citation analysis, author disambiguation, institutional research
-- **Features**: Open access, excellent for bibliometrics
-
-#### Dimensions
-- **Access**: Free tier available
-- **Coverage**: Publications, grants, patents, clinical trials
-- **Best for**: Research impact, funding analysis, translational research
+#### GitHub
+- **Access**: GitHub API / search
+- **Best for**: Locating official implementations, checking stars/activity, verifying reproducibility artifacts
 
 ---
 
 ## Search Strategy Framework
 
-### 1. Define Research Question (PICO Framework)
+### 1. Define Research Question (Problem / Method / Baseline / Metric)
 
-For clinical/biomedical reviews:
-- **P**opulation: Who is the study about?
-- **I**ntervention: What is being tested?
-- **C**omparison: What is it compared to?
-- **O**utcome: What are the results?
+For CS/AI reviews, frame the question along four axes (Task / Approach / Baselines / Benchmarks):
+- **P**roblem (Task): What task or problem is being solved?
+- **M**ethod (Approach): What technique or architecture is proposed?
+- **B**aseline (Baselines): What prior approaches is it compared against?
+- **M**etric (Benchmarks): What datasets/metrics measure success?
 
-**Example**: "What is the efficacy of CRISPR-Cas9 gene therapy (I) for treating sickle cell disease (P) compared to standard care (C) in improving patient outcomes (O)?"
+**Example**: "How effective is retrieval-augmented generation (Method) for open-domain question answering (Problem) compared to a closed-book large language model baseline (Baseline), as measured by exact-match and F1 on Natural Questions (Metric)?"
 
 ### 2. Develop Search Terms
 
@@ -111,61 +109,62 @@ For clinical/biomedical reviews:
 Identify 2-4 main concepts from your research question.
 
 **Example**:
-- Concept 1: CRISPR, Cas9, gene editing
-- Concept 2: sickle cell disease, SCD, hemoglobin disorders
-- Concept 3: gene therapy, therapeutic editing
+- Concept 1: retrieval-augmented generation, RAG, retrieval augmentation
+- Concept 2: open-domain question answering, ODQA, open-book QA
+- Concept 3: large language model, LLM, dense retriever
 
 #### Synonyms & Related Terms
 List alternative terms, abbreviations, and related concepts.
 
-**Tool**: Use MeSH (Medical Subject Headings) browser for standardized terms
+**Tool**: Check the ACL Anthology and Papers with Code task taxonomy for standardized terminology.
 
 #### Boolean Operators
 - **AND**: Narrows search (must include both terms)
 - **OR**: Broadens search (includes either term)
-- **NOT**: Excludes terms
+- **NOT** / **ANDNOT**: Excludes terms
 
-**Example**: `(CRISPR OR Cas9 OR "gene editing") AND ("sickle cell" OR SCD) AND therapy`
+**Example**: `(RAG OR "retrieval augmented" OR "retrieval-augmented") AND ("question answering" OR ODQA) AND ("language model" OR LLM)`
 
 #### Wildcards & Truncation
-- `*` or `%`: Matches any characters
+- `*`: Matches any characters
 - `?`: Matches single character
 
-**Example**: `genom*` matches genomic, genomics, genome
+**Example**: `transform*` matches transformer, transformers, transformation
 
 ### 3. Set Inclusion/Exclusion Criteria
 
 #### Inclusion Criteria
-- **Date range**: e.g., 2015-2024 (last 10 years)
+- **Date range**: e.g., 2018-2024 (last ~6 years for fast-moving ML)
 - **Language**: English (or specify multilingual)
-- **Publication type**: Peer-reviewed articles, reviews, preprints
-- **Study design**: RCTs, cohort studies, meta-analyses
-- **Population**: Human, animal models, in vitro
+- **Publication type**: Peer-reviewed papers, preprints, workshop papers
+- **Contribution type**: New method, empirical benchmark, theory, survey, ablation study
+- **Artifacts**: Prefer papers with released code/data when reproducibility matters
 
 #### Exclusion Criteria
-- Case reports (n<5)
-- Conference abstracts without full text
-- Non-original research (editorials, commentaries)
-- Duplicate publications
-- Retracted articles
+- Extended abstracts / posters without a full paper
+- Non-archival workshop notes without results
+- Non-original research (editorials, opinion pieces)
+- Duplicate publications (preprint + camera-ready of the same work)
+- Retracted or withdrawn papers
 
 ### 4. Database Selection Strategy
 
 #### Multi-Database Approach
 Search at least 3 complementary databases:
 
-1. **Primary database**: PubMed (biomedical) or arXiv (computational)
-2. **Preprint server**: bioRxiv/medRxiv or arXiv
-3. **Comprehensive database**: Semantic Scholar or Google Scholar
-4. **Specialized database**: ChEMBL, UniProt, or field-specific
+1. **Primary preprint server**: arXiv
+2. **Citation-graph database**: Semantic Scholar or OpenAlex
+3. **Venue-authoritative source**: ACL Anthology, DBLP, IEEE Xplore, or ACM DL
+4. **Code/benchmark source**: Papers with Code (and OpenReview for reviews)
 
 #### Database-Specific Syntax
 
 | Database | Field Tags | Example |
 |----------|-----------|---------|
-| PubMed | [Title], [Author], [MeSH] | "CRISPR"[Title] AND 2020:2024[DP] |
-| arXiv | ti:, au:, cat: | ti:"machine learning" AND cat:q-bio.QM |
-| Semantic Scholar | title:, author:, year: | title:"deep learning" year:2020-2024 |
+| arXiv | ti:, abs:, au:, cat: | ti:"mixture of experts" AND cat:cs.LG |
+| Semantic Scholar | query, year, fieldsOfStudy | query="diffusion sampling" year=2020-2024 |
+| OpenAlex | search=, filter= | search=graph+neural+network&filter=from_publication_date:2020-01-01 |
+| DBLP | q= | q=retrieval+augmented+generation |
 
 ---
 
@@ -174,20 +173,20 @@ Search at least 3 complementary databases:
 ### Phase 1: Pilot Search
 1. Run initial search with broad terms
 2. Review first 50 results for relevance
-3. Note common keywords and MeSH terms
+3. Note common keywords and canonical task names
 4. Refine search strategy
 
 ### Phase 2: Comprehensive Search
 1. Execute refined searches across all selected databases
-2. Export results in standard format (RIS, BibTeX, JSON)
+2. Export results in standard format (BibTeX, RIS, JSON)
 3. Document search strings and date for each database
 4. Record number of results per database
 
 ### Phase 3: Deduplication
 1. Import all results into a single file
 2. Use `search_databases.py --deduplicate` to remove duplicates
-3. Identify duplicates by DOI (primary) or title (fallback)
-4. Keep the version with most complete metadata
+3. Identify duplicates by DOI or arXiv ID (primary) or title (fallback)
+4. Keep the version with most complete metadata (prefer camera-ready over preprint)
 
 ### Phase 4: Screening
 1. **Title screening**: Review titles, exclude obviously irrelevant
@@ -195,13 +194,14 @@ Search at least 3 complementary databases:
 3. **Full-text screening**: Obtain and review full texts
 4. Document reasons for exclusion at each stage
 
-### Phase 5: Quality Assessment
-1. Assess study quality using appropriate tools:
-   - **RCTs**: Cochrane Risk of Bias tool
-   - **Observational**: Newcastle-Ottawa Scale
-   - **Systematic reviews**: AMSTAR 2
-2. Grade quality of evidence (high, moderate, low, very low)
-3. Consider excluding very low-quality studies
+### Phase 5: Reproducibility & Rigor Appraisal
+1. Appraise each study's rigor using CS-appropriate criteria:
+   - **Code/data availability**: Is code released? Are datasets and seeds specified?
+   - **Baseline fairness**: Are baselines tuned and compared under matched conditions?
+   - **Benchmark validity**: Are the datasets/metrics appropriate and not leaked?
+   - **Ablation coverage**: Are the key design choices isolated and justified?
+2. Rate reproducibility (high, moderate, low) based on artifact availability and reporting
+3. Consider excluding claims that cannot be reproduced or that lack fair baselines
 
 ---
 
@@ -213,32 +213,31 @@ All searches must be documented for reproducibility:
 ```markdown
 ## Search Strategy
 
-### Database: PubMed
+### Database: arXiv
 - **Date searched**: 2024-10-25
-- **Date range**: 2015-01-01 to 2024-10-25
+- **Date range**: 2018-01-01 to 2024-10-25
 - **Search string**:
   ```
-  ("CRISPR"[Title] OR "Cas9"[Title] OR "gene editing"[Title/Abstract])
-  AND ("sickle cell disease"[MeSH] OR "SCD"[Title/Abstract])
-  AND ("gene therapy"[MeSH] OR "therapeutic editing"[Title/Abstract])
-  AND 2015:2024[Publication Date]
-  AND English[Language]
+  (ti:"retrieval augmented generation" OR abs:"retrieval-augmented")
+  AND (abs:"question answering" OR abs:ODQA)
+  AND (abs:"language model" OR abs:LLM)
+  AND cat:cs.CL
   ```
-- **Results**: 247 articles
-- **After deduplication**: 189 articles
+- **Results**: 247 papers
+- **After deduplication**: 189 papers
 
-### Database: bioRxiv
+### Database: Semantic Scholar
 - **Date searched**: 2024-10-25
-- **Date range**: 2015-01-01 to 2024-10-25
-- **Search string**: "CRISPR" AND "sickle cell" (in title/abstract)
-- **Results**: 34 preprints
-- **After deduplication**: 28 preprints
+- **Date range**: 2018-01-01 to 2024-10-25
+- **Search string**: "retrieval augmented generation" AND "question answering" (title/abstract)
+- **Results**: 34 papers
+- **After deduplication**: 28 papers
 
-### Total Unique Articles
-- **Combined results**: 217 unique articles
-- **After title screening**: 156 articles
-- **After abstract screening**: 89 articles
-- **After full-text screening**: 52 articles included in review
+### Total Unique Papers
+- **Combined results**: 217 unique papers
+- **After title screening**: 156 papers
+- **After abstract screening**: 89 papers
+- **After full-text screening**: 52 papers included in review
 ```
 
 ---
@@ -266,32 +265,32 @@ Use citation counts to identify influential work:
 - **Google Scholar:** Sort by citation count, use "Cited by" feature
 - **Semantic Scholar:** "Highly Influential Citations" metric, citation velocity
 - **OpenAlex:** Citation counts, citation context analysis
-- **PubMed:** Use "Cited by" in PMC, check citation counts via Google Scholar
+- **DBLP:** Complete venue records to confirm the authoritative version to cite
 
-#### Filtering by Journal Quality
+#### Filtering by Venue Quality
 
 Prioritize papers from higher-tier venues:
 
 **Tier 1 (Always Prefer):**
-- Nature, Science, Cell, NEJM, Lancet, JAMA, PNAS
-- Nature Medicine, Nature Biotechnology, Nature Methods
-- Search tip: `source:Nature` or `journal:Nature` in Google Scholar
+- NeurIPS, ICML, ICLR, CVPR, ACL, EMNLP
+- JMLR, TPAMI, CACM, JACM
+- Search tip: `venue:NeurIPS` in Semantic Scholar, or filter by venue in DBLP
 
 **Tier 2 (High Priority):**
-- High-impact specialized journals (Impact Factor >10)
-- Top conferences: NeurIPS, ICML, ICLR, CVPR, ACL
+- Strong specialized venues: AAAI, KDD, SIGIR, NAACL, ECCV, ICCV, COLING
+- High-impact journals in the subfield
 
 **Tier 3 (Include When Relevant):**
-- Respected field-specific journals (IF 5-10)
+- Reputable field-specific workshops and journals
 
-**PubMed Journal Filtering:**
+**Semantic Scholar Venue Filtering:**
 ```
-"Nature"[Journal] OR "Science"[Journal] OR "Cell"[Journal]
+venue:"Neural Information Processing Systems" OR venue:"International Conference on Machine Learning"
 ```
 
-**Google Scholar Journal Filtering:**
+**Google Scholar Venue Filtering:**
 ```
-source:Nature source:Science source:Cell
+source:NeurIPS source:ICML source:ICLR
 ```
 
 #### Leveraging "Cited by" Features
@@ -339,16 +338,16 @@ Review references in key papers:
 
 ### Author Search
 Follow prolific and reputable authors in the field:
-- Search by author name across databases
-- Check author profiles (ORCID, Google Scholar) for h-index and publication venues
+- Search by author name across databases (DBLP is ideal for complete author records)
+- Check author profiles (ORCID, Google Scholar, Semantic Scholar) for h-index and venues
 - Review recent publications and preprints
 - **Prefer authors with multiple Tier-1 publications** and high h-index (>40)
 - Look for senior authors who are recognized field leaders
 
 ### Related Article Features
 Many databases suggest related articles:
-- PubMed "Similar articles"
 - Semantic Scholar "Recommended papers"
+- Papers with Code "related methods/tasks"
 - Use to discover papers missed by keyword search
 - **Filter recommendations by citation count and venue quality**
 
@@ -358,7 +357,7 @@ Many databases suggest related articles:
 
 ### Before Searching
 - [ ] Research question clearly defined
-- [ ] PICO criteria established (if applicable)
+- [ ] Problem/Method/Baseline/Metric criteria established (if applicable)
 - [ ] Search terms and synonyms listed
 - [ ] Inclusion/exclusion criteria documented
 - [ ] Target databases selected (minimum 3)
@@ -375,7 +374,7 @@ Many databases suggest related articles:
 - [ ] Duplicates removed
 - [ ] Screening protocol followed
 - [ ] Reasons for exclusion documented
-- [ ] Quality assessment completed
+- [ ] Reproducibility & rigor appraisal completed
 - [ ] All citations verified with verify_citations.py
 - [ ] Search methodology documented in review
 
@@ -393,7 +392,7 @@ Many databases suggest related articles:
    - Solution: Search minimum 3 complementary databases
 
 4. **Ignoring preprints**: Missing latest findings
-   - Solution: Include bioRxiv, medRxiv, or arXiv
+   - Solution: Include arXiv and OpenReview submissions
 
 5. **No documentation**: Irreproducible search
    - Solution: Document every search string, date, and result count
@@ -405,51 +404,62 @@ Many databases suggest related articles:
    - Solution: Run verify_citations.py on final reference list
 
 8. **Publication bias**: Only including published positive results
-   - Solution: Search trial registries, contact authors for unpublished data
+   - Solution: Search preprint servers and check for negative/ablation results
 
 ---
 
 ## Example Multi-Database Search Workflow
 
 ```python
-# Example workflow using available skills
+# Example workflow using available skills and APIs
 
-# 1. Search PubMed via gget
-search_term = "CRISPR AND sickle cell disease"
-# Use gget search pubmed search_term
+# 1. Search arXiv via the API (or the paper-library skill)
+import urllib.request, urllib.parse
+query = 'all:"retrieval augmented generation" AND cat:cs.CL'
+url = "http://export.arxiv.org/api/query?" + urllib.parse.urlencode(
+    {"search_query": query, "start": 0, "max_results": 100}
+)
+arxiv_atom = urllib.request.urlopen(url).read()  # parse Atom XML for entries
 
-# 2. Search bioRxiv
-# Use gget search biorxiv search_term
+# 2. Search Semantic Scholar via the Graph API
+import requests
+r = requests.get(
+    "https://api.semanticscholar.org/graph/v1/paper/search",
+    params={"query": "retrieval augmented generation question answering",
+            "fields": "title,year,venue,citationCount,influentialCitationCount",
+            "limit": 100},
+    headers={"x-api-key": "<YOUR_KEY>"},
+)
+semantic_results = r.json()["data"]
 
-# 3. Search arXiv for computational papers
-# Search arXiv with: cat:q-bio AND "CRISPR" AND "sickle cell"
+# 3. Check Papers with Code for implementations / leaderboards
+# GET https://paperswithcode.com/api/v1/search/?q=retrieval+augmented+generation
 
-# 4. Search Semantic Scholar via API
-# Use semantic scholar API with search query
-
-# 5. Aggregate and deduplicate results
+# 4. Aggregate and deduplicate results
 # python search_databases.py combined_results.json --deduplicate --format markdown --output review_papers.md
 
-# 6. Verify all citations
+# 5. Verify all citations
 # python verify_citations.py review_papers.md
 
-# 7. Generate final PDF
-# python generate_pdf.py review_papers.md --citation-style nature
+# 6. Generate final PDF
+# python generate_pdf.py review_papers.md --citation-style ieee
 ```
 
 ---
 
 ## Resources
 
-### MeSH Browser
-https://meshb.nlm.nih.gov/search
+### arXiv API Documentation
+https://info.arxiv.org/help/api/index.html
 
-### Boolean Search Tutorial
-https://www.ncbi.nlm.nih.gov/books/NBK3827/
+### Semantic Scholar API
+https://api.semanticscholar.org/api-docs/
+
+### Papers with Code API
+https://paperswithcode.com/api/v1/docs/
+
+### ACL Anthology
+https://aclanthology.org/
 
 ### Citation Style Guides
 See references/citation_styles.md in this skill
-
-### PRISMA Guidelines
-Preferred Reporting Items for Systematic Reviews and Meta-Analyses:
-http://www.prisma-statement.org/

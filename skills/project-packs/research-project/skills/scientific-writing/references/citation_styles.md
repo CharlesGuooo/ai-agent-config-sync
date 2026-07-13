@@ -2,155 +2,141 @@
 
 ## Overview
 
-Citation styles provide standardized formats for acknowledging sources in scientific writing. Different disciplines prefer different styles, and journals typically specify which style to use. The five most common citation styles in science are AMA, Vancouver, APA, Chicago, and IEEE.
+Citation styles provide standardized formats for acknowledging sources in scientific writing. Different disciplines prefer different styles, and venues typically specify which style to use. The five most common citation styles in computing and the sciences are APA, IEEE, ACM, Nature, and Chicago.
 
 ## Choosing the Right Style
 
 | Style | Primary Disciplines | In-Text Format |
 |-------|-------------------|----------------|
-| AMA | Medicine, health sciences | Superscript numbers¹ |
-| Vancouver | Biomedical sciences | Numbers in brackets [1] |
-| APA | Psychology, social sciences, education | Author-date (Smith, 2023) |
+| APA | Psychology, HCI, social computing, education | Author-date (Smith, 2023) |
+| IEEE | Engineering, computer science, systems | Numbers in brackets [1] |
+| ACM | Computer science (ACM venues) | Numbered [1] or author-date |
+| Nature | Multidisciplinary science journals | Superscript numbers¹ |
 | Chicago | Humanities, history, some sciences | Notes-bibliography or author-date |
-| IEEE | Engineering, computer science | Numbers in brackets [1] |
-| ACS | Chemistry | Superscript numbers¹ or (1) |
-| NLM | Life sciences, PubMed | Numbers in brackets [1] |
 
-**Default recommendation**: When in doubt, check the journal's author guidelines. Most biomedical journals use Vancouver or AMA style.
+**Default recommendation**: When in doubt, check the venue's author guidelines or LaTeX template. Most CS conferences and journals use numbered IEEE- or ACM-style references; many ML venues also accept author-date (e.g., ACL style).
 
-## AMA Style (American Medical Association)
+## ACM Style (ACM Reference Format)
 
 ### Overview
-- Used primarily in medical research
-- Based on the *AMA Manual of Style* (11th edition, 2020)
-- Numbered citations appearing as superscripts
-- References listed numerically in order of appearance
+- Used across ACM conferences and journals (CACM, TOG, CHI, KDD, etc.)
+- Based on the *ACM Reference Format* (used by the `acmart` LaTeX class)
+- Default is numbered citations in square brackets; an author-date variant is available
+- References listed numerically in order of appearance (or alphabetically for author-date)
 
 ### In-Text Citations
 
-**Basic format**: Superscript numerals outside periods and commas, inside semicolons and colons.
+**Basic format**: Numbers in square brackets after the relevant text.
 
 **Examples:**
 ```
-Several studies have demonstrated this effect.¹
+Several works have demonstrated this effect [1].
 
-The results were inconclusive,² although Smith et al³ reported otherwise.
+The results were inconclusive [2], although Smith et al. [3] reported otherwise.
 
-These findings³⁻⁵ suggest a correlation.
+These findings [3, 4, 5] suggest a correlation.
 
-One meta-analysis⁶ found significant heterogeneity; however, the pooled effect was significant.⁷
+Multiple systems [1, 3, 5, 6, 7] have confirmed this.
 ```
 
-**Multiple citations**: Use commas or hyphens for ranges
+**Multiple citations**: Use commas within one bracket
 ```
-Multiple studies¹,³,⁵⁻⁷ have confirmed this.
+Multiple works [1, 3, 5] have confirmed this.
 ```
 
-**Same source cited multiple times**: Use the same number throughout
+**Author-date variant**: `[Smith et al. 2023]` when the venue's template selects the author-year style
 
 ### Reference List Format
 
 **Journal Articles:**
 ```
-1. Author AA, Author BB, Author CC. Title of article. Journal Name. Year;Volume(Issue):Page range. doi:xx.xxxx
+[1] Author First Last, Author First Last, and Author First Last. Year. Title of article. Journal Name Volume, Issue (Month Year), Page range. https://doi.org/xx.xxxx
 ```
 
 **Example:**
 ```
-1. Smith JD, Johnson AB, Williams CD. Effectiveness of cognitive behavioral therapy for anxiety disorders. JAMA Psychiatry. 2023;80(5):456-464. doi:10.1001/jamapsychiatry.2023.0123
+[1] Jane D. Smith, Alan B. Johnson, and Carol D. Williams. 2023. Efficient attention for long-context transformers. Commun. ACM 66, 5 (May 2023), 78-87. https://doi.org/10.1145/3591234
+```
+
+**Conference Papers:**
+```
+[2] Author First Last and Author First Last. Year. Paper title. In Proceedings of the Conference Name (Abbrev 'YY). ACM, City, Country, Page range. https://doi.org/xx.xxxx
 ```
 
 **Books:**
 ```
-2. Author AA. Book Title. Edition. Publisher; Year.
+[3] Author First Last. Year. Book Title (Edition ed.). Publisher, City.
 ```
 
-**Book Chapters:**
+**Preprints/Online Resources:**
 ```
-3. Chapter Author AA. Chapter title. In: Editor AA, Editor BB, eds. Book Title. Edition. Publisher; Year:Page range.
-```
-
-**Online Resources:**
-```
-4. Organization Name. Page title. Website name. Published date. Updated date. Accessed date. URL
+[4] Author First Last. Year. Title. arXiv:xxxx.xxxxx. Retrieved Month Day, Year from URL
 ```
 
 ### Special Cases
 
-**More than 6 authors**: List first 3, then "et al"
-```
-Smith JD, Jones AB, Williams CD, et al.
-```
+**Many authors**: List all authors; `acmart` handles truncation to "et al." in-text automatically
 
 **No author**: Begin with title
 
-**Advance online publication**:
-```
-Published online Month Day, Year. doi:xx.xxxx
-```
+**Artifacts and code**: Cite released software/datasets with a DOI when available (Zenodo, ACM DL)
 
-## Vancouver Style
+## Nature Style
 
 ### Overview
-- Developed by the International Committee of Medical Journal Editors (ICMJE)
-- Described in *Recommendations for the Conduct, Reporting, Editing, and Publication of Scholarly Work in Medical Journals*
-- Also called "author-number style"
-- Numbered citations in square brackets
-- References listed numerically
+- Used by Nature and Nature-portfolio journals (also similar to Science)
+- Superscript numbered citations
+- References listed numerically in order of appearance
+- Journal names abbreviated; article titles included
 
 ### In-Text Citations
 
-**Basic format**: Numbers in square brackets after the relevant text, before periods and commas.
+**Basic format**: Superscript numerals after the relevant text.
 
 **Examples:**
 ```
-Several studies have shown this effect [1].
+Several studies have shown this effect¹.
 
-The results were inconclusive [2], although Smith et al [3] reported otherwise.
+The results were inconclusive², although Smith et al.³ reported otherwise.
 
-These findings [3-5] suggest a correlation.
+These findings³⁻⁵ suggest a correlation.
 
-Multiple studies [1,3,5-7] have confirmed this.
+Multiple studies¹,³,⁵⁻⁷ have confirmed this.
 ```
 
 ### Reference List Format
 
 **Journal Articles:**
 ```
-1. Author AA, Author BB, Author CC. Title of article. Journal Name. Year;Volume(Issue):Page range.
+1. Author, A. A., Author, B. B. & Author, C. C. Title of article. Journal Abbrev. Volume, Page range (Year).
 ```
 
 **Example:**
 ```
-1. Smith JD, Johnson AB, Williams CD. Effectiveness of cognitive behavioral therapy for anxiety disorders. JAMA Psychiatry. 2023;80(5):456-464.
+1. Smith, J. D., Johnson, A. B. & Williams, C. D. Scaling laws for sparse mixture-of-experts models. Nat. Mach. Intell. 5, 456-464 (2023).
 ```
 
 **Books:**
 ```
-2. Author AA, Author BB. Book title. Edition. Place of publication: Publisher; Year.
+2. Author, A. A. Book Title (Publisher, Year).
 ```
 
-**Book Chapters:**
+**Conference/Preprint Sources:**
 ```
-3. Chapter Author AA, Chapter Author BB. Chapter title. In: Editor AA, Editor BB, editors. Book title. Edition. Place: Publisher; Year. p. Page range.
-```
-
-**Electronic Sources:**
-```
-4. Author AA. Title of page [Internet]. Place: Publisher; Date of publication [cited Date of citation]. Available from: URL
+3. Author, A. A. et al. Paper title. In Proc. Conference Name (Year); preprint at https://arxiv.org/abs/xxxx.xxxxx.
 ```
 
 ### Special Cases
 
-**More than 6 authors**: List first 6, then "et al."
+**More than 5 authors**: List first author then "et al."
 
-**Journal title abbreviations**: Use PubMed/Index Medicus abbreviations
-- *The Journal of the American Medical Association* → *JAMA*
-- *Nature Medicine* → *Nat Med*
+**Journal title abbreviations**: Use standard ISO abbreviations
+- *Nature Machine Intelligence* → *Nat. Mach. Intell.*
+- *Journal of Machine Learning Research* → *J. Mach. Learn. Res.*
 
-**No volume or issue**: Use year and page numbers only
+**No volume or issue**: Use year and article number
 
-**Article in press**: Use "[Epub ahead of print]" notation
+**Preprint**: Cite as "preprint at https://arxiv.org/abs/xxxx.xxxxx"
 
 ## APA Style (American Psychological Association)
 
@@ -206,7 +192,7 @@ Author, A. A., Author, B. B., & Author, C. C. (Year). Title of article. Journal 
 
 **Example:**
 ```
-Smith, J. D., Johnson, A. B., & Williams, C. D. (2023). Effectiveness of cognitive behavioral therapy for anxiety disorders. JAMA Psychiatry, 80(5), 456-464. https://doi.org/10.1001/jamapsychiatry.2023.0123
+Smith, J. D., Johnson, A. B., & Williams, C. D. (2023). Efficient attention for long-context transformers. Journal of Machine Learning Research, 24(5), 456-464. https://doi.org/10.5555/jmlr.2023.0123
 ```
 
 **Books:**
@@ -265,12 +251,12 @@ One study demonstrated this effect.¹
 
 **Note format:**
 ```
-1. John D. Smith, Alice B. Johnson, and Carol D. Williams, "Effectiveness of Cognitive Behavioral Therapy for Anxiety Disorders," JAMA Psychiatry 80, no. 5 (2023): 456-64.
+1. John D. Smith, Alice B. Johnson, and Carol D. Williams, "Efficient Attention for Long-Context Transformers," Journal of Machine Learning Research 24, no. 5 (2023): 456-64.
 ```
 
 **Bibliography format:**
 ```
-Smith, John D., Alice B. Johnson, and Carol D. Williams. "Effectiveness of Cognitive Behavioral Therapy for Anxiety Disorders." JAMA Psychiatry 80, no. 5 (2023): 456-64.
+Smith, John D., Alice B. Johnson, and Carol D. Williams. "Efficient Attention for Long-Context Transformers." Journal of Machine Learning Research 24, no. 5 (2023): 456-64.
 ```
 
 ### Author-Date System
@@ -283,7 +269,7 @@ Smith, Johnson, and Williams (2023) found...
 
 **Reference list**: Similar to APA but with different punctuation
 ```
-Smith, John D., Alice B. Johnson, and Carol D. Williams. 2023. "Effectiveness of Cognitive Behavioral Therapy for Anxiety Disorders." JAMA Psychiatry 80 (5): 456-64.
+Smith, John D., Alice B. Johnson, and Carol D. Williams. 2023. "Efficient Attention for Long-Context Transformers." Journal of Machine Learning Research 24 (5): 456-64.
 ```
 
 ### Special Features
@@ -321,7 +307,7 @@ Multiple implementations [1]-[4] have been proposed.
 
 **Example:**
 ```
-[1] J. D. Smith, A. B. Johnson, and C. D. Williams, "Effectiveness of cognitive behavioral therapy for anxiety disorders," JAMA Psychiatry, vol. 80, no. 5, pp. 456-464, May 2023.
+[1] J. D. Smith, A. B. Johnson, and C. D. Williams, "Efficient attention for long-context transformers," IEEE Trans. Pattern Anal. Mach. Intell., vol. 45, no. 5, pp. 456-464, May 2023.
 ```
 
 **Books:**
@@ -367,18 +353,18 @@ This reaction has been well studied (1).
 - Year in bold
 - No issue numbers
 
-### NLM Style (National Library of Medicine)
+### ACL Style (Association for Computational Linguistics)
 
-**Very similar to Vancouver**, used by PubMed/MEDLINE
+**Author-year style** used across ACL, EMNLP, and NAACL (via the `acl` BibTeX style)
 
-**Key differences:**
-- Uses PubMed journal abbreviations
-- Specific format for electronic publications
-- PMID or PMCID can be included
+**Key features:**
+- In-text author-date citations: `(Smith et al., 2023)` or narrative `Smith et al. (2023)`
+- References listed alphabetically by author surname
+- arXiv preprints and ACL Anthology entries cited directly (with anthology ID)
 
 **Example:**
 ```
-Smith JD, Johnson AB, Williams CD. Effectiveness of cognitive behavioral therapy for anxiety disorders. JAMA Psychiatry. 2023 May;80(5):456-64. doi: 10.1001/jamapsychiatry.2023.0123. PMID: 12345678.
+Jane D. Smith, Alan B. Johnson, and Carol D. Williams. 2023. Efficient attention for long-context transformers. In Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (ACL 2023), pages 456-464.
 ```
 
 ## General Citation Best Practices
@@ -450,28 +436,29 @@ A unique alphanumeric string identifying digital content permanently.
 
 **Format:**
 ```
-doi:10.1001/jamapsychiatry.2023.0123
+doi:10.1145/3591234
 or
-https://doi.org/10.1001/jamapsychiatry.2023.0123
+https://doi.org/10.1145/3591234
 ```
 
 ### When to include:
 - Required by most journals for recent publications
 - Preferred over URLs because DOIs don't change
-- Look up DOIs at https://www.crossref.org/ if not provided
+- Look up DOIs at https://www.crossref.org/ if not provided; for preprints, cite the arXiv ID
 
 ### Style-specific formatting:
-- **AMA**: `doi:10.xxxx/xxxxx`
+- **ACM**: `https://doi.org/10.xxxx/xxxxx`
 - **APA**: `https://doi.org/10.xxxx/xxxxx`
-- **Vancouver**: Often omitted or added at journal's discretion
+- **IEEE**: DOI or arXiv ID added at the end of the reference
+- **Nature**: DOI included; preprints cited as "preprint at https://arxiv.org/abs/xxxx.xxxxx"
 - **Chicago**: `https://doi.org/10.xxxx/xxxxx`
 
 ## Quick Reference: Journal Article Format
 
 | Style | Format |
 |-------|--------|
-| **AMA** | Author AA, Author BB. Title of article. *Journal*. Year;Vol(Iss):pp. doi:xx |
-| **Vancouver** | Author AA, Author BB. Title of article. Journal. Year;Vol(Iss):pp. |
+| **ACM** | [1] Author First Last and Author First Last. Year. Title. *Journal* Vol, Iss (Month Year), pp. https://doi.org/xx |
+| **Nature** | 1. Author, A. A. & Author, B. B. Title. *J. Abbrev.* Vol, pp (Year). |
 | **APA** | Author, A. A., & Author, B. B. (Year). Title of article. *Journal*, Vol(Iss), pp. https://doi.org/xx |
 | **Chicago A-D** | Author, A. A., and B. B. Author. Year. "Title." *Journal* Vol (Iss): pp. |
 | **IEEE** | A. A. Author and B. B. Author, "Title," *Journal*, vol. X, no. X, pp. XX-XX, Mon. Year. |
@@ -479,10 +466,10 @@ https://doi.org/10.1001/jamapsychiatry.2023.0123
 ## Common Abbreviations
 
 ### Journal Abbreviations
-Follow the journal's specified system (usually Index Medicus or ISO):
-- *The Journal of Biological Chemistry* → *J Biol Chem*
-- *Proceedings of the National Academy of Sciences* → *Proc Natl Acad Sci USA*
-- *Nature Medicine* → *Nat Med*
+Follow the venue's specified system (usually ISO 4 abbreviations):
+- *Journal of Machine Learning Research* → *J. Mach. Learn. Res.*
+- *IEEE Transactions on Pattern Analysis and Machine Intelligence* → *IEEE Trans. Pattern Anal. Mach. Intell.*
+- *Communications of the ACM* → *Commun. ACM*
 
 ### Month Abbreviations
 - Jan., Feb., Mar., Apr., May, June, July, Aug., Sept., Oct., Nov., Dec.
@@ -559,51 +546,48 @@ Some journals use modified versions of standard styles:
 
 ### Common Journals and Their Citation Styles
 
-| Journal | Citation Style | Key Features |
+| Venue | Citation Style | Key Features |
 |---------|---------------|--------------|
-| **JAMA, JAMA Network journals** | AMA | Superscript numbers, abbreviated journal names, no issue numbers |
-| **New England Journal of Medicine** | Modified Vancouver | Numbered brackets, abbreviated journals, limited authors (3 then et al) |
-| **The Lancet** | Vancouver | Numbered brackets, PubMed abbreviations |
-| **BMJ** | Vancouver | Numbered in-text, DOIs required when available |
-| **Nature, Nature journals** | Nature style (numbered) | Numbered superscripts, abbreviated journals, no article titles in some journals |
+| **NeurIPS/ICML/ICLR** | Numbered or author-year (per template) | `.sty` template dictates format; arXiv preprints common |
+| **CVPR/ICCV/ECCV** | Numbered [1] (IEEE-like) | Compact numbered brackets; conference proceedings |
+| **ACL/EMNLP/NAACL** | ACL author-year | `(Author, Year)`; ACL Anthology IDs |
+| **ACM venues (CHI, KDD, SIGMOD)** | ACM Reference Format | Numbered [1] via `acmart`; DOIs required |
+| **JMLR** | JMLR (author-year) | Author-date; open-access, DOIs/arXiv IDs |
+| **IEEE journals (TPAMI, etc.)** | IEEE | Numbered brackets; specific format for conference papers |
+| **Nature, Nature journals** | Nature style (numbered) | Numbered superscripts, abbreviated journals, article titles included |
 | **Science** | Science style (numbered) | Numbered in-text, abbreviated format |
-| **Cell, Cell Press journals** | Cell style (author-year) | Author-date, specific formatting for multiple citations |
-| **PLOS journals** | Vancouver | Numbered brackets, full journal names in some PLOS journals |
-| **Journal of Biological Chemistry** | JBC style (numbered) | Numbered in-text, specific abbreviation rules |
-| **Psychological journals** | APA | Author-date, DOIs required |
-| **IEEE journals** | IEEE | Numbered brackets, specific format for conference papers |
+| **HCI / social-computing journals** | APA | Author-date, DOIs required |
 | **ACS journals** | ACS | Superscript or numbered, semicolons between authors |
 
 ### Journal Family Consistency
 
-**Journals from the same publisher often share citation styles:**
+**Venues from the same publisher or community often share citation styles:**
 
 **Elsevier journals:**
 - Vary widely; check specific journal
-- Many use numbered Vancouver-style
+- Many use numbered styles
 - Some allow author-date
 
 **Springer Nature journals:**
 - Nature journals: Nature style (numbered, abbreviated)
-- Springer journals: Often numbered or author-date depending on field
-- BMC journals: Vancouver with full journal names
+- Springer LNCS proceedings: numbered, author-first references
+- Other Springer journals: numbered or author-date depending on field
 
-**Wiley journals:**
-- Varies by field
-- Many biomedical journals use Vancouver
-- Psychology/social science journals often use APA
+**ACM and IEEE:**
+- All ACM venues use the ACM Reference Format (via `acmart`)
+- All IEEE venues use IEEE style (numbered brackets)
 
-**American Chemical Society (ACS):**
-- All ACS journals use ACS style
-- Consistent across Journal of American Chemical Society, Analytical Chemistry, etc.
+**ML conference community (*ACL, NeurIPS/ICML/ICLR):**
+- *ACL venues use ACL author-year style
+- NeurIPS/ICML/ICLR provide `.sty` files that fix the format (numbered or author-year)
 
 ### High-Impact Journal and Conference Preferences
 
 | Venue | Field | Citation Preference | Key Features |
 |-------|-------|-------------------|--------------|
 | **Nature/Science** | Multidisciplinary | Numbered, abbreviated | Space-saving, broad readability |
-| **Cell family** | Life sciences | Author-date or numbered | Attribution visibility |
-| **NEJM/Lancet/JAMA** | Medicine | Vancouver/AMA numbered | Medical standard |
+| **JMLR/TPAMI** | Machine Learning | Author-year / numbered | Archival journal standard |
+| **CACM/ACM journals** | Computer Science | ACM Reference Format | Numbered [1] via `acmart` |
 | **NeurIPS/ICML/ICLR** | Machine Learning | Numbered [1] or (Author, Year) | Varies by conference, check template |
 | **CVPR/ICCV/ECCV** | Computer Vision | Numbered [1], IEEE-like | Compact format |
 | **ACL/EMNLP** | NLP | Author-year (ACL style) | Attribution-focused |
@@ -636,8 +620,8 @@ Some journals use modified versions of standard styles:
 ### Venue-Specific Evaluation Criteria
 
 **Content expectations:**
-- **High-impact journals**: >50% citations from last 5 years; primary sources preferred
-- **Medical journals**: Recent clinical evidence; systematic reviews valued
+- **Archival journals (JMLR/TPAMI)**: >50% citations from last 5 years; primary sources preferred
+- **Systems/DB venues**: Recent, reproducible work valued; surveys valued
 - **ML conferences**: Recent papers (last 2-3 years); preprints (arXiv) acceptable
 - **Self-citation**: Keep <20% across all venues
 
@@ -645,7 +629,7 @@ Some journals use modified versions of standard styles:
 - Match venue citation style exactly
 - All in-text citations have corresponding references
 - Include DOIs when required (journals) or arXiv IDs (ML conferences)
-- Use correct abbreviations (PubMed for medical, standard for ML)
+- Use correct abbreviations (ISO 4 for journals, venue `.sty` for conferences)
 
 **ML conference specifics:**
 - **NeurIPS/ICML/ICLR**: ArXiv preprints widely cited; recent work heavily valued
@@ -658,7 +642,7 @@ Some journals use modified versions of standard styles:
 | Venue Type | Expected Citations | Key Notes |
 |-----------|-------------------|-----------|
 | **Nature/Science research** | 30-50 | Selective, high-impact citations |
-| **Medical journals (RCT)** | 25-40 | Recent clinical evidence |
+| **Archival CS journals (TPAMI)** | 25-40 | Recent, reproducible evidence |
 | **Field-specific journals** | 30-60 | Comprehensive field coverage |
 | **ML conferences (8-page)** | 20-40 | Space-limited, recent work |
 | **Review articles** | 100-300+ | Comprehensive coverage |
@@ -692,17 +676,17 @@ Some journals use modified versions of standard styles:
 ## Resources for Citation Styles
 
 ### Official Manuals
-- AMA: https://www.amamanualofstyle.com/
-- Vancouver/ICMJE: http://www.icmje.org/
 - APA: https://apastyle.apa.org/
-- Chicago: https://www.chicagomanualofstyle.org/
 - IEEE: https://ieeeauthorcenter.ieee.org/
+- ACM Reference Format: https://www.acm.org/publications/authors/reference-formatting
+- Chicago: https://www.chicagomanualofstyle.org/
+- ACL style/BibTeX: https://github.com/acl-org/acl-style-files
 
-### Journal-Specific Style Guides
+### Venue-Specific Style Guides
 - Nature: https://www.nature.com/nature/for-authors/formatting-guide
 - Science: https://www.science.org/content/page/instructions-authors
-- Cell: https://www.cell.com/cell/authors
-- JAMA: https://jamanetwork.com/journals/jama/pages/instructions-for-authors
+- JMLR: https://www.jmlr.org/author-info.html
+- NeurIPS: https://neurips.cc/Conferences/CallForPapers
 
 ### Quick Reference Guides
 - Purdue OWL: https://owl.purdue.edu/

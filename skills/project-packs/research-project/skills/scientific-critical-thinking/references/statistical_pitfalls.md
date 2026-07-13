@@ -150,7 +150,7 @@
 - Always report effect sizes
 - Use standardized measures (Cohen's d, r, η²)
 - Interpret using field conventions
-- Consider minimum clinically important difference
+- Consider minimum practically important difference
 
 ### Pitfall 13: Misinterpreting Standardized Effect Sizes
 **Problem:** Treating Cohen's d = 0.5 as "medium" without context.
@@ -370,7 +370,7 @@
 - Arbitrary distinctions
 - Discarding individual differences
 
-**Exceptions:** Clinically meaningful cutoffs with strong justification.
+**Exceptions:** Practically meaningful cutoffs with strong justification.
 
 **Better:** Keep continuous or use multiple categories.
 
@@ -421,7 +421,7 @@
 **Solutions:**
 - Preregistration
 - Report all analyses
-- Use reporting guidelines (CONSORT, PRISMA, etc.)
+- Use reproducibility checklists (e.g. NeurIPS/ICML)
 
 ### Pitfall 37: Rounding to p < .05
 **Problem:** Reporting exact p-values selectively (e.g., p = .049 but p < .05 for .051).

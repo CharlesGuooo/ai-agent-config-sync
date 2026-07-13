@@ -12,7 +12,7 @@ This document catalogs frequent issues encountered during peer review, organized
 - Interpreting non-significance as proof of no effect
 - Focusing exclusively on p-values without effect sizes
 - Dichotomizing continuous p-values at arbitrary thresholds (p=0.049 vs p=0.051)
-- Confusing statistical significance with biological/clinical significance
+- Confusing statistical significance with practical significance
 
 **How to Identify:**
 - Suspiciously high proportion of p-values just below 0.05
@@ -96,7 +96,7 @@ This document catalogs frequent issues encountered during peer review, organized
 - Test MCAR assumption (Little's test)
 - Use appropriate methods (multiple imputation, maximum likelihood)
 - Perform sensitivity analyses
-- Consider intention-to-treat analysis for trials
+- Analyze all initiated runs, not only those that converged (avoid survivorship bias)
 
 ### 5. Circular Analysis and Double-Dipping
 
@@ -124,23 +124,23 @@ This document catalogs frequent issues encountered during peer review, organized
 ### 6. Pseudoreplication
 
 **Common Problems:**
-- Technical replicates treated as biological replicates
-- Multiple measurements from same subject treated as independent
+- Repeated measurements treated as independent runs
+- Multiple measurements from the same trained model treated as independent
 - Clustered data analyzed without accounting for clustering
 - Non-independence in spatial or temporal data
 
 **How to Identify:**
-- n defined as number of measurements rather than biological units
-- Multiple cells from same animal counted as independent
+- n defined as number of measurements rather than independent runs
+- Multiple evaluations from the same trained model counted as independent
 - Repeated measures not acknowledged
 - No mention of random effects or clustering
 
 **What to Recommend:**
-- Define n as biological replicates (animals, patients, independent samples)
+- Define n as independent runs / random seeds / independent samples
 - Use mixed-effects models for nested or clustered data
 - Account for repeated measures explicitly
 - Average technical replicates before analysis
-- Report both technical and biological replication
+- Report both repeated-measurement and independent-run replication
 
 ## Experimental Design Issues
 
@@ -149,7 +149,7 @@ This document catalogs frequent issues encountered during peer review, organized
 **Common Problems:**
 - Missing negative controls
 - Missing positive controls for validation
-- No vehicle controls for drug studies
+- No ablation baseline isolating the proposed component
 - No time-matched controls for longitudinal studies
 - No batch controls
 
@@ -162,8 +162,8 @@ This document catalogs frequent issues encountered during peer review, organized
 **What to Recommend:**
 - Include negative controls to assess specificity
 - Include positive controls to validate methods
-- Use vehicle controls matched to experimental treatment
-- Include sham surgery controls for surgical interventions
+- Use matched baselines differing only in the component under study
+- Include ablation controls that remove only the proposed component
 - Include batch controls for cross-batch comparisons
 
 ### 8. Confounding Variables
@@ -194,7 +194,7 @@ This document catalogs frequent issues encountered during peer review, organized
 
 **Common Problems:**
 - Single experiment without replication
-- Technical replicates mistaken for biological replication
+- Repeated measurements mistaken for independent runs
 - Small n justified by "typical for the field"
 - No independent validation of key findings
 - Cherry-picking representative examples
@@ -207,8 +207,8 @@ This document catalogs frequent issues encountered during peer review, organized
 - No validation in independent dataset
 
 **What to Recommend:**
-- Perform independent biological replicates (typically ≥3)
-- Validate key findings in independent cohorts
+- Perform independent runs with different random seeds (typically ≥3)
+- Validate key findings on independent datasets or benchmarks
 - Report all replicates, not just representative examples
 - Conduct power analysis to justify sample size
 - Show individual data points, not just summary statistics
@@ -219,24 +219,24 @@ This document catalogs frequent issues encountered during peer review, organized
 
 **Common Problems:**
 - Methods not described in sufficient detail for replication
-- Key reagents not specified (vendor, catalog number)
+- Key dependencies not specified (library, exact version)
 - Software versions and parameters not reported
-- Antibodies not validated
-- Cell line authentication not verified
+- Pretrained checkpoints not identified (source, version)
+- Dataset version or checksum not verified
 
 **How to Identify:**
 - Vague descriptions ("standard protocols were used")
-- No information on reagent sources
+- No information on dependency sources or versions
 - Generic software mentioned without versions
-- No antibody validation information
-- Cell lines not authenticated
+- No pretrained model provenance information
+- Datasets not versioned or checksummed
 
 **What to Recommend:**
 - Provide detailed protocols or cite specific protocols
-- Include reagent vendors, catalog numbers, lot numbers
+- Include exact library versions and dependency lockfiles
 - Report software versions and all parameters
-- Include antibody validation (Western blot, specificity tests)
-- Report cell line authentication method (STR profiling)
+- Identify pretrained checkpoints (source, commit or version hash)
+- Report dataset version and checksum for integrity
 - Make protocols available (protocols.io, supplementary materials)
 
 ### 11. Data and Code Availability
@@ -266,26 +266,26 @@ This document catalogs frequent issues encountered during peer review, organized
 ### 12. Lack of Method Validation
 
 **Common Problems:**
-- New methods not compared to gold standard
-- Assays not validated for specificity, sensitivity, linearity
-- No spike-in controls
-- Cross-reactivity not tested
-- Detection limits not established
+- New methods not compared to strong baselines
+- Metrics not validated (correlation with the target quantity, sensitivity)
+- No sanity-check baselines (e.g., random or majority-class)
+- Shortcut features / confounds not tested
+- Operating range and failure modes not established
 
 **How to Identify:**
-- Novel assays presented without validation
+- Novel metrics presented without validation
 - No comparison to existing methods
 - No positive/negative controls shown
 - Claims of specificity without evidence
-- No standard curves or controls
+- No baselines or reference points
 
 **What to Recommend:**
 - Validate new methods against established approaches
-- Show specificity (knockdown/knockout controls)
-- Demonstrate linearity and dynamic range
+- Show specificity (ablation controls removing the component)
+- Demonstrate stable behavior across the input range
 - Include positive and negative controls
-- Report limits of detection and quantification
-- Show reproducibility across replicates and operators
+- Report operating range and known failure cases
+- Show reproducibility across seeds and compute environments
 
 ## Interpretation Issues
 
@@ -294,21 +294,21 @@ This document catalogs frequent issues encountered during peer review, organized
 **Common Problems:**
 - Causal language for correlational data
 - Mechanistic claims without mechanistic evidence
-- Extrapolating beyond data (species, conditions, populations)
+- Extrapolating beyond data (datasets, domains, distributions)
 - Claiming "first to show" without thorough literature review
 - Overgeneralizing from limited samples
 
 **How to Identify:**
 - "X causes Y" from observational data
 - Mechanism proposed without direct testing
-- Mouse data presented as relevant to humans without caveats
+- Results on one benchmark presented as generally valid without caveats
 - Claims of novelty with missing citations
 - Broad claims from narrow samples
 
 **What to Recommend:**
 - Use appropriate language ("associated with" vs. "caused by")
 - Distinguish correlation from causation
-- Acknowledge limitations of model systems
+- Acknowledge limitations of benchmarks and evaluation settings
 - Provide thorough literature context
 - Be specific about generalizability
 - Propose mechanisms as hypotheses, not conclusions
@@ -393,11 +393,11 @@ This document catalogs frequent issues encountered during peer review, organized
 
 **Common Problems:**
 - Excessive contrast/brightness adjustment
-- Spliced gels or images without indication
+- Spliced or composited figures without indication
 - Duplicated images or panels
-- Uneven background in Western blots
+- Inconsistent backgrounds across composited panels
 - Selective cropping
-- Over-processed microscopy images
+- Over-processed or selectively edited qualitative images
 
 **How to Identify:**
 - Suspicious patterns or discontinuities
@@ -409,7 +409,7 @@ This document catalogs frequent issues encountered during peer review, organized
 
 **What to Recommend:**
 - Apply adjustments uniformly across images
-- Indicate spliced gels with dividing lines
+- Indicate spliced or composited figures with dividing lines
 - Show full, uncropped images in supplementary materials
 - Provide original images if requested
 - Follow journal image integrity policies
@@ -446,24 +446,24 @@ This document catalogs frequent issues encountered during peer review, organized
 **Common Problems:**
 - Groups differ at baseline
 - Selection criteria applied differentially
-- Healthy volunteer bias
+- Favorable subset selection (easy examples only)
 - Survivorship bias
-- Indication bias in observational studies
+- Selection bias from non-random data collection
 
 **How to Identify:**
 - Table 1 shows significant baseline differences
 - Inclusion criteria different between groups
-- Response rate <50% with no analysis
-- Analysis only includes completers
+- Convergence rate <50% with no analysis
+- Analysis only includes runs that completed
 - Groups self-selected rather than randomized
 
 **What to Recommend:**
 - Report baseline characteristics in Table 1
 - Use randomization to ensure balance
 - Adjust for baseline differences in analysis
-- Report response rates and compare responders vs. non-responders
+- Report the fraction of runs that converged and compare converged vs. failed runs
 - Consider propensity score matching for observational data
-- Use intention-to-treat analysis
+- Include all initiated runs (including failures) in the analysis
 
 ### 20. Temporal and Batch Effects
 
@@ -472,7 +472,7 @@ This document catalogs frequent issues encountered during peer review, organized
 - Temporal trends not accounted for
 - Instrument drift over time
 - Different operators for different groups
-- Reagent lot changes between groups
+- Library or dependency version changes between groups
 
 **How to Identify:**
 - All treatment samples processed on same day
@@ -514,7 +514,7 @@ This document catalogs frequent issues encountered during peer review, organized
 - Include 95% confidence intervals
 - Report effect sizes (Cohen's d, odds ratios, correlation coefficients)
 - Report n for each group in every analysis
-- Consider CONSORT-style flow diagram
+- Consider a search & screening flow diagram
 
 ### 22. Methods-Results Mismatch
 

@@ -1,748 +1,572 @@
-# Reporting Guidelines for Scientific Studies
+# Reproducibility and Reporting Standards for CS/ML Research
 
 ## Overview
 
-Reporting guidelines are evidence-based recommendations for what information should be included when reporting specific types of research studies. They provide checklists and flow diagrams to ensure complete, accurate, and transparent reporting, which is essential for readers to assess study validity and for other researchers to replicate the work.
+Reproducibility and reporting standards are community-developed recommendations for what information should be disclosed when reporting specific types of computer science and machine learning research. They provide checklists, documentation templates, and flow diagrams to ensure complete, accurate, and transparent reporting, which is essential for readers to assess the validity of a result and for other researchers to reproduce the work.
 
-The EQUATOR Network (Enhancing the QUAlity and Transparency Of health Research) maintains a comprehensive library of reporting guidelines. Using appropriate reporting guidelines improves manuscript quality and increases the likelihood of publication acceptance.
+CS/ML has no single central registry, but a well-established set of artifacts has emerged: conference paper checklists (NeurIPS, ICML, ICLR), the ML Reproducibility Checklist, documentation templates (Model Cards, Datasheets for Datasets), experiment/compute reporting recommendations, ACM artifact-evaluation badges, and pre-registration. Using the appropriate standard improves manuscript quality, satisfies venue requirements, and increases the likelihood of acceptance.
 
-## Why Use Reporting Guidelines?
+## Why Use Reporting Standards?
 
 ### Benefits
 
 **For authors:**
-- Ensures nothing important is forgotten
-- Increases acceptance rates
-- Improves manuscript organization
-- Reduces reviewer requests for additional information
+- Ensures nothing important is forgotten (seeds, splits, compute, hyperparameters)
+- Increases acceptance rates and passes automated/desk checks
+- Improves manuscript and appendix organization
+- Reduces reviewer requests for additional experiments or clarifications
 
 **For readers and reviewers:**
-- Enables critical appraisal of study validity
-- Facilitates systematic reviews and meta-analyses
-- Improves understanding of what was actually done
+- Enables critical appraisal of experimental validity (baseline fairness, leakage, variance)
+- Facilitates meta-analyses, leaderboards, and survey papers
+- Improves understanding of what was actually trained and evaluated
 
-**For science:**
-- Enhances reproducibility
-- Reduces research waste
-- Improves transparency
-- Enables better evidence synthesis
+**For the field:**
+- Enhances reproducibility and replication
+- Reduces wasted compute and duplicated effort
+- Improves transparency around data provenance and model behavior
+- Enables better synthesis of empirical evidence across papers
 
 ### When to Use
 
-- **During study design**: Many guidelines include protocol versions (e.g., SPIRIT for trial protocols)
-- **During manuscript drafting**: Use checklist to ensure all items are covered
-- **Before submission**: Verify adherence and often submit checklist with manuscript
-- **Many journals require**: Reporting guideline checklists as part of submission
+- **During study design**: Decide splits, seeds, and evaluation protocol before running experiments (pre-registration templates help here)
+- **During manuscript drafting**: Use the checklist to ensure every item is covered in the paper or appendix
+- **Before submission**: Verify adherence and complete the venue's paper checklist (mandatory at NeurIPS/ICML/ICLR)
+- **Many venues require**: A completed checklist and/or a code/data availability statement as part of submission
 
-## Major Reporting Guidelines by Study Type
+## Major Reporting Standards by Study Type
 
-### CONSORT - Randomized Controlled Trials
+### NeurIPS Paper Checklist - Empirical ML Papers
 
-**Full name:** Consolidated Standards of Reporting Trials
+**Full name:** NeurIPS Paper Checklist (formerly the NeurIPS Reproducibility Checklist)
 
-**When to use:** Any randomized controlled trial (RCT), including pilot and feasibility trials
+**When to use:** Any paper submitted to NeurIPS; also a strong template for ICML, ICLR, and other empirical ML venues
 
-**Latest version:** CONSORT 2010 (updated statement)
+**Latest version:** Updated annually with the call for papers
 
 **Key components:**
-- **Checklist**: 25 items covering title, abstract, introduction, methods, results, discussion
-- **Flow diagram**: Participant flow through enrollment, allocation, follow-up, and analysis
+- **Checklist**: A per-paper questionnaire authors must complete and include, with justifications and pointers to where each item is addressed
+- **Coverage**: Claims, theoretical assumptions/proofs, experimental reproducibility, data/code access, compute, safeguards, licensing, and broader impact
 
 **Main checklist items:**
-1. Title identifies study as randomized trial
-2. Structured abstract
-3. Scientific background and rationale
-4. Specific objectives and hypotheses
-5. Trial design description (parallel, crossover, factorial, etc.)
-6. Eligibility criteria for participants
-7. Settings and locations of data collection
-8. Interventions described in sufficient detail for replication
-9. Primary and secondary outcomes defined
-10. Sample size determination and power calculation
-11. Randomization sequence generation
-12. Allocation concealment mechanism
-13. Blinding implementation
-14. Statistical methods
-15. Participant flow with reasons for dropouts
-16. Recruitment dates and follow-up dates
-17. Baseline characteristics table
-18. Analysis results for each outcome
-19. Harms and adverse events
-20. Trial limitations
-21. Generalizability
-22. Interpretation consistent with results
-23. Trial registration number
-24. Full protocol access
-25. Funding sources
+1. Abstract and introduction claims match contributions and scope
+2. Limitations of the work are discussed
+3. Theoretical results state full assumptions and complete proofs
+4. Information needed to reproduce main experimental results is disclosed
+5. Open access to data and code, with instructions to reproduce
+6. Training and test details specified (data splits, optimizer, hyperparameters)
+7. Error bars / statistical significance reported and how they were computed
+8. Compute resources (hardware, memory, wall-clock time) specified
+9. Research conforms to the code of ethics
+10. Broader impacts (positive and negative societal consequences) discussed
+11. Safeguards for responsible release of high-risk data or models
+12. Existing assets (code, data, models) are properly credited and licensed
+13. New assets are documented (e.g., with a Datasheet or Model Card)
+14. Details of any human-subjects / crowdsourcing and IRB-equivalent approval
+15. Use of LLMs disclosed where they materially affect the method
 
-**Extensions for specific designs:**
-- CONSORT for cluster randomized trials
-- CONSORT for non-inferiority and equivalence trials
-- CONSORT for pragmatic trials
-- CONSORT for crossover trials
-- CONSORT for N-of-1 trials
-- CONSORT for stepped wedge designs
+**Extensions and relatives:**
+- ICML reproducibility guidance and code-submission policy
+- ICLR reproducibility statement (a required paragraph pointing to reproducibility artifacts)
+- The ML Reproducibility Challenge (independent reproduction of accepted papers)
 
-**Where to access:** http://www.consort-statement.org/
+**Where to access:** https://neurips.cc/public/guides/PaperChecklist
 
-### STROBE - Observational Studies
+### ML Reproducibility Checklist - Empirical Studies
 
-**Full name:** Strengthening the Reporting of Observational Studies in Epidemiology
+**Full name:** The Machine Learning Reproducibility Checklist (Pineau et al.)
 
-**When to use:** Cohort studies, case-control studies, and cross-sectional studies
+**When to use:** Any empirical ML paper; the field-wide superset from which venue checklists were derived
 
-**Latest version:** STROBE 2007 (widely adopted standard)
-
-**Key study designs covered:**
-- **Cohort**: Follow exposed and unexposed groups forward in time
-- **Case-control**: Compare exposure history between cases and controls
-- **Cross-sectional**: Measure exposure and outcome simultaneously
-
-**Main checklist items (22 items):**
-1. Title and abstract indicate study design
-2. Background and rationale
-3. Objectives
-4. Study design with rationale
-5. Setting, locations, and dates
-6. Eligibility criteria and selection methods
-7. Variables clearly defined (outcomes, exposures, confounders)
-8. Data sources and measurement methods
-9. Bias management strategies
-10. Study size justification
-11. Handling of quantitative variables
-12. Statistical methods including confounding and interactions
-13. Sensitivity analyses
-14. Participant flow with reasons for non-participation
-15. Descriptive data including follow-up time
-16. Outcome data
-17. Main results with unadjusted and adjusted estimates
-18. Other analyses (subgroups, sensitivity analyses)
-19. Key results summary
-20. Limitations with potential bias discussion
-21. Interpretation and generalizability
-22. Funding sources and role
-
-**Extensions:**
-- STROBE-ME (Molecular Epidemiology)
-- RECORD (Routinely collected health data)
-- STROBE-RDS (Respondent-driven sampling)
-
-**Where to access:** https://www.strobe-statement.org/
-
-### PRISMA - Systematic Reviews and Meta-Analyses
-
-**Full name:** Preferred Reporting Items for Systematic Reviews and Meta-Analyses
-
-**When to use:** Systematic reviews with or without meta-analysis
-
-**Latest version:** PRISMA 2020 (significant update)
+**Latest version:** v2.0
 
 **Key components:**
-- **Checklist**: 27 items covering all sections
-- **Flow diagram**: Study selection process
+- A concise checklist organized around models/algorithms, datasets, and experimental results
+
+**Main checklist items:**
+1. A clear description of the mathematical setting, algorithm, and/or model
+2. A clear explanation of any assumptions
+3. An analysis of complexity (time, space, sample size)
+4. A link to a downloadable source of the dataset or simulation environment
+5. An explanation of data collection and any preprocessing steps
+6. An explanation of train/validation/test splits
+7. The range of hyperparameters considered, and the selection method and criterion
+8. The exact number of training and evaluation runs
+9. A clear definition of the specific measure or statistic used to report results
+10. A description of results including central tendency and variation
+11. The average runtime for each result, or estimated energy cost
+12. A description of the computing infrastructure used
+
+**Where to access:** https://www.cs.mcgill.ca/~jpineau/ReproducibilityChecklist.pdf
+
+### Model Cards - Model Documentation
+
+**Full name:** Model Cards for Model Reporting (Mitchell et al.)
+
+**When to use:** Any released, trained model — especially models intended for reuse or deployment
+
+**Purpose:** A short document accompanying a model that reports intended use, performance across conditions and subgroups, and known limitations
 
 **Main sections:**
-1. **Title**: Identify as systematic review/meta-analysis
-2. **Abstract**: Structured summary
-3. **Introduction**: Rationale and objectives
-4. **Methods**:
-   - Eligibility criteria
-   - Information sources (databases, dates)
-   - Search strategy (full strategy for at least one database)
-   - Selection process
-   - Data collection process
-   - Data items extracted
-   - Risk of bias assessment
-   - Effect measures
-   - Synthesis methods
-   - Reporting bias assessment
-   - Certainty assessment (e.g., GRADE)
-5. **Results**:
-   - Study selection flow diagram
-   - Study characteristics
-   - Risk of bias assessment results
-   - Synthesis results (meta-analysis if applicable)
-   - Reporting biases
-   - Certainty of evidence
-6. **Discussion**:
-   - Limitations
-   - Interpretation
-   - Implications
+1. **Model details**: Owner, date, version, type, training algorithm, citation, license
+2. **Intended use**: Primary intended uses, users, and out-of-scope uses
+3. **Factors**: Relevant groups, instrumentation, and environments
+4. **Metrics**: Performance measures, decision thresholds, and variation approaches
+5. **Evaluation data**: Datasets, motivation, and preprocessing
+6. **Training data**: Distribution and any known biases (may point to a Datasheet)
+7. **Quantitative analyses**: Disaggregated results across factors
+8. **Ethical considerations**: Risks, harms, and mitigations
+9. **Caveats and recommendations**: Additional concerns and guidance
 
-**Extensions:**
-- PRISMA for Abstracts
-- PRISMA for Protocols (PRISMA-P)
-- PRISMA for Network Meta-Analyses
-- PRISMA for Scoping Reviews (PRISMA-ScR)
-- PRISMA for Individual Patient Data
-- PRISMA for Diagnostic Test Accuracy
-- PRISMA for Equity-focused reviews
+**Where to access:** https://arxiv.org/abs/1810.03993
 
-**Where to access:** http://www.prisma-statement.org/
+### Datasheets for Datasets - Dataset Documentation
 
-### SPIRIT - Study Protocols for Clinical Trials
+**Full name:** Datasheets for Datasets (Gebru et al.)
 
-**Full name:** Standard Protocol Items: Recommendations for Interventional Trials
+**When to use:** Any newly released dataset or benchmark; strongly recommended when introducing data as a paper contribution
 
-**When to use:** Protocols for randomized trials and other planned intervention studies
+**Purpose:** A structured questionnaire documenting a dataset's motivation, composition, collection, and recommended use to improve transparency and accountability
 
-**Latest version:** SPIRIT 2013
+**Main sections (question groups):**
+1. **Motivation**: Why the dataset was created and by whom
+2. **Composition**: What the instances are, labels, relationships, sensitive content
+3. **Collection process**: How data was acquired, sampling, consent, timeframe
+4. **Preprocessing/cleaning/labeling**: What was done and whether raw data is kept
+5. **Uses**: Tasks the dataset has been / could be used for, and inappropriate uses
+6. **Distribution**: How it is shared, license, and access restrictions
+7. **Maintenance**: Who maintains it, update and retention policy, contact
 
-**Purpose:** Ensure trial protocols contain complete descriptions before trial begins
+**Related templates:** Data Statements for NLP; Data Cards; Dataset Nutrition Labels
 
-**Main checklist items (33 items):**
-- Administrative information (title, trial registration, funding)
-- Introduction (background, rationale, objectives)
-- Methods: Trial design
-  - Study setting
-  - Eligibility criteria
-  - Interventions in detail
-  - Outcomes (primary and secondary)
-  - Participant timeline
-  - Sample size calculation
-  - Recruitment strategy
-  - Allocation and randomization
-  - Blinding
-  - Data collection methods
-  - Data management
-  - Statistical methods
-  - Monitoring (data monitoring committee)
-  - Harms reporting
-  - Auditing
-- Ethics and dissemination
-  - Ethics approval
-  - Consent procedures
-  - Confidentiality
-  - Dissemination plans
+**Where to access:** https://arxiv.org/abs/1803.09010
 
-**Where to access:** https://www.spirit-statement.org/
+### Experiment, Compute, and Hyperparameter Reporting
 
-### STARD - Diagnostic Accuracy Studies
+**Full name:** Reproducible experimental reporting (Dodge et al., "Show Your Work"; community compute-reporting norms)
 
-**Full name:** Standards for Reporting of Diagnostic Accuracy Studies
+**When to use:** Every empirical paper reporting model performance or comparisons
 
-**When to use:** Studies evaluating diagnostic test accuracy
+**Purpose:** Ensure that reported numbers are interpretable, comparable, and reproducible, and that comparisons are fair with respect to tuning budget and compute
 
-**Latest version:** STARD 2015
+**Key items:**
+1. **Hyperparameter search**: Search space, search method (grid/random/Bayesian), and selection criterion
+2. **Tuning budget**: Number of trials / configurations evaluated per model, including baselines
+3. **Validation performance**: Report validation as well as test; report expected performance as a function of budget where feasible
+4. **Runs and variance**: Number of seeds/runs; report mean and spread (std, CI, or min/max)
+5. **Significance**: Statistical tests or bootstrap intervals for headline comparisons
+6. **Compute**: Hardware (GPU/TPU type, count), memory, wall-clock time, and estimated energy/carbon where relevant
+7. **Software**: Framework and versions, key library versions, and random-seed handling
+8. **Data**: Exact splits, preprocessing, tokenization/featurization, and any leakage checks
 
-**Main checklist items (30 items):**
-1. Study design identification
-2. Background information and objectives
-3. Study design description
-4. Participant selection criteria and recruitment
-5. Data collection methods
-6. Index test description and execution
-7. Reference standard description
-8. Rationale for choosing reference standard
-9. Test result definition and cutoffs
-10. Flow of participants with timing
-11. Baseline demographic and clinical characteristics
-12. Cross-tabulation of index test results by reference standard
-13. Estimates of diagnostic accuracy with confidence intervals
-14. Handling of indeterminate results
-15. Adverse events from testing
+**Where to access:** https://arxiv.org/abs/1909.03004 (see also the code-release guidance below)
 
-**Flow diagram:** Shows participant flow and test results
+### ACM Artifact Review and Badging - Reusable Artifacts
 
-**Where to access:** https://www.equator-network.org/reporting-guidelines/stard/
+**Full name:** ACM Artifact Review and Badging
 
-### TRIPOD - Prediction Model Studies
+**When to use:** Papers submitting code/data artifacts for independent evaluation (common at SIGMOD, SOSP, PLDI, MLSys, and many ACM venues)
 
-**Full name:** Transparent Reporting of a multivariable prediction model for Individual Prognosis Or Diagnosis
+**Latest version:** Version 1.1
 
-**When to use:** Studies developing, validating, or updating prediction models
+**Three badge families:**
+1. **Artifacts Evaluated** — *Functional* and *Reusable*: the artifact is documented, consistent, complete, and exercisable (Reusable adds a higher bar for others to build on)
+2. **Artifacts Available**: the artifact is placed in a permanent public archive with a DOI
+3. **Results Reproduced / Replicated**: an independent team obtained the paper's results using (Reproduced) or without (Replicated) the authors' artifact
 
-**Latest version:** TRIPOD 2015
+**What an artifact submission typically includes:**
+- Source code with build instructions and pinned dependencies (container/environment file)
+- Data or a script to obtain it, plus expected outputs
+- A "getting started" guide and step-by-step instructions to reproduce key results
+- Estimated resource and time requirements
 
-**Types of studies:**
-- Model development only
-- Model development with validation
-- External validation of existing model
-- Model update
+**Where to access:** https://www.acm.org/publications/policies/artifact-review-and-badging-current
 
-**Main checklist items (22 items):**
-1. Title identifies study as prediction model study
-2. Abstract summarizes key elements
-3. Background and objectives
-4. Data source and participants
-5. Outcome definition
-6. Predictors (candidate and selected)
-7. Sample size justification
-8. Missing data handling
-9. Model building procedure
-10. Model specification (equation or algorithm)
-11. Model performance measures
-12. Risk groups if used
-13. Participant flow diagram
-14. Model development results
-15. Model performance
-16. Model updating if applicable
+### Code Release Guidance - Releasing Research Code
 
-**Where to access:** https://www.tripod-statement.org/
+**Full name:** ML Code Completeness Checklist (Papers with Code)
 
-### ARRIVE - Animal Research
+**When to use:** Any paper releasing an implementation; the basis for the code-completeness score shown on many repositories
 
-**Full name:** Animal Research: Reporting of In Vivo Experiments
+**Key items:**
+1. **Dependencies**: A specification of the environment (requirements file, container, or environment.yml)
+2. **Training code**: Scripts to reproduce training of the reported models
+3. **Evaluation code**: Scripts to reproduce reported evaluation numbers
+4. **Pre-trained models**: Released checkpoints where feasible
+5. **Results**: A table or script linking commands to reported results, with a README
 
-**When to use:** All in vivo animal studies
+**Where to access:** https://github.com/paperswithcode/releasing-research-code
 
-**Latest version:** ARRIVE 2.0 (2020 update)
+### Pre-Registration - Confirmatory Experiments
 
-**Two sets of items:**
+**Full name:** Pre-registration for machine learning / empirical CS
 
-**ARRIVE Essential 10** (minimum requirements):
-1. Study design
-2. Sample size calculation
-3. Inclusion and exclusion criteria
-4. Randomization
-5. Blinding
-6. Outcome measures
-7. Statistical methods
-8. Experimental animals (species, strain, sex, age)
-9. Experimental procedures
-10. Results and interpretation
+**When to use:** Confirmatory studies, human-subjects HCI experiments, and any work distinguishing exploratory from confirmatory analyses
 
-**ARRIVE Recommended Set** (additional items for full reporting):
-- Abstract, background, objectives
-- Ethics statement
-- Housing and husbandry
-- Animal care and monitoring
-- Interpretation and generalizability
-- Protocol registration
-- Data access
+**Purpose:** Specify hypotheses, datasets, models, metrics, and the analysis plan *before* running experiments, reducing researcher degrees of freedom and selective reporting
 
-**Where to access:** https://arriveguidelines.org/
+**Main items:**
+1. Hypotheses and predictions stated in advance
+2. Datasets, splits, and any held-out benchmarks fixed before analysis
+3. Models/baselines and hyperparameter protocol specified
+4. Primary and secondary metrics defined, with the decision rule
+5. Planned statistical analysis and stopping criteria
+6. Distinction between confirmatory and exploratory analyses
 
-### CARE - Case Reports
+**Where to access:** https://preregister.science/
 
-**Full name:** CAse REport Guidelines
+### Search and Screening Flow Diagram - Systematic Reviews and Surveys
 
-**When to use:** Case reports and case series
+**Full name:** Search and screening flow diagram (generic systematic-review flow)
 
-**Latest version:** CARE 2013
+**When to use:** Systematic literature reviews and survey papers that follow a systematic search protocol (SLRs in software engineering and ML)
 
-**Main checklist items (13 items):**
-1. Title with "case report"
-2. Abstract summarizing case
-3. Introduction with case background
-4. Patient information (demographics, primary concern)
-5. Clinical findings
-6. Timeline of events
-7. Diagnostic assessment
-8. Therapeutic intervention
-9. Follow-up and outcomes
-10. Discussion with strengths and limitations
-11. Patient perspective
-12. Informed consent
+**Purpose:** Document how the final set of included papers was obtained, so the review is transparent and repeatable
 
-**Where to access:** https://www.care-statement.org/
+**Main stages:**
+1. **Identification**: Records retrieved from each source (arXiv, Semantic Scholar, ACL Anthology, DBLP, OpenReview) and count per source
+2. **Deduplication**: Duplicate records removed
+3. **Screening**: Records screened by title/abstract; records excluded with reasons
+4. **Eligibility**: Full texts assessed; exclusions with reasons
+5. **Included**: Studies included in the qualitative and/or quantitative synthesis
 
-### SQUIRE - Quality Improvement Studies
+**Related guidance:** Kitchenham's guidelines for systematic literature reviews in software engineering
 
-**Full name:** Standards for QUality Improvement Reporting Excellence
+**Where to access:** https://www.semanticscholar.org/ (sources) and Kitchenham & Charters SLR guidelines
 
-**When to use:** Healthcare quality improvement reports
-
-**Latest version:** SQUIRE 2.0 (2015)
-
-**Main sections (18 items):**
-1. Title and abstract
-2. Introduction (problem description, available knowledge, rationale, objectives)
-3. Methods (context, intervention, study design, measures, analysis, ethical review)
-4. Results (intervention, outcomes)
-5. Discussion (summary, interpretation, limitations, conclusions)
-6. Other information (funding)
-
-**Where to access:** http://www.squire-statement.org/
-
-### CHEERS - Economic Evaluations
-
-**Full name:** Consolidated Health Economic Evaluation Reporting Standards
-
-**When to use:** Health economic evaluations
-
-**Latest version:** CHEERS 2022 (major update from 2013)
-
-**Main checklist items (28 items):**
-1. Title identification as economic evaluation
-2. Abstract
-3. Background and objectives
-4. Target population and subgroups
-5. Setting and location
-6. Study perspective
-7. Comparators
-8. Time horizon
-9. Discount rate
-10. Selection of outcomes
-11. Measurement of effectiveness
-12. Measurement and valuation of costs
-13. Currency and price adjustments
-14. Choice of model
-15. Assumptions
-16. Analytical methods
-
-**Where to access:** https://www.equator-network.org/reporting-guidelines/cheers/
-
-### SRQR - Qualitative Research
-
-**Full name:** Standards for Reporting Qualitative Research
-
-**When to use:** Qualitative and mixed methods research
-
-**Latest version:** SRQR 2014
-
-**Main sections:**
-- Title and abstract
-- Introduction (problem formulation, purpose)
-- Methods (qualitative approach, researcher characteristics, context, sampling strategy, ethical issues, data collection, data analysis, trustworthiness)
-- Results (synthesis and interpretation, links to empirical data)
-- Discussion (limitations, implications)
-
-**Alternative:** COREQ (Consolidated criteria for reporting qualitative research) for interviews and focus groups
-
-**Where to access:** https://www.equator-network.org/reporting-guidelines/srqr/
-
-## How to Use Reporting Guidelines
+## How to Use Reporting Standards
 
 ### During Study Planning
 
-1. **Identify relevant guideline** based on study design
-2. **Review checklist items** that require planning (e.g., randomization, blinding)
-3. **Design study** to ensure all required elements will be captured
-4. **Consider protocol guidelines** (e.g., SPIRIT for trials)
+1. **Identify the relevant standard(s)** based on your contribution type (method, dataset, system, survey)
+2. **Review items that require planning** (splits, seeds, tuning budget, compute logging)
+3. **Instrument your pipeline** so that all required elements are captured automatically (log seeds, configs, and run counts)
+4. **Consider pre-registration** for confirmatory or human-subjects experiments
 
 ### During Manuscript Drafting
 
-1. **Download checklist** from guideline website
+1. **Open the venue checklist** (e.g., the NeurIPS Paper Checklist)
 2. **Work through each item** systematically
-3. **Note where each item is addressed** in manuscript (page/line numbers)
-4. **Revise manuscript** to include missing items
-5. **Use flow diagrams** as appropriate
+3. **Note where each item is addressed** (section or appendix number)
+4. **Revise the paper/appendix** to include missing items
+5. **Prepare flow diagrams** (search & screening for surveys; pipeline diagrams for systems)
 
 ### Before Submission
 
-1. **Complete formal checklist** with page numbers
-2. **Review all items** are adequately addressed
-3. **Include checklist** with submission if journal requires
-4. **Note guideline adherence** in cover letter or methods
+1. **Complete the venue checklist** with justifications and pointers
+2. **Verify all items** are adequately addressed
+3. **Include the code/data availability statement** and, where used, a Model Card / Datasheet
+4. **State adherence** in the reproducibility statement (ICLR) or checklist (NeurIPS/ICML)
 
 ### Example Checklist Entry
 
 ```
-Item 7: Eligibility criteria for participants, and the settings and locations where the data were collected
-Page 6, lines 112-125: "Participants were community-dwelling adults aged 60-85 years with mild cognitive impairment (MCI) as defined by Petersen criteria. Exclusion criteria included dementia diagnosis, major psychiatric disorders, or unstable medical conditions. Recruitment occurred from three memory clinics in Boston, MA, between January 2022 and December 2023."
+Item: Information needed to reproduce the main experimental results
+Section 4.1 / Appendix B: "All models were trained on the WMT14 En-De training split
+(4.5M sentence pairs). We used AdamW (lr = 3e-4, warmup 4k steps, batch 32k tokens),
+trained for 100k steps on 8x A100 (40GB) for ~14 hours per run. Each configuration was
+run with 5 seeds {13, 21, 42, 87, 100}; we report mean +/- std. Preprocessing (BPE, 32k
+merges) and the exact config files are in the released repository."
 ```
 
-## Finding the Right Guideline
+## Finding the Right Standard
 
-### EQUATOR Network Search
+### By Contribution Type
 
-**Website:** https://www.equator-network.org/
+| If your contribution is a... | Use this standard |
+|-----------------------------|-------------------|
+| Empirical method / model paper | NeurIPS Paper Checklist + experiment/compute reporting |
+| New dataset or benchmark | Datasheets for Datasets (+ intended-use statement) |
+| Released, reusable model | Model Card |
+| Systems paper with code/data artifact | ACM Artifact Review and Badging |
+| Any paper releasing code | ML Code Completeness Checklist |
+| Confirmatory / human-subjects study | Pre-registration |
+| Systematic review or survey | Search & screening flow diagram + SLR guidelines |
+| Theory paper | Checklist items on assumptions and complete proofs |
 
-**How to use:**
-1. Select your study design from the wizard
-2. Browse by health research category
-3. Search for specific keywords
-4. Filter by guideline status (development stage)
+### Multiple Standards
 
-### By Study Design
+**Some papers require several standards together:**
 
-| If your study is a... | Use this guideline |
-|----------------------|-------------------|
-| Randomized controlled trial | CONSORT |
-| Cohort, case-control, or cross-sectional study | STROBE |
-| Systematic review or meta-analysis | PRISMA |
-| Protocol for a trial | SPIRIT |
-| Diagnostic accuracy study | STARD |
-| Prediction model study | TRIPOD |
-| Animal study | ARRIVE |
-| Case report | CARE |
-| Quality improvement study | SQUIRE |
-| Economic evaluation | CHEERS |
-| Qualitative research | SRQR or COREQ |
+**Example 1:** A paper introducing a new benchmark *and* a strong baseline
+- Datasheet for the dataset
+- NeurIPS checklist + experiment/compute reporting for the baseline
 
-### Multiple Guidelines
-
-**Some studies may require multiple guidelines:**
-
-**Example 1:** Pilot RCT with qualitative component
-- CONSORT for quantitative arm
-- SRQR for qualitative component
-
-**Example 2:** Systematic review of diagnostic tests
-- PRISMA for review methods
-- STARD considerations for included studies
+**Example 2:** A systems paper with a released, reusable model
+- ACM artifact badging for the code artifact
+- Model Card for the released checkpoint
 
 ## Extensions and Adaptations
 
-Many reporting guidelines have extensions for specific contexts:
+Many standards have community variants for specific contexts:
 
-### CONSORT Extensions (examples)
+### Documentation-Template Variants
 
-- **CONSORT for Abstracts**: Structured abstracts for RCT reports
-- **CONSORT for Harms**: Reporting adverse events
-- **CONSORT-EHEALTH**: eHealth interventions
-- **CONSORT-SPI**: Social and psychological interventions
+- **Data Statements for NLP**: dataset documentation tailored to language data
+- **Data Cards / Dataset Nutrition Labels**: compact, structured dataset summaries
+- **Model Cards for foundation models**: extended sections on capabilities, evaluations, and misuse
 
-### PRISMA Extensions (examples)
+### Venue-Specific Checklist Variants
 
-- **PRISMA-P**: Protocols for systematic reviews
-- **PRISMA for Abstracts**: Conference abstracts
-- **PRISMA-NMA**: Network meta-analyses
-- **PRISMA-IPD**: Individual patient data reviews
-- **PRISMA-S**: Search strategies
-- **PRISMA-DTA**: Diagnostic test accuracy reviews
-
-### STROBE Extensions (examples)
-
-- **STROBE-ME**: Molecular epidemiology
-- **RECORD**: Routinely collected health data
+- **NeurIPS Datasets & Benchmarks track**: emphasizes documentation, hosting, and licensing
+- **ICLR reproducibility statement**: a required paragraph pointing to reproducibility artifacts
+- **ACL Responsible NLP Checklist**: data, systems, and ethics items for *ACL venues
 
 ## Creating Flow Diagrams
 
-### CONSORT Flow Diagram
+### Pipeline / Experiment Flow Diagram
 
-**Four stages:**
-1. **Enrollment**: Assessed for eligibility
-2. **Allocation**: Randomly assigned to groups
-3. **Follow-up**: Received intervention, lost to follow-up
-4. **Analysis**: Included in analysis
+For method and systems papers, a pipeline diagram shows how data flows through preprocessing, model, and evaluation, and where each experimental condition branches.
+
+**Example (ablation branching):**
+```
+Raw corpus (N = 4.5M pairs)
+    |
+Preprocessing (BPE 32k, length filter)
+    |
+Train split (4.0M) -- Val split (0.3M) -- Test split (0.2M)
+    |
+    +-- Full model (baseline)
+    +-- - attention variant   (ablation A)
+    +-- - pretraining         (ablation B)
+    +-- - data augmentation   (ablation C)
+    |
+Evaluation (BLEU, chrF; 5 seeds; mean +/- std)
+```
+
+### Search and Screening Flow Diagram
+
+**Stages:**
+1. **Identification**: Records retrieved from arXiv, Semantic Scholar, ACL Anthology, DBLP, and OpenReview (report count per source)
+2. **Screening**: Records screened after de-duplication; excluded with reasons
+3. **Included**: Studies included in the review and synthesis
 
 **Example:**
 ```
-Assessed for eligibility (n=250)
-    ↓
-Excluded (n=50)
-  • Did not meet criteria (n=30)
-  • Declined to participate (n=15)
-  • Other reasons (n=5)
-    ↓
-Randomized (n=200)
-    ├─────────────────┬─────────────────┐
-    ↓                 ↓                 ↓
-Allocated to       Allocated to      Allocated to
-Intervention A     Intervention B     Control
-(n=67)            (n=66)            (n=67)
-    ↓                 ↓                 ↓
-Lost to follow-up  Lost to follow-up  Lost to follow-up
-(n=3)             (n=5)             (n=2)
-    ↓                 ↓                 ↓
-Analyzed          Analyzed          Analyzed
-(n=64)            (n=61)            (n=65)
+Records identified from sources (n = 812)
+  - arXiv (n = 421)
+  - Semantic Scholar (n = 210)
+  - ACL Anthology (n = 98)
+  - DBLP (n = 83)
+    |
+Duplicates removed (n = 137)
+    |
+Records screened by title/abstract (n = 675)
+    |
+Excluded (n = 540)
+  - Not about the target task (n = 380)
+  - Not peer-reviewed / no method (n = 120)
+  - Other reasons (n = 40)
+    |
+Full texts assessed for eligibility (n = 135)
+    |
+Excluded (n = 88)
+  - No reproducible results (n = 50)
+  - Out of scope (n = 38)
+    |
+Studies included in synthesis (n = 47)
 ```
-
-### PRISMA Flow Diagram
-
-**Stages:**
-1. **Identification**: Records from databases and registers
-2. **Screening**: Records screened, excluded
-3. **Included**: Studies included in review and synthesis
-
-**New features in PRISMA 2020:**
-- Separate tracking for database and register searches
-- Tracking of duplicate removal
-- Clear distinction between reports and studies
 
 ## Common Mistakes and How to Avoid Them
 
-### Mistake 1: Not Using Guidelines at All
+### Mistake 1: Not Using Any Standard
 
-**Impact:** Missing critical information, lower chance of acceptance
+**Impact:** Missing critical information; failing venue checklist requirements
 
-**Solution:** Identify and use appropriate guideline from study planning stage
+**Solution:** Identify and adopt the relevant checklist from the study-planning stage
 
-### Mistake 2: Using Guidelines Only After Manuscript is Complete
+### Mistake 2: Completing the Checklist Only After the Paper Is Done
 
-**Impact:** May realize key data were not collected or documented
+**Impact:** You may discover that seeds, splits, or compute were never logged
 
-**Solution:** Review guidelines during study design and data collection
+**Solution:** Instrument the pipeline to capture required elements as experiments run
 
 ### Mistake 3: Incomplete Checklist Completion
 
-**Impact:** Missed items remain unreported
+**Impact:** Missed items remain unreported; reviewers flag them
 
-**Solution:** Systematically address every single checklist item
+**Solution:** Systematically address every item with a section/appendix pointer
 
-### Mistake 4: Using Outdated Guidelines
+### Mistake 4: Using an Outdated Checklist
 
-**Impact:** Missing recent improvements in reporting standards
+**Impact:** Missing newly added items (e.g., LLM-use disclosure, safeguards)
 
-**Solution:** Always check for latest version on official guideline website
+**Solution:** Always use the current year's checklist from the venue site
 
-### Mistake 5: Using Wrong Guideline for Study Design
+### Mistake 5: Unfair Comparisons
 
-**Impact:** Important design-specific elements not reported
+**Impact:** Baselines under-tuned relative to the proposed method
 
-**Solution:** Carefully match study design to appropriate guideline
+**Solution:** Report tuning budget and search space for *all* methods, including baselines
 
-### Mistake 6: Not Submitting Checklist When Required
+### Mistake 6: Not Reporting Variance or Compute
 
-**Impact:** Editorial desk rejection or delays
+**Impact:** Single-run numbers are not reproducible or comparable
 
-**Solution:** Check journal submission guidelines and include checklist
+**Solution:** Report multiple seeds with spread, plus hardware and wall-clock time
 
 ### Mistake 7: Generic Reporting Without Specificity
 
-**Impact:** Insufficient detail for replication or appraisal
+**Impact:** Insufficient detail to reproduce or appraise
 
-**Solution:** Provide specific, detailed information for each item
+**Solution:** Provide exact configs, versions, and commands (in an appendix or repo)
 
-## Journal Requirements
+## Venue Requirements
 
-### Many Journals Now Require:
+### Many Venues Now Require:
 
-1. **Statement of adherence** to reporting guidelines in Methods
-2. **Completed checklist** uploaded as supplementary file
-3. **Page/line numbers** on checklist indicating where items are addressed
-4. **Flow diagrams** as figures in manuscript
+1. **A completed paper checklist** (NeurIPS/ICML) or reproducibility statement (ICLR)
+2. **A code/data availability statement**, with links where possible
+3. **Section/appendix pointers** showing where each checklist item is addressed
+4. **Documentation** (Datasheet / Model Card) for new datasets and released models
 
-### Example Methods Statement:
+### Example Reproducibility Statement (ICLR-style):
 
 ```
-"This study is reported in accordance with the Strengthening the Reporting of
-Observational Studies in Epidemiology (STROBE) statement. A completed STROBE
-checklist is provided as Supplementary File 1."
+"To ensure reproducibility, we describe our full experimental setup in Section 4 and
+Appendix B (splits, hyperparameters, and seeds), release code and pretrained checkpoints
+at github.com/user/project, and provide a Datasheet for the introduced dataset in
+Appendix D. All reported numbers are means over 5 seeds with standard deviation."
 ```
 
-### Journals with Strong Requirements:
+### Venues with Strong Requirements:
 
-- PLOS journals (require checklists for specific designs)
-- BMJ (requires CONSORT, PRISMA, and others)
-- The Lancet (requires adherence statements)
-- JAMA and JAMA Network journals (require checklists)
-- Nature portfolio journals (encourage guidelines)
+- NeurIPS / ICML / ICLR (mandatory paper checklist or reproducibility statement)
+- ACM venues offering artifact evaluation (SIGMOD, SOSP, PLDI, MLSys)
+- *ACL venues (Responsible NLP Checklist)
+- JMLR and TPAMI (encourage code/data release and detailed experimental reporting)
 
 ## Resources
 
-### Official Guideline Websites
+### Official Standard References
 
-- **EQUATOR Network**: https://www.equator-network.org/
-- **CONSORT**: http://www.consort-statement.org/
-- **STROBE**: https://www.strobe-statement.org/
-- **PRISMA**: http://www.prisma-statement.org/
-- **SPIRIT**: https://www.spirit-statement.org/
-- **ARRIVE**: https://arriveguidelines.org/
-- **CARE**: https://www.care-statement.org/
+- **NeurIPS Paper Checklist**: https://neurips.cc/public/guides/PaperChecklist
+- **ML Reproducibility Checklist**: https://www.cs.mcgill.ca/~jpineau/ReproducibilityChecklist.pdf
+- **Model Cards**: https://arxiv.org/abs/1810.03993
+- **Datasheets for Datasets**: https://arxiv.org/abs/1803.09010
+- **ACM Artifact Review and Badging**: https://www.acm.org/publications/policies/artifact-review-and-badging-current
+- **Releasing Research Code (Papers with Code)**: https://github.com/paperswithcode/releasing-research-code
+- **Pre-registration for ML**: https://preregister.science/
 
 ### Training Materials
 
-- EQUATOR Network provides webinars and training resources
-- Many guidelines have explanatory papers published in medical journals
-- Universities often provide workshops on reporting guidelines
+- The ML Reproducibility Challenge publishes reproduction reports and best practices
+- Many venues provide author tutorials and checklist walkthroughs
+- Papers with Code documents code-completeness scoring and release conventions
 
 ### Software Tools
 
-- **Some reference managers** can insert reporting guideline citations
-- **Covidence, RevMan** for systematic review reporting
-- **PRISMA flow diagram generator**: http://prisma.thetacollaborative.ca/
+- **Experiment tracking**: Weights & Biases, MLflow, TensorBoard, Sacred
+- **Environment capture**: Docker, conda/`environment.yml`, `pip freeze`/`requirements.txt`
+- **Config management**: Hydra, Gin, or versioned YAML config files
+- **Data/version control**: DVC, Git LFS, Hugging Face Datasets
 
-## Checklist: Using Reporting Guidelines
+## Checklist: Using Reporting Standards
 
 **Before starting your study:**
-- [ ] Identified appropriate reporting guideline(s)
-- [ ] Reviewed checklist items requiring prospective planning
-- [ ] Designed study to capture all required elements
-- [ ] Registered protocol if applicable
+- [ ] Identified the appropriate standard(s) for your contribution type
+- [ ] Reviewed items requiring prospective logging (seeds, splits, compute)
+- [ ] Instrumented the pipeline to capture required elements
+- [ ] Pre-registered the analysis plan if confirmatory
 
 **During manuscript drafting:**
-- [ ] Downloaded latest version of guideline checklist
-- [ ] Systematically addressed each checklist item
-- [ ] Created required flow diagram
-- [ ] Noted where each item is addressed (page/line)
+- [ ] Opened the current venue checklist
+- [ ] Systematically addressed each item
+- [ ] Created required flow/pipeline diagrams
+- [ ] Noted where each item is addressed (section/appendix)
 
 **Before submission:**
-- [ ] Completed formal checklist with page numbers
+- [ ] Completed the venue checklist with justifications
 - [ ] Verified all items adequately addressed
-- [ ] Included adherence statement in Methods
-- [ ] Prepared checklist as supplementary file if required
-- [ ] Checked journal-specific requirements
-- [ ] Mentioned guideline adherence in cover letter
+- [ ] Included a code/data availability statement
+- [ ] Attached Datasheet / Model Card for new datasets or released models
+- [ ] Checked venue-specific requirements
 
 ## Venue-Specific Reporting Requirements
 
 ### Reporting Standards by Venue Type
 
-| Venue Type | Guideline Use | Transparency Requirements |
+| Venue Type | Standard Use | Transparency Requirements |
 |-----------|--------------|---------------------------|
-| **Medical journals** | Mandatory (CONSORT, STROBE, etc.) | Checklist required at submission |
-| **PLOS/BMC** | Mandatory for study types | Checklist uploaded as supplement |
-| **Nature/Science** | Recommended | Methods completeness emphasized |
-| **ML conferences** | No formal guidelines | Reproducibility details required |
+| **ML conferences (NeurIPS/ICML/ICLR)** | Mandatory paper checklist / reproducibility statement | Reproducibility details required; code strongly expected |
+| **CV/NLP conferences (CVPR/ACL)** | Recommended; Responsible NLP Checklist at *ACL | Code + data statements; qualitative + quantitative results |
+| **ACM systems venues** | Artifact evaluation and badging | Archived artifact with DOI; reproduction instructions |
+| **ML journals (JMLR/TPAMI)** | Recommended | Methods completeness; code/data release encouraged |
 
 ### ML Conference Reporting Standards
 
 **NeurIPS/ICML/ICLR reproducibility requirements:**
 - **Datasets**: Names, versions, access methods, preprocessing
-- **Code**: Availability statement; GitHub common
-- **Hyperparameters**: All settings reported (learning rate, batch size, etc.)
+- **Code**: Availability statement; public repository common
+- **Hyperparameters**: All settings reported (learning rate, batch size, schedule)
 - **Seeds**: Random seeds for reproducibility
-- **Computational resources**: GPUs used, training time
+- **Computational resources**: Accelerators used, training time, memory
 - **Statistical significance**: Error bars, confidence intervals, multiple runs
-- **Broader Impact** statement (NeurIPS): Societal implications
+- **Broader Impact** statement: Societal implications
 
-**What to include (typically in appendix):**
-- Complete hyperparameter settings
+**What to include (typically in the appendix):**
+- Complete hyperparameter settings and search space
 - Training details and convergence criteria
 - Hardware specifications
-- Software versions (PyTorch 2.0, etc.)
+- Software versions (e.g., PyTorch 2.3, CUDA 12.1)
 - Dataset splits and any preprocessing
 - Evaluation metrics and protocols
 
 ### Enforcement and Evaluation
 
 **What gets checked:**
-- **Medical journals**: Checklist uploaded; adherence statement in Methods; systematic completeness
-- **PLOS/BMC**: Mandatory checklists for certain designs; reproducibility emphasized
-- **High-impact**: Methods sufficiency for replication (checklist often not required)
-- **ML conferences**: Reproducibility checklist (NeurIPS); code availability increasingly expected
+- **ML conferences**: Paper checklist completed; reproducibility details present; code availability increasingly expected
+- **ACM systems venues**: Artifact functional/available/reusable; independent reproduction of key results
+- **CV/NLP venues**: Data and ethics statements; fair baselines and ablations
+- **Journals**: Methods sufficiency for reproduction; code/data on request or release
 
 **Common issues leading to rejection:**
-- Missing required checklists (medical journals)
-- Insufficient methods detail for reproduction
-- Missing key information (randomization, blinding, power calculation)
-- No data/code availability statement when required
+- Missing or incomplete paper checklist
+- Insufficient experimental detail for reproduction
+- Missing key information (splits, seeds, tuning budget, compute)
+- No code/data availability statement when expected
+- Unfair or under-tuned baselines
 
-**Methods statement examples:**
+**Reproducibility statement examples:**
 
-**Journal (STROBE):**
-```
-This study followed STROBE reporting guidelines. Checklist provided in Supplement 1.
-```
-
-**ML conference (reproducibility):**
+**ML conference (checklist):**
 ```
 Code available at github.com/user/project. All hyperparameters in Appendix A.
-Training used 4×A100 GPUs (~20 hours). Seeds: {42, 123, 456}.
+Training used 4x A100 GPUs (~20 hours). Seeds: {42, 123, 456}; results are mean +/- std.
+```
+
+**Systems venue (artifact):**
+```
+Artifact archived at doi.org/10.xxxx/zenodo.xxxxxx with a container and step-by-step
+instructions to reproduce Tables 2-4; estimated 6 GPU-hours to reproduce headline results.
 ```
 
 ### Pre-Submission Reporting Checklist
 
-**For clinical trials (medical journals):**
-- [ ] CONSORT checklist complete with page numbers
-- [ ] Trial registration number in abstract and methods
-- [ ] CONSORT flow diagram included
-- [ ] Statistical analysis plan described
-- [ ] Adherence statement in Methods
+**For empirical ML papers (NeurIPS/ICML/ICLR):**
+- [ ] Paper checklist complete with section/appendix pointers
+- [ ] All datasets named with versions and splits
+- [ ] Code availability stated (repository link if available)
+- [ ] Hyperparameters and search space listed (appendix acceptable)
+- [ ] Random seeds reported; results as mean +/- spread
+- [ ] Compute resources specified (accelerators, time, memory)
+- [ ] Error bars / significance for headline comparisons
+- [ ] Broader Impact / limitations discussed
 
-**For observational studies (medical/epidemiology):**
-- [ ] STROBE checklist complete
-- [ ] Study design clearly stated
-- [ ] Statistical methods detailed
-- [ ] Confounders addressed
-- [ ] Adherence statement in Methods
+**For dataset/benchmark papers:**
+- [ ] Datasheet completed (motivation, composition, collection, uses, maintenance)
+- [ ] License and hosting/access documented
+- [ ] Intended and inappropriate uses stated
+- [ ] Preprocessing and labeling process described
 
-**For systematic reviews:**
-- [ ] PRISMA checklist complete
-- [ ] PRISMA flow diagram included
-- [ ] Protocol registered (PROSPERO)
-- [ ] Search strategy documented
-- [ ] Risk of bias assessment included
+**For systems/artifact papers:**
+- [ ] Artifact archived with a DOI (Artifacts Available)
+- [ ] Build/run instructions and pinned dependencies included
+- [ ] Expected outputs and reproduction steps provided
+- [ ] Resource/time estimates documented
 
-**For ML conference papers:**
-- [ ] All datasets named with versions
-- [ ] Code availability stated (GitHub link if available)
-- [ ] Hyperparameters listed (appendix acceptable)
-- [ ] Random seeds reported
-- [ ] Computational resources specified
-- [ ] Error bars/confidence intervals shown
-- [ ] Broader Impact statement (if required)
+**For systematic reviews / surveys:**
+- [ ] Search sources listed (arXiv, Semantic Scholar, ACL Anthology, DBLP, OpenReview)
+- [ ] Search & screening flow diagram included
+- [ ] Inclusion/exclusion criteria documented
+- [ ] Search strategy reproducible (queries and dates)

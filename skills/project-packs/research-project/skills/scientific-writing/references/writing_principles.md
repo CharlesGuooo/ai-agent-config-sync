@@ -16,14 +16,14 @@ Effective scientific writing requires mastering fundamental principles that ensu
 
 **Use precise, unambiguous language:**
 ```
-Poor: "The drug seemed to help quite a few patients."
-Better: "The drug reduced symptoms in 68% (32/47) of patients."
+Poor: "The model seemed to help on quite a few tasks."
+Better: "The model improved accuracy on 68% (32/47) of tasks."
 ```
 
 **Define technical terms at first use:**
 ```
-"We measured brain-derived neurotrophic factor (BDNF), a protein involved in
-neuronal survival and plasticity."
+"We measured expected calibration error (ECE), a metric quantifying the gap between
+a model's predicted confidence and its observed accuracy."
 ```
 
 **Maintain logical flow within and between paragraphs:**
@@ -45,40 +45,40 @@ However, passive voice is acceptable and often preferred in Methods when the act
 
 **Break up long, complex sentences:**
 ```
-Poor: "The results of our study, which involved 200 participants recruited from
-three hospitals and followed for 12 months with assessments every 4 weeks using
-validated questionnaires, showed significant improvements in the intervention
-group."
+Poor: "The results of our study, which involved 200 models trained on
+three datasets and evaluated over 12 checkpoints every 4 epochs using
+held-out validation sets, showed significant improvements for the proposed
+method."
 
-Better: "Our study involved 200 participants recruited from three hospitals.
-Participants were followed for 12 months with assessments every 4 weeks using
-validated questionnaires. The intervention group showed significant improvements."
+Better: "Our study involved 200 models trained on three datasets.
+Models were evaluated over 12 checkpoints every 4 epochs using
+held-out validation sets. The proposed method showed significant improvements."
 ```
 
 **Use specific verbs:**
 ```
-Weak: "The study looked at depression in adolescents."
-Stronger: "The study examined factors contributing to depression in adolescents."
+Weak: "The study looked at errors in language models."
+Stronger: "The study examined factors contributing to errors in language models."
 ```
 
 #### Common Clarity Problems
 
 **Ambiguous pronouns:**
 ```
-Poor: "Group A received the drug and Group B received placebo. They showed
+Poor: "Model A used the new optimizer and Model B used SGD. They showed
 improvement."
 (Who is "they"?)
 
-Better: "Group A received the drug and Group B received placebo. The drug-treated
-group showed improvement."
+Better: "Model A used the new optimizer and Model B used SGD. The model with the
+new optimizer showed improvement."
 ```
 
 **Misplaced modifiers:**
 ```
-Poor: "We measured blood pressure in patients using an automated monitor."
-(Are the patients using the monitor, or are we?)
+Poor: "We measured latency on servers using an automated profiler."
+(Are the servers using the profiler, or are we?)
 
-Better: "Using an automated monitor, we measured blood pressure in patients."
+Better: "Using an automated profiler, we measured latency on the servers."
 ```
 
 **Unclear referents:**
@@ -138,9 +138,9 @@ Concise: "The results were significant." (p-value conveys the degree)
 
 **Avoid repeating information unnecessarily:**
 ```
-Redundant: "The results showed that participants in the intervention group, who
-received the treatment intervention, had better outcomes."
-Concise: "The intervention group had better outcomes."
+Redundant: "The results showed that runs in the proposed-method group, which
+used the proposed method, had better outcomes."
+Concise: "The proposed-method group had better outcomes."
 ```
 
 **Favor shorter constructions:**
@@ -184,24 +184,24 @@ Appropriate: "Mean age was 45.2 years"
 
 **Use consistent terminology throughout:**
 ```
-Inconsistent: Introduction calls it "cognitive function," Methods call it "mental
-performance," Results call it "intellectual ability."
+Inconsistent: Introduction calls it "inference latency," Methods call it "response
+time," Results call it "serving delay."
 
-Consistent: Use "cognitive function" throughout, or define explicitly: "cognitive
-function (also termed mental performance)"
+Consistent: Use "inference latency" throughout, or define explicitly: "inference
+latency (also termed response time)"
 ```
 
 **Distinguish observations from interpretations:**
 ```
-Observation: "Mean blood pressure decreased from 145 to 132 mmHg (p=0.003)."
-Interpretation: "This suggests the intervention effectively lowers blood pressure."
+Observation: "Mean latency decreased from 145 to 132 ms (p=0.003)."
+Interpretation: "This suggests the method effectively lowers latency."
 ```
 
 **Be specific about uncertainty:**
 ```
 Vague: "There may be some error in these measurements."
-Specific: "Measurements have a standard error of ±2.5 mmHg based on instrument
-specifications."
+Specific: "Measurements have a standard error of ±2.5 ms based on the profiler's
+resolution."
 ```
 
 **Use correct statistical language:**
@@ -221,17 +221,17 @@ Correct: "The correlation was statistically significant (p=0.03)."
 
 **Overgeneralization:**
 ```
-Poor: "Exercise prevents depression."
-Better: "In our sample, participants randomized to the exercise intervention showed
-fewer depressive symptoms than controls (mean difference 3.2 points on the BDI-II,
-95% CI: 1.5-4.9, p<0.001)."
+Poor: "Data augmentation prevents overfitting."
+Better: "In our experiments, models trained with data augmentation showed
+lower generalization error than baselines (mean difference 3.2 points in test
+accuracy, 95% CI: 1.5-4.9, p<0.001)."
 ```
 
 **Unwarranted causal claims:**
 ```
-Poor (from observational study): "Vitamin D supplementation reduces cancer risk."
-Better: "Vitamin D levels were inversely associated with cancer incidence in this
-cohort (HR=0.82, 95% CI: 0.71-0.95)."
+Poor (from observational analysis): "Larger batch sizes reduce test error."
+Better: "Batch size was inversely associated with test error across these runs
+(coefficient = -0.82, 95% CI: -0.95 to -0.71)."
 ```
 
 **Imprecise numerical descriptions:**
@@ -257,20 +257,20 @@ Objective: "Method A showed higher accuracy than Method B (87% vs. 76%, p=0.02).
 **Acknowledge conflicting evidence:**
 ```
 "Our findings contrast with Smith et al. (2022), who reported no significant effect.
-This discrepancy may result from differences in intervention intensity or population
+This discrepancy may result from differences in training budget or dataset
 characteristics."
 ```
 
 **Avoid emotional or evaluative language:**
 ```
 Subjective: "The results were disappointing and concerning."
-Objective: "The intervention did not significantly reduce symptoms (p=0.42)."
+Objective: "The method did not significantly reduce error (p=0.42)."
 ```
 
 **Distinguish fact from speculation:**
 ```
-"The observed decrease in cell viability was accompanied by increased caspase-3
-activity, suggesting that apoptosis may be the primary mechanism of cell death."
+"The observed decrease in accuracy was accompanied by an increased gradient norm,
+suggesting that training instability may be the primary cause of the degradation."
 (Uses "suggesting" and "may be" to indicate interpretation)
 ```
 
@@ -322,11 +322,11 @@ activity, suggesting that apoptosis may be the primary mechanism of cell death."
 
 **Parallelism:**
 ```
-Not parallel: "Aims were to (1) measure blood pressure, (2) assessment of
-cognitive function, and (3) we wanted to evaluate mood."
+Not parallel: "Aims were to (1) measure latency, (2) assessment of
+accuracy, and (3) we wanted to evaluate memory use."
 
-Parallel: "Aims were to (1) measure blood pressure, (2) assess cognitive
-function, and (3) evaluate mood."
+Parallel: "Aims were to (1) measure latency, (2) assess accuracy,
+and (3) evaluate memory use."
 ```
 
 ## Verb Tense in Scientific Writing
@@ -358,11 +358,11 @@ function, and (3) evaluate mood."
 
 | Section | Primary Tense | Examples |
 |---------|---------------|----------|
-| **Abstract - Background** | Present or present perfect | "Depression affects millions" / "Research has shown..." |
+| **Abstract - Background** | Present or present perfect | "Transformers dominate NLP" / "Research has shown..." |
 | **Abstract - Methods** | Past | "We recruited 100 participants" |
-| **Abstract - Results** | Past | "The intervention reduced symptoms" |
+| **Abstract - Results** | Past | "The method reduced error" |
 | **Abstract - Conclusions** | Present | "These findings suggest..." |
-| **Introduction - Background** | Present (facts), present perfect (research) | "Exercise is beneficial" / "Studies have shown..." |
+| **Introduction - Background** | Present (facts), present perfect (research) | "Attention is effective" / "Studies have shown..." |
 | **Introduction - Gap** | Present or present perfect | "However, little is known..." |
 | **Introduction - This study** | Past or present | "We investigated..." / "This study investigates..." |
 | **Methods** | Past | "We collected samples..." |
@@ -379,12 +379,12 @@ function, and (3) evaluate mood."
 
 **Example:**
 ```
-Poor: "We utilized qRT-PCR to quantify mRNA expression via SYBR-Green-based
-fluorescence detection following cDNA synthesis from total RNA using oligo-dT primers."
+Poor: "We utilized MHSA with RoPE and pre-LN followed by SwiGLU FFNs, quantized to
+INT8 via PTQ with per-channel GPTQ calibration."
 
-Better: "We quantified mRNA expression using quantitative reverse transcription PCR
-(qRT-PCR). Total RNA was reverse transcribed to complementary DNA (cDNA) using
-oligo-dT primers, then amplified with SYBR Green fluorescent detection."
+Better: "We used multi-head self-attention (MHSA) with rotary position embeddings
+(RoPE) and pre-layer-normalization, followed by SwiGLU feed-forward networks (FFNs).
+Weights were quantized to 8-bit integers (INT8) using post-training quantization (PTQ)."
 ```
 
 ### 2. Nominalization
@@ -405,19 +405,19 @@ oligo-dT primers, then amplified with SYBR Green fluorescent detection."
 
 **Excessive hedging** (sounds uncertain):
 ```
-"It could perhaps be possible that the intervention might possibly have some effect
-on symptoms under certain conditions."
+"It could perhaps be possible that the method might possibly have some effect
+on accuracy under certain conditions."
 ```
 
 **Insufficient hedging** (overstates conclusions):
 ```
-"The intervention cures depression."
+"The method solves language understanding."
 ```
 
 **Appropriate hedging:**
 ```
-"The intervention significantly reduced depressive symptoms in this sample,
-suggesting it may be effective for treating mild to moderate depression."
+"The method significantly reduced error in these experiments,
+suggesting it may be effective for long-context tasks."
 ```
 
 **Hedging words to use appropriately:**
@@ -456,11 +456,11 @@ suggesting it may be effective for treating mild to moderate depression."
 
 **Example:**
 ```
-Poor: "We measured Brain-Derived Neurotrophic Factor (BDNF) at baseline. BDNF
-levels were elevated."
+Poor: "We measured Expected Calibration Error (ECE) at baseline. ECE
+values were elevated."
 (Only used twice, abbreviation unnecessary)
 
-Better: "We measured brain-derived neurotrophic factor at baseline. Levels were
+Better: "We measured expected calibration error at baseline. Values were
 elevated."
 ```
 
@@ -483,14 +483,14 @@ Or: "After 2-hour incubation, we measured absorbance."
 
 **Between subject and verb:**
 ```
-Wrong: "The participants in the intervention group, showed improvement."
-Right: "The participants in the intervention group showed improvement."
+Wrong: "The runs in the proposed-method group, showed improvement."
+Right: "The runs in the proposed-method group showed improvement."
 ```
 
 **In compound predicates:**
 ```
-Wrong: "We measured blood pressure, and recorded symptoms."
-Right: "We measured blood pressure and recorded symptoms."
+Wrong: "We measured latency, and recorded memory use."
+Right: "We measured latency and recorded memory use."
 (No comma before "and" when it doesn't join independent clauses)
 ```
 
@@ -601,7 +601,7 @@ But: "The participants were heterogeneous." (Plural subject)
 
 **1. Topic sentence:**
 ```
-"Exercise training improves cardiovascular function through multiple mechanisms.
+"Data augmentation improves generalization through multiple mechanisms.
 [Following sentences explain these mechanisms]"
 ```
 
@@ -620,9 +620,9 @@ But: "The participants were heterogeneous." (Plural subject)
 
 **4. Parallel structure:**
 ```
-"Group A received the drug. Group B received placebo. Group C received no treatment."
-(Not: "Group A received the drug. Placebo was given to Group B. No treatment was
-provided to the third group.")
+"Model A used the new optimizer. Model B used SGD. Model C used no optimizer tuning."
+(Not: "Model A used the new optimizer. SGD was used by Model B. No optimizer tuning was
+applied to the third model.")
 ```
 
 ## Revision Checklist
@@ -721,16 +721,16 @@ Most research universities offer:
 ### Four Major Writing Style Categories
 
 1. **Broad-audience accessible** (Nature, Science, PNAS)
-2. **Clinical-professional** (NEJM, Lancet, JAMA)
+2. **Archival-journal formal** (JMLR, TPAMI, CACM)
 3. **Technical-specialist** (field-specific journals)
 4. **ML conference** (NeurIPS, ICML, ICLR, CVPR)
 
 ### Writing Style Comparison
 
-| Aspect | Nature/Science | Medical | Specialized | ML Conference |
+| Aspect | Nature/Science | CS journal | Specialized | ML Conference |
 |--------|---------------|---------|-------------|---------------|
 | **Sentence length** | 15-20 words | 12-18 words | 18-25 words | 12-20 words |
-| **Vocabulary** | Minimal jargon | Clinical terms | Field-specific | Technical + math |
+| **Vocabulary** | Minimal jargon | Formal CS terms | Field-specific | Technical + math |
 | **Tone** | Engaging, significant | Conservative | Formal | Direct, contribution-focused |
 | **Key phrases** | "Here we show" | "We conducted" | "To elucidate" | "We propose", "Our contributions" |
 
@@ -759,7 +759,7 @@ showing preserved expressive power, and (3) empirical validation on ImageNet sho
 
 ### Key Writing Differences
 
-| Aspect | Nature/Science | Medical | Specialized | ML Conference |
+| Aspect | Nature/Science | CS journal | Specialized | ML Conference |
 |--------|---------------|---------|-------------|---------------|
 | **Paragraph length** | 3-5 sentences | 5-7 sentences | 6-10 sentences | 4-6 sentences |
 | **Math/equations** | Minimize | Rare | Moderate | Essential |
@@ -772,7 +772,7 @@ showing preserved expressive power, and (3) empirical validation on ImageNet sho
 | Venue | Key Evaluation Criteria |
 |-------|------------------------|
 | **Nature/Science** | Accessible to non-specialists? Broad significance clear? Compelling story? |
-| **Medical** | Clinical relevance apparent? Professional tone? Methods adequate? |
+| **CS journals** | Deployment relevance apparent? Rigorous tone? Methods reproducible? |
 | **Specialized** | Technical precision? Field expertise shown? Methods detailed? |
 | **ML conferences** | Clear contributions? Claims supported by experiments? Reproducible? |
 
@@ -791,7 +791,7 @@ showing preserved expressive power, and (3) empirical validation on ImageNet sho
 | **ML conference → Journal** | Remove contribution numbering; expand motivation; separate Results/Discussion; reduce equations in main text |
 | **Specialist → Broad** | Simplify language; emphasize broad implications; explain technical concepts; add context for non-experts |
 | **Broad → Specialist** | Add technical detail; use field terminology freely; expand mechanistic discussion; cite field literature |
-| **Basic science → Clinical** | Add patient/clinical context; use clinical language; emphasize outcomes/implications; cite clinical evidence |
+| **Method paper → Applied/systems paper** | Add deployment context; use systems language; emphasize outcomes/implications; cite applied/systems evidence |
 
 ### Pre-Submission Style Checklist
 

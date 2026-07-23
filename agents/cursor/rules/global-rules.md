@@ -22,7 +22,7 @@ Guidelines that bias toward caution over speed. For trivial tasks, use judgment.
 
 <!-- SKILLS:BEGIN -->
 
-## Global Skills (33)
+## Global Skills (31)
 
 > Auto-generated from `skills/global/` by `scripts/gen-skill-table.mjs`.
 > Do not edit between the SKILLS markers by hand — run the generator instead.
@@ -89,14 +89,12 @@ Guidelines that bias toward caution over speed. For trivial tasks, use judgment.
 | `openspec-apply-change` | Implement an OpenSpec change task by task |
 | `openspec-archive-change` | Archive a completed OpenSpec change |
 
-### Document (5) — Office / document I/O
+### Document (3) — Office / document I/O
 
 | Skill | When to use |
 | --- | --- |
 | `pdf` | PDF read/merge/split/OCR/forms |
-| `docx` | Word document creation and editing |
-| `xlsx` | Excel / CSV creation and editing |
-| `pptx` | PowerPoint creation and editing |
+| `officecli` | Create/edit/render .docx/.xlsx/.pptx via the officecli binary (formulas, pivots, HTML/PNG) |
 | `markitdown` | Convert PDF/Office/images/AV to Markdown |
 
 ### Learning (1) — Interactive teaching

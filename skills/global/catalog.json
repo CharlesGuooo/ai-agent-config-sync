@@ -48,9 +48,7 @@
     "openspec-archive-change":       { "category": "openspec",    "tagline": "Archive a completed OpenSpec change" },
 
     "pdf":                           { "category": "document",    "tagline": "PDF read/merge/split/OCR/forms" },
-    "docx":                          { "category": "document",    "tagline": "Word document creation and editing" },
-    "xlsx":                          { "category": "document",    "tagline": "Excel / CSV creation and editing" },
-    "pptx":                          { "category": "document",    "tagline": "PowerPoint creation and editing" },
+    "officecli":                     { "category": "document",    "tagline": "Create/edit/render .docx/.xlsx/.pptx via the officecli binary (formulas, pivots, HTML/PNG)" },
     "markitdown":                    { "category": "document",    "tagline": "Convert PDF/Office/images/AV to Markdown" },
 
     "teach":                         { "category": "learning",    "tagline": "Interactive multi-turn tutoring with persistent learner state" }

@@ -46,7 +46,7 @@ Cursor · OpenCode)。这份 README 是**给人看的概览**:是什么、怎么
 - **CLAUDE.md / AGENTS.md** — 分层上下文,每会话自动加载(6 原则 + 路由)。
 - **Hooks** — `guard.mjs`(PreToolUse:拦密钥文件 / 危险命令)+ `format.mjs`(PostToolUse:
   项目 opt-in 才格式化),跑在 **Claude + Codex**。(Cursor/OpenCode 走各自机制,待补。)
-- **Skills** — 渐进式披露:33 个全局 skill 描述匹配自动触发;~365 个 local pack skill 进目录才加载。
+- **Skills** — 渐进式披露:31 个全局 skill 描述匹配自动触发;~365 个 local pack skill 进目录才加载。
 - **LSP** — Claude:pyright / typescript / gopls / rust-analyzer;OpenCode:原生(`lsp:true`,40+ 语言);
   Cursor:编辑器内建;Codex:无。
 - **MCP** — 9 always-on + 10 opt-in(见下),API key 全走 Windows env var。
@@ -58,7 +58,7 @@ Cursor · OpenCode)。这份 README 是**给人看的概览**:是什么、怎么
 
 ---
 
-## 🌐 Global Skills(33 个,4 agent 共享,启动自动可用)
+## 🌐 Global Skills(31 个,4 agent 共享,启动自动可用)
 
 位置 `~/.{claude,cursor,codex,opencode}/skills/`。按分类(权威清单见 `HARNESS.md` / `catalog.json`):
 
@@ -71,7 +71,7 @@ Cursor · OpenCode)。这份 README 是**给人看的概览**:是什么、怎么
 | Workflow | 3 | `playwright-interactive` / `gh-fix-ci` / `gh-address-comments` |
 | Code Review | 3 | requesting / receiving / finishing-a-development-branch |
 | OpenSpec | 4 | explore / propose / apply-change / archive-change |
-| Document | 5 | pdf / docx / xlsx / pptx / markitdown |
+| Document | 3 | pdf / **officecli**(Word/Excel/PPT 引擎,取代旧 docx/xlsx/pptx)/ markitdown |
 | Learning | 1 | `teach` —— 多轮互动式辅导 |
 
 ---
@@ -162,7 +162,7 @@ copy "C:\Users\PC\MCP-Templates\<x>.mcp.json" ".mcp.json"   # 项目级 opt-in M
 | 维度 | 数量 |
 | --- | --- |
 | 主 agent | 4(Claude / Cursor / Codex / OpenCode)+ 1(LM Studio,仅 MCP) |
-| 全局 skills | **33**(9 分类) |
+| 全局 skills | **31**(9 分类) |
 | 项目本地 skills | **~365**(8 packs;权威清单见 `HARNESS.md`) |
 | MCP | 9 always-on + 10 opt-in（+3 iOS/macOS 模板） |
 | 4 agent parity | ✅ |

@@ -132,11 +132,6 @@ url = "https://bindings.mcp.cloudflare.com/mcp"
 enabled = false
 url = "https://observability.mcp.cloudflare.com/mcp"
 
-[marketplaces.claude-mem-local]
-last_updated = "2026-05-13T00:12:55Z"
-source_type = "local"
-source = '\\?\C:\Users\PC\.claude\plugins\marketplaces\thedotmack'
-
 [features]
 plugin_hooks = true
 

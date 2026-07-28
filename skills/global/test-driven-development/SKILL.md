@@ -354,12 +354,39 @@ Bug found? Write failing test reproducing it. Follow TDD cycle. Test proves fix 
 
 Never fix bugs without a test.
 
-## Testing Anti-Patterns
+## Test Shape and Mocking
 
-When adding mocks or test utilities, read @testing-anti-patterns.md to avoid common pitfalls:
-- Testing mock behavior instead of real behavior
-- Adding test-only methods to production classes
-- Mocking without understanding dependencies
+Three rules decide whether a test is worth having. All three are about keeping the
+test coupled to *behaviour*, not to your implementation.
+
+**1. Mock at system boundaries only.** External APIs, databases (prefer a test DB),
+time, randomness, the filesystem. **Never mock your own classes, internal
+collaborators, or anything you control** — a test that mocks your own module tests the
+mock, not the code. "I have to mock everything" means the code is too coupled: inject
+dependencies instead of constructing them inside.
+
+**2. No tautological tests.** If the expected value is computed the same way the
+implementation computes it, the test passes by construction and proves nothing:
+
+```typescript
+// BAD — expectation recomputes the implementation
+const expected = items.reduce((sum, i) => sum + i.price, 0);
+expect(calculateTotal(items)).toBe(expected);
+
+// GOOD — expectation is an independent, known literal
+expect(calculateTotal([{ price: 10 }, { price: 5 }])).toBe(15);
+```
+
+**3. Verify through the interface, not around it.** Assert on what the public API
+returns, not by reaching into the database or internal state to check. A test that
+bypasses the interface to verify will survive a broken interface.
+
+Name tests for **WHAT**, not HOW: `createUser makes user retrievable`, not
+`createUser calls db.insert`. One logical assertion per test.
+
+Details and worked examples: `references/tests.md` (good vs bad test shape) and
+`references/mocking.md` (boundaries, dependency injection, SDK-style interfaces).
+Repo-specific pitfalls: `testing-anti-patterns.md`.
 
 ## Final Rule
 

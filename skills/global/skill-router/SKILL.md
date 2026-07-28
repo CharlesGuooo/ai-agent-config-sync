@@ -30,6 +30,10 @@ These are available regardless of directory — don't route the user just to use
 **Process discipline:**
 - `using-superpowers`, `brainstorming`, `writing-plans`, `executing-plans`, `test-driven-development`, `systematic-debugging`, `verification-before-completion`
 - `subagent-driven-development`, `dispatching-parallel-agents`, `using-git-worktrees` — multi-agent orchestration
+- `handoff` — 会话交接给下一个 agent
+
+**Design & architecture:**
+- `codebase-design`(深模块词汇), `domain-modeling`(CONTEXT.md/ADR), `prototype`(一次性原型), `improve-codebase-architecture`(代码库体检)
 
 **Code review flow:**
 - `requesting-code-review`, `receiving-code-review`, `finishing-a-development-branch`
@@ -41,7 +45,7 @@ These are available regardless of directory — don't route the user just to use
 - `skill-creator`, `skill-scanner` (装新 community skill 前先扫安全)
 
 **Document handling:**
-- `pdf`, `docx`, `xlsx`, `pptx`, `markitdown` — document tasks need NO project switch
+- `pdf`, `officecli`(Word/Excel/PPT), `markitdown` — document tasks need NO project switch
 
 **External workflows:**
 - `playwright-interactive`, `gh-fix-ci`, `gh-address-comments`

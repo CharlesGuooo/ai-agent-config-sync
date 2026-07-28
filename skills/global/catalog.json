@@ -8,6 +8,7 @@
     { "key": "routing",     "title": "Routing & Meta", "blurb": "Routing + skill tooling" },
     { "key": "workflow",    "title": "Workflow",       "blurb": "External collaboration" },
     { "key": "code-review", "title": "Code Review",    "blurb": "Review discipline" },
+    { "key": "design",      "title": "Design & Architecture", "blurb": "Deep modules, domain language, prototypes" },
     { "key": "openspec",    "title": "OpenSpec",       "blurb": "Spec-driven development" },
     { "key": "document",    "title": "Document",       "blurb": "Office / document I/O" },
     { "key": "learning",    "title": "Learning",       "blurb": "Interactive teaching" }
@@ -23,6 +24,7 @@
     "subagent-driven-development":   { "category": "process",     "tagline": "Dispatch subagents per plan step with spec/quality reviewers" },
     "dispatching-parallel-agents":   { "category": "process",     "tagline": "Run 2+ independent tasks via parallel subagents with a merge protocol" },
     "using-git-worktrees":           { "category": "process",     "tagline": "Isolated worktrees for parallel agents / high-risk refactors" },
+    "handoff":                       { "category": "process",     "tagline": "Compact the session into a handoff doc for the next agent" },
 
     "first-principles-thinking":     { "category": "thinking",    "tagline": "Reason from base truths instead of by analogy; question inherited assumptions" },
 
@@ -41,6 +43,11 @@
     "requesting-code-review":        { "category": "code-review", "tagline": "Self-review before merge/completion" },
     "receiving-code-review":         { "category": "code-review", "tagline": "Respond technically to review feedback" },
     "finishing-a-development-branch":{ "category": "code-review", "tagline": "Wrap up a dev branch (rebase/squash/PR)" },
+
+    "codebase-design":               { "category": "design",      "tagline": "Deep-module vocabulary: interface, seam, depth, leverage, locality" },
+    "domain-modeling":               { "category": "design",      "tagline": "Pin down domain terms (CONTEXT.md) and record decisions (ADRs)" },
+    "prototype":                     { "category": "design",      "tagline": "Throwaway prototype to settle one design question" },
+    "improve-codebase-architecture": { "category": "design",      "tagline": "Scan a codebase for deepening opportunities → visual HTML report" },
 
     "openspec-explore":              { "category": "openspec",    "tagline": "Think through a spec before writing it" },
     "openspec-propose":              { "category": "openspec",    "tagline": "Generate a full change proposal (design/specs/tasks) in one step" },

@@ -135,12 +135,6 @@
         "@modelcontextprotocol/server-filesystem@2026.1.14",
         "C:/Users/PC"
       ]
-    },
-    "claude-mem": {
-      "command": "node",
-      "args": [
-        "C:\\Users\\PC\\.claude\\plugins\\marketplaces\\thedotmack\\plugin\\scripts\\mcp-server.cjs"
-      ]
     }
   }
 }

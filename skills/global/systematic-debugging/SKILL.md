@@ -21,6 +21,23 @@ NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST
 
 If you haven't completed Phase 1, you cannot propose fixes.
 
+## Phase 0: Build the feedback loop before you theorise
+
+Before reading code to form a theory, produce **one command that reliably goes red on
+this bug** — a failing test, a script, a curl, a repro app. Build the right feedback
+loop and the bug is most of the way solved; without it you are guessing, and every
+later phase inherits the guess.
+
+**If you catch yourself reading code to build a theory before that command exists,
+stop.** Jumping straight to a hypothesis is the exact failure this skill prevents.
+
+If the bug genuinely cannot be reproduced automatically (needs a human to click
+through a UI, hit a device, reproduce a race), write the smallest possible
+human-in-the-loop script instead: print numbered steps, wait, and capture what the
+human reports back — then treat *that* as the loop.
+
+Only once the loop is red do you proceed to Phase 1.
+
 ## When to Use
 
 Use for ANY technical issue:

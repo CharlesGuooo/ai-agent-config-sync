@@ -21,8 +21,8 @@ fresh repo on another drive). Use the routing table below to pick the right pack
   `AGENTS.md`/rules). Keep project CLAUDE.md focused on broadly-applicable knowledge.
 - **Hooks** — `guard.mjs` (PreToolUse: blocks secret-file access + destructive shell)
   and `format.mjs` (PostToolUse: formats edited files only if the project opts in) run
-  on **Claude Code + Codex**. `SessionStart → any-buddy` and claude-mem hooks may also be
-  present. (Cursor/OpenCode hook wiring is a known TODO.)
+  on **Claude Code + Codex**. A `SessionStart → any-buddy` hook may also be present.
+  (Cursor/OpenCode hook wiring is a known TODO.)
 - **Skills** — progressive disclosure. Global skills auto-load by description match;
   **local packs** below load when you're in their directory. Don't dump reusable
   expertise into CLAUDE.md — that's what skills are for.
@@ -68,7 +68,7 @@ index anymore.
 > Auto-generated from `skills/project-packs/` by `scripts/gen-harness.mjs`.
 > Do not edit between the PACKS markers by hand — run the generator.
 
-**Global skills (31, auto-exposed at startup — no need to route):** Process 10 · Thinking 1 · Escalation 2 · Routing & Meta 4 · Workflow 3 · Code Review 3 · OpenSpec 4 · Document 3 · Learning 1.
+**Global skills (36, auto-exposed at startup — no need to route):** Process 11 · Thinking 1 · Escalation 2 · Routing & Meta 4 · Workflow 3 · Code Review 3 · Design & Architecture 4 · OpenSpec 4 · Document 3 · Learning 1.
 
 ### Local skill packs — index
 

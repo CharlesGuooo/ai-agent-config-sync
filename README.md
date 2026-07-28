@@ -46,7 +46,7 @@ Cursor · OpenCode)。这份 README 是**给人看的概览**:是什么、怎么
 - **CLAUDE.md / AGENTS.md** — 分层上下文,每会话自动加载(6 原则 + 路由)。
 - **Hooks** — `guard.mjs`(PreToolUse:拦密钥文件 / 危险命令)+ `format.mjs`(PostToolUse:
   项目 opt-in 才格式化),跑在 **Claude + Codex**。(Cursor/OpenCode 走各自机制,待补。)
-- **Skills** — 渐进式披露:31 个全局 skill 描述匹配自动触发;~365 个 local pack skill 进目录才加载。
+- **Skills** — 渐进式披露:36 个全局 skill 描述匹配自动触发;~365 个 local pack skill 进目录才加载。
 - **LSP** — Claude:pyright / typescript / gopls / rust-analyzer;OpenCode:原生(`lsp:true`,40+ 语言);
   Cursor:编辑器内建;Codex:无。
 - **MCP** — 9 always-on + 10 opt-in(见下),API key 全走 Windows env var。
@@ -58,18 +58,19 @@ Cursor · OpenCode)。这份 README 是**给人看的概览**:是什么、怎么
 
 ---
 
-## 🌐 Global Skills(31 个,4 agent 共享,启动自动可用)
+## 🌐 Global Skills(36 个,4 agent 共享,启动自动可用)
 
 位置 `~/.{claude,cursor,codex,opencode}/skills/`。按分类(权威清单见 `HARNESS.md` / `catalog.json`):
 
 | 分类 | 数 | 是什么 |
 | --- | --- | --- |
-| Process | 10 | 流程纪律:using-superpowers / brainstorming / writing-plans / TDD / systematic-debugging / verification … |
+| Process | 11 | 流程纪律:using-superpowers / **brainstorming**(盘问引擎)/ writing-plans / TDD / systematic-debugging / verification / **handoff** … |
 | Thinking | 1 | `first-principles-thinking` —— 从第一性原理推理 |
 | Escalation | 2 | `high-agency` / `pua` |
 | Routing & Meta | 4 | `skill-router` / `skill-creator` / `skill-scanner` / `writing-great-skills` |
 | Workflow | 3 | `playwright-interactive` / `gh-fix-ci` / `gh-address-comments` |
-| Code Review | 3 | requesting / receiving / finishing-a-development-branch |
+| Code Review | 3 | requesting(**双轴并行**)/ receiving / finishing-a-development-branch |
+| **Design & Architecture** | 4 | `codebase-design`(深模块)/ `domain-modeling`(CONTEXT.md+ADR)/ `prototype` / `improve-codebase-architecture` |
 | OpenSpec | 4 | explore / propose / apply-change / archive-change |
 | Document | 3 | pdf / **officecli**(Word/Excel/PPT 引擎,取代旧 docx/xlsx/pptx)/ markitdown |
 | Learning | 1 | `teach` —— 多轮互动式辅导 |
@@ -121,13 +122,11 @@ Cursor · OpenCode)。这份 README 是**给人看的概览**:是什么、怎么
 
 ---
 
-## 🪝 Hooks & 🧠 claude-mem
+## 🪝 Hooks
 
 - **Hooks**:`~/.agent-hooks/{guard,format}.mjs` —— guard 拦密钥文件 + `rm -rf /`/`curl|sh`/force-push
   等危险命令;format 仅当项目有 formatter 配置才格式化。装在 Claude + Codex(additive merge,保留
-  已有的 any-buddy / claude-mem hooks)。
-- **claude-mem**:自动跨 session 记忆(SessionStart hook 启动 worker,SQLite+Chroma 存 `~/.claude-mem/`,
-  web viewer http://localhost:37777)。Claude/Cursor/Codex/OpenCode 各有集成;LM Studio 无。仓库**不装**它(单独 add-on)。
+  机器上已有的其它 hooks)。
 
 ---
 
@@ -162,7 +161,7 @@ copy "C:\Users\PC\MCP-Templates\<x>.mcp.json" ".mcp.json"   # 项目级 opt-in M
 | 维度 | 数量 |
 | --- | --- |
 | 主 agent | 4(Claude / Cursor / Codex / OpenCode)+ 1(LM Studio,仅 MCP) |
-| 全局 skills | **31**(9 分类) |
+| 全局 skills | **36**(10 分类) |
 | 项目本地 skills | **~365**(8 packs;权威清单见 `HARNESS.md`) |
 | MCP | 9 always-on + 10 opt-in（+3 iOS/macOS 模板） |
 | 4 agent parity | ✅ |

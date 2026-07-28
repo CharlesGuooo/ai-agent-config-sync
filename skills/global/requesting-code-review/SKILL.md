@@ -1,105 +1,120 @@
 ---
 name: requesting-code-review
-description: Use when completing tasks, implementing major features, or before merging to verify work meets requirements
+description: >-
+  Review your own changes since a fixed point along TWO independent axes —
+  Standards (does it follow this repo's conventions and avoid known code smells?)
+  and Spec (does it actually do what the plan/issue/spec asked?) — run as
+  parallel subagents and reported side by side, never merged. Use when
+  completing a task, finishing a major feature, before merging, or when the user
+  asks to "review my changes/branch/PR since X". Distinct from
+  receiving-code-review (acting on feedback someone gave you) and
+  verification-before-completion (proving the thing runs).
+allowed-tools: Read, Grep, Glob, Bash, Agent
+metadata:
+  category: code-review
+  tags: [review, standards, spec, parallel-subagents, smells]
+  source: >-
+    Two-axis parallel-subagent structure and the Fowler smell baseline adapted
+    from `mattpocock/skills` (MIT) — `engineering/code-review`. The
+    when-to-request and act-on-feedback guidance is retained from the previous
+    obra/superpowers `requesting-code-review`.
 ---
 
 # Requesting Code Review
 
-Dispatch superpowers:code-reviewer subagent to catch issues before they cascade.
+Review the diff between `HEAD` and a fixed point along two axes that **must not
+contaminate each other**:
 
-**Core principle:** Review early, review often.
+- **Standards** — does the code conform to this repo's conventions and avoid known smells?
+- **Spec** — does the code faithfully implement what was actually asked for?
 
-## When to Request Review
+**Core principle:** review early, review often — and keep the axes apart.
 
-**Mandatory:**
-- After each task in subagent-driven development
-- After completing major feature
-- Before merge to main
+## When to request
 
-**Optional but valuable:**
-- When stuck (fresh perspective)
-- Before refactoring (baseline check)
-- After fixing complex bug
+**Mandatory:** after each task in subagent-driven development · after completing a
+major feature · before merging to main.
 
-## How to Request
+**Valuable:** when stuck (fresh perspective) · before a refactor (baseline) · after
+fixing a complex bug.
 
-**1. Get git SHAs:**
+Never skip because "it's simple."
+
+## Process
+
+### 1. Pin the fixed point
+
+Whatever the user names — a SHA, branch, tag, `main`, `HEAD~5`. If they didn't say,
+ask. Then capture the comparison **once**:
+
 ```bash
-BASE_SHA=$(git rev-parse HEAD~1)  # or origin/main
-HEAD_SHA=$(git rev-parse HEAD)
+git rev-parse <fixed-point>                  # confirm the ref resolves
+git diff <fixed-point>...HEAD                # three-dot: compare against merge-base
+git log <fixed-point>..HEAD --oneline        # the commit list
 ```
 
-**2. Dispatch code-reviewer subagent:**
+A bad ref or an empty diff must fail **here**, not inside two subagents.
 
-Use Task tool with superpowers:code-reviewer type, fill template at `code-reviewer.md`
+### 2. Find the spec source
 
-**Placeholders:**
-- `{WHAT_WAS_IMPLEMENTED}` - What you just built
-- `{PLAN_OR_REQUIREMENTS}` - What it should do
-- `{BASE_SHA}` - Starting commit
-- `{HEAD_SHA}` - Ending commit
-- `{DESCRIPTION}` - Brief summary
+In order: issue references in the commit messages (`#123`, `Closes #45`) · a path the
+user passed · a plan/spec under `docs/`, `openspec/`, `specs/`, or `.scratch/` matching
+the branch or feature · otherwise ask. If there genuinely is no spec, skip the Spec
+axis and say so in the report — don't invent one.
 
-**3. Act on feedback:**
-- Fix Critical issues immediately
-- Fix Important issues before proceeding
-- Note Minor issues for later
-- Push back if reviewer is wrong (with reasoning)
+### 3. Find the standards sources
 
-## Example
+Anything documenting how code should be written here: `CLAUDE.md` / `AGENTS.md`,
+`CODING_STANDARDS.md`, `CONTRIBUTING.md`, lint configs.
 
-```
-[Just completed Task 2: Add verification function]
+On top of whatever the repo documents, the Standards axis always carries the **smell
+baseline** in `references/smell-baseline.md` — a fixed set of Fowler smells that
+applies even when a repo documents nothing. Two rules bind it:
 
-You: Let me request code review before proceeding.
+- **The repo overrides.** A documented repo standard always wins; where it endorses
+  something the baseline would flag, suppress the smell.
+- **Always a judgement call.** Each smell is a labelled heuristic ("possible Feature
+  Envy"), never a hard violation. Skip anything tooling already enforces.
 
-BASE_SHA=$(git log --oneline | grep "Task 1" | head -1 | awk '{print $1}')
-HEAD_SHA=$(git rev-parse HEAD)
+### 4. Spawn both subagents in parallel
 
-[Dispatch superpowers:code-reviewer subagent]
-  WHAT_WAS_IMPLEMENTED: Verification and repair functions for conversation index
-  PLAN_OR_REQUIREMENTS: Task 2 from docs/superpowers/plans/deployment-plan.md
-  BASE_SHA: a7981ec
-  HEAD_SHA: 3df7661
-  DESCRIPTION: Added verifyIndex() and repairIndex() with 4 issue types
+Send **one** message containing **two** subagent calls (general-purpose), so they run
+concurrently and never see each other's findings.
 
-[Subagent returns]:
-  Strengths: Clean architecture, real tests
-  Issues:
-    Important: Missing progress indicators
-    Minor: Magic number (100) for reporting interval
-  Assessment: Ready to proceed
+**Standards brief** — give it the diff command, the commit list, the standards files
+you found, **and the full text of the smell baseline** (the subagent has no other
+access to it). Ask for: (a) every place the diff violates a documented standard, citing
+the file and rule; (b) any baseline smell, named, with the hunk quoted. Distinguish
+hard violations from judgement calls. Skip what tooling enforces. Under 400 words.
 
-You: [Fix progress indicators]
-[Continue to Task 3]
-```
+**Spec brief** — give it the diff command, the commit list, and the spec path or
+contents. Ask for: (a) requirements asked for but missing or partial; (b) behaviour in
+the diff nobody asked for (scope creep); (c) requirements that look implemented but
+whose implementation looks wrong. Quote the spec line for each finding. Under 400 words.
 
-## Integration with Workflows
+### 5. Report side by side — do not merge
 
-**Subagent-Driven Development:**
-- Review after EACH task
-- Catch issues before they compound
-- Fix before moving to next task
+Present both under `## Standards` and `## Spec`, verbatim or lightly cleaned. **Do not
+merge or re-rank findings across axes.** End with one line: total findings per axis and
+the worst issue *within each axis*. Don't crown a single overall winner — that
+re-ranking is exactly what the separation exists to prevent.
 
-**Executing Plans:**
-- Review after each batch (3 tasks)
-- Get feedback, apply, continue
+## Why two axes
 
-**Ad-Hoc Development:**
-- Review before merge
-- Review when stuck
+A change can pass one and fail the other:
 
-## Red Flags
+- Follows every convention but implements the wrong thing → **Standards pass, Spec fail.**
+- Does exactly what the issue asked but breaks the project's conventions → **Spec pass, Standards fail.**
 
-**Never:**
-- Skip review because "it's simple"
-- Ignore Critical issues
-- Proceed with unfixed Important issues
-- Argue with valid technical feedback
+Reporting them separately stops one axis from masking the other.
 
-**If reviewer wrong:**
-- Push back with technical reasoning
-- Show code/tests that prove it works
-- Request clarification
+> `code-reviewer.md` in this directory is the older **single-reviewer** template. It is
+> still used by `subagent-driven-development` for quick per-task reviews — keep it. Use
+> the two-axis process above for branch/PR-level review.
 
-See template at: requesting-code-review/code-reviewer.md
+## Acting on the results
+
+Fix **Critical** immediately · fix **Important** before proceeding · note **Minor** for
+later. If a reviewer is wrong, push back with technical reasoning and show the code or
+test that proves it — don't perform agreement. To work through feedback properly, use
+the `receiving-code-review` skill.

@@ -33,12 +33,12 @@ OpenCode should follow the same split as Codex, Claude Code, and Cursor.
 
 <!-- SKILLS:BEGIN -->
 
-## Global Skills (31)
+## Global Skills (36)
 
 > Auto-generated from `skills/global/` by `scripts/gen-skill-table.mjs`.
 > Do not edit between the SKILLS markers by hand — run the generator instead.
 
-### Process (10) — Process discipline
+### Process (11) — Process discipline
 
 | Skill | When to use |
 | --- | --- |
@@ -52,6 +52,7 @@ OpenCode should follow the same split as Codex, Claude Code, and Cursor.
 | `subagent-driven-development` | Dispatch subagents per plan step with spec/quality reviewers |
 | `dispatching-parallel-agents` | Run 2+ independent tasks via parallel subagents with a merge protocol |
 | `using-git-worktrees` | Isolated worktrees for parallel agents / high-risk refactors |
+| `handoff` | Compact the session into a handoff doc for the next agent |
 
 ### Thinking (1) — Reasoning frameworks
 
@@ -90,6 +91,15 @@ OpenCode should follow the same split as Codex, Claude Code, and Cursor.
 | `requesting-code-review` | Self-review before merge/completion |
 | `receiving-code-review` | Respond technically to review feedback |
 | `finishing-a-development-branch` | Wrap up a dev branch (rebase/squash/PR) |
+
+### Design & Architecture (4) — Deep modules, domain language, prototypes
+
+| Skill | When to use |
+| --- | --- |
+| `codebase-design` | Deep-module vocabulary: interface, seam, depth, leverage, locality |
+| `domain-modeling` | Pin down domain terms (CONTEXT.md) and record decisions (ADRs) |
+| `prototype` | Throwaway prototype to settle one design question |
+| `improve-codebase-architecture` | Scan a codebase for deepening opportunities → visual HTML report |
 
 ### OpenSpec (4) — Spec-driven development
 

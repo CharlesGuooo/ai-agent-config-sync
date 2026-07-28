@@ -3,6 +3,7 @@
 本仓库把**一套** skill / MCP / harness 配置同步给本机 4 个 AI agent(Claude Code · Codex ·
 Cursor · OpenCode)。这份 README 是**给人看的概览**:是什么、怎么组织、怎么用。
 
+> **👉 怎么用这些 skill(流程 + 该说什么话)在 `PLAYBOOK.md`** —— 装了不会用等于没装,先读它。
 > **给 agent 看的运行时路由**在 `HARNESS.md`(自动生成,权威、不漂移)。
 > **装机指南**在 `INSTALL.md`,**精确文件映射**在 `INVENTORY.md`。
 > 本文刻意**不逐个枚举** ~365 个 skill —— 那份清单在 `HARNESS.md`,改一个 skill 就自动更新。

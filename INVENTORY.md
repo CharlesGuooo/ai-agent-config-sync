@@ -130,6 +130,8 @@ Claude marketplace plugin. Claude LSP plugins need the language toolchain instal
 
 ## What we DON'T install
 
+- **`claude-mem` — retired 2026-07, do NOT re-add.** Removed from this repo entirely
+  (directory, Cursor MCP stanza, Codex marketplace block). See INSTALL.md "Do not install".
 - Per-machine credentials (`~/.claude/auth.json`, `~/.codex/auth.json`)
 - LM Studio configs (different MCP model; partial coverage)
 - Git config, shell rc files, OS settings

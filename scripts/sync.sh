@@ -142,7 +142,7 @@ if [[ -f "$harness_gen" ]] && command -v node >/dev/null 2>&1; then
 fi
 copy_file "$repo_root/HARNESS.md" "$home_dir/HARNESS.md"
 
-# ---- 1. Global skills (30) → all 4 agents ----
+# ---- 1. Global skills (36) → all 4 agents ----
 log "Syncing global skills..."
 for a in "${AGENTS[@]}"; do
   sync_dir "$repo_root/skills/global" "$home_dir/.${a}/skills"

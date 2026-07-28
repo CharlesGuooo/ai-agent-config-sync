@@ -4,13 +4,16 @@
 #   .\scripts\install.ps1 -Agents claude,codex     # subset
 #   .\scripts\install.ps1 -Packs dev,finance       # subset of project packs
 #   .\scripts\install.ps1 -SkipMcp                 # skills + system prompts only
-#   .\scripts\install.ps1 -GlobalOnly              # 30 global skills only
+#   .\scripts\install.ps1 -GlobalOnly              # 36 global skills only
 #   .\scripts\install.ps1 -DryRun                  # plan but don't write
 #   .\scripts\install.ps1 -PersistEnv              # also write env vars to Windows User scope
+#
+# Do NOT install claude-mem (retired 2026-07) — see INSTALL.md "Do not install".
 [CmdletBinding()]
 param(
     [string[]]$Agents = @('claude','cursor','codex','opencode'),
-    [string[]]$Packs = @('dev','finance','ios','data','marketing','research','productivity'),
+    # Keep in lockstep with sync.ps1 / sync.sh — this default OVERRIDES theirs.
+    [string[]]$Packs = @('dev','finance','ios','data','marketing','research','productivity','craft'),
     [switch]$SkipMcp,
     [switch]$GlobalOnly,
     [switch]$DryRun,

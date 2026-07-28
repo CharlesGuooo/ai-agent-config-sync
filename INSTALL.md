@@ -91,6 +91,19 @@ test -f ~/HARNESS.md && echo "HARNESS present"
 head -6 ~/.claude/CLAUDE.md   # should show the Core Principles
 ```
 
+## Do not install
+
+Read this before adding anything beyond what the scripts do.
+
+- **`claude-mem` — do NOT install it.** Retired 2026-07 (unused in practice). It is
+  gone from this repo on purpose: no `claude-mem/` directory, no MCP stanza in
+  `agents/cursor/mcp.json`, no marketplace block in `agents/codex/config.toml`. If you
+  find it referenced anywhere, that reference is stale — delete it, don't act on it.
+  On a machine where a previous setup already installed it, leaving it alone is fine;
+  just never re-add it to this repo or to a fresh machine.
+- **Anything not listed in `INVENTORY.md`.** That table is the complete source→target
+  map. If a step isn't there, it isn't part of this harness.
+
 ## Selective install for an agent
 
 If you're a new-machine agent and the user only asked for partial setup, read `INVENTORY.md` — it's a table of every source→target mapping. You can either:

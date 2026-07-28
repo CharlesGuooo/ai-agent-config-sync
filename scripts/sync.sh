@@ -141,6 +141,9 @@ if [[ -f "$harness_gen" ]] && command -v node >/dev/null 2>&1; then
   fi
 fi
 copy_file "$repo_root/HARNESS.md" "$home_dir/HARNESS.md"
+# PLAYBOOK.md — human-facing usage manual; also lets an agent on this machine
+# answer "how do I use these skills?" without reading the repo.
+copy_file "$repo_root/PLAYBOOK.md" "$home_dir/PLAYBOOK.md"
 
 # ---- 1. Global skills (36) → all 4 agents ----
 log "Syncing global skills..."

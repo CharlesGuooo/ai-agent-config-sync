@@ -126,8 +126,11 @@ function Invoke-HarnessGen {
     }
 }
 Invoke-HarnessGen
-Log "Copying HARNESS.md -> home..."
+Log "Copying HARNESS.md + PLAYBOOK.md -> home..."
 Copy-File (Join-Path $repoRoot 'HARNESS.md') (Join-Path $homeDir 'HARNESS.md')
+# PLAYBOOK.md — human-facing usage manual; also lets an agent on this machine
+# answer "how do I use these skills?" without reading the repo.
+Copy-File (Join-Path $repoRoot 'PLAYBOOK.md') (Join-Path $homeDir 'PLAYBOOK.md')
 
 # ---- 1. Global skills ----
 Log "Syncing global skills..."

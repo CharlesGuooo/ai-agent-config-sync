@@ -70,7 +70,11 @@ backup_target() {
 }
 
 sync_dir() {
-  local src="$1" dst="$2"
+  local src="$1" dst="$2"; shift 2
+  # Remaining args are extra rsync --exclude patterns (use a leading / to anchor
+  # the pattern at the root of the transfer, e.g. '/README.md').
+  local extra=()
+  for pat in "$@"; do extra+=(--exclude "$pat"); done
   if [[ ! -d "$src" ]]; then return; fi
   if [[ "$dry_run" -eq 1 ]]; then
     echo "[dry-run] SYNC $src -> $dst"
@@ -78,7 +82,8 @@ sync_dir() {
   fi
   backup_target "$dst"
   mkdir -p "$dst"
-  rsync -a --delete --exclude ".git" --exclude "__pycache__" --exclude "*.pyc" "$src"/ "$dst"/
+  rsync -a --delete --exclude ".git" --exclude "__pycache__" --exclude "*.pyc" \
+    "${extra[@]}" "$src"/ "$dst"/
 }
 
 copy_file() {
@@ -161,9 +166,11 @@ copy_file "$repo_root/PLAYBOOK.md" "$home_dir/PLAYBOOK.md"
 # ---- 1. Global skills (38) → all selected agents ----
 # Path comes from agent_skill_dir, not a hardcoded ".${a}/skills" — Pi's global skills
 # live at .pi/agent/skills, so the naive pattern would put them where Pi never looks.
+# README.md is repo documentation, not a skill. Pi validates every .md in the skills
+# root and rejects it ("description is required"); no agent needs it there.
 log "Syncing global skills..."
 for a in "${AGENTS[@]}"; do
-  sync_dir "$repo_root/skills/global" "$home_dir/$(agent_skill_dir "$a")"
+  sync_dir "$repo_root/skills/global" "$home_dir/$(agent_skill_dir "$a")" '/README.md'
 done
 
 # ---- 2. Codex .system (5) → Codex only ----

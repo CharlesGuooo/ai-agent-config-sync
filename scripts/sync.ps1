@@ -76,7 +76,7 @@ function Backup-Target($path) {
     Copy-Item -Path "$path\*" -Destination $bk -Recurse -Force -ErrorAction SilentlyContinue
 }
 
-function Sync-Dir($src, $dst) {
+function Sync-Dir($src, $dst, [string[]]$ExcludeFiles = @()) {
     if (-not (Test-Path $src)) { return }
     if ($DryRun) {
         Write-Host "[dry-run] SYNC $src -> $dst"
@@ -84,8 +84,14 @@ function Sync-Dir($src, $dst) {
     }
     Backup-Target $dst
     New-Item -ItemType Directory -Force -Path $dst | Out-Null
-    # robocopy: /MIR mirror, /XJ exclude junctions, /XD __pycache__
-    robocopy $src $dst /MIR /XJ /XD __pycache__ .git /NJH /NJS /NDL /NC /NS /NP | Out-Null
+    # robocopy: /MIR mirror, /XJ exclude junctions, /XD __pycache__, /XF excluded files
+    $xf = @()
+    foreach ($f in $ExcludeFiles) { $xf += (Join-Path $src $f) }
+    if ($xf.Count) {
+        robocopy $src $dst /MIR /XJ /XD __pycache__ .git /XF $xf /NJH /NJS /NDL /NC /NS /NP | Out-Null
+    } else {
+        robocopy $src $dst /MIR /XJ /XD __pycache__ .git /NJH /NJS /NDL /NC /NS /NP | Out-Null
+    }
     if ($LASTEXITCODE -ge 8) {
         Write-Warning "robocopy reported issues syncing $src -> $dst (exit=$LASTEXITCODE)"
     }
@@ -149,9 +155,11 @@ Copy-File (Join-Path $repoRoot 'PLAYBOOK.md') (Join-Path $homeDir 'PLAYBOOK.md')
 # ---- 1. Global skills ----
 # Path comes from Get-AgentSkillDir, not a hardcoded ".$a\skills" — Pi's global skills
 # live at .pi\agent\skills, so the naive pattern would put them where Pi never looks.
+# README.md is repo documentation, not a skill. Pi validates every .md in the skills
+# root and rejects it ("description is required"); no agent needs it there.
 Log "Syncing global skills..."
 foreach ($a in $Agents) {
-    Sync-Dir (Join-Path $repoRoot 'skills\global') (Join-Path $homeDir (Get-AgentSkillDir $a))
+    Sync-Dir (Join-Path $repoRoot 'skills\global') (Join-Path $homeDir (Get-AgentSkillDir $a)) -ExcludeFiles 'README.md'
 }
 
 # ---- 2. Codex .system ----

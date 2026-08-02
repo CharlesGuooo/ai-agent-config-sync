@@ -13,12 +13,12 @@
 绝大多数 skill 是**模型按描述自动触发**的 —— 你一提"这报错了",`systematic-debugging`
 自己就上来了,不用你喊。
 
-**你真正需要记住的,是那些"不主动开口它就不会来"的。大概 9 个。** 先把这 9 个刻进脑子,
+**你真正需要记住的,是那些"不主动开口它就不会来"的。大概 10 个。** 先把这 10 个刻进脑子,
 其余的忘掉也没关系。
 
 ---
 
-## 🗣️ 需要你主动喊的 9 个
+## 🗣️ 需要你主动喊的 10 个
 
 | 你心里想的 | 你说什么 | 触发 |
 | --- | --- | --- |
@@ -30,10 +30,41 @@
 | 合并前帮我审一遍 | "review 一下我的改动" | `requesting-code-review` |
 | 这活该在哪个目录干 | "我该 cd 去哪" | `skill-router` |
 | 想装个外面的 skill | "先扫一下安全" | `skill-scanner` |
-| 现在只想要"敲哪条命令",别解释 | **"action-first 模式"** | `action-first`(开关,说"normal mode"关掉) |
+| 这个 skill 写得好不好 / 帮我审一个 skill | 🔒 **`/writing-great-skills`** | `writing-great-skills`(标尺 + 术语表) |
+| 现在只想要"敲哪条命令",别解释 | 🔒 **`/action-first`** | `action-first`(开关,说"normal mode"关掉) |
 
 其余的按需:`teach`(让它教你一个概念,多轮带记忆)· `first-principles-thinking`(逼它
 从第一性原理重推,别照搬惯例)· `pua` / `high-agency`(它偷懒或活很长时加压)。
+
+### 🔒 标记的两个:模型**看不见**它们
+
+上表大多数技能,模型其实**能**自己触发,只是它们属于"你不提就不会主动做"的深思熟虑动作。
+但带 🔒 的两个不一样 —— 它们的 frontmatter 里有:
+
+```yaml
+disable-model-invocation: true
+```
+
+**这意味着模型的技能列表里根本没有它们**,连"想起来"的机会都没有。实测:直接让 agent 调用
+`writing-great-skills` 会被硬拒:
+
+```
+Skill writing-great-skills cannot be used with Skill tool
+due to disable-model-invocation
+```
+
+**所以只有两种用法:** ① 你敲 `/writing-great-skills`;② 你开口要,agent 直接把那个文件
+读进来照做(走 Read,不走 Skill)。
+
+**为什么要这样设计** —— 拿 **context load 换 cognitive load**:
+
+| | model-invoked(36 个) | 🔒 user-invoked(2 个) |
+| --- | --- | --- |
+| 常驻上下文成本 | 每轮都花(描述在窗口里) | **0** |
+| 谁负责记得它存在 | 模型 | **你**(所以才有这张表) |
+
+一份 90 行的标尺 + 200 行术语表,你一年用十几次 —— 让它每轮都占位置不划算。
+**这张表就是这两个技能的"人肉索引"**,漏了它们,它们就等于不存在。
 
 ## 🤖 会自动来的(别操心)
 
@@ -43,6 +74,11 @@
 GitHub PR/CI → `gh-fix-ci` / `gh-address-comments`。
 
 OpenSpec 那 4 个走 `/opsx:` 命令,不靠描述触发。
+
+> 想知道某个技能到底属于哪一类?看它的 frontmatter 有没有 `disable-model-invocation: true`
+> —— 有就是 🔒(模型看不见,只能你喊),没有就是描述匹配自动触发。
+> 一行命令列出所有 🔒 的:
+> `grep -l "disable-model-invocation" ~/.claude/skills/*/SKILL.md`
 
 ---
 

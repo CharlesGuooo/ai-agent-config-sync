@@ -8,7 +8,7 @@ home_dir="$HOME"
 backup_dir="$home_dir/.agent-config-backup/$(date +%Y%m%d-%H%M%S)"
 
 # ---- Parse flags ----
-agents="claude,cursor,codex,opencode"
+agents="claude,cursor,codex,opencode,pi"
 packs="dev,finance,ios,data,marketing,research,productivity,craft"
 skip_mcp=0
 global_only=0
@@ -104,13 +104,26 @@ pack_in() {
   return 1
 }
 
-# Map agent-name → live dir suffix
+# Map agent-name → live dir suffix under HOME (global skills).
+# Pi is the only agent whose global path differs from its project path.
 agent_skill_dir() {
   case "$1" in
     claude)   echo ".claude/skills" ;;
     cursor)   echo ".cursor/skills" ;;
     codex)    echo ".codex/skills" ;;
     opencode) echo ".opencode/skills" ;;
+    pi)       echo ".pi/agent/skills" ;;
+  esac
+}
+
+# Map agent-name → dir suffix inside a PROJECT PACK. Same as the global path for every
+# agent except Pi, which drops the `agent` segment for project-scoped skills
+# (pi.dev/docs/latest/skills). Using the global path here would put packs where Pi
+# never looks.
+agent_pack_skill_dir() {
+  case "$1" in
+    pi) echo ".pi/skills" ;;
+    *)  agent_skill_dir "$1" ;;
   esac
 }
 
@@ -145,10 +158,12 @@ copy_file "$repo_root/HARNESS.md" "$home_dir/HARNESS.md"
 # answer "how do I use these skills?" without reading the repo.
 copy_file "$repo_root/PLAYBOOK.md" "$home_dir/PLAYBOOK.md"
 
-# ---- 1. Global skills (38) → all 4 agents ----
+# ---- 1. Global skills (38) → all selected agents ----
+# Path comes from agent_skill_dir, not a hardcoded ".${a}/skills" — Pi's global skills
+# live at .pi/agent/skills, so the naive pattern would put them where Pi never looks.
 log "Syncing global skills..."
 for a in "${AGENTS[@]}"; do
-  sync_dir "$repo_root/skills/global" "$home_dir/.${a}/skills"
+  sync_dir "$repo_root/skills/global" "$home_dir/$(agent_skill_dir "$a")"
 done
 
 # ---- 2. Codex .system (5) → Codex only ----
@@ -185,7 +200,7 @@ if [[ "$global_only" -eq 0 ]]; then
       sub_path="${pack_root_live}"
       [[ -n "$rel" ]] && sub_path="${pack_root_live}/${rel}"
       for a in "${AGENTS[@]}"; do
-        sync_dir "$skills_src" "${sub_path}/$(agent_skill_dir "$a")"
+        sync_dir "$skills_src" "${sub_path}/$(agent_pack_skill_dir "$a")"
       done
     done < <(find "$pack_root_repo" -type d -name skills -print0)
   done
@@ -212,6 +227,11 @@ if agent_in opencode; then
   copy_file "$repo_root/agents/opencode/AGENTS.md"      "$home_dir/.config/opencode/AGENTS.md"
   sync_dir  "$repo_root/agents/opencode/command"        "$home_dir/.opencode/command"
   sync_dir  "$repo_root/agents/opencode/command"        "$home_dir/.config/opencode/command"
+fi
+if agent_in pi; then
+  # Instructions only. Pi has no MCP and no hooks (see agents/pi/AGENTS.md), so it is
+  # absent from sections 4b and 5 by design. Never touch ~/.pi/agent/auth.json.
+  copy_file "$repo_root/agents/pi/AGENTS.md" "$home_dir/.pi/agent/AGENTS.md"
 fi
 
 # ---- 4b. Hooks: shared guard + formatter scripts, plus Claude settings merge ----

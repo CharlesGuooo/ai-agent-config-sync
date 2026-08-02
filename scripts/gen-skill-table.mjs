@@ -35,6 +35,7 @@ const TARGETS = [
   'agents/opencode/AGENTS.md',
   'agents/cursor/rules/global-rules.md',
   'agents/cursor/global-rules.md',
+  'agents/pi/AGENTS.md',
 ];
 
 const check = process.argv.includes('--check');

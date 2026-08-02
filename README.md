@@ -1,7 +1,7 @@
 # Agents Overview — 人看的总览手册
 
-本仓库把**一套** skill / MCP / harness 配置同步给本机 4 个 AI agent(Claude Code · Codex ·
-Cursor · OpenCode)。这份 README 是**给人看的概览**:是什么、怎么组织、怎么用。
+本仓库把**一套** skill / harness 配置同步给本机 5 个 AI agent(Claude Code · Codex ·
+Cursor · OpenCode · Pi)。这份 README 是**给人看的概览**:是什么、怎么组织、怎么用。
 
 > **👉 怎么用这些 skill(流程 + 该说什么话)在 `PLAYBOOK.md`** —— 装了不会用等于没装,先读它。
 > **给 agent 看的运行时路由**在 `HARNESS.md`(自动生成,权威、不漂移)。
@@ -18,9 +18,39 @@ Cursor · OpenCode)。这份 README 是**给人看的概览**:是什么、怎么
 | **Codex CLI** | `codex` | `~/.codex/AGENTS.md` + `config.toml` |
 | **Cursor** | 打开目录 | `~/.cursor/rules/global-rules.md` |
 | **OpenCode** | `opencode` | `~/.opencode/AGENTS.md` |
+| **Pi** | `pi` | `~/.pi/agent/AGENTS.md` |
 | **LM Studio** | 应用 | `~/.lmstudio/mcp.json`(仅 MCP) |
 
-前 4 家**共享同一套 skill + MCP**(full parity)。仓库是 source of truth,`scripts/sync.ps1`
+### 📋 配几个 agent?——**由指令决定,不是写死的**
+
+**支持 5 个,默认全配。** 配几个由**当次的指令**决定 —— 每次配置 harness 的都是一个 agent
+在执行,它应当照指令办,而不是假设"就是那 4 个"。
+
+```powershell
+.\scripts\sync.ps1                                  # 默认:全部 5 个
+.\scripts\sync.ps1 -Agents claude,pi                # 只配这两个
+./scripts/install.sh --agents=claude,cursor,codex   # 只配这三个
+```
+
+**能力矩阵(诚实版,不是 parity 宣传)** —— Pi 是 *"minimal agent harness"*,官方**刻意**
+不做 MCP / hooks / 子 agent,不是配置遗漏:
+
+| | Claude Code | Codex | Cursor | OpenCode | **Pi** |
+| --- | :-: | :-: | :-: | :-: | :-: |
+| 6 条核心原则 | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 38 个全局 skill | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 本地 pack skill | ✅ | ✅ | ✅ | ✅ | ✅ |
+| MCP(9 always-on) | ✅ | ✅ | ✅ | ✅ | ❌ 官方不支持 |
+| guard/format hooks | ✅ | ✅ | ❌ | ❌ | ❌ 无声明式 hooks |
+| 子 agent(并行扇出) | ✅ | ✅ | ✅ | ✅ | ❌ 官方不做 |
+| LSP | ✅ 4 语言 | ❌ | ✅ 内建 | ✅ 原生 40+ | ❌ |
+
+Pi 上有 5 个 skill 会降级为顺序执行(`requesting-code-review` 双轴、`codebase-design`
+DESIGN-IT-TWICE、`improve-codebase-architecture`、`dispatching-parallel-agents`、
+`subagent-driven-development`)—— 处理办法写在 `agents/pi/AGENTS.md` 里,它会照做并**主动
+声明自己是顺序跑的**,不会假装并行过。
+
+5 家**共享同一套 skill + 指令**;MCP 与 hooks 只有前 4 家有(Pi 官方不支持,见下方能力矩阵)。仓库是 source of truth,`scripts/sync.ps1`
 / `sync.sh` 下发到本机。
 
 ---
@@ -59,7 +89,7 @@ Cursor · OpenCode)。这份 README 是**给人看的概览**:是什么、怎么
 
 ---
 
-## 🌐 Global Skills(38 个,4 agent 共享,启动自动可用)
+## 🌐 Global Skills(38 个,5 agent 共享,启动自动可用)
 
 位置 `~/.{claude,cursor,codex,opencode}/skills/`。按分类(权威清单见 `HARNESS.md` / `catalog.json`):
 
@@ -100,7 +130,7 @@ Cursor · OpenCode)。这份 README 是**给人看的概览**:是什么、怎么
 
 ## 🔌 MCP Servers
 
-四家跑同一套,API key 全走 Windows User-scope env var(`${VAR}` / `${env:VAR}` / `bearer_token_env_var`)。
+**前四家**跑同一套(Pi 无 MCP),API key 全走 Windows User-scope env var(`${VAR}` / `${env:VAR}` / `bearer_token_env_var`)。
 
 **✅ Always-on(9,启动自动)**:`github` · `memory` · `filesystem` · `context7` ·
 `sequential-thinking` · `brave-search` · `playwright` · `chrome-devtools` ·
@@ -161,11 +191,11 @@ copy "C:\Users\PC\MCP-Templates\<x>.mcp.json" ".mcp.json"   # 项目级 opt-in M
 
 | 维度 | 数量 |
 | --- | --- |
-| 主 agent | 4(Claude / Cursor / Codex / OpenCode)+ 1(LM Studio,仅 MCP) |
+| 主 agent | **5**(Claude / Cursor / Codex / OpenCode / Pi)+ 1(LM Studio,仅 MCP) |
 | 全局 skills | **38**(10 分类) |
 | 项目本地 skills | **~365**(8 packs;权威清单见 `HARNESS.md`) |
 | MCP | 9 always-on + 10 opt-in（+3 iOS/macOS 模板） |
-| 4 agent parity | ✅ |
+| Skill parity | ✅ 5/5 · MCP 4/5 · hooks 2/5(见能力矩阵) |
 
 ---
 

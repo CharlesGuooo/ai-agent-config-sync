@@ -28,10 +28,13 @@ cp .env.example .env             # fill in keys you have
 
 ## Install flags
 
+**How many agents do you configure?** Five are supported and the default is **all five**;
+the subset is decided by the instruction you were given, via `--agents=`. Don't assume four.
+
 The single entry script `scripts/install.sh` (or `install.ps1`) supports:
 
 ```
---agents=claude,cursor,codex,opencode    # subset; default = all four
+--agents=claude,cursor,codex,opencode,pi # subset; default = ALL FIVE (see the roster in README)
 --packs=dev,finance,ios,data,marketing,research,productivity,craft   # subset; default = all
 --skip-mcp                                # skip MCP server config (skills + system prompts only)
 --global-only                             # 38 global skills only, no project packs
@@ -117,7 +120,7 @@ Both produce the same result.
 
 | Repo location | Lands at |
 | --- | --- |
-| `skills/global/` | `~/.{agent}/skills/` for all 4 agents |
+| `skills/global/` | `~/.{agent}/skills/` for all 5 agents (Pi: `~/.pi/agent/skills/`) |
 | `skills/codex-system/` | `~/.codex/skills/.system/` |
 | `skills/project-packs/<pack>/skills/` | `~/<pack>/.{agent}/skills/` |
 | `skills/project-packs/<pack>/<sub>/skills/` | `~/<pack>/<sub>/.{agent}/skills/` |

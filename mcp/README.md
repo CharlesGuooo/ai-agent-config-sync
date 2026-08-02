@@ -2,7 +2,7 @@
 
 ## Always-on (9)
 
-Always installed across all 4 agents:
+Always installed across the 4 MCP-capable agents (Claude / Cursor / Codex / OpenCode — Pi has no MCP support):
 
 | Server | Auth |
 | --- | --- |

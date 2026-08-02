@@ -11,7 +11,7 @@
 # Do NOT install claude-mem (retired 2026-07) — see INSTALL.md "Do not install".
 [CmdletBinding()]
 param(
-    [string[]]$Agents = @('claude','cursor','codex','opencode'),
+    [string[]]$Agents = @('claude','cursor','codex','opencode','pi'),
     # Keep in lockstep with sync.ps1 / sync.sh — this default OVERRIDES theirs.
     [string[]]$Packs = @('dev','finance','ios','data','marketing','research','productivity','craft'),
     [switch]$SkipMcp,

@@ -14,6 +14,32 @@ fresh repo on another drive). Use the routing table below to pick the right pack
 
 ---
 
+## Agent roster — 5 supported; how many you configure is set by the instruction
+
+If you are configuring this harness (you are always an agent when that happens), the
+number of agents is **not fixed at four**. Five are supported; the default is all five;
+the caller's instruction decides the subset via `--agents=` / `-Agents`. Never assume.
+
+| Agent | Entry | Config home | Gets MCP? | Gets hooks? | Sub-agents? |
+| --- | --- | --- | :-: | :-: | :-: |
+| Claude Code | `claude` | `~/.claude/` | ✅ | ✅ | ✅ |
+| Codex CLI | `codex` | `~/.codex/` | ✅ | ✅ | ✅ |
+| Cursor | open a dir | `~/.cursor/` | ✅ | ❌ | ✅ |
+| OpenCode | `opencode` | `~/.opencode/` | ✅ | ❌ | ✅ |
+| **Pi** | `pi` | `~/.pi/agent/` | ❌ | ❌ | ❌ |
+
+All five get the six Core Principles, all 38 global skills, and every local pack.
+**Pi is deliberately minimal upstream** — no MCP, no declarative hooks, no sub-agents.
+That is not a misconfiguration; `agents/pi/AGENTS.md` tells Pi how to degrade the five
+fan-out skills to sequential execution and to say so in its output.
+
+Pi path quirk worth knowing before you touch sync: global skills live at
+`~/.pi/agent/skills/` but project-pack skills at `<project>/.pi/skills/` — the only agent
+whose two paths differ. `agent_skill_dir` / `agent_pack_skill_dir` in the sync scripts
+own that distinction; don't hardcode `.<agent>/skills`.
+
+---
+
 ## Harness at a glance (5 extension points + 2 supplements)
 
 - **CLAUDE.md / AGENTS.md** — layered context, auto-loaded every session (root → cwd,

@@ -3,7 +3,7 @@
 
 [CmdletBinding()]
 param(
-    [string[]]$Agents = @('claude','cursor','codex','opencode'),
+    [string[]]$Agents = @('claude','cursor','codex','opencode','pi'),
     [string[]]$Packs = @('dev','finance','ios','data','marketing','research','productivity','craft'),
     [switch]$SkipMcp,
     [switch]$GlobalOnly,
@@ -30,12 +30,26 @@ $packDirMap = @{
     'craft'        = 'craft-project'
 }
 
+# Skills dir under the user's HOME. Pi is the only agent whose global path differs
+# from its project path (~/.pi/agent/skills vs <project>/.pi/skills) — see below.
 function Get-AgentSkillDir($agent) {
     switch ($agent) {
         'claude'   { '.claude\skills' }
         'cursor'   { '.cursor\skills' }
         'codex'    { '.codex\skills' }
         'opencode' { '.opencode\skills' }
+        'pi'       { '.pi\agent\skills' }
+    }
+}
+
+# Skills dir inside a PROJECT PACK. Same as the global path for every agent except Pi,
+# which drops the `agent` segment for project-scoped skills (documented at
+# pi.dev/docs/latest/skills). Using the global path here would put the packs where Pi
+# never looks.
+function Get-AgentPackSkillDir($agent) {
+    switch ($agent) {
+        'pi'     { '.pi\skills' }
+        default  { Get-AgentSkillDir $agent }
     }
 }
 
@@ -133,9 +147,11 @@ Copy-File (Join-Path $repoRoot 'HARNESS.md') (Join-Path $homeDir 'HARNESS.md')
 Copy-File (Join-Path $repoRoot 'PLAYBOOK.md') (Join-Path $homeDir 'PLAYBOOK.md')
 
 # ---- 1. Global skills ----
+# Path comes from Get-AgentSkillDir, not a hardcoded ".$a\skills" — Pi's global skills
+# live at .pi\agent\skills, so the naive pattern would put them where Pi never looks.
 Log "Syncing global skills..."
 foreach ($a in $Agents) {
-    Sync-Dir (Join-Path $repoRoot 'skills\global') (Join-Path $homeDir ".$a\skills")
+    Sync-Dir (Join-Path $repoRoot 'skills\global') (Join-Path $homeDir (Get-AgentSkillDir $a))
 }
 
 # ---- 2. Codex .system ----
@@ -160,7 +176,7 @@ if (-not $GlobalOnly) {
             $rel = $parent.Substring($packRootRepo.Length).TrimStart('\')
             $subPath = if ($rel) { Join-Path $packRootLive $rel } else { $packRootLive }
             foreach ($a in $Agents) {
-                $dst = Join-Path $subPath (Get-AgentSkillDir $a)
+                $dst = Join-Path $subPath (Get-AgentPackSkillDir $a)
                 Sync-Dir $skillsSrc $dst
             }
         }
@@ -188,6 +204,11 @@ if ($Agents -contains 'opencode') {
     Copy-File (Join-Path $repoRoot 'agents\opencode\AGENTS.md') (Join-Path $homeDir '.config\opencode\AGENTS.md')
     Sync-Dir  (Join-Path $repoRoot 'agents\opencode\command') (Join-Path $homeDir '.opencode\command')
     Sync-Dir  (Join-Path $repoRoot 'agents\opencode\command') (Join-Path $homeDir '.config\opencode\command')
+}
+if ($Agents -contains 'pi') {
+    # Instructions only. Pi has no MCP, no hooks (see agents/pi/AGENTS.md), so it is
+    # absent from sections 4b and 5 by design. Never touch ~/.pi/agent/auth.json.
+    Copy-File (Join-Path $repoRoot 'agents\pi\AGENTS.md') (Join-Path $homeDir '.pi\agent\AGENTS.md')
 }
 
 # ---- 4b. Hooks: shared guard + formatter scripts, plus Claude settings merge ----

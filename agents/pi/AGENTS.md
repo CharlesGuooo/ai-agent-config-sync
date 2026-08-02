@@ -1,4 +1,4 @@
-# Codex Global Instructions
+# Pi Global Instructions
 
 ## Core Principles
 
@@ -16,7 +16,65 @@ Guidelines that bias toward caution over speed. For trivial tasks, use judgment.
 
 **6. Preserve context and align with the goal.** Keep the user's actual objective in view; don't win a subtask at the expense of the real goal.
 
-> Aligned with andrej-karpathy-skills' `karpathy-guidelines` (Think Before Coding / Simplicity First / Surgical Changes / Goal-Driven Execution), extended with "Exhaust options" and "Preserve context". Loaded at system-prompt level — zero skill-match cost.
+> Same six principles as the other agents in this harness. Loaded at system-prompt level — zero skill-match cost.
+
+---
+
+## How skills work on Pi
+
+Skills live at `~/.pi/agent/skills/` (global) and `<project>/.pi/skills/` (project packs).
+Both are synced from the `ai-agent-config-sync` repo — **don't hand-edit them**, edit the
+repo and re-run sync.
+
+**Invoke a skill with `/skill:<name>`** — e.g. `/skill:brainstorming`. This differs from
+the other agents in this harness (Claude Code uses a Skill tool; Codex reads the file).
+Skills whose frontmatter sets `disable-model-invocation: true` are hidden from the system
+prompt and **can only** be reached that way: currently `writing-great-skills` and
+`action-first`.
+
+---
+
+## What this harness does NOT give Pi
+
+Pi is deliberately a *minimal* harness — it ships without MCP, without declarative hooks,
+and without sub-agents. That is by design upstream, not a misconfiguration here. Concretely:
+
+- **No MCP servers.** The other agents share 9 always-on MCP servers; Pi has none.
+  Anything that would normally be done through `github`, `context7`, `brave-search`,
+  `playwright`, `filesystem`, etc. must be done with Pi's own tools (shell, file I/O) or
+  not at all. Don't claim to have queried an MCP server.
+- **No `guard.mjs` safety hook.** On Claude Code and Codex, a PreToolUse hook blocks
+  reads of secret files and destructive shell commands (`rm -rf /`, `curl | sh`,
+  force-push). **On Pi that net does not exist.** Be correspondingly careful: confirm
+  before any destructive or irreversible command, and never read credential files
+  (`.env`, `auth.json`, `*.pem`, `id_rsa`, cloud credential stores) unless the user
+  explicitly asked you to work on that exact file.
+- **No `format.mjs`.** Formatting is not applied automatically after edits.
+- **No sub-agents.** Five global skills assume you can fan out to parallel agents. On Pi,
+  run their steps **sequentially in this one context, and say in your output that you did
+  so** — do not silently skip the step or pretend a parallel run happened:
+
+  | Skill | What it asks for | What to do on Pi |
+  | --- | --- | --- |
+  | `requesting-code-review` | two parallel review sub-agents (Standards / Spec) | run both passes yourself, one after the other, and still report them **separately, unmerged** |
+  | `codebase-design` | DESIGN-IT-TWICE: 3+ parallel interface designs | produce the alternative designs sequentially, then compare |
+  | `improve-codebase-architecture` | a read-only Explore sub-agent | explore directly; expect it to take longer |
+  | `dispatching-parallel-agents` | fan-out + merge protocol | not applicable — do the work in order |
+  | `subagent-driven-development` | one sub-agent per plan step | execute the plan steps yourself, in order |
+
+Everything else in the harness — the six principles, all global skills, the local project
+packs, and `HARNESS.md` routing — applies to Pi exactly as it does to the other agents.
+
+---
+
+## Global Skill Architecture
+
+The shared architecture uses two layers:
+
+1. Global skills for process, routing, escalation, and repeatable workflows.
+2. Local project packs for domain-specific guidance.
+
+Pi follows the same split as Claude Code, Codex, Cursor, and OpenCode.
 
 ---
 
@@ -121,49 +179,19 @@ Guidelines that bias toward caution over speed. For trivial tasks, use judgment.
 
 ## Local Skill Packs
 
-When a task becomes domain-specific, switch to the matching project directory and use the local pack there.
+When a task becomes domain-specific, switch to the matching project directory so that
+pack's skills load.
 
-| Domain | Directory | Examples |
-| --- | --- | --- |
-| ML / DL / RL training | `~/dev-project/ml/` | sklearn / PyTorch / transformers / RL (sub-folder under dev-project) |
-| Finance / Investing / Trading | `~/finance-project/<sub>/` | trading / research / macro / modeling / portfolio / advisory (6-way sub-routing) |
-| Data analysis | `~/data-analysis-project/` | EDA, visualization, statistics, forecasting |
-| Development | `~/dev-project/` | frontend, backend, API, Docker, CI/CD, React |
-| Marketing | `~/marketing-project/` | SEO, ad copy, content strategy, campaigns |
-| Research | `~/research-project/` | papers, reviews, grants, peer review |
-| Office | `~/office-project/` | PDF, Word, Excel, PowerPoint |
-| Productivity | `~/productivity-project/` | Obsidian, Jira, Google Workspace, PM workflows |
-| Craft (cross-cutting) | `~/craft-project/<sub>/` | writing (humanizer / anti-slop), design (taste / aesthetics) |
+| Domain | Directory |
+| --- | --- |
+| ML / DL / RL training | `~/dev-project/ml/` |
+| Finance / 投资 / 交易 | `~/finance-project/` (cd into `trading/` `research/` `macro/` `modeling/` `portfolio/` `advisory/`) |
+| Data analysis | `~/data-analysis-project/` |
+| Development | `~/dev-project/` |
+| Marketing | `~/marketing-project/` |
+| Research | `~/research-project/` |
+| Productivity | `~/productivity-project/` |
+| Craft / 表达功力 | `~/craft-project/` (cd into `writing/` `design/`) |
 
-The global layer should route to the right directory and stop there. Local packs own domain guidance.
-
----
-
-## MCP Layout
-
-MCP stays global and shared across tools.
-
-- Core MCP: `github`, `memory`, `web-reader`, `zai-mcp-server`
-- Shared optional MCP: `context7`, `sequential-thinking`, `vercel`, `railway`, `cloudflare-docs`, `cloudflare-workers-builds`, `cloudflare-workers-bindings`, `cloudflare-observability`, `playwright`, `supabase`, `magic`, `expo-mcp`, `brave-search`
-
-That is 17 total MCP entries shared across the four MCP-capable agents (Pi has no MCP).
-
----
-
-## Cross-Tool Consistency
-
-Claude Code, Codex, OpenCode, and Cursor are expected to share:
-
-- the same project-directory routing model
-- the same global-vs-local skill split
-- the same MCP inventory
-
-Typical usage:
-
-```bash
-cd ~/dev-project && claude
-cd ~/dev-project && codex
-cd ~/dev-project && opencode
-```
-
-Cursor should open the same project directory directly.
+The authoritative routing manifest is `~/HARNESS.md`; the human-facing usage guide is
+`~/PLAYBOOK.md`.

@@ -25,6 +25,7 @@
     "dispatching-parallel-agents":   { "category": "process",     "tagline": "Run 2+ independent tasks via parallel subagents with a merge protocol" },
     "using-git-worktrees":           { "category": "process",     "tagline": "Isolated worktrees for parallel agents / high-risk refactors" },
     "handoff":                       { "category": "process",     "tagline": "Compact the session into a handoff doc for the next agent" },
+    "action-first":                  { "category": "process",     "tagline": "Output-style toggle: action first, no preamble/recap (user-invoked)" },
 
     "first-principles-thinking":     { "category": "thinking",    "tagline": "Reason from base truths instead of by analogy; question inherited assumptions" },
 

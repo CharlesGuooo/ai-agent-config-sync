@@ -68,7 +68,7 @@ index anymore.
 > Auto-generated from `skills/project-packs/` by `scripts/gen-harness.mjs`.
 > Do not edit between the PACKS markers by hand — run the generator.
 
-**Global skills (36, auto-exposed at startup — no need to route):** Process 11 · Thinking 1 · Escalation 2 · Routing & Meta 4 · Workflow 3 · Code Review 3 · Design & Architecture 4 · OpenSpec 4 · Document 3 · Learning 1.
+**Global skills (37, auto-exposed at startup — no need to route):** Process 12 · Thinking 1 · Escalation 2 · Routing & Meta 4 · Workflow 3 · Code Review 3 · Design & Architecture 4 · OpenSpec 4 · Document 3 · Learning 1.
 
 ### Local skill packs — index
 

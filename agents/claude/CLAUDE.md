@@ -31,12 +31,12 @@ This keeps the global layer small and stable.
 
 <!-- SKILLS:BEGIN -->
 
-## Global Skills (36)
+## Global Skills (37)
 
 > Auto-generated from `skills/global/` by `scripts/gen-skill-table.mjs`.
 > Do not edit between the SKILLS markers by hand — run the generator instead.
 
-### Process (11) — Process discipline
+### Process (12) — Process discipline
 
 | Skill | When to use |
 | --- | --- |
@@ -51,6 +51,7 @@ This keeps the global layer small and stable.
 | `dispatching-parallel-agents` | Run 2+ independent tasks via parallel subagents with a merge protocol |
 | `using-git-worktrees` | Isolated worktrees for parallel agents / high-risk refactors |
 | `handoff` | Compact the session into a handoff doc for the next agent |
+| `action-first` | Output-style toggle: action first, no preamble/recap (user-invoked) |
 
 ### Thinking (1) — Reasoning frameworks
 

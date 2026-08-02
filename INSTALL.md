@@ -34,7 +34,7 @@ The single entry script `scripts/install.sh` (or `install.ps1`) supports:
 --agents=claude,cursor,codex,opencode    # subset; default = all four
 --packs=dev,finance,ios,data,marketing,research,productivity,craft   # subset; default = all
 --skip-mcp                                # skip MCP server config (skills + system prompts only)
---global-only                             # 36 global skills only, no project packs
+--global-only                             # 37 global skills only, no project packs
 --dry-run                                 # print planned ops without writing
 ```
 
@@ -50,7 +50,7 @@ Examples:
 # Only dev + finance packs
 ./scripts/install.sh --packs=dev,finance
 
-# Just the 36 global skills, nothing else
+# Just the 37 global skills, nothing else
 ./scripts/install.sh --global-only
 ```
 
@@ -76,7 +76,7 @@ Examples:
 
 ```bash
 # Skill counts
-ls ~/.claude/skills/ | wc -l           # → 36 (+ agent-specific extras)
+ls ~/.claude/skills/ | wc -l           # → 37 (+ agent-specific extras)
 ls ~/.codex/skills/.system/ | wc -l    # → 5
 ls ~/ios-project/.claude/skills/ | wc -l   # → 21
 

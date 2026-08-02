@@ -4,7 +4,7 @@
 #   .\scripts\install.ps1 -Agents claude,codex     # subset
 #   .\scripts\install.ps1 -Packs dev,finance       # subset of project packs
 #   .\scripts\install.ps1 -SkipMcp                 # skills + system prompts only
-#   .\scripts\install.ps1 -GlobalOnly              # 36 global skills only
+#   .\scripts\install.ps1 -GlobalOnly              # 37 global skills only
 #   .\scripts\install.ps1 -DryRun                  # plan but don't write
 #   .\scripts\install.ps1 -PersistEnv              # also write env vars to Windows User scope
 #

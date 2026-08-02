@@ -145,7 +145,7 @@ copy_file "$repo_root/HARNESS.md" "$home_dir/HARNESS.md"
 # answer "how do I use these skills?" without reading the repo.
 copy_file "$repo_root/PLAYBOOK.md" "$home_dir/PLAYBOOK.md"
 
-# ---- 1. Global skills (36) → all 4 agents ----
+# ---- 1. Global skills (37) → all 4 agents ----
 log "Syncing global skills..."
 for a in "${AGENTS[@]}"; do
   sync_dir "$repo_root/skills/global" "$home_dir/.${a}/skills"

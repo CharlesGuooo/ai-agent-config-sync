@@ -31,6 +31,7 @@ These are available regardless of directory — don't route the user just to use
 - `using-superpowers`, `brainstorming`, `writing-plans`, `executing-plans`, `test-driven-development`, `systematic-debugging`, `verification-before-completion`
 - `subagent-driven-development`, `dispatching-parallel-agents`, `using-git-worktrees` — multi-agent orchestration
 - `handoff` — 会话交接给下一个 agent
+- `action-first` — 输出风格开关(动作优先、无废话);user-invoked,不参与自动匹配
 
 **Design & architecture:**
 - `codebase-design`(深模块词汇), `domain-modeling`(CONTEXT.md/ADR), `prototype`(一次性原型), `improve-codebase-architecture`(代码库体检)

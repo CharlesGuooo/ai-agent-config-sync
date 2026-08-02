@@ -31,7 +31,7 @@ This keeps the global layer small and stable.
 
 <!-- SKILLS:BEGIN -->
 
-## Global Skills (37)
+## Global Skills (38)
 
 > Auto-generated from `skills/global/` by `scripts/gen-skill-table.mjs`.
 > Do not edit between the SKILLS markers by hand — run the generator instead.
@@ -66,7 +66,7 @@ This keeps the global layer small and stable.
 | `high-agency` | Stay proactive and own complex long tasks |
 | `pua` | High-pressure escalation after repeated failure or passivity |
 
-### Routing & Meta (4) — Routing + skill tooling
+### Routing & Meta (5) — Routing + skill tooling
 
 | Skill | When to use |
 | --- | --- |
@@ -74,6 +74,7 @@ This keeps the global layer small and stable.
 | `skill-creator` | Create, edit, or evaluate a skill |
 | `skill-scanner` | Security-scan a community skill before installing it |
 | `writing-great-skills` | Rubric for writing/auditing skills: triggering, structure, steering, trimming (user-invoked) |
+| `book-to-skill` | Mine a technical book into a reusable SKILL.md (pointer: pip install) |
 
 ### Workflow (3) — External collaboration
 

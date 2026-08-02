@@ -36,6 +36,7 @@
     "skill-creator":                 { "category": "routing",     "tagline": "Create, edit, or evaluate a skill" },
     "skill-scanner":                 { "category": "routing",     "tagline": "Security-scan a community skill before installing it" },
     "writing-great-skills":          { "category": "routing",     "tagline": "Rubric for writing/auditing skills: triggering, structure, steering, trimming (user-invoked)" },
+    "book-to-skill":                 { "category": "routing",     "tagline": "Mine a technical book into a reusable SKILL.md (pointer: pip install)" },
 
     "playwright-interactive":        { "category": "workflow",    "tagline": "Persistent browser session for iterative UI debugging" },
     "gh-fix-ci":                     { "category": "workflow",    "tagline": "Investigate and fix failing GitHub Actions / PR checks with gh" },

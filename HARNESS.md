@@ -68,7 +68,7 @@ index anymore.
 > Auto-generated from `skills/project-packs/` by `scripts/gen-harness.mjs`.
 > Do not edit between the PACKS markers by hand — run the generator.
 
-**Global skills (37, auto-exposed at startup — no need to route):** Process 12 · Thinking 1 · Escalation 2 · Routing & Meta 4 · Workflow 3 · Code Review 3 · Design & Architecture 4 · OpenSpec 4 · Document 3 · Learning 1.
+**Global skills (38, auto-exposed at startup — no need to route):** Process 12 · Thinking 1 · Escalation 2 · Routing & Meta 5 · Workflow 3 · Code Review 3 · Design & Architecture 4 · OpenSpec 4 · Document 3 · Learning 1.
 
 ### Local skill packs — index
 
@@ -428,8 +428,7 @@ index anymore.
 - `wechat-ai-publisher` — 自动采集 AI 热门内容，撰写公众号文章，生成配图并发布到微信公众号草稿箱。当用户说"发布AI热点"、"写公众号文章"、"采集AI内容"、"publish AI news"时触发。
 - `xhs-visual-director` — Use this skill when planning, redesigning, or reviewing Xiaohongshu carousel visuals, covers, 3:4 image posts, page-by-page visual direct...
 
-#### productivity-project (23)
-- `book-to-skill` — Convert a technical book (PDF / EPUB / DOCX / HTML / MD / RTF / MOBI) into a structured Claude SKILL.md — extracting the book's framework...
+#### productivity-project (22)
 - `capture-tasks-from-meeting-notes` — Analyze meeting notes to find action items and create Jira tasks for assigned work.
 - `doc-coauthoring` — Guide users through a structured workflow for co-authoring documentation.
 - `generate-status-report` — Generate project status reports from Jira issues and publish to Confluence.

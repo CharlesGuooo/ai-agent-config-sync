@@ -118,8 +118,12 @@ OpenSpec 那 4 个走 `/opsx:` 命令,不靠描述触发。
 → 你挑一个 → `brainstorming` 盘问细节 → `codebase-design` 定接口 → `domain-modeling` 同步术语
 
 **改这个 harness 本身**
-`writing-great-skills`(标尺:触发 / 结构 / 引导 / 修剪)→ `skill-creator`(写)
-→ `skill-scanner`(装任何外部 skill 前先扫)→ 跑 `node scripts/gen-skill-table.mjs` + `gen-harness.mjs`
+`writing-great-skills`(标尺:触发 / 结构 / 引导 / 修剪)→ `skill-creator`(从零写)
+或 `book-to-skill`(把一本书挖成 skill)→ `skill-scanner`(装任何外部 skill 前先扫)
+→ 跑 `node scripts/gen-skill-table.mjs` + `gen-harness.mjs`
+
+> ⚠️ **别把外部 skill 直接 clone 进 `~/.claude/skills/`** —— 那个目录是被 `/MIR` 镜像的,
+> 不在本仓库 `skills/global/` 里的东西**下次 sync 会被静默删除**。要装就装进仓库再同步。
 
 **非代码工作(研究 / 写作 / 金融 / 营销)**
 `skill-router` 送你进对应 pack。全局层里仍然好用的:`brainstorming`(盘问任何决策,

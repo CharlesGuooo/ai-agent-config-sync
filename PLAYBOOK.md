@@ -13,12 +13,12 @@
 绝大多数 skill 是**模型按描述自动触发**的 —— 你一提"这报错了",`systematic-debugging`
 自己就上来了,不用你喊。
 
-**你真正需要记住的,是那些"不主动开口它就不会来"的。大概 10 个。** 先把这 10 个刻进脑子,
+**你真正需要记住的,是那些"不主动开口它就不会来"的。大概 11 个。** 先把这 11 个刻进脑子,
 其余的忘掉也没关系。
 
 ---
 
-## 🗣️ 需要你主动喊的 10 个
+## 🗣️ 需要你主动喊的 11 个
 
 | 你心里想的 | 你说什么 | 触发 |
 | --- | --- | --- |
@@ -30,6 +30,7 @@
 | 合并前帮我审一遍 | "review 一下我的改动" | `requesting-code-review` |
 | 这活该在哪个目录干 | "我该 cd 去哪" | `skill-router` |
 | 想装个外面的 skill | "先扫一下安全" | `skill-scanner` |
+| GitHub 上最近有什么好东西 | **"挖点宝藏项目"** / "find me good repos" | `github-gold` |
 | 这个 skill 写得好不好 / 帮我审一个 skill | 🔒 **`/writing-great-skills`** | `writing-great-skills`(标尺 + 术语表) |
 | 现在只想要"敲哪条命令",别解释 | 🔒 **`/action-first`** | `action-first`(开关,说"normal mode"关掉) |
 
@@ -58,7 +59,7 @@ due to disable-model-invocation
 
 **为什么要这样设计** —— 拿 **context load 换 cognitive load**:
 
-| | model-invoked(36 个) | 🔒 user-invoked(2 个) |
+| | model-invoked(其余全部) | 🔒 user-invoked(2 个) |
 | --- | --- | --- |
 | 常驻上下文成本 | 每轮都花(描述在窗口里) | **0** |
 | 谁负责记得它存在 | 模型 | **你**(所以才有这张表) |
@@ -164,6 +165,17 @@ OpenSpec 那 4 个走 `/opsx:` 命令,不靠描述触发。
 **非代码工作(研究 / 写作 / 金融 / 营销)**
 `skill-router` 送你进对应 pack。全局层里仍然好用的:`brainstorming`(盘问任何决策,
 不限代码)· `handoff` · `officecli` / `pdf` / `markitdown` · `teach`。
+
+**挖 GitHub 上的好东西** —— `github-gold`,用法有三点反直觉,知道了才用得对:
+
+- **它可以空手而归。** "这周 agent-memory 方向没有值得看的" 是有效结果,不是失败。
+  会凑数的搜索才是没用的 —— 它扫 40–80 个候选,只给你 3–7 个。
+- **看它砍掉的("also-rans")比看它推荐的更有用。** 那几行写了每个被砍的理由,
+  你觉得砍错了就说,它的口味才校得准。第一次跑基本都要校一轮。
+- **它记得给你看过什么**(seen 列表存在系统临时目录),所以第二次跑不会重复推荐。
+  想让它重新考虑某个项目,直说。
+
+给方向能显著提高命中率:"最近两周的 AI agent 工具" 比 "有什么好项目" 好得多。
 
 ---
 

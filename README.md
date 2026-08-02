@@ -38,7 +38,7 @@ Cursor · OpenCode · Pi)。这份 README 是**给人看的概览**:是什么、
 | | Claude Code | Codex | Cursor | OpenCode | **Pi** |
 | --- | :-: | :-: | :-: | :-: | :-: |
 | 6 条核心原则 | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 38 个全局 skill | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 39 个全局 skill | ✅ | ✅ | ✅ | ✅ | ✅ |
 | 本地 pack skill | ✅ | ✅ | ✅ | ✅ | ✅ |
 | MCP(9 always-on) | ✅ | ✅ | ✅ | ✅ | ❌ 官方不支持 |
 | guard/format hooks | ✅ | ✅ | ❌ | ❌ | ❌ 无声明式 hooks |
@@ -77,7 +77,7 @@ DESIGN-IT-TWICE、`improve-codebase-architecture`、`dispatching-parallel-agents
 - **CLAUDE.md / AGENTS.md** — 分层上下文,每会话自动加载(6 原则 + 路由)。
 - **Hooks** — `guard.mjs`(PreToolUse:拦密钥文件 / 危险命令)+ `format.mjs`(PostToolUse:
   项目 opt-in 才格式化),跑在 **Claude + Codex**。(Cursor/OpenCode 走各自机制,待补。)
-- **Skills** — 渐进式披露:38 个全局 skill 描述匹配自动触发;~365 个 local pack skill 进目录才加载。
+- **Skills** — 渐进式披露:39 个全局 skill 描述匹配自动触发;~365 个 local pack skill 进目录才加载。
 - **LSP** — Claude:pyright / typescript / gopls / rust-analyzer;OpenCode:原生(`lsp:true`,40+ 语言);
   Cursor:编辑器内建;Codex:无。
 - **MCP** — 9 always-on + 10 opt-in(见下),API key 全走 Windows env var。
@@ -89,7 +89,7 @@ DESIGN-IT-TWICE、`improve-codebase-architecture`、`dispatching-parallel-agents
 
 ---
 
-## 🌐 Global Skills(38 个,5 agent 共享,启动自动可用)
+## 🌐 Global Skills(39 个,5 agent 共享,启动自动可用)
 
 位置 `~/.{claude,cursor,codex,opencode}/skills/`。按分类(权威清单见 `HARNESS.md` / `catalog.json`):
 
@@ -99,7 +99,7 @@ DESIGN-IT-TWICE、`improve-codebase-architecture`、`dispatching-parallel-agents
 | Thinking | 1 | `first-principles-thinking` —— 从第一性原理推理 |
 | Escalation | 2 | `high-agency` / `pua` |
 | Routing & Meta | 5 | `skill-router` / `skill-creator` / `skill-scanner` / `writing-great-skills` / `book-to-skill`(书→技能) |
-| Workflow | 3 | `playwright-interactive` / `gh-fix-ci` / `gh-address-comments` |
+| Workflow | 4 | `playwright-interactive` / `gh-fix-ci` / `gh-address-comments` / **`github-gold`**(挖 GitHub 宝藏) |
 | Code Review | 3 | requesting(**双轴并行**)/ receiving / finishing-a-development-branch |
 | **Design & Architecture** | 4 | `codebase-design`(深模块)/ `domain-modeling`(CONTEXT.md+ADR)/ `prototype` / `improve-codebase-architecture` |
 | OpenSpec | 4 | explore / propose / apply-change / archive-change |
@@ -192,7 +192,7 @@ copy "C:\Users\PC\MCP-Templates\<x>.mcp.json" ".mcp.json"   # 项目级 opt-in M
 | 维度 | 数量 |
 | --- | --- |
 | 主 agent | **5**(Claude / Cursor / Codex / OpenCode / Pi)+ 1(LM Studio,仅 MCP) |
-| 全局 skills | **38**(10 分类) |
+| 全局 skills | **39**(10 分类) |
 | 项目本地 skills | **~365**(8 packs;权威清单见 `HARNESS.md`) |
 | MCP | 9 always-on + 10 opt-in（+3 iOS/macOS 模板） |
 | Skill parity | ✅ 5/5 · MCP 4/5 · hooks 2/5(见能力矩阵) |

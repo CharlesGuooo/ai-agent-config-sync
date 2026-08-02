@@ -33,7 +33,7 @@ OpenCode should follow the same split as Codex, Claude Code, and Cursor.
 
 <!-- SKILLS:BEGIN -->
 
-## Global Skills (38)
+## Global Skills (39)
 
 > Auto-generated from `skills/global/` by `scripts/gen-skill-table.mjs`.
 > Do not edit between the SKILLS markers by hand — run the generator instead.
@@ -78,13 +78,14 @@ OpenCode should follow the same split as Codex, Claude Code, and Cursor.
 | `writing-great-skills` | Rubric for writing/auditing skills: triggering, structure, steering, trimming (user-invoked) |
 | `book-to-skill` | Mine a technical book into a reusable SKILL.md (pointer: pip install) |
 
-### Workflow (3) — External collaboration
+### Workflow (4) — External collaboration
 
 | Skill | When to use |
 | --- | --- |
 | `playwright-interactive` | Persistent browser session for iterative UI debugging |
 | `gh-fix-ci` | Investigate and fix failing GitHub Actions / PR checks with gh |
 | `gh-address-comments` | Work through GitHub PR review comments with gh |
+| `github-gold` | Hunt GitHub for genuinely good projects; curated feeds + momentum, allowed to find nothing |
 
 ### Code Review (3) — Review discipline
 

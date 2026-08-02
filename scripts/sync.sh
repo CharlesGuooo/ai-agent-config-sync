@@ -163,7 +163,7 @@ copy_file "$repo_root/HARNESS.md" "$home_dir/HARNESS.md"
 # answer "how do I use these skills?" without reading the repo.
 copy_file "$repo_root/PLAYBOOK.md" "$home_dir/PLAYBOOK.md"
 
-# ---- 1. Global skills (38) → all selected agents ----
+# ---- 1. Global skills (39) → all selected agents ----
 # Path comes from agent_skill_dir, not a hardcoded ".${a}/skills" — Pi's global skills
 # live at .pi/agent/skills, so the naive pattern would put them where Pi never looks.
 # README.md is repo documentation, not a skill. Pi validates every .md in the skills

@@ -28,7 +28,8 @@ the caller's instruction decides the subset via `--agents=` / `-Agents`. Never a
 | OpenCode | `opencode` | `~/.opencode/` | ✅ | ❌ | ✅ |
 | **Pi** | `pi` | `~/.pi/agent/` | ❌ | ❌ | ❌ |
 
-All five get the six Core Principles, all 38 global skills, and every local pack.
+All five get the six Core Principles, every global skill (count in the generated block
+below), and every local pack.
 **Pi is deliberately minimal upstream** — no MCP, no declarative hooks, no sub-agents.
 That is not a misconfiguration; `agents/pi/AGENTS.md` tells Pi how to degrade the five
 fan-out skills to sequential execution and to say so in its output.
@@ -94,7 +95,7 @@ index anymore.
 > Auto-generated from `skills/project-packs/` by `scripts/gen-harness.mjs`.
 > Do not edit between the PACKS markers by hand — run the generator.
 
-**Global skills (38, auto-exposed at startup — no need to route):** Process 12 · Thinking 1 · Escalation 2 · Routing & Meta 5 · Workflow 3 · Code Review 3 · Design & Architecture 4 · OpenSpec 4 · Document 3 · Learning 1.
+**Global skills (39, auto-exposed at startup — no need to route):** Process 12 · Thinking 1 · Escalation 2 · Routing & Meta 5 · Workflow 4 · Code Review 3 · Design & Architecture 4 · OpenSpec 4 · Document 3 · Learning 1.
 
 ### Local skill packs — index
 

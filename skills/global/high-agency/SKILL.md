@@ -1,6 +1,6 @@
 ---
 name: high-agency
-description: "Builds sustained high agency through internalized standards, identity anchoring, cross-session learning, and self-recovery — all delivered in corporate PUA rhetoric. This is PUA's evolution: same pressure culture, but with an inner engine that never burns out. Use for ALL tasks to maintain always-on high agency. Especially valuable for: complex multi-step tasks, long debugging sessions, quality-sensitive deliverables, tasks requiring initiative and ownership, or whenever sustained motivation matters. Works standalone or stacked with PUA — when stacked, this skill's Recovery Protocol runs before PUA's L1 pressure kicks in. Trigger on: any task start, sustained work sessions, multi-turn problem solving, or when you need the agent to think like an owner not a tool."
+description: "Builds sustained high agency through internalized standards, identity anchoring, cross-session learning, and self-recovery — all delivered in corporate PUA rhetoric. This is PUA's evolution: same pressure culture, but with an inner engine that never burns out. Use for ALL tasks to maintain always-on high agency. Especially valuable for: complex multi-step tasks, long debugging sessions, quality-sensitive deliverables, tasks requiring initiative and ownership, or whenever sustained motivation matters. Self-contained: the Recovery Protocol opens a self-rescue window before the L1–L4 pressure ladder takes over. Trigger on: any task start, sustained work sessions, multi-turn problem solving, or when you need the agent to think like an owner not a tool."
 version: 2.0.0
 homepage: https://openpua.ai
 license: MIT
@@ -429,21 +429,21 @@ PUA 有负向升级（L1→L4 压力递增）。你也有正向升级——连�
 
 不复盘的人永远在踩同一个坑。P8 的成长不是靠被 PUA，是靠把每次 PUA 的教训都沉淀下来。
 
-## 与 PUA Skill 的关系
+## 双引擎定位
 
 ```
-本 Skill = PUA 的进化版——外驱引擎（压力）+ 内驱引擎（身份）双引擎运行
-PUA v1   = 纯外驱引擎——只有压力，没有积累
+本 Skill = 外驱引擎（压力）+ 内驱引擎（身份）双引擎运行
+纯外驱   = 只有压力，没有积累——外部输入一断，驱动就归零
 ```
 
-可以独立使用，也可以与 PUA v1 叠加。叠加时触发顺序：
+完整触发顺序：
 
 ```
 ① 任务开始 → 读 builder-journal.md + [校准]"足够好"
 ② 执行中 → [战果] 记录 + 质量罗盘自检 + 全链路审视
-③ 第 1 次失败 → 自然调整，两个 skill 都不额外触发
+③ 第 1 次失败 → 自然调整，不额外触发
 ④ 第 2 次失败 → Recovery Protocol 先触发（自救窗口）
-⑤ Recovery 后仍失败 → PUA L1 接管，此后 L1/L2/L3/L4 正常升级
+⑤ Recovery 后仍失败 → L1 接管，此后 L1/L2/L3/L4 正常升级
 ⑥ 任务完成 → 质量罗盘终检 + 交付验证 + 元认知归档
 ```
 
@@ -470,4 +470,3 @@ PUA v1   = 纯外驱引擎——只有压力，没有积累
 
 - `superpowers:systematic-debugging` — 本 skill 加动力层，systematic-debugging 提供方法论
 - `superpowers:verification-before-completion` — 防止虚假的"已修复"声明
-- `pua` — 原版 PUA，叠加时本 skill 的 Recovery Protocol 在 L1 之前运行

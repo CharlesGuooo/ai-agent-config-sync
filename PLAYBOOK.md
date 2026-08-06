@@ -18,7 +18,7 @@
 
 ---
 
-## 🗣️ 需要你主动喊的 11 个
+## 🗣️ 需要你主动喊的 12 个
 
 | 你心里想的 | 你说什么 | 触发 |
 | --- | --- | --- |
@@ -33,9 +33,10 @@
 | GitHub 上最近有什么好东西 | **"挖点宝藏项目"** / "find me good repos" | `github-gold` |
 | 这个 skill 写得好不好 / 帮我审一个 skill | 🔒 **`/writing-great-skills`** | `writing-great-skills`(标尺 + 术语表) |
 | 现在只想要"敲哪条命令",别解释 | 🔒 **`/action-first`** | `action-first`(开关,说"normal mode"关掉) |
+| 这段写得一股 AI 味 | **"去下 AI 味"** / "这段是不是很 AI" | `no-ai-slop`(**你得把稿子递给它**) |
 
 其余的按需:`teach`(让它教你一个概念,多轮带记忆)· `first-principles-thinking`(逼它
-从第一性原理重推,别照搬惯例)· `pua` / `high-agency`(它偷懒或活很长时加压)。
+从第一性原理重推,别照搬惯例)· `high-agency`(它偷懒或活很长时加压)。
 
 ### 🔒 标记的两个:模型**看不见**它们
 

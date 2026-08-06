@@ -85,7 +85,7 @@ Pi follows the same split as Claude Code, Codex, Cursor, and OpenCode.
 > Auto-generated from `skills/global/` by `scripts/gen-skill-table.mjs`.
 > Do not edit between the SKILLS markers by hand — run the generator instead.
 
-### Process (12) — Process discipline
+### Process (13) — Process discipline
 
 | Skill | When to use |
 | --- | --- |
@@ -101,6 +101,7 @@ Pi follows the same split as Claude Code, Codex, Cursor, and OpenCode.
 | `using-git-worktrees` | Isolated worktrees for parallel agents / high-risk refactors |
 | `handoff` | Compact the session into a handoff doc for the next agent |
 | `action-first` | Output-style toggle: action first, no preamble/recap (user-invoked) |
+| `no-ai-slop` | Edit a draft you hand it into human-sounding prose, or flag AI-slop patterns without rewriting |
 
 ### Thinking (1) — Reasoning frameworks
 
@@ -108,12 +109,11 @@ Pi follows the same split as Claude Code, Codex, Cursor, and OpenCode.
 | --- | --- |
 | `first-principles-thinking` | Reason from base truths instead of by analogy; question inherited assumptions |
 
-### Escalation (2) — Drive / pressure
+### Escalation (1) — Drive / pressure
 
 | Skill | When to use |
 | --- | --- |
 | `high-agency` | Stay proactive and own complex long tasks |
-| `pua` | High-pressure escalation after repeated failure or passivity |
 
 ### Routing & Meta (5) — Routing + skill tooling
 

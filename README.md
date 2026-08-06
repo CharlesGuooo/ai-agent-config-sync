@@ -95,9 +95,9 @@ DESIGN-IT-TWICE、`improve-codebase-architecture`、`dispatching-parallel-agents
 
 | 分类 | 数 | 是什么 |
 | --- | --- | --- |
-| Process | 12 | 流程纪律:using-superpowers / **brainstorming**(盘问引擎)/ writing-plans / TDD / systematic-debugging / verification / **handoff** / **action-first** … |
+| Process | 13 | 流程纪律:using-superpowers / **brainstorming**(盘问引擎)/ writing-plans / TDD / systematic-debugging / verification / **handoff** / **action-first** / **`no-ai-slop`**(去 AI 味)… |
 | Thinking | 1 | `first-principles-thinking` —— 从第一性原理推理 |
-| Escalation | 2 | `high-agency` / `pua` |
+| Escalation | 1 | `high-agency` —— 常驻内驱 + 失败时自救 |
 | Routing & Meta | 5 | `skill-router` / `skill-creator` / `skill-scanner` / `writing-great-skills` / `book-to-skill`(书→技能) |
 | Workflow | 4 | `playwright-interactive` / `gh-fix-ci` / `gh-address-comments` / **`github-gold`**(挖 GitHub 宝藏) |
 | Code Review | 3 | requesting(**双轴并行**)/ receiving / finishing-a-development-branch |

@@ -208,21 +208,24 @@
         ]
       }
     },
-    "pua": {
-      "type": "escalation",
+    "no-ai-slop": {
+      "type": "process",
       "enforcement": "suggest",
-      "priority": "medium",
-      "description": "Escalation skill for repeated failure, passivity, or shallow retries.",
+      "priority": "low",
+      "description": "Edit a draft the user supplies into human-sounding prose, or flag AI-slop patterns without rewriting. Requires a draft — does not police the agent's own output.",
       "promptTriggers": {
         "keywords": [
-          "try harder",
-          "stop giving up",
-          "you failed again",
-          "try another way"
+          "去 AI 味",
+          "很 AI",
+          "像人写的",
+          "ai slop",
+          "sounds like AI"
         ],
         "intentPatterns": [
-          "(try harder|do not give up|another approach|keep going)",
-          "(why is this still not working|you failed again)"
+          "(去|去掉|去下).*?(ai ?味|机器味)",
+          "(这段|这篇|这稿).*?(是不是|读起来).*?(很 ?ai|像 ?ai)",
+          "(make|edit|rewrite).*?(this draft|this writing).*?(less ai|more human)",
+          "(audit|scan|check).*?(for )?(ai ?slop|slop patterns)"
         ]
       }
     }

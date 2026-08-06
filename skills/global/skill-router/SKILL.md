@@ -40,7 +40,7 @@ These are available regardless of directory — don't route the user just to use
 - `requesting-code-review`, `receiving-code-review`, `finishing-a-development-branch`
 
 **Escalation:**
-- `high-agency` (常驻内驱), `pua` (失败时高压)
+- `high-agency` (常驻内驱 + 第 2 次失败时的 Recovery Protocol)
 
 **Meta / safety:**
 - `skill-creator`, `skill-scanner` (装新 community skill 前先扫安全)

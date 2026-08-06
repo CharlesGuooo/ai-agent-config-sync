@@ -34,7 +34,7 @@ The global layer should stay small and stable.
 - `executing-plans`
 - `verification-before-completion`
 - `high-agency`
-- `pua`
+- `no-ai-slop`
 
 ### Global workflow skills
 

@@ -75,8 +75,9 @@ User message → Is this a substantive task?
 | Got review feedback to act on | `receiving-code-review` |
 | Closing a feature branch | `finishing-a-development-branch` |
 | Installing a new community skill | `skill-scanner` first (检查 prompt injection / 凭证泄露) |
-| Task failing repeatedly | `pua` |
+| Task failing repeatedly | `systematic-debugging` → 仍失败则 `high-agency`(Recovery Protocol 在第 2 次失败触发) |
 | Sustained long task / motivation drift | `high-agency` |
+| A draft reads like AI wrote it | `no-ai-slop` (你把稿子递过去它才动) |
 
 ## Skill Priority
 

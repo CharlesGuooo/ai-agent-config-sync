@@ -344,7 +344,7 @@ index anymore.
   - `value-dividend-screener` — Screen US stocks for high-quality dividend opportunities combining value characteristics (P/E ratio under 20, P/B ratio under 2), attract...
   - `vcp-screener` — Screen S&P 500 stocks for Mark Minervini's Volatility Contraction Pattern (VCP).
 
-#### research-project (47)
+#### research-project (48)
 - `auto-review-loop` — Iteratively improve YOUR OWN research artifact (paper draft, experiment writeup, or codebase) by having a DIFFERENT model review it adver...
 - `citation-management` — Comprehensive citation management for academic research.
 - `hypothesis-generation` — Structured hypothesis formulation from observations.
@@ -386,6 +386,7 @@ index anymore.
 - `scholar-evaluation` — Systematically evaluate scholarly work using the ScholarEval framework, providing structured assessment across research quality dimension...
 - `scientific-brainstorming` — Creative research ideation and exploration.
 - `scientific-critical-thinking` — Evaluate scientific claims and evidence quality.
+- `scientific-figure-making` — Build matplotlib figures in the figures4papers house style — a concrete published-paper look with a fixed semantic palette (#0F4D92 blue ...
 - `scientific-schematics` — Create publication-quality scientific diagrams using Nano Banana 2 AI with smart iterative refinement.
 - `scientific-slides` — Build slide decks and presentations for research talks.
 - `scientific-visualization` — Meta-skill for publication-ready figures.

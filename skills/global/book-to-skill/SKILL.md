@@ -72,9 +72,9 @@ HTML · RTF · MOBI/AZW/AZW3.
 The output is a **draft**, not a finished skill. Before it goes anywhere:
 
 1. **Read it.** Generated skills from niche books usually need real cleanup.
-2. **Audit it against the rubric** — use `writing-great-skills`: one trigger per
-   branch, no duplication, progressive disclosure, and a description that says when
-   NOT to use it versus its neighbours.
+2. **Audit it against the rubric** — hand the draft to `skill-creator` ("审一下这个
+   skill"). It grades against `references/rubric.md` and reports a verdict per
+   failure mode. Mined skills fail hardest on triggering and on sprawl.
 3. **Decide where it belongs.** Domain-specific (almost always, for a book) → the
    matching local pack, not `skills/global/`. Use `skill-router` if unsure.
 4. **Register it** if it lands in `skills/global/`: add a `catalog.json` entry, then

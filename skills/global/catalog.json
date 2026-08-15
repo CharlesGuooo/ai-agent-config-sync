@@ -33,9 +33,8 @@
     "high-agency":                   { "category": "escalation",  "tagline": "Stay proactive and own complex long tasks" },
 
     "skill-router":                  { "category": "routing",     "tagline": "Route the task to the correct local project pack" },
-    "skill-creator":                 { "category": "routing",     "tagline": "Create, edit, or evaluate a skill" },
+    "skill-creator":                 { "category": "routing",     "tagline": "Write a new skill, or audit an existing one against the rubric" },
     "skill-scanner":                 { "category": "routing",     "tagline": "Security-scan a community skill before installing it" },
-    "writing-great-skills":          { "category": "routing",     "tagline": "Rubric for writing/auditing skills: triggering, structure, steering, trimming (user-invoked)" },
     "book-to-skill":                 { "category": "routing",     "tagline": "Mine a technical book into a reusable SKILL.md (pointer: pip install)" },
 
     "playwright-interactive":        { "category": "workflow",    "tagline": "Persistent browser session for iterative UI debugging" },

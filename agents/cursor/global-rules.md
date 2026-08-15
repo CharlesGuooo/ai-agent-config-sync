@@ -33,7 +33,7 @@ Open the correct project directory first. Let the local pack drive domain work.
 
 <!-- SKILLS:BEGIN -->
 
-## Global Skills (39)
+## Global Skills (38)
 
 > Auto-generated from `skills/global/` by `scripts/gen-skill-table.mjs`.
 > Do not edit between the SKILLS markers by hand — run the generator instead.
@@ -68,14 +68,13 @@ Open the correct project directory first. Let the local pack drive domain work.
 | --- | --- |
 | `high-agency` | Stay proactive and own complex long tasks |
 
-### Routing & Meta (5) — Routing + skill tooling
+### Routing & Meta (4) — Routing + skill tooling
 
 | Skill | When to use |
 | --- | --- |
 | `skill-router` | Route the task to the correct local project pack |
-| `skill-creator` | Create, edit, or evaluate a skill |
+| `skill-creator` | Write a new skill, or audit an existing one against the rubric |
 | `skill-scanner` | Security-scan a community skill before installing it |
-| `writing-great-skills` | Rubric for writing/auditing skills: triggering, structure, steering, trimming (user-invoked) |
 | `book-to-skill` | Mine a technical book into a reusable SKILL.md (pointer: pip install) |
 
 ### Workflow (4) — External collaboration

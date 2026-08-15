@@ -18,7 +18,7 @@
 
 ---
 
-## 🗣️ 需要你主动喊的 12 个
+## 🗣️ 需要你主动喊的 11 个
 
 | 你心里想的 | 你说什么 | 触发 |
 | --- | --- | --- |
@@ -31,42 +31,44 @@
 | 这活该在哪个目录干 | "我该 cd 去哪" | `skill-router` |
 | 想装个外面的 skill | "先扫一下安全" | `skill-scanner` |
 | GitHub 上最近有什么好东西 | **"挖点宝藏项目"** / "find me good repos" | `github-gold` |
-| 这个 skill 写得好不好 / 帮我审一个 skill | 🔒 **`/writing-great-skills`** | `writing-great-skills`(标尺 + 术语表) |
 | 现在只想要"敲哪条命令",别解释 | 🔒 **`/action-first`** | `action-first`(开关,说"normal mode"关掉) |
 | 这段写得一股 AI 味 | **"去下 AI 味"** / "这段是不是很 AI" | `no-ai-slop`(**你得把稿子递给它**) |
 
 其余的按需:`teach`(让它教你一个概念,多轮带记忆)· `first-principles-thinking`(逼它
 从第一性原理重推,别照搬惯例)· `high-agency`(它偷懒或活很长时加压)。
 
-### 🔒 标记的两个:模型**看不见**它们
+### 🔒 标记的那一个:模型**看不见**它
 
 上表大多数技能,模型其实**能**自己触发,只是它们属于"你不提就不会主动做"的深思熟虑动作。
-但带 🔒 的两个不一样 —— 它们的 frontmatter 里有:
+但带 🔒 的不一样 —— 它的 frontmatter 里有:
 
 ```yaml
 disable-model-invocation: true
 ```
 
-**这意味着模型的技能列表里根本没有它们**,连"想起来"的机会都没有。实测:直接让 agent 调用
-`writing-great-skills` 会被硬拒:
+**这意味着模型的技能列表里根本没有它**,连"想起来"的机会都没有。直接让 agent 调用会被硬拒:
 
 ```
-Skill writing-great-skills cannot be used with Skill tool
+Skill <name> cannot be used with Skill tool
 due to disable-model-invocation
 ```
 
-**所以只有两种用法:** ① 你敲 `/writing-great-skills`;② 你开口要,agent 直接把那个文件
-读进来照做(走 Read,不走 Skill)。
+**所以只有两种用法:** ① 你敲 `/action-first`;② 你开口要,agent 直接把那个文件读进来照做
+(走 Read,不走 Skill)。
 
 **为什么要这样设计** —— 拿 **context load 换 cognitive load**:
 
-| | model-invoked(其余全部) | 🔒 user-invoked(2 个) |
+| | model-invoked(其余全部) | 🔒 user-invoked(1 个) |
 | --- | --- | --- |
 | 常驻上下文成本 | 每轮都花(描述在窗口里) | **0** |
 | 谁负责记得它存在 | 模型 | **你**(所以才有这张表) |
 
-一份 90 行的标尺 + 200 行术语表,你一年用十几次 —— 让它每轮都占位置不划算。
-**这张表就是这两个技能的"人肉索引"**,漏了它们,它们就等于不存在。
+`action-first` 是个输出风格开关,只在你想要它的那一刻才有意义 —— 让它每轮占位置不划算。
+
+> **一个踩过的坑**:写 skill 的标尺以前也是 🔒(`writing-great-skills`)。结果是你说
+> "帮我写个 skill" 时,触发的是 `skill-creator`,**标尺永远不在场** —— 它就在那儿,却在最需要它的
+> 那一刻缺席。现在两者合并成 model-invoked 的 `skill-creator`,标尺随它一起来。
+> **教训:把一个东西设成 🔒 之前,先问它会不会在别的技能触发的场景里被需要。**
 
 ## 🤖 会自动来的(别操心)
 
@@ -156,8 +158,9 @@ OpenSpec 那 4 个走 `/opsx:` 命令,不靠描述触发。
 → 你挑一个 → `brainstorming` 盘问细节 → `codebase-design` 定接口 → `domain-modeling` 同步术语
 
 **改这个 harness 本身**
-`writing-great-skills`(标尺:触发 / 结构 / 引导 / 修剪)→ `skill-creator`(从零写)
-或 `book-to-skill`(把一本书挖成 skill)→ `skill-scanner`(装任何外部 skill 前先扫)
+`skill-creator` —— 写新 skill 和审已有 skill 都是它,自带标尺(`references/rubric.md`)、
+术语表、注册契约和 eval 工具。说"帮我写个 skill"或"审一下这个 SKILL.md"就来,不用喊。
+外面挖来的:`book-to-skill`(把一本书挖成 skill)→ `skill-scanner`(装任何外部 skill 前先扫)
 → 跑 `node scripts/gen-skill-table.mjs` + `gen-harness.mjs`
 
 > ⚠️ **别把外部 skill 直接 clone 进 `~/.claude/skills/`** —— 那个目录是被 `/MIR` 镜像的,

@@ -89,7 +89,7 @@ DESIGN-IT-TWICE、`improve-codebase-architecture`、`dispatching-parallel-agents
 
 ---
 
-## 🌐 Global Skills(39 个,5 agent 共享,启动自动可用)
+## 🌐 Global Skills(38 个,5 agent 共享,启动自动可用)
 
 位置 `~/.{claude,cursor,codex,opencode}/skills/`。按分类(权威清单见 `HARNESS.md` / `catalog.json`):
 
@@ -98,7 +98,7 @@ DESIGN-IT-TWICE、`improve-codebase-architecture`、`dispatching-parallel-agents
 | Process | 13 | 流程纪律:using-superpowers / **brainstorming**(盘问引擎)/ writing-plans / TDD / systematic-debugging / verification / **handoff** / **action-first** / **`no-ai-slop`**(去 AI 味)… |
 | Thinking | 1 | `first-principles-thinking` —— 从第一性原理推理 |
 | Escalation | 1 | `high-agency` —— 常驻内驱 + 失败时自救 |
-| Routing & Meta | 5 | `skill-router` / `skill-creator` / `skill-scanner` / `writing-great-skills` / `book-to-skill`(书→技能) |
+| Routing & Meta | 4 | `skill-router` / **`skill-creator`**(写 skill + 审 skill,含标尺与 eval 工具)/ `skill-scanner` / `book-to-skill`(书→技能) |
 | Workflow | 4 | `playwright-interactive` / `gh-fix-ci` / `gh-address-comments` / **`github-gold`**(挖 GitHub 宝藏) |
 | Code Review | 3 | requesting(**双轴并行**)/ receiving / finishing-a-development-branch |
 | **Design & Architecture** | 4 | `codebase-design`(深模块)/ `domain-modeling`(CONTEXT.md+ADR)/ `prototype` / `improve-codebase-architecture` |
@@ -201,8 +201,9 @@ copy "C:\Users\PC\MCP-Templates\<x>.mcp.json" ".mcp.json"   # 项目级 opt-in M
 
 # 📖 Meta:如何写好一个 Skill(Matt Pocock)
 
-> 出自 Matt Pocock 的演讲 *"The Missing Manual: How to Write Great Skills"*。这套标尺本身也做成了
-> skill —— `skills/global/writing-great-skills/`(+ `GLOSSARY.md`),agent 可直接用它审/写 skill。
+> 出自 Matt Pocock 的演讲 *"The Missing Manual: How to Write Great Skills"*。这套标尺现在活在
+> `skills/global/skill-creator/references/rubric.md`(术语定义在同目录 `GLOSSARY.md`,逐字保留),
+> 由 **model-invoked** 的 `skill-creator` 在写/审 skill 时自动读进去 —— 不用你记得喊。
 > 下面是给**人**看的浓缩版。核心目标叫 **Predictability**:让 agent 每次走**同一套过程**(不是同一个输出)。
 
 ## 四个维度
@@ -234,13 +235,15 @@ copy "C:\Users\PC\MCP-Templates\<x>.mcp.json" ".mcp.json"   # 项目级 opt-in M
 - **相关性**:每行还切题吗?
 - **no-op 删除测试**(逐句):删掉这句,行为会变吗?不变就整句删,**要狠**。
 
-## 五个失败模式(拿来自查)
+## 六个失败模式(拿来自查)
 - **Premature completion** —— 步骤没真做完就收(注意力滑向"完成")。先磨判据,再考虑拆步骤。
 - **Duplication** —— 同一含义多处出现,费 token 又抬高它的层级权重。
 - **Sediment(沉积)** —— 加着安全、删着危险,于是攒下过时废料。没有修剪纪律的默认下场。
 - **Sprawl** —— 单纯太长(哪怕每行都活)。解药是阶梯:reference 推到指针后、按 branch/序列拆。
 - **No-op** —— 模型本来就会做的话,白占 load。弱引导词(*be thorough*,它本来就 thorough)= no-op,
   换更强的词(*relentless*),不是换技巧。
+- **Negation** —— 用禁令引导会反噬:*别想大象*,大象就来了。改成**正向陈述目标行为**,让被禁的那个
+  压根不出现在文本里;实在没法正着说的硬护栏,也要配一句"那该怎么做"。
 
 ---
 

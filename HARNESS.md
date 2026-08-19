@@ -344,7 +344,8 @@ index anymore.
   - `value-dividend-screener` — Screen US stocks for high-quality dividend opportunities combining value characteristics (P/E ratio under 20, P/B ratio under 2), attract...
   - `vcp-screener` — Screen S&P 500 stocks for Mark Minervini's Volatility Contraction Pattern (VCP).
 
-#### research-project (48)
+#### research-project (49)
+- `academic-humanizer` — Strips AI tells from academic prose — papers, theses, abstracts, rebuttals — and from NSF/NIH funding proposals, while keeping the precis...
 - `auto-review-loop` — Iteratively improve YOUR OWN research artifact (paper draft, experiment writeup, or codebase) by having a DIFFERENT model review it adver...
 - `citation-management` — Comprehensive citation management for academic research.
 - `hypothesis-generation` — Structured hypothesis formulation from observations.

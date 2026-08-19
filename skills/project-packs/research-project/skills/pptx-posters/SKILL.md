@@ -41,7 +41,7 @@ This skill creates research posters using HTML/CSS, which can then be exported t
 
 This is the recommended approach for creating visually compelling posters:
 1. Plan all visual elements needed (hero image, intro, methods, results, conclusions)
-2. Generate each element using scientific-schematics or Nano Banana Pro
+2. Generate each element with Nano Banana Pro, or draw it by hand
 3. Assemble generated images in the HTML template
 4. Add text content around the visuals
 

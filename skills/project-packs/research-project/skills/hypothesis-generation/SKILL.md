@@ -1,6 +1,6 @@
 ---
 name: hypothesis-generation
-description: Structured hypothesis formulation from observations. Use when you have experimental observations or data and need to formulate testable hypotheses with predictions, propose mechanisms, and design experiments to test them. Follows scientific method framework. For open-ended ideation use scientific-brainstorming; for automated LLM-driven hypothesis testing on datasets use hypogenic.
+description: Structured hypothesis formulation from observations. Use when you have experimental observations or data and need to formulate testable hypotheses with predictions, propose mechanisms, and design experiments to test them. Follows scientific method framework. For open-ended ideation use the global brainstorming skill.
 allowed-tools: Read Write Edit Bash
 license: MIT license
 metadata:
@@ -22,43 +22,6 @@ This skill should be used when:
 - Formulating testable predictions for research
 - Conducting literature-based hypothesis generation
 - Planning mechanistic studies across scientific domains
-
-## Visual Enhancement with Scientific Schematics
-
-**⚠️ MANDATORY: Every hypothesis generation report MUST include at least 1-2 AI-generated figures using the scientific-schematics skill.**
-
-This is not optional. Hypothesis reports without visual elements are incomplete. Before finalizing any document:
-1. Generate at minimum ONE schematic or diagram (e.g., hypothesis framework showing competing explanations)
-2. Prefer 2-3 figures for comprehensive reports (mechanistic pathway, experimental design flowchart, prediction decision tree)
-
-**How to generate figures:**
-- Use the **scientific-schematics** skill to generate AI-powered publication-quality diagrams
-- Simply describe your desired diagram in natural language
-- Nano Banana Pro will automatically generate, review, and refine the schematic
-
-**How to generate schematics:**
-```bash
-python scripts/generate_schematic.py "your diagram description" -o figures/output.png
-```
-
-The AI will automatically:
-- Create publication-quality images with proper formatting
-- Review and refine through multiple iterations
-- Ensure accessibility (colorblind-friendly, high contrast)
-- Save outputs in the figures/ directory
-
-**When to add schematics:**
-- Hypothesis framework diagrams showing competing explanations
-- Experimental design flowcharts
-- Mechanistic pathway diagrams
-- Prediction decision trees
-- Causal relationship diagrams
-- Theoretical model visualizations
-- Any complex concept that benefits from visualization
-
-For detailed guidance on creating schematics, refer to the scientific-schematics skill documentation.
-
----
 
 ## Workflow
 

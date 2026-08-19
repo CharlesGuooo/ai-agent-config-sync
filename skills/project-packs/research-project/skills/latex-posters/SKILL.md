@@ -28,7 +28,7 @@ This skill should be used when:
 
 This is the recommended approach for creating visually compelling posters:
 1. Plan all visual elements needed (title, intro, methods, results, conclusions)
-2. Generate each element using scientific-schematics or Nano Banana Pro
+2. Generate each element with Nano Banana Pro, or draw it by hand
 3. Assemble generated images in the LaTeX template
 4. Add text content around the visuals
 
@@ -305,7 +305,7 @@ After passing the pre-generation review, identify visual elements needed:
 
 Use the appropriate tool for each element type:
 
-**For Schematics and Diagrams (scientific-schematics):**
+**For Schematics and Diagrams:**
 ```bash
 # Create figures directory
 mkdir -p figures
@@ -557,7 +557,7 @@ grep "Overfull" poster.log
 
 ## Scientific Schematics Integration
 
-For detailed guidance on creating schematics, refer to the **scientific-schematics** skill documentation.
+For hand-drawn architecture and system diagrams, use `drawio-skill` in `~/dev-project/`.
 
 **Key capabilities:**
 - Nano Banana Pro automatically generates, reviews, and refines diagrams
@@ -1501,7 +1501,7 @@ This skill works effectively with:
 - **Literature Review**: For contextualizing research
 - **Data Analysis**: For creating result figures and charts
 
-**Recommended workflow**: Always use scientific-schematics and generate-image skills BEFORE creating the LaTeX poster to generate all visual elements.
+**Recommended workflow**: Produce every visual element BEFORE writing the LaTeX poster, so layout is done against real assets rather than placeholders.
 
 ## Common Pitfalls to Avoid
 

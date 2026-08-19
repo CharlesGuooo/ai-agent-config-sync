@@ -31,20 +31,6 @@ Use this skill when you need:
 - **Market/Industry Data**: Current statistics, trends, competitive intelligence
 - **Recent Developments**: Emerging trends, breakthroughs, announcements
 
-## Visual Enhancement with Scientific Schematics
-
-**When creating documents with this skill, always consider adding scientific diagrams and schematics to enhance visual communication.**
-
-If your document does not already contain schematics or diagrams:
-- Use the **scientific-schematics** skill to generate AI-powered publication-quality diagrams
-- Simply describe your desired diagram in natural language
-
-```bash
-python scripts/generate_schematic.py "your diagram description" -o figures/output.png
-```
-
----
-
 ## Automatic Backend Selection
 
 The skill automatically routes queries to the best backend based on content:

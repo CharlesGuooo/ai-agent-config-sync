@@ -299,24 +299,6 @@ For images to embed in PowerPoint, focus on the visual element only:
 
 ---
 
-## Visual Enhancement with Scientific Schematics
-
-In addition to slide generation, use the **scientific-schematics** skill for technical diagrams:
-
-**When to use scientific-schematics instead:**
-- Complex technical diagrams (circuit diagrams, chemical structures)
-- Publication-quality figures for papers (higher quality threshold)
-- Diagrams requiring scientific accuracy review
-
-**How to generate schematics:**
-```bash
-python scripts/generate_schematic.py "your diagram description" -o figures/output.png
-```
-
-For detailed guidance on creating schematics, refer to the scientific-schematics skill documentation.
-
----
-
 ## Core Capabilities
 
 ### 1. Presentation Structure and Organization

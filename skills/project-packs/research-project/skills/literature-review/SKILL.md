@@ -26,43 +26,6 @@ Use this skill when:
 - Identifying research gaps and future directions
 - Requiring verified citations and professional formatting
 
-## Visual Enhancement with Scientific Schematics
-
-**⚠️ MANDATORY: Every literature review MUST include at least 1-2 AI-generated figures using the scientific-schematics skill.**
-
-This is not optional. Literature reviews without visual elements are incomplete. Before finalizing any document:
-1. Generate at minimum ONE schematic or diagram (e.g., a search & screening flow diagram for systematic reviews)
-2. Prefer 2-3 figures for comprehensive reviews (search strategy flowchart, thematic synthesis diagram, conceptual framework)
-
-**How to generate figures:**
-- Use the **scientific-schematics** skill to generate AI-powered publication-quality diagrams
-- Simply describe your desired diagram in natural language
-- Nano Banana Pro will automatically generate, review, and refine the schematic
-
-**How to generate schematics:**
-```bash
-python scripts/generate_schematic.py "your diagram description" -o figures/output.png
-```
-
-The AI will automatically:
-- Create publication-quality images with proper formatting
-- Review and refine through multiple iterations
-- Ensure accessibility (colorblind-friendly, high contrast)
-- Save outputs in the figures/ directory
-
-**When to add schematics:**
-- Search & screening flow diagrams for systematic reviews
-- Literature search strategy flowcharts
-- Thematic synthesis diagrams
-- Research gap visualization maps
-- Citation network diagrams
-- Conceptual framework illustrations
-- Any complex concept that benefits from visualization
-
-For detailed guidance on creating schematics, refer to the scientific-schematics skill documentation.
-
----
-
 ## Core Workflow
 
 Literature reviews follow a structured, multi-phase workflow:
@@ -543,7 +506,7 @@ This skill works seamlessly with other research skills:
 - **Semantic Scholar API**: citation graphs, influence metrics, and recommendations
 
 ### Analysis Skills
-- **scientific-schematics**: AI-generated diagrams (flow, framework, citation-network figures)
+- **drawio-skill** (`~/dev-project/`): hand-drawn flow, framework and citation-network figures
 - **Papers with Code**: benchmark tables and SOTA tracking (for methods/results context)
 - **OpenReview**: reviewer scores and rebuttals (for appraising rigor)
 

@@ -1,6 +1,13 @@
 ---
 name: peer-review
-description: Structured manuscript/grant review with checklist-based evaluation. Use when writing formal peer reviews with specific criteria: methodology assessment, statistical validity, reproducibility and reporting-checklist compliance (e.g. NeurIPS/ICML checklists), and constructive feedback. Best for actual review writing, manuscript revision. For evaluating claims/evidence quality use scientific-critical-thinking.
+description: >-
+  Reviews someone else's manuscript or grant against a checklist, and grades the quality of the
+  evidence behind its claims. Covers methodology and statistical validity, bias and confounding,
+  logical fallacies, ablation and baseline fairness, reproducibility and reporting-checklist
+  compliance (NeurIPS/ICML), and writes the review itself. Use for "帮我写审稿意见", "评审这篇论文",
+  "这个证据够不够", "write a review for this submission", "is this methodology sound", "review
+  this grant proposal". This is for a paper that is not yours — for your own draft before
+  submission use paper-stress-test, which argues the reject case and then defends against it.
 allowed-tools: Read Write Edit Bash
 license: MIT license
 metadata:

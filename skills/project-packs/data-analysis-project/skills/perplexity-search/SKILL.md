@@ -329,7 +329,7 @@ Use with `hypothesis-generation` skill:
 
 ### Critical Thinking
 
-Use with `scientific-critical-thinking` skill:
+Use with the `peer-review` skill (~/research-project/):
 1. Find evidence for and against hypotheses
 2. Locate methodological critiques
 3. Identify controversies in the field

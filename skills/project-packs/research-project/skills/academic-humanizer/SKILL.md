@@ -26,6 +26,14 @@ metadata:
 > **Vendored skill.** Body below is verbatim from upstream. Worked before/after pairs — including a
 > full NIH Specific Aims rewrite — are in [examples/before-after.md](examples/before-after.md);
 > read them when the register of a rewrite is unclear.
+>
+> **If the source is a `.tex` file, count before you rewrite.** `latex-paper-en` ships a mechanical
+> counter (`scripts/deai_check.py`) that reads per-term occurrence budgets, strips citations, refs,
+> math and comments, and reports which sections are worst. Run it to *locate* the problem, then
+> come back here to *fix* it. The two are deliberately separate: that skill knows the file, this
+> one knows the prose — and only this one carries the do-NOT-over-correct list that protects
+> calibrated hedging, the passive voice, and first-person "we", all of which a counter would
+> happily flag and which a manuscript needs.
 
 # Academic Humanizer
 

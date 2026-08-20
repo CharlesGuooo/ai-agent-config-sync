@@ -9,7 +9,7 @@ description: >-
   traceable to evidence), Devil's-Advocate (strongest rejection a reviewer could
   write), and AI-venue norms (soundness / novelty / reproducibility / limitations).
   This is pre-submission self-defense, distinct from peer-review (you reviewing
-  someone else against a checklist) and scientific-critical-thinking (grading
+  someone else against a checklist, and grading
   evidence quality of a claim/body of work).
 metadata:
   category: research

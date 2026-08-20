@@ -2,7 +2,19 @@
 
 **Trigger**: deai, humanize, reduce AI traces, natural writing, tone cleanup
 
-**Purpose**: Detect likely AI-writing traces in visible prose while preserving LaTeX structure and technical claims.
+**Purpose**: **Count** likely AI-writing traces in visible prose while preserving LaTeX structure and technical claims.
+
+**This module measures; it does not rewrite.** `deai_check.py` reads per-term occurrence budgets
+from `../deai/tone-thresholds.yaml`, strips citations, refs, math and comments, and reports counts
+and trace scores. That is a different job from deciding what a sentence should say instead.
+
+For the rewriting pass, hand the flagged sections to **`academic-humanizer`**, which carries the
+rule catalogue, the claim-evidence discipline ("no verb stronger than its evidence"), and — the
+part a counter cannot have — an explicit do-NOT-over-correct list that protects calibrated hedging
+such as "the results suggest", the passive voice, and first-person "we". A counter that flagged
+those would be actively harmful to a manuscript.
+
+The split, stated once: **this module knows the file, academic-humanizer knows the prose.**
 
 ## Commands
 
@@ -21,6 +33,8 @@ uv run python -B scripts/deai_batch.py main.tex --all-sections
 
 - Treat the script output as analysis, not as permission to rewrite the paper by default.
 - Return `% DE-AI ...` style findings or a short risk summary unless the user explicitly asks for source edits.
+- When the user does want the prose changed, run this counter first to locate the sections, then
+  invoke `academic-humanizer` on those sections. Do not reimplement its rules here.
 - Preserve `\cite{}`, `\ref{}`, `\label{}`, custom macros, and math environments.
 - Never invent new claims, metrics, baselines, or references while smoothing the prose.
 

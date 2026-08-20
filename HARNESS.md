@@ -344,7 +344,7 @@ index anymore.
   - `value-dividend-screener` — Screen US stocks for high-quality dividend opportunities combining value characteristics (P/E ratio under 20, P/B ratio under 2), attract...
   - `vcp-screener` — Screen S&P 500 stocks for Mark Minervini's Volatility Contraction Pattern (VCP).
 
-#### research-project (26)
+#### research-project (25)
 - `academic-humanizer` — Strips AI tells from academic prose — papers, theses, abstracts, rebuttals — and from NSF/NIH funding proposals, while keeping the precis...
 - `auto-review-loop` — Iteratively improve YOUR OWN research artifact (paper draft, experiment writeup, or codebase) by having a DIFFERENT model review it adver...
 - `bibtex-manager` — Turns a reference you already have into a correct BibTeX entry, and checks the ones already in your .bib.
@@ -357,7 +357,7 @@ index anymore.
 - `paper-library` — Search and reason over a LOCAL library of collected research papers (downloaded arXiv/conference PDFs).
 - `paper-reading-guide` — Use this whenever the user wants to read, understand, or be walked through an academic paper — whether they share a PDF, arxiv/URL link, ...
 - `paper-stress-test` — Adversarially stress-test YOUR OWN paper draft before submission — as the harshest fair reviewer would.
-- `peer-review` — Structured manuscript/grant review with checklist-based evaluation.
+- `peer-review` — Reviews someone else's manuscript or grant against a checklist, and grades the quality of the evidence behind its claims.
 - `pptx-posters` — Create research posters using HTML/CSS that can be exported to PDF or PPTX.
 - `repro-pack` — Assemble a reproducibility package for an ML/systems paper so a reviewer or future-you can re-run the experiments.
 - `research-lookup` — Look up current research information using the Parallel Chat API (primary) or Perplexity sonar-pro-search (academic paper searches).
@@ -366,7 +366,6 @@ index anymore.
 - `research-zh/research-add-items` — 向现有调研outline补充items（调研对象）。
 - `research-zh/research-deep` — 读取调研outline，为每个item启动独立agent进行深度调研。禁用task output。
 - `research-zh/research-report` — 将deep调研结果汇总为markdown报告，覆盖所有字段，跳过不确定值。
-- `scientific-critical-thinking` — Evaluate scientific claims and evidence quality.
 - `scientific-slides` — Build slide decks and presentations for research talks.
 - `scientific-writing` — Core skill for the deep research and writing tool.
 - `terminology-ledger` — Keep terminology, acronyms, and notation consistent across a manuscript.

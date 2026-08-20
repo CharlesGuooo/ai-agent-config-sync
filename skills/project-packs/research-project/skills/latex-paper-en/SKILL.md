@@ -1,10 +1,19 @@
 ---
 name: latex-paper-en
-description: English LaTeX assistant for existing .tex journal or conference papers. Use for compile repair, venue formatting, bibliography/citation checks, section writing, logic, related work, tables, pseudocode, de-AI polish, translation, adaptation, and submission readiness; use latex-thesis-zh for Chinese theses and paper-audit for critique.
+description: >-
+  Operates on an existing .tex manuscript — compiles it and diagnoses build failures, checks venue
+  formatting and bibliography, and reviews tables, pseudocode, captions, grammar and logic in the
+  file itself. Compiles with latexmk where a TeX distribution exists and with the self-contained
+  Tectonic engine where none does. Use for "fix my LaTeX", "proofread my IEEE paper", "format
+  citations", "make a three-line table", "write pseudocode", "换投", "编译 latex", "生成 PDF",
+  "编译报错", "为什么编译不出来", or any request naming a .tex file. Distinct from paper-writing,
+  which decides what the prose says before it reaches a .tex file, and from paper-stress-test,
+  which attacks a finished draft rather than editing it.
 when_to_use: >-
   Trigger on prompts like "fix my LaTeX", "proofread my IEEE paper", "rewrite related work",
   "find the research gap", "format citations", "make a three-line table", "write pseudocode",
-  "section rewrite plan", "claim-evidence map", "换投", or requests about an English .tex manuscript.
+  "section rewrite plan", "claim-evidence map", "换投", "编译报错", or requests about an
+  English .tex manuscript.
 metadata:
   category: academic-writing
   tags:
@@ -28,7 +37,8 @@ metadata:
   version: "5.2.0"
   last_updated: "2026-06-20"
 argument-hint: "[main.tex] [--section SECTION] [--module MODULE]"
-allowed-tools: Read, Glob, Grep, Bash(uv *)
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash
+compatibility: "local-tools — needs a LaTeX engine; Tectonic is self-contained and auto-installs its own packages, latexmk needs TeX Live or MiKTeX. Scripts run under uv or plain python."
 ---
 
 # LaTeX Academic Paper Assistant (English)
@@ -67,12 +77,11 @@ Use this skill when the user has an existing English `.tex` paper project and wa
 
 Do not use this skill for:
 
-- planning or drafting a paper from scratch
+- planning or drafting a paper from scratch, or deciding what the prose should say
 - deep literature research or fact-finding without a paper project
-- Chinese thesis-specific structure/template work
 - Typst-first paper workflows
 - DOCX/PDF conversion tasks that do not involve the LaTeX source
-- multi-perspective review, scoring, or submission gate decisions (use `paper-audit`)
+- adversarial pre-submission review or a submission gate decision (use `paper-stress-test`)
 - standalone algorithm design from scratch without a paper project
 
 ## Module Router

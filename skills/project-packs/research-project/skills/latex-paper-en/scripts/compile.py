@@ -52,11 +52,15 @@ class LaTeXCompiler:
     #   - pdflatex-bibtex: Traditional BibTeX workflow (legacy .bst styles)
     #   - pdflatex-biber: Modern biblatex + biber workflow (recommended for new projects)
     RECIPES = {
+        # Self-contained: no TeX distribution required. Downloads packages and
+        # fonts on first run, then works offline. Runs multi-pass + BibTeX itself.
+        # Auto-selected when no TeX distribution is installed.
+        "tectonic": ["tectonic"],
         # Single compilation (quick builds)
         "xelatex": ["xelatex"],
         "pdflatex": ["pdflatex"],
         "lualatex": ["lualatex"],
-        "latexmk": ["latexmk"],  # Default: auto-handles bibtex/biber
+        "latexmk": ["latexmk"],  # Default when a TeX distribution is present
         # Full workflows (explicit control over compilation steps)
         "xelatex-bibtex": ["xelatex", "bibtex", "xelatex", "xelatex"],
         "xelatex-biber": ["xelatex", "biber", "xelatex", "xelatex"],
@@ -90,8 +94,23 @@ class LaTeXCompiler:
         self.tex_file = Path(tex_file).resolve()
         self.work_dir = self.tex_file.parent
         self.compiler = compiler or self._detect_compiler()
-        self.recipe = recipe
+        self.recipe = recipe or self._default_recipe()
         self.shell_escape = shell_escape
+
+    @staticmethod
+    def _default_recipe() -> Optional[str]:
+        """Pick a recipe when the caller did not.
+
+        latexmk is preferred where a TeX distribution exists. Where none does,
+        tectonic is not a fallback so much as the only working engine, so select
+        it rather than failing with 'install TeX Live'.
+        Returning None keeps the original latexmk code path.
+        """
+        if shutil.which("latexmk"):
+            return None
+        if shutil.which("tectonic"):
+            return "tectonic"
+        return None
 
     def _detect_compiler(self) -> str:
         """Auto-detect appropriate compiler based on document content."""
@@ -136,17 +155,25 @@ class LaTeXCompiler:
 
     def _check_tools_for_recipe(self) -> tuple[bool, str]:
         """Check tools required by a recipe."""
-        steps = self.RECIPES.get(self.recipe, [])
+        steps = self.RECIPES.get(self.recipe or "", [])
         required = []
         for step in steps:
-            if step == "latexmk":
-                required.append("latexmk")
-            elif step in ("pdflatex", "xelatex", "lualatex", "bibtex", "biber"):
+            if step in ("tectonic", "latexmk", "pdflatex", "xelatex", "lualatex", "bibtex", "biber"):
                 required.append(step)
 
         for tool in dict.fromkeys(required):
-            if not shutil.which(tool):
-                return False, f"{tool} not found. Install TeX Live or MiKTeX."
+            if shutil.which(tool):
+                continue
+            if tool == "tectonic":
+                return False, (
+                    "tectonic not found. Install it with "
+                    "`winget install TectonicProject.Tectonic`, or see "
+                    "https://tectonic-typesetting.github.io/"
+                )
+            hint = ""
+            if shutil.which("tectonic"):
+                hint = " tectonic is installed — try `--recipe tectonic` instead."
+            return False, f"{tool} not found. Install TeX Live or MiKTeX.{hint}"
 
         return True, "All tools available"
 
@@ -171,6 +198,65 @@ class LaTeXCompiler:
     def _maybe_warn_shell_escape(self) -> None:
         if self.shell_escape:
             print("[WARNING] Shell escape enabled. Only use with trusted sources.")
+
+    # Failure lines worth surfacing, in priority order. The generic "^! (.+)"
+    # catch-all stays last so a specific pattern wins when both match.
+    ERROR_PATTERNS = [
+        (r"^! Undefined control sequence", "Undefined command (typo, or a missing package)"),
+        (r"^! LaTeX Error: File `([^']+)' not found", "Missing file or package: {0}"),
+        (r"^! Package (\w+) Error: (.+)", "Package {0} error: {1}"),
+        (r"^! Missing \$ inserted", "Math mode not opened (inline formula missing $...$)"),
+        (r"^! Missing (\{|\}) inserted", "Missing brace {0}"),
+        (r"^error: (.+)", "Tectonic error: {0}"),
+        (r"^! (.+)", "LaTeX error: {0}"),
+    ]
+    WARN_PATTERNS = [
+        (r"Citation `([^']+)' (?:on page .*?)?undefined", "Undefined citation: {0}"),
+        (r"Reference `([^']+)' .*undefined", "Undefined cross-reference: {0}"),
+    ]
+
+    def _report_log_diagnostics(self, outdir: Optional[str] = None) -> None:
+        """Parse the .log into a short list of causes with line numbers.
+
+        Every engine here writes a .log in the same format, so this works for
+        tectonic and for a TeX distribution alike. Silent when there is no log.
+        """
+        log_dir = Path(outdir) if outdir else self.work_dir
+        log_file = (log_dir / self.tex_file.name).with_suffix(".log")
+        if not log_file.is_absolute():
+            log_file = self.work_dir / log_file
+        if not log_file.exists():
+            return
+
+        text = log_file.read_text(encoding="utf-8", errors="ignore")
+        errors, warnings = [], []
+        for raw in text.splitlines():
+            line = raw.rstrip()
+            for pattern, template in self.ERROR_PATTERNS:
+                m = re.match(pattern, line)
+                if m:
+                    errors.append(template.format(*m.groups()))
+                    break
+            for pattern, template in self.WARN_PATTERNS:
+                m = re.search(pattern, line)
+                if m:
+                    warnings.append(template.format(*m.groups()))
+                    break
+
+        # "l.123 \foo" — the line number TeX was reading when it gave up.
+        locations = re.findall(r"^l\.(\d+)", text, re.M)
+
+        if errors:
+            print("\n[DIAGNOSIS] Likely causes:")
+            for item in list(dict.fromkeys(errors))[:10]:
+                print(f"  - {item}")
+        if locations:
+            print(f"[DIAGNOSIS] Source lines: {', '.join(dict.fromkeys(locations[:10]))}")
+        if warnings:
+            print("[DIAGNOSIS] Non-fatal warnings:")
+            for item in list(dict.fromkeys(warnings))[:10]:
+                print(f"  - {item}")
+        print(f"[DIAGNOSIS] Full log: {log_file}")
 
     def compile(
         self, watch: bool = False, biber: bool = False, outdir: Optional[str] = None
@@ -254,6 +340,7 @@ class LaTeXCompiler:
                 print(f"\n[SUCCESS] PDF generated: {pdf_file}")
             else:
                 print(f"\n[ERROR] Compilation failed with exit code {result.returncode}")
+                self._report_log_diagnostics(outdir)
             return result.returncode
 
         except KeyboardInterrupt:
@@ -313,6 +400,12 @@ class LaTeXCompiler:
                     self._engine_shell_mode_arg(),
                 ]
                 cmd.append(str(self.tex_file))
+            elif step == "tectonic":
+                # Tectonic runs multi-pass and BibTeX itself; no separate steps.
+                cmd = ["tectonic", "-X", "compile", "--keep-logs", "--synctex"]
+                if outdir:
+                    cmd.extend(["--outdir", outdir])
+                cmd.append(str(self.tex_file))
             elif step == "bibtex":
                 cmd = ["bibtex", tex_base]
             elif step == "biber":
@@ -331,6 +424,7 @@ class LaTeXCompiler:
                     # bibtex/biber may return non-zero for warnings, continue anyway
                     if step not in ("bibtex", "biber"):
                         print(f"[ERROR] Step {step} failed with exit code {result.returncode}")
+                        self._report_log_diagnostics(outdir)
                         return result.returncode
                     else:
                         print(f"[WARNING] {step} returned {result.returncode}, continuing...")

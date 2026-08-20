@@ -17,7 +17,7 @@ Scientific presentations are a critical medium for communicating research, shari
 
 **CRITICAL DESIGN PHILOSOPHY**: Scientific presentations should be VISUALLY ENGAGING and RESEARCH-BACKED. Avoid dry, text-heavy slides at all costs. Great scientific presentations combine:
 - **Compelling visuals**: High-quality figures, images, diagrams (not just bullet points)
-- **Research context**: Proper citations from research-lookup establishing credibility
+- **Research context**: Proper citations from paper-lookup establishing credibility
 - **Minimal text**: Bullet points as prompts, YOU provide the explanation verbally
 - **Professional design**: Modern color schemes, strong visual hierarchy, generous white space
 - **Story-driven**: Clear narrative arc, not just data dumps
@@ -342,7 +342,7 @@ Create professional, readable, and accessible slides that enhance understanding.
 - Large, clear text as accent (not the main content)
 - Modern, purposeful color schemes (not default themes)
 - Generous white space (slides breathe)
-- Research-backed context (proper citations from research-lookup)
+- Research-backed context (proper citations from paper-lookup)
 - Variety in slide layouts (not all bullet lists)
 - Story-driven flow with visual anchors
 - Professional, polished appearance
@@ -665,9 +665,9 @@ python scripts/validate_presentation.py presentation.pdf --duration 15
 4. What's the venue? (Room size, A/V setup, virtual/in-person)
 5. What happens after? (Q&A, discussion, networking)
 
-**Research and Literature Review** (Use research-lookup skill):
+**Research and Literature Review** (Use paper-lookup skill):
 1. **Search for background literature**: Find 5-10 key papers establishing context
-2. **Identify knowledge gaps**: Use research-lookup to find what's unknown
+2. **Identify knowledge gaps**: Use paper-lookup to find what's unknown
 3. **Locate comparison studies**: Find papers with similar methods or results
 4. **Gather supporting citations**: Collect papers supporting your interpretations
 5. **Build reference list**: Create .bib file or citation list for slides
@@ -683,7 +683,7 @@ python scripts/validate_presentation.py presentation.pdf --duration 15
 **Example Outline for 15-Minute Talk**:
 ```
 1. Title (30 sec)
-2. Hook: Compelling problem (60 sec) [Cite 1-2 papers via research-lookup]
+2. Hook: Compelling problem (60 sec) [Cite 1-2 papers via paper-lookup]
 3. Background (90 sec) [Cite 3-4 key papers establishing context]
 4. Research question (45 sec) [Cite papers showing gap]
 5. Methods overview (2 min)
@@ -694,7 +694,7 @@ python scripts/validate_presentation.py presentation.pdf --duration 15
 15. Conclusions (45 sec)
 16. Acknowledgments (15 sec)
 
-NOTE: Use research-lookup to find papers for background (slides 2-4) 
+NOTE: Use paper-lookup to find papers for background (slides 2-4) 
 and discussion (slides 13-14) BEFORE creating slides.
 ```
 
@@ -732,7 +732,7 @@ and discussion (slides 13-14) BEFORE creating slides.
 
 **Populate Slides** (Visual-First Strategy):
 1. **Start with visuals**: Plan which figures, images, diagrams for each key point
-2. **Use research-lookup extensively**: Find 8-15 papers for proper citations
+2. **Use paper-lookup extensively**: Find 8-15 papers for proper citations
 3. **Create visual backbone first**: Add all figures, charts, images, diagrams
 4. **Add minimal text as support**: Bullet points complement visuals, don't replace them
 5. **Design section dividers**: Visual breaks with images or graphics (not just text)
@@ -750,7 +750,7 @@ and discussion (slides 13-14) BEFORE creating slides.
 - Target: MINIMUM 1-2 strong visual elements per slide
 
 **Scientific Content** (Research-Backed):
-- **Citations**: Use research-lookup EXTENSIVELY to find relevant papers
+- **Citations**: Use paper-lookup EXTENSIVELY to find relevant papers
   - Introduction: Cite 3-5 papers establishing context and gap
   - Background: Show key prior work visually (not just cite)
   - Discussion: Cite 3-5 papers for comparison with your results
@@ -855,7 +855,7 @@ python ../document-skills/pptx/scripts/thumbnail.py presentation.pptx review/gri
 - **Prior work comparison**: Find papers to compare your results against
 - **Supporting evidence**: Locate literature supporting your interpretations
 - **Question preparation**: Find papers that might inform Q&A responses
-- **Always use research-lookup** when developing any scientific presentation to ensure proper context and citations
+- **Always use paper-lookup** when developing any scientific presentation to ensure proper context and citations
 
 **Scientific Writing**:
 - Convert paper content to presentation format
@@ -883,7 +883,7 @@ python ../document-skills/pptx/scripts/thumbnail.py presentation.pptx review/gri
 - Problem: Text-heavy slides with no visual interest, missing research context
 - Signs: All bullet points, no images, default templates, no citations
 - Solution: 
-  - Use research-lookup to find 8-15 papers for credible context
+  - Use paper-lookup to find 8-15 papers for credible context
   - Add high-quality visuals to EVERY slide (figures, photos, diagrams, icons)
   - Choose modern color palette reflecting your topic
   - Vary slide layouts (not all bullet lists)
@@ -899,7 +899,7 @@ python ../document-skills/pptx/scripts/thumbnail.py presentation.pptx review/gri
 
 **Missing Research Context**:
 - Problem: No citations, claims without support, unclear positioning
-- Solution: Use research-lookup to find papers, cite 3-5 in intro, 3-5 in discussion
+- Solution: Use paper-lookup to find papers, cite 3-5 in intro, 3-5 in discussion
 
 **Poor Narrative**:
 - Problem: Jumping between topics, no clear story, no flow
@@ -1060,7 +1060,7 @@ Comprehensive guides for specific aspects:
 ### For a 15-Minute Conference Talk (PDF Workflow - Recommended)
 
 1. **Research & Plan** (45 minutes):
-   - **Use research-lookup** to find 8-12 relevant papers for citations
+   - **Use paper-lookup** to find 8-12 relevant papers for citations
    - Build reference list (background, comparison studies)
    - Outline content (intro → methods → 2-3 key results → conclusion)
    - **Create detailed plan for each slide** (title, key points, visual elements)
@@ -1093,7 +1093,7 @@ Comprehensive guides for specific aspects:
    - Practice 3-5 times with timer
    - Aim for 13-14 minutes (leave buffer)
    - Record yourself, watch playback
-   - **Prepare for questions** (use research-lookup to anticipate)
+   - **Prepare for questions** (use paper-lookup to anticipate)
 
 5. **Finalize** (30 minutes):
    - Generate backup/appendix slides if needed
@@ -1119,7 +1119,7 @@ See `document-skills/pptx/SKILL.md` for complete PowerPoint workflow.
 ## Summary: Key Principles
 
 1. **Visual-First Design**: Every slide needs strong visual element (figure, image, diagram) - avoid text-only slides
-2. **Research-Backed**: Use research-lookup to find 8-15 papers, cite 3-5 in intro, 3-5 in discussion
+2. **Research-Backed**: Use paper-lookup to find 8-15 papers, cite 3-5 in intro, 3-5 in discussion
 3. **Modern Aesthetics**: Choose contemporary color palette matching topic, not default themes
 4. **Minimal Text**: 3-4 bullets, 4-6 words each (24-28pt font), let visuals tell story
 5. **Structure**: Follow story arc, spend 40-50% on results

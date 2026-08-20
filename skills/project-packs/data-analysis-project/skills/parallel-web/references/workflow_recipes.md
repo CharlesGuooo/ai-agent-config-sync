@@ -400,13 +400,13 @@ papers = searcher.search(
 
 ## Combining with Other Skills
 
-### With `research-lookup` (Academic Papers)
+### With `paper-lookup` (Academic Papers)
 
 ```python
 # Use parallel-web for general research
 researcher.research("Current state of quantum computing applications")
 
-# Use research-lookup for academic paper search (auto-routes to Perplexity)
+# Use paper-lookup (~/research-project/literature/) for academic paper search
 # python research_lookup.py "find papers on quantum error correction in Nature and Science"
 ```
 

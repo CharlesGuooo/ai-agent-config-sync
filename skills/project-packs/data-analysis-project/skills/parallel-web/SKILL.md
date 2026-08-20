@@ -38,7 +38,7 @@ Use this skill for **ALL** of the following:
 - Special cases where you need raw content from a known URL
 
 **Do NOT use this skill for:**
-- Academic-specific paper searches (use `research-lookup` which routes to Perplexity for purely academic queries)
+- Academic paper searches (use `paper-lookup` in ~/research-project/literature/ — 11 scholarly APIs, no credentials)
 - Academic database searches (use the research-project pack: `paper-library` for a local corpus, `literature-review` for a systematic protocol)
 
 ---
@@ -262,7 +262,7 @@ ls sources/  # Check existing saved results
 ### When Writing Scientific Documents
 
 1. **Before writing any section**, use `search` or `research` to gather background information — **save results to `sources/`**
-2. **For academic citations**, use `research-lookup` (which routes academic queries to Perplexity) — **save results to `sources/`**
+2. **For academic citations**, use `paper-lookup` in ~/research-project/literature/ — **save results to `sources/`**
 3. **For citation verification** (confirming a specific URL), use `parallel_web.py extract` — **save results to `sources/`**
 4. **For current market/industry data**, use `parallel_web.py research --model core` — **save results to `sources/`**
 5. **Before any new query**, check `sources/` for existing results to avoid duplicate API calls
@@ -308,7 +308,7 @@ The script handles errors gracefully and returns structured error responses:
 
 | Skill | Use For |
 |-------|---------|
-| `research-lookup` | Academic paper searches (routes to Perplexity for scholarly queries) |
+| `paper-lookup` (~/research-project/literature/) | Academic paper searches across 11 scholarly APIs |
 | `bibtex-manager` (~/research-project/) | DOI/PMID/arXiv to BibTeX, and validating an existing .bib |
 | `literature-review` | Systematic literature reviews across academic databases |
 | `scientific-schematics` | Generate diagrams from research findings |

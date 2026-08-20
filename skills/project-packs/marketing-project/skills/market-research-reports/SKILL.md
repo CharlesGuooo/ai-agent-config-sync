@@ -1,6 +1,6 @@
 ---
 name: market-research-reports
-description: Generate comprehensive market research reports (50+ pages) in the style of top consulting firms (McKinsey, BCG, Gartner). Features professional LaTeX formatting, extensive visual generation with scientific-schematics and generate-image, deep integration with research-lookup for data gathering, and multi-framework strategic analysis including Porter Five Forces, PESTLE, SWOT, TAM/SAM/SOM, and BCG Matrix.
+description: Generate comprehensive market research reports (50+ pages) in the style of top consulting firms (McKinsey, BCG, Gartner). Features professional LaTeX formatting, extensive visual generation with scientific-schematics and generate-image, deep integration with parallel-web for data gathering, and multi-framework strategic analysis including Porter Five Forces, PESTLE, SWOT, TAM/SAM/SOM, and BCG Matrix.
 allowed-tools: Read Write Edit Bash
 license: MIT license
 metadata:
@@ -16,7 +16,7 @@ Market research reports are comprehensive strategic documents that analyze indus
 **Key Features:**
 - **Comprehensive length**: Reports are designed to be 50+ pages with no token constraints
 - **Visual-rich content**: 5-6 key diagrams generated at start (more added as needed during writing)
-- **Data-driven analysis**: Deep integration with research-lookup for market data
+- **Data-driven analysis**: Deep integration with `parallel-web` (~/data-analysis-project/) for market data
 - **Multi-framework approach**: Porter's Five Forces, PESTLE, SWOT, BCG Matrix, TAM/SAM/SOM
 - **Professional formatting**: Consulting-firm quality typography, colors, and layout
 - **Actionable recommendations**: Strategic focus with implementation roadmaps
@@ -173,7 +173,7 @@ python skills/generate-image/scripts/generate_image.py \
 - Key assumptions for projections
 
 **Data Sources:**
-Use `research-lookup` to find:
+Use `parallel-web` (~/data-analysis-project/) to find:
 - Market research reports (Gartner, Forrester, IDC, etc.)
 - Industry association data
 - Government statistics
@@ -452,23 +452,23 @@ Use `research-lookup` to find:
 
 **Step 2: Conduct Deep Research**
 
-Use `research-lookup` extensively to gather market data:
+Use `parallel-web` (~/data-analysis-project/) extensively to gather market data:
 
 ```bash
 # Market size and growth data
-python skills/research-lookup/scripts/research_lookup.py \
+python ~/data-analysis-project/.claude/skills/parallel-web/scripts/parallel_web.py research \
   "What is the current market size and projected growth rate for [MARKET] industry? Include TAM, SAM, SOM estimates and CAGR projections"
 
 # Competitive landscape
-python skills/research-lookup/scripts/research_lookup.py \
+python ~/data-analysis-project/.claude/skills/parallel-web/scripts/parallel_web.py research \
   "Who are the top 10 competitors in the [MARKET] market? What is their market share and competitive positioning?"
 
 # Industry trends
-python skills/research-lookup/scripts/research_lookup.py \
+python ~/data-analysis-project/.claude/skills/parallel-web/scripts/parallel_web.py research \
   "What are the major trends and growth drivers in the [MARKET] industry for 2024-2030?"
 
 # Regulatory environment
-python skills/research-lookup/scripts/research_lookup.py \
+python ~/data-analysis-project/.claude/skills/parallel-web/scripts/parallel_web.py research \
   "What are the key regulations and policy changes affecting the [MARKET] industry?"
 ```
 
@@ -752,7 +752,7 @@ For complete formatting reference, see `assets/FORMATTING_GUIDE.md`.
 
 This skill works synergistically with:
 
-- **research-lookup**: Essential for gathering market data, statistics, and competitive intelligence
+- **parallel-web** (~/data-analysis-project/): gathering market data, statistics, and competitive intelligence
 - **scientific-schematics**: Generate all diagrams, charts, and visualizations
 - **generate-image**: Create infographics and conceptual illustrations
 - **peer-review**: Evaluate report quality and completeness

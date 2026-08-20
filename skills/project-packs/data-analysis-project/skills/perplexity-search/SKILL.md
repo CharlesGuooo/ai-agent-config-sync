@@ -313,7 +313,7 @@ Use with `literature-review` skill:
 
 ### Scientific Writing
 
-Use with `scientific-writing` skill:
+Use with the `paper-writing` skill (~/research-project/manuscript/):
 1. Find recent references for introduction/discussion
 2. Verify current state of the art
 3. Check latest terminology and conventions

@@ -51,7 +51,6 @@ Use this skill for targeted work on an existing English LaTeX paper project. Kee
 - Audit formatting, bibliography, grammar, sentence length, argument logic, and figure quality.
 - Review figure and table captions through a dedicated caption module when wording needs tightening.
 - Diagnose and rewrite-plan literature review sections around thematic synthesis, comparison, and gap derivation.
-- Plan or rewrite specific paper sections with paragraph roles, section outlines, claim-evidence maps, and reviewer-facing self-review.
 - Review IEEE-style pseudocode blocks, figure-wrapped algorithms, captions, labels, comments, and algorithm package choices.
 - Improve expression, translate academic prose, optimize titles, and reduce AI-writing traces.
 - Review experiment sections without rewriting citations, labels, or math.
@@ -65,7 +64,6 @@ Use this skill when the user has an existing English `.tex` paper project and wa
 - bibliography and citation validation
 - grammar, sentence, logic, or expression review
 - literature review restructuring, related-work synthesis, or research-gap derivation
-- section-specific drafting, rewrite planning, paragraph-role design, or claim-evidence self-review for Abstract, Introduction, Related Work, Method, Experiments, or Conclusion
 - translation of academic prose
 - title optimization
 - figure or caption quality checks
@@ -95,7 +93,7 @@ Do not use this skill for:
 | `sentences`       | Long, dense, or hard-to-read sentences                                                                         | `uv run python -B $SKILL_DIR/scripts/analyze_sentences.py main.tex --section introduction`   | `references/modules/sentences.md`                                                                                                     |
 | `logic`           | Weak argument flow, unclear transitions, introduction funnel problems, or abstract/conclusion misalignment     | `uv run python -B $SKILL_DIR/scripts/analyze_logic.py main.tex --section methods`            | `references/modules/logic.md`                                                                                                         |
 | `literature`      | Related Work is list-like, under-compared, or missing an evidence-backed research gap                          | `uv run python -B $SKILL_DIR/scripts/analyze_literature.py main.tex --section related`       | `references/modules/literature.md`                                                                                                    |
-| `section-writing` | Draft, rewrite-plan, paragraph-role, flow, or claim-evidence work for a specific paper section                 | (LLM-driven workflow)                                                                        | references/modules/section-writing.md                                                                                                 |
+| _(section writing)_ | Deciding what a section should SAY — drafting, rewrite plans, paragraph roles, reverse outlines, claim-evidence maps | **Not this skill.** Use `paper-writing` in `~/research-project/manuscript/` | — |
 | `expression`      | Academic tone polish without changing claims                                                                   | `uv run python -B $SKILL_DIR/scripts/improve_expression.py main.tex --section related`       | `references/modules/expression.md`                                                                                                    |
 | `translation`     | Chinese-to-English academic translation or bilingual polishing                                                 | `uv run python -B $SKILL_DIR/scripts/translate_academic.py input.txt --domain deep-learning` | `references/modules/translation.md`                                                                                                   |
 | `title`           | Generate, compare, or optimize paper titles                                                                    | `uv run python -B $SKILL_DIR/scripts/optimize_title.py main.tex --check`                     | `references/modules/title.md`                                                                                                         |
@@ -112,11 +110,10 @@ Do not use this skill for:
 
 - Infer the module from the user request before asking follow-up questions. Ask for the module only when two or more modules are equally plausible after keyword routing.
 - If the user asks for 2-3 compatible checks in one turn, run them sequentially instead of forcing a single-module reply.
-- Use this execution order when multiple modules are needed: `compile` -> `bibliography` -> `format` -> `figures` / `tables` / `caption` / `pseudocode` -> `grammar` / `sentences` / `deai` -> `logic` / `literature` / `experiment` / `abstract` -> `section-writing` -> `title` / `expression` / `translation` / `adapt`.
+- Use this execution order when multiple modules are needed: `compile` -> `bibliography` -> `format` -> `figures` / `tables` / `caption` / `pseudocode` -> `grammar` / `sentences` / `deai` -> `logic` / `literature` / `experiment` / `abstract` -> `title` / `expression` / `translation` / `adapt`.
 - When applying multiple polish passes to the same prose, work coarse-to-fine — argument/logic -> sentence structure -> lexical/formatting — and do not reverse it; see `references/modules/workflow.md`.
 - Prefer `logic` for cross-section alignment requests (abstract vs introduction vs conclusion), introduction funnel issues, or contribution drift; prefer `literature` only when the problem is specifically about Related Work organization, comparison, or gap derivation.
-- Prefer `section-writing` when the user asks to draft, rewrite, restructure, or reviewer-polish a specific section, or asks for paragraph roles, mini-outlines, reverse outlines, or claim-evidence maps. Prefer the diagnostic modules first when the user asks to check whether something is wrong.
-- For `section-writing`, load `references/modules/section-writing.md`, then exactly one active section guide from `references/writing/section-writing/` unless the user also asks for flow or self-review.
+- If the user asks to draft, rewrite, restructure or reviewer-polish a section, or asks for paragraph roles, mini-outlines, reverse outlines or claim-evidence maps, that is `paper-writing`'s job — hand off rather than attempting it here. This skill decides how the .tex file behaves, not what the prose says. Prefer the diagnostic modules when the user asks to check whether something is wrong.
 - For whole-paper motivation/red-thread questions ("does every introduction promise get tested and resolved?"), run `logic` with `--motivation-thread`; it appends a read-only Promise Map + Closure Map heuristic and leaves default `logic` output unchanged.
 - For graded de-AI / AIGC-dimension analysis, run `deai` with `--tier light|medium|heavy`; it scales thresholds, adds a D1 sentence-length check, and labels findings by dimension (D1-D5). Omitting `--tier` keeps the default output.
 - Keep `experiment` for results, discussion, baseline, ablation, significance, limitation, and conclusion-completeness concerns even if the user phrases them as "logic" problems.
@@ -138,7 +135,6 @@ If arguments are missing, preserve the inferred module and ask only for the miss
 - Report the exact command used and the exit code when a script fails.
 - Preserve `\cite{}`, `\ref{}`, `\label{}`, custom macros, and math environments unless the user explicitly asks for source edits.
 - For `literature`, default to diagnosis + rewrite blueprint first; only produce paragraph-level rewriting when the user explicitly asks for prose.
-- For `section-writing`, return a section objective, compact outline, paragraph roles, rewrite blueprint or prose proposal, claim-evidence map, and self-review checklist. Mark missing evidence instead of filling it.
 
 ## Workflow
 
@@ -178,8 +174,6 @@ If arguments are missing, preserve the inferred module and ask only for the miss
 - `references/modules/caption.md`: figure/table caption wording and evidence-boundary review.
 - `references/review/reviewer-perspective.md`: reviewer-style heuristics for figures and clarity.
 - `references/modules/`: module-by-module commands and decision notes.
-- `references/modules/section-writing.md`: LLM-driven section-writing router and output contract.
-- `references/writing/section-writing/`: one-section-at-a-time writing guides for Abstract, Introduction, Related Work, Method, Experiments, Conclusion, paragraph flow, and self-review.
 - `references/modules/pseudocode.md`: IEEE-safe defaults for LaTeX pseudocode.
 
 Read only the file that matches the active module.

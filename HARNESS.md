@@ -344,7 +344,7 @@ index anymore.
   - `value-dividend-screener` — Screen US stocks for high-quality dividend opportunities combining value characteristics (P/E ratio under 20, P/B ratio under 2), attract...
   - `vcp-screener` — Screen S&P 500 stocks for Mark Minervini's Volatility Contraction Pattern (VCP).
 
-#### research-project (24)
+#### research-project (23)
 - `research-router` — Routes a research task to one of five sub-packs under ~/research-project/ — literature, gates, manuscript, review, talks.
 - **gates/**
   - `hypothesis-generation` — Structured hypothesis formulation from observations.
@@ -360,10 +360,9 @@ index anymore.
 - **manuscript/**
   - `academic-humanizer` — Strips AI tells from academic prose — papers, theses, abstracts, rebuttals — and from NSF/NIH funding proposals, while keeping the precis...
   - `latex-paper-en` — Operates on an existing .tex manuscript — compiles it and diagnoses build failures, checks venue formatting and bibliography, and reviews...
-  - `narrative-flow` — Revise an already-drafted paper for STRUCTURE and FLOW — reverse-outline diagnostics, one-message-per-paragraph rewriting, and section-sp...
   - `paper-figures` — Makes a paper's matplotlib figures — house style, journal sizing, colorblind and grayscale survival, multi-panel layout, export.
+  - `paper-writing` — Decides what a paper's prose should say, then writes it — argument first, sentences second.
   - `repro-pack` — Assemble a reproducibility package for an ML/systems paper so a reviewer or future-you can re-run the experiments.
-  - `scientific-writing` — Core skill for the deep research and writing tool.
   - `terminology-ledger` — Keep terminology, acronyms, and notation consistent across a manuscript.
   - `venue-templates` — Access comprehensive LaTeX templates, formatting requirements, and submission guidelines for major scientific publication venues (Nature,...
 - **review/**

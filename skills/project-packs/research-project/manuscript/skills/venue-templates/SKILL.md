@@ -289,7 +289,7 @@ Review checklist:
 This skill works seamlessly with other scientific skills:
 
 ### Scientific Writing
-- Use **scientific-writing** skill for content guidance (IMRaD structure, clarity, precision)
+- Use **paper-writing** skill for content guidance (argument structure, clarity, precision)
 - Apply venue-specific templates from this skill for formatting
 - Combine for complete manuscript preparation
 

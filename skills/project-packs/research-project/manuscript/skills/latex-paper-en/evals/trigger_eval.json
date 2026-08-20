@@ -52,26 +52,6 @@
       "category": "edge"
     },
     {
-      "query": "Give me a paragraph-role rewrite plan for the Introduction of my existing LaTeX paper, with a technical bottleneck and claim-evidence map.",
-      "should_trigger": true,
-      "category": "section-writing"
-    },
-    {
-      "query": "Rewrite the Method overview in main.tex around motivation, design, and technical advantage while preserving equations and \\ref{} anchors.",
-      "should_trigger": true,
-      "category": "section-writing"
-    },
-    {
-      "query": "Help me revise the Conclusion so it answers the Introduction promises and states limitations without overstating the experiments.",
-      "should_trigger": true,
-      "category": "section-writing"
-    },
-    {
-      "query": "Map the major claims in my Abstract, Introduction, and Experiments to visible evidence before suggesting wording changes.",
-      "should_trigger": true,
-      "category": "section-writing"
-    },
-    {
       "query": "Search my references.bib for Mamba forecasting papers after 2024.",
       "should_trigger": false,
       "category": "negative-overlap-bib"
@@ -105,26 +85,6 @@
       "query": "Draft a full research paper from scratch about diffusion models without any existing .tex project.",
       "should_trigger": false,
       "category": "negative-overlap-research"
-    },
-    {
-      "query": "Give me a reviewer-facing rewrite plan for the Introduction of my LaTeX paper, with paragraph roles and a claim-evidence map.",
-      "should_trigger": true,
-      "category": "section-writing-introduction"
-    },
-    {
-      "query": "My Related Work is just a paper list. Reorganize it into themes, structural limitations, and a positioning sentence.",
-      "should_trigger": true,
-      "category": "section-writing-related-work"
-    },
-    {
-      "query": "Rewrite the Method overview around motivation, design, and technical advantage while preserving equations and \\ref{} anchors.",
-      "should_trigger": true,
-      "category": "section-writing-method"
-    },
-    {
-      "query": "Turn the experiments section into a narrative with setup anchoring, takeaways after each cluster, ablations, and robustness.",
-      "should_trigger": true,
-      "category": "section-writing-experiments"
     },
     {
       "query": "Please act like a reviewer and write major/minor comments on my manuscript.",

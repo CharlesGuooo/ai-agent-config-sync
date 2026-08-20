@@ -69,9 +69,9 @@ the number alone. Never fabricate a passing verdict to end the loop early.
 ## The "improve" step — orchestrate, don't reinvent
 
 Route each weakness to the skill that owns it:
-- Structure / flow / "reads as incremental" → **narrative-flow**
+- Structure / flow / "reads as incremental" → **paper-writing**
 - Unsupported claim / missing ablation / rejection risk → **paper-stress-test**
-- Missing prose / a section to draft → **scientific-writing**
+- Missing prose / a section to draft → **paper-writing**
 - Wording / de-AI / tense / LaTeX / bib → **latex-paper-en**
 - Fabricated or wrong citation → **bibtex-manager**
 

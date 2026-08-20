@@ -251,13 +251,13 @@ Workflow:
 3. Commit both — the .md as source, the PNG as a supplementary figure
 ```
 
-### With `scientific-writing`
+### With `paper-writing` (~/research-project/manuscript/)
 
-When `scientific-writing` produces a manuscript, all diagrams and structural figures should use this skill's standards. The writing skill handles prose and citations; this skill handles visual structure.
+When `paper-writing` produces a manuscript, all diagrams and structural figures should use this skill's standards. The writing skill handles prose and citations; this skill handles visual structure.
 
 ```
 Workflow:
-1. Use scientific-writing to draft the manuscript
+1. Use paper-writing to draft the manuscript
 2. For every figure that shows a workflow, architecture, or relationship:
    - Replace placeholder with a Mermaid diagram following this skill's guide
 3. Use scientific-schematics only for figures that truly need photorealistic/complex rendering

@@ -39,7 +39,7 @@ Use this skill for **ALL** of the following:
 
 **Do NOT use this skill for:**
 - Academic-specific paper searches (use `research-lookup` which routes to Perplexity for purely academic queries)
-- Google Scholar / PubMed database searches (use `citation-management` skill)
+- Academic database searches (use the research-project pack: `paper-library` for a local corpus, `literature-review` for a systematic protocol)
 
 ---
 
@@ -309,6 +309,6 @@ The script handles errors gracefully and returns structured error responses:
 | Skill | Use For |
 |-------|---------|
 | `research-lookup` | Academic paper searches (routes to Perplexity for scholarly queries) |
-| `citation-management` | Google Scholar, PubMed, CrossRef database searches |
+| `bibtex-manager` (~/research-project/) | DOI/PMID/arXiv to BibTeX, and validating an existing .bib |
 | `literature-review` | Systematic literature reviews across academic databases |
 | `scientific-schematics` | Generate diagrams from research findings |

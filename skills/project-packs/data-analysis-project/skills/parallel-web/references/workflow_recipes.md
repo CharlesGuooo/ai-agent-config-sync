@@ -410,7 +410,7 @@ researcher.research("Current state of quantum computing applications")
 # python research_lookup.py "find papers on quantum error correction in Nature and Science"
 ```
 
-### With `citation-management` (BibTeX)
+### With `bibtex-manager` (BibTeX)
 
 ```python
 # Step 1: Find paper with parallel search
@@ -419,7 +419,7 @@ result = searcher.search(objective="Vaswani et al Attention Is All You Need pape
 # Step 2: Get DOI from results
 doi = "10.48550/arXiv.1706.03762"
 
-# Step 3: Convert to BibTeX with citation-management skill
+# Step 3: Convert to BibTeX with the bibtex-manager skill (~/research-project/)
 # python scripts/doi_to_bibtex.py 10.48550/arXiv.1706.03762
 ```
 

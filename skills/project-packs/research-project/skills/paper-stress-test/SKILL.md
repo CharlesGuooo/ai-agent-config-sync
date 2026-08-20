@@ -68,7 +68,7 @@ the paper. End with an honest 1-line verdict: "as-is, this reads as a {reject / 
 / accept} because {reason}."
 
 ## Notes
-- Cross-checks: use `claim` flags against `citation-management` (do the cited works say
+- Cross-checks: use `claim` flags against `bibtex-manager` (do the cited works say
   what you claim?) and `repro-pack` (is the reproducibility claim real?).
 - Stay fair: the point is to harden a real contribution, not to nuke good work. Separate
   "fatal" from "a reviewer might grumble".

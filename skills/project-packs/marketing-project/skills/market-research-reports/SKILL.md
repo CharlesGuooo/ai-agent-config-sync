@@ -756,7 +756,7 @@ This skill works synergistically with:
 - **scientific-schematics**: Generate all diagrams, charts, and visualizations
 - **generate-image**: Create infographics and conceptual illustrations
 - **peer-review**: Evaluate report quality and completeness
-- **citation-management**: Manage BibTeX references
+- **bibtex-manager** (~/research-project/): manage BibTeX references
 
 ---
 

@@ -1,8 +1,17 @@
 ---
-name: citation-management
-description: Comprehensive citation management for academic research. Search Google Scholar and PubMed for papers, extract accurate metadata, validate citations, and generate properly formatted BibTeX entries. This skill should be used when you need to find papers, verify citation information, convert DOIs to BibTeX, or ensure reference accuracy in scientific writing.
-allowed-tools: Read Write Edit Bash
+name: bibtex-manager
+description: >-
+  Turns a reference you already have into a correct BibTeX entry, and checks the ones already in
+  your .bib. Converts DOI, PMID, arXiv ID or URL to BibTeX; fills missing fields from CrossRef,
+  PubMed and arXiv; standardises entry types, capitalisation and page ranges; verifies every DOI
+  resolves and flags duplicates. Use for "转成 bibtex", "DOI 转引用", "参考文献格式不对",
+  "检查一下引用", "clean up my .bib", "does this citation resolve", "fix the bibliography".
+  Does NOT find papers — for discovery use paper-lookup, and for a systematic search protocol
+  use literature-review. Distinct from latex-paper-en, whose bibliography module checks how
+  citations are used inside a .tex file rather than whether the entries themselves are right.
+allowed-tools: Read, Write, Edit, Bash
 license: MIT License
+compatibility: "network — CrossRef, NCBI E-utilities and doi.org; no credentials required, optional NCBI_API_KEY raises rate limits"
 metadata:
     skill-author: K-Dense Inc.
 ---
@@ -11,14 +20,13 @@ metadata:
 
 ## Overview
 
-Manage citations systematically throughout the research and writing process. This skill provides tools and strategies for searching academic databases (Google Scholar, PubMed), extracting accurate metadata from multiple sources (CrossRef, PubMed, arXiv), validating citation information, and generating properly formatted BibTeX entries.
+Turn identifiers into correct BibTeX, and keep an existing `.bib` correct. This skill extracts accurate metadata from CrossRef, PubMed and arXiv, validates citation information, and generates properly formatted entries. It does not search for papers — that is `paper-lookup`'s job, and keeping the two apart is what stops both firing on "find me papers about X".
 
 Critical for maintaining citation accuracy, avoiding reference errors, and ensuring reproducible research. Integrates seamlessly with the literature-review skill for comprehensive research workflows.
 
 ## When to Use This Skill
 
 Use this skill when:
-- Searching for specific papers on Google Scholar or PubMed
 - Converting DOIs, PMIDs, or arXiv IDs to properly formatted BibTeX
 - Extracting complete metadata for citations (authors, title, journal, year, etc.)
 - Validating existing citations for accuracy
@@ -32,79 +40,6 @@ Use this skill when:
 ## Core Workflow
 
 Citation management follows a systematic process:
-
-### Phase 1: Paper Discovery and Search
-
-**Goal**: Find relevant papers using academic search engines.
-
-#### Google Scholar Search
-
-Google Scholar provides the most comprehensive coverage across disciplines.
-
-**Basic Search**:
-```bash
-# Search for papers on a topic
-python scripts/search_google_scholar.py "CRISPR gene editing" \
-  --limit 50 \
-  --output results.json
-
-# Search with year filter
-python scripts/search_google_scholar.py "machine learning protein folding" \
-  --year-start 2020 \
-  --year-end 2024 \
-  --limit 100 \
-  --output ml_proteins.json
-```
-
-**Advanced Search Strategies** (see `references/google_scholar_search.md`):
-- Use quotation marks for exact phrases: `"deep learning"`
-- Search by author: `author:LeCun`
-- Search in title: `intitle:"neural networks"`
-- Exclude terms: `machine learning -survey`
-- Find highly cited papers using sort options
-- Filter by date ranges to get recent work
-
-**Best Practices**:
-- Use specific, targeted search terms
-- Include key technical terms and acronyms
-- Filter by recent years for fast-moving fields
-- Check "Cited by" to find seminal papers
-- Export top results for further analysis
-
-#### PubMed Search
-
-PubMed specializes in biomedical and life sciences literature (35+ million citations).
-
-**Basic Search**:
-```bash
-# Search PubMed
-python scripts/search_pubmed.py "Alzheimer's disease treatment" \
-  --limit 100 \
-  --output alzheimers.json
-
-# Search with MeSH terms and filters
-python scripts/search_pubmed.py \
-  --query '"Alzheimer Disease"[MeSH] AND "Drug Therapy"[MeSH]' \
-  --date-start 2020 \
-  --date-end 2024 \
-  --publication-types "Clinical Trial,Review" \
-  --output alzheimers_trials.json
-```
-
-**Advanced PubMed Queries** (see `references/pubmed_search.md`):
-- Use MeSH terms: `"Diabetes Mellitus"[MeSH]`
-- Field tags: `"cancer"[Title]`, `"Smith J"[Author]`
-- Boolean operators: `AND`, `OR`, `NOT`
-- Date filters: `2020:2024[Publication Date]`
-- Publication types: `"Review"[Publication Type]`
-- Combine with E-utilities API for automation
-
-**Best Practices**:
-- Use MeSH Browser to find correct controlled vocabulary
-- Construct complex queries in PubMed Advanced Search Builder first
-- Include multiple synonyms with OR
-- Retrieve PMIDs for easy metadata extraction
-- Export to JSON or directly to BibTeX
 
 ### Phase 2: Metadata Extraction
 
@@ -352,14 +287,10 @@ python scripts/validate_citations.py references.bib \
 Complete workflow for creating a bibliography:
 
 ```bash
-# 1. Search for papers on your topic
-python scripts/search_pubmed.py \
-  '"CRISPR-Cas Systems"[MeSH] AND "Gene Editing"[MeSH]' \
-  --date-start 2020 \
-  --limit 200 \
-  --output crispr_papers.json
+# 1. Collect the identifiers (DOI / PMID / arXiv) for the papers you want.
+#    Discovery is paper-lookup's job, not this skill's.
 
-# 2. Extract DOIs from search results and convert to BibTeX
+# 2. Convert them to BibTeX
 python scripts/extract_metadata.py \
   --input crispr_papers.json \
   --output crispr_refs.bib
@@ -397,9 +328,9 @@ This skill complements the `literature-review` skill:
 
 **Combined Workflow**:
 1. Use `literature-review` for comprehensive multi-database search
-2. Use `citation-management` to extract and validate all citations
+2. Use `bibtex-manager` to extract and validate all citations
 3. Use `literature-review` to synthesize findings thematically
-4. Use `citation-management` to verify final bibliography accuracy
+4. Use `bibtex-manager` to verify final bibliography accuracy
 
 ```bash
 # After completing literature review
@@ -412,176 +343,7 @@ python scripts/format_bibtex.py my_review_references.bib \
   --output formatted_refs.bib
 ```
 
-## Search Strategies
-
-### Google Scholar Best Practices
-
-**Finding Seminal and High-Impact Papers** (CRITICAL):
-
-Always prioritize papers based on citation count, venue quality, and author reputation:
-
-**Citation Count Thresholds:**
-| Paper Age | Citations | Classification |
-|-----------|-----------|----------------|
-| 0-3 years | 20+ | Noteworthy |
-| 0-3 years | 100+ | Highly Influential |
-| 3-7 years | 100+ | Significant |
-| 3-7 years | 500+ | Landmark Paper |
-| 7+ years | 500+ | Seminal Work |
-| 7+ years | 1000+ | Foundational |
-
-**Venue Quality Tiers:**
-- **Tier 1 (Prefer):** Nature, Science, Cell, NEJM, Lancet, JAMA, PNAS
-- **Tier 2 (High Priority):** Impact Factor >10, top conferences (NeurIPS, ICML, ICLR)
-- **Tier 3 (Good):** Specialized journals (IF 5-10)
-- **Tier 4 (Sparingly):** Lower-impact peer-reviewed venues
-
-**Author Reputation Indicators:**
-- Senior researchers with h-index >40
-- Multiple publications in Tier-1 venues
-- Leadership at recognized institutions
-- Awards and editorial positions
-
-**Search Strategies for High-Impact Papers:**
-- Sort by citation count (most cited first)
-- Look for review articles from Tier-1 journals for overview
-- Check "Cited by" for impact assessment and recent follow-up work
-- Use citation alerts for tracking new citations to key papers
-- Filter by top venues using `source:Nature` or `source:Science`
-- Search for papers by known field leaders using `author:LastName`
-
-**Advanced Operators** (full list in `references/google_scholar_search.md`):
-```
-"exact phrase"           # Exact phrase matching
-author:lastname          # Search by author
-intitle:keyword          # Search in title only
-source:journal           # Search specific journal
--exclude                 # Exclude terms
-OR                       # Alternative terms
-2020..2024              # Year range
-```
-
-**Example Searches**:
-```
-# Find recent reviews on a topic
-"CRISPR" intitle:review 2023..2024
-
-# Find papers by specific author on topic
-author:Church "synthetic biology"
-
-# Find highly cited foundational work
-"deep learning" 2012..2015 sort:citations
-
-# Exclude surveys and focus on methods
-"protein folding" -survey -review intitle:method
-```
-
-### PubMed Best Practices
-
-**Using MeSH Terms**:
-MeSH (Medical Subject Headings) provides controlled vocabulary for precise searching.
-
-1. **Find MeSH terms** at https://meshb.nlm.nih.gov/search
-2. **Use in queries**: `"Diabetes Mellitus, Type 2"[MeSH]`
-3. **Combine with keywords** for comprehensive coverage
-
-**Field Tags**:
-```
-[Title]              # Search in title only
-[Title/Abstract]     # Search in title or abstract
-[Author]             # Search by author name
-[Journal]            # Search specific journal
-[Publication Date]   # Date range
-[Publication Type]   # Article type
-[MeSH]              # MeSH term
-```
-
-**Building Complex Queries**:
-```bash
-# Clinical trials on diabetes treatment published recently
-"Diabetes Mellitus, Type 2"[MeSH] AND "Drug Therapy"[MeSH] 
-AND "Clinical Trial"[Publication Type] AND 2020:2024[Publication Date]
-
-# Reviews on CRISPR in specific journal
-"CRISPR-Cas Systems"[MeSH] AND "Nature"[Journal] AND "Review"[Publication Type]
-
-# Specific author's recent work
-"Smith AB"[Author] AND cancer[Title/Abstract] AND 2022:2024[Publication Date]
-```
-
-**E-utilities for Automation**:
-The scripts use NCBI E-utilities API for programmatic access:
-- **ESearch**: Search and retrieve PMIDs
-- **EFetch**: Retrieve full metadata
-- **ESummary**: Get summary information
-- **ELink**: Find related articles
-
-See `references/pubmed_search.md` for complete API documentation.
-
 ## Tools and Scripts
-
-### search_google_scholar.py
-
-Search Google Scholar and export results.
-
-**Features**:
-- Automated searching with rate limiting
-- Pagination support
-- Year range filtering
-- Export to JSON or BibTeX
-- Citation count information
-
-**Usage**:
-```bash
-# Basic search
-python scripts/search_google_scholar.py "quantum computing"
-
-# Advanced search with filters
-python scripts/search_google_scholar.py "quantum computing" \
-  --year-start 2020 \
-  --year-end 2024 \
-  --limit 100 \
-  --sort-by citations \
-  --output quantum_papers.json
-
-# Export directly to BibTeX
-python scripts/search_google_scholar.py "machine learning" \
-  --limit 50 \
-  --format bibtex \
-  --output ml_papers.bib
-```
-
-### search_pubmed.py
-
-Search PubMed using E-utilities API.
-
-**Features**:
-- Complex query support (MeSH, field tags, Boolean)
-- Date range filtering
-- Publication type filtering
-- Batch retrieval with metadata
-- Export to JSON or BibTeX
-
-**Usage**:
-```bash
-# Simple keyword search
-python scripts/search_pubmed.py "CRISPR gene editing"
-
-# Complex query with filters
-python scripts/search_pubmed.py \
-  --query '"CRISPR-Cas Systems"[MeSH] AND "therapeutic"[Title/Abstract]' \
-  --date-start 2020-01-01 \
-  --date-end 2024-12-31 \
-  --publication-types "Clinical Trial,Review" \
-  --limit 200 \
-  --output crispr_therapeutic.json
-
-# Export to BibTeX
-python scripts/search_pubmed.py "Alzheimer's disease" \
-  --limit 100 \
-  --format bibtex \
-  --output alzheimers.bib
-```
 
 ### extract_metadata.py
 
@@ -719,29 +481,6 @@ python scripts/doi_to_bibtex.py 10.1038/nature12345 --clipboard
 
 ## Best Practices
 
-### Search Strategy
-
-1. **Start broad, then narrow**:
-   - Begin with general terms to understand the field
-   - Refine with specific keywords and filters
-   - Use synonyms and related terms
-
-2. **Use multiple sources**:
-   - Google Scholar for comprehensive coverage
-   - PubMed for biomedical focus
-   - arXiv for preprints
-   - Combine results for completeness
-
-3. **Leverage citations**:
-   - Check "Cited by" for seminal papers
-   - Review references from key papers
-   - Use citation networks to discover related work
-
-4. **Document your searches**:
-   - Save search queries and dates
-   - Record number of results
-   - Note any filters or restrictions applied
-
 ### Metadata Extraction
 
 1. **Always use DOIs when available**:
@@ -807,8 +546,8 @@ python scripts/doi_to_bibtex.py 10.1038/nature12345 --clipboard
 
 ## Common Pitfalls to Avoid
 
-1. **Single source bias**: Only using Google Scholar or PubMed
-   - **Solution**: Search multiple databases for comprehensive coverage
+1. **Trusting a single metadata source**: taking whatever CrossRef returns
+   - **Solution**: cross-check against arXiv or PubMed when the entry matters
 
 2. **Accepting metadata blindly**: Not verifying extracted information
    - **Solution**: Spot-check extracted metadata against original sources
@@ -842,18 +581,11 @@ python scripts/doi_to_bibtex.py 10.1038/nature12345 --clipboard
 ### Example 1: Building a Bibliography for a Paper
 
 ```bash
-# Step 1: Find key papers on your topic
-python scripts/search_google_scholar.py "transformer neural networks" \
-  --year-start 2017 \
-  --limit 50 \
-  --output transformers_gs.json
+# Step 1: Start from a list of identifiers. paper-lookup writes one; so does
+#         exporting from Zotero, or copying DOIs out of a reading list.
+#         transformers_gs.json here is just {"results": [{"doi": "..."}, ...]}
 
-python scripts/search_pubmed.py "deep learning medical imaging" \
-  --date-start 2020 \
-  --limit 50 \
-  --output medical_dl_pm.json
-
-# Step 2: Extract metadata from search results
+# Step 2: Extract metadata for each
 python scripts/extract_metadata.py \
   --input transformers_gs.json \
   --output transformers.bib
@@ -940,28 +672,6 @@ python scripts/validate_citations.py clean_references.bib \
 cat final_validation.json
 ```
 
-### Example 4: Finding and Citing Seminal Papers
-
-```bash
-# Find highly cited papers on a topic
-python scripts/search_google_scholar.py "AlphaFold protein structure" \
-  --year-start 2020 \
-  --year-end 2024 \
-  --sort-by citations \
-  --limit 20 \
-  --output alphafold_seminal.json
-
-# Extract the top 10 by citation count
-# (script will have included citation counts in JSON)
-
-# Convert to BibTeX
-python scripts/extract_metadata.py \
-  --input alphafold_seminal.json \
-  --output alphafold_refs.bib
-
-# The BibTeX file now contains the most influential papers
-```
-
 ## Integration with Other Skills
 
 ### Literature Review Skill
@@ -973,9 +683,9 @@ python scripts/extract_metadata.py \
 
 **Combined workflow**:
 1. Use literature-review for systematic search methodology
-2. Use citation-management to extract and validate citations
+2. Use bibtex-manager to extract and validate citations
 3. Use literature-review to synthesize findings
-4. Use citation-management to ensure bibliography accuracy
+4. Use bibtex-manager to ensure bibliography accuracy
 
 ### Scientific Writing Skill
 
@@ -998,15 +708,12 @@ python scripts/extract_metadata.py \
 ### Bundled Resources
 
 **References** (in `references/`):
-- `google_scholar_search.md`: Complete Google Scholar search guide
-- `pubmed_search.md`: PubMed and E-utilities API documentation
 - `metadata_extraction.md`: Metadata sources and field requirements
 - `citation_validation.md`: Validation criteria and quality checks
 - `bibtex_formatting.md`: BibTeX entry types and formatting rules
 
 **Scripts** (in `scripts/`):
-- `search_google_scholar.py`: Google Scholar search automation
-- `search_pubmed.py`: PubMed E-utilities API client
+- `doi_to_bibtex.py`: one identifier in, one BibTeX entry out
 - `extract_metadata.py`: Universal metadata extractor
 - `validate_citations.py`: Citation validation and verification
 - `format_bibtex.py`: BibTeX formatter and cleaner
@@ -1048,10 +755,6 @@ pip install requests  # HTTP requests for APIs
 pip install bibtexparser  # BibTeX parsing and formatting
 pip install biopython  # PubMed E-utilities access
 
-# Optional (for Google Scholar)
-pip install scholarly  # Google Scholar API wrapper
-# or
-pip install selenium  # For more robust Scholar scraping
 ```
 
 ### Optional Tools
@@ -1064,10 +767,9 @@ pip install pylatexenc  # LaTeX special character handling
 
 ## Summary
 
-The citation-management skill provides:
+The bibtex-manager skill provides:
 
-1. **Comprehensive search capabilities** for Google Scholar and PubMed
-2. **Automated metadata extraction** from DOI, PMID, arXiv ID, URLs
+1. **Automated metadata extraction** from DOI, PMID, arXiv ID, URLs
 3. **Citation validation** with DOI verification and completeness checking
 4. **BibTeX formatting** with standardization and cleaning tools
 5. **Quality assurance** through validation and reporting

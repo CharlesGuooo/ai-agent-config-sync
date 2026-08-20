@@ -73,7 +73,7 @@ Route each weakness to the skill that owns it:
 - Unsupported claim / missing ablation / rejection risk → **paper-stress-test**
 - Missing prose / a section to draft → **scientific-writing**
 - Wording / de-AI / tense / LaTeX / bib → **latex-paper-en**
-- Fabricated or wrong citation → **citation-management**
+- Fabricated or wrong citation → **bibtex-manager**
 
 Do the minimum fix the reviewer asked for. Don't gold-plate beyond the weakness.
 

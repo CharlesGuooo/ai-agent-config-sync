@@ -331,9 +331,7 @@ This skill enhances scientific writing by providing:
 | Citation verification | `parallel-web` skill (`parallel_web.py extract`) |
 | Deep research (any topic) | `research-lookup` or `parallel-web` skill |
 | Academic paper search | `research-lookup` (auto-routes to Perplexity) |
-| Google Scholar search | `citation-management` skill |
-| PubMed search | `citation-management` skill |
-| DOI to BibTeX | `citation-management` skill |
+| DOI to BibTeX | `bibtex-manager` skill |
 | Metadata verification | `parallel-web` skill (`parallel_web.py search` or `extract`) |
 
 ---

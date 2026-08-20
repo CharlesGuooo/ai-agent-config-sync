@@ -26,7 +26,7 @@ sub-pack, `cd` into it, and that pack's skills load — the others stay out of c
 |---|---|---|
 | Looking for prior work, or mining papers you already have | `literature/` | `paper-lookup` (11 scholarly APIs, free), `paper-library` (your own PDFs), `literature-review` (systematic protocol), `survey-outline` (comparison table) |
 | Turning a reference into BibTeX, or checking a `.bib` | `literature/` | `bibtex-manager` |
-| Deciding what to do, or how you would know it failed | `gates/` | `hypothesis-generation`, then `experimental-design` |
+| Deciding what to do, and what would prove you wrong | `gates/` | `idea-triage` (kill the rest), `hypothesis-generation`, `falsification-design` (the number that ends the claim), `experimental-design` |
 | Writing or restructuring the manuscript | `manuscript/` | `paper-writing` (what the prose says), `latex-paper-en` (inside the `.tex`), `academic-humanizer` (de-AI a draft), `terminology-ledger` (notation consistency) |
 | Making the figures | `manuscript/` | `paper-figures` |
 | Formatting for a venue, or packaging the artifact | `manuscript/` | `venue-templates`, `repro-pack` |
@@ -40,14 +40,31 @@ papers in flight are usually in different ones.
 
 | Phase | `cd` | First moves |
 |---|---|---|
-| No committed direction | `gates/` | `hypothesis-generation` |
-| Direction chosen, nothing run | `gates/` then `literature/` | `experimental-design`, then `paper-lookup` to check nobody has published it |
-| Results in hand, nothing written | `manuscript/` | `paper-writing` first (decide the argument), then `paper-figures` and `latex-paper-en` |
+| No committed direction | `gates/` | `idea-triage` — it forces at least one kill, and refuses a zero-kill decision |
+| Direction chosen, nothing run | `gates/` then `literature/` | `falsification-design` → `experimental-design` → `ablation-planning`, then `paper-lookup` to check nobody has published it |
+| Results in hand, nothing written | `gates/` then `manuscript/` | `claim-calibration` first — it sets what the numbers license you to say — then `paper-writing`, `paper-figures`, `latex-paper-en` |
 | Draft exists, ~2 weeks out | `manuscript/` | `paper-figures` → `terminology-ledger` → `academic-humanizer` |
 | Days out | `review/` | `paper-stress-test` → fix → `auto-review-loop` |
 | Submitting | `manuscript/` | `venue-templates`, then compile |
 | Reviews received | `review/` | `rebuttal` |
 | Accepted | `talks/` + `manuscript/` | `scientific-slides` / `latex-posters`, and `repro-pack` |
+
+## The gates, and why they are a sub-pack
+
+Four of the six skills in `gates/` exist nowhere else — not in this pack before now, and not in any
+of the published research-agent systems surveyed. Each runs **before** the thing it authorises,
+emits an artifact a human approves or rejects, and refuses to close on an unrecorded decision.
+
+| Skill | Authorises | The move nothing else makes |
+|---|---|---|
+| `idea-triage` | committing to a direction | judges each idea by the paper it produces if the experiment merely *works as expected*, not by how it reads at proposal |
+| `falsification-design` | launching the run | a numeric kill threshold you confirm you would honour, plus a **closed list of which excuses will be admissible** when it fails |
+| `ablation-planning` | the results table | walks twelve *kinds* of ablation, not the boxes in your architecture figure, and diffs against three competitors' tables |
+| `claim-calibration` | what the paper asserts | grades outcome, mechanism and honesty **separately**, and resolves every headline number to a file on disk |
+
+They chain: kills seed claims, claims get thresholds, thresholds request ablations, ablations
+license claims. Each also works alone — the artifacts are the state, and the state store is only an
+index of them.
 
 ## Cost and credentials
 

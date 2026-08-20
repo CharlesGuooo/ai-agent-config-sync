@@ -344,11 +344,15 @@ index anymore.
   - `value-dividend-screener` — Screen US stocks for high-quality dividend opportunities combining value characteristics (P/E ratio under 20, P/B ratio under 2), attract...
   - `vcp-screener` — Screen S&P 500 stocks for Mark Minervini's Volatility Contraction Pattern (VCP).
 
-#### research-project (25)
+#### research-project (29)
 - `research-router` — Routes a research task to one of five sub-packs under ~/research-project/ — literature, gates, manuscript, review, talks.
 - **gates/**
+  - `ablation-planning` — Enumerates the ablations a paper actually needs, then costs and orders them against a compute budget and maps each to the claim it defends.
+  - `claim-calibration` — Decides what your results license you to say, and sets that as the ceiling before the abstract is written.
   - `experimental-design` — Designs a study BEFORE data is collected — the design type, randomization, blocking, and how treatment combinations are laid out so the r...
+  - `falsification-design` — Fixes the result that would end the claim, before the experiment runs.
   - `hypothesis-generation` — Structured hypothesis formulation from observations.
+  - `idea-triage` — Decides which research idea to commit to by eliminating the rest.
 - **literature/**
   - `bibtex-manager` — Turns a reference you already have into a correct BibTeX entry, and checks the ones already in your .bib.
   - `literature-review` — Conduct comprehensive, systematic literature reviews using multiple academic databases (arXiv, Semantic Scholar, ACL Anthology, DBLP, Ope...

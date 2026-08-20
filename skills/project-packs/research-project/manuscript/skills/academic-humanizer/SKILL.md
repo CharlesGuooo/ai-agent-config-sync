@@ -28,6 +28,11 @@ metadata:
 > full NIH Specific Aims rewrite — are in [examples/before-after.md](examples/before-after.md);
 > read them when the register of a rewrite is unclear.
 >
+> **A verb is not always the problem.** If a sentence attributes a result to a mechanism nobody
+> measured, softening the verb hides the defect instead of fixing it — "may enable" asserts the
+> same unmeasured cause, less legibly. Where the claim is causal, `claim-calibration` in
+> `~/research-project/gates/` sets the ceiling first; this skill words the sentence beneath it.
+>
 > **If the source is a `.tex` file, count before you rewrite.** `latex-paper-en` ships a mechanical
 > counter (`scripts/deai_check.py`) that reads per-term occurrence budgets, strips citations, refs,
 > math and comments, and reports which sections are worst. Run it to *locate* the problem, then

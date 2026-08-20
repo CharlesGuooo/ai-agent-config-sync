@@ -26,6 +26,13 @@ Be ruthless and specific — vague praise is useless here. Work from the actual 
 Run three passes, then synthesize a prioritized fix list.
 
 ## Pass 1 — Claim audit (is every claim earned?)
+
+> **This pass asks whether evidence exists.** It does not ask whether the evidence supports the
+> *mechanism* the sentence asserts — a claim can be `Supported` here and still attribute the
+> result to a cause nobody measured. If the paper makes causal claims, run `claim-calibration`
+> in `~/research-project/gates/` first: it grades outcome, mechanism and honesty separately and
+> sets the wording ceiling this pass then audits against.
+
 Extract each **substantive claim** (contributions, "we show/prove/achieve", SOTA
 assertions, generalization claims, efficiency claims). For each, classify the support:
 

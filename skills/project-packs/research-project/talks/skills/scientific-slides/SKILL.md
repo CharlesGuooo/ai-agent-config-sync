@@ -13,6 +13,14 @@ license: MIT license
 compatibility: "paid — scripts/generate_slide_image.py and generate_slide_image_ai.py require OPENROUTER_API_KEY and are billed per generated image. Everything else in this skill is offline apart from pymupdf/Pillow/python-pptx and an optional LaTeX engine."
 metadata:
     skill-author: K-Dense Inc.
+    scanner-note: >-
+      skill-scanner reports 4 MEDIUM findings in scripts/generate_slide_image_ai.py, all in the
+      billed path and all expected for it. Line 227 is "HTTP request (potential exfiltration)" —
+      it is requests.post to {base_url}/chat/completions where base_url is the hardcoded literal
+      https://openrouter.ai/api/v1, not configurable from data; the only outbound host in either
+      AI script is openrouter.ai. Lines 277, 288 and 299 are "Base64 decoding (potential
+      obfuscation)" — they decode the data:image/...;base64 payload the API returns, i.e. the
+      generated PNG. This is a declared paid image client doing exactly what it says. Accepted.
 ---
 
 # Scientific Slides

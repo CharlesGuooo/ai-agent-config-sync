@@ -139,7 +139,7 @@ When a task becomes domain-specific, switch to the matching project directory an
 | Data analysis | `~/data-analysis-project/` |
 | Development | `~/dev-project/` |
 | Marketing | `~/marketing-project/` |
-| Research | `~/research-project/` |
+| Research | `~/research-project/` (container; cd into `literature/` `gates/` `manuscript/` `review/` `talks/` for actual skills) |
 | Productivity | `~/productivity-project/` |
 | Craft / 表达功力 (cross-cutting) | `~/craft-project/` (container; cd into `writing/` `design/`) |
 

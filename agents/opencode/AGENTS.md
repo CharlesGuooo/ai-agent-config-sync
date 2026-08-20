@@ -141,7 +141,7 @@ When a task becomes domain-specific, switch to the matching project directory an
 | Data analysis | `~/data-analysis-project/` |
 | Development | `~/dev-project/` |
 | Marketing | `~/marketing-project/` |
-| Research | `~/research-project/` |
+| Research | `~/research-project/` (container; cd into `literature/` `gates/` `manuscript/` `review/` `talks/`) |
 | Office | `~/office-project/` |
 | Productivity | `~/productivity-project/` |
 | Craft (cross-cutting) | `~/craft-project/` (cd into `writing/` `design/`) |

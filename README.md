@@ -6,7 +6,7 @@ Cursor · OpenCode · Pi)。这份 README 是**给人看的概览**:是什么、
 > **👉 怎么用这些 skill(流程 + 该说什么话)在 `PLAYBOOK.md`** —— 装了不会用等于没装,先读它。
 > **给 agent 看的运行时路由**在 `HARNESS.md`(自动生成,权威、不漂移)。
 > **装机指南**在 `INSTALL.md`,**精确文件映射**在 `INVENTORY.md`。
-> 本文刻意**不逐个枚举** ~365 个 skill —— 那份清单在 `HARNESS.md`,改一个 skill 就自动更新。
+> 本文刻意**不逐个枚举** 357 个 skill —— 那份清单在 `HARNESS.md`,改一个 skill 就自动更新。
 
 ---
 
@@ -38,7 +38,7 @@ Cursor · OpenCode · Pi)。这份 README 是**给人看的概览**:是什么、
 | | Claude Code | Codex | Cursor | OpenCode | **Pi** |
 | --- | :-: | :-: | :-: | :-: | :-: |
 | 6 条核心原则 | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 39 个全局 skill | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 38 个全局 skill | ✅ | ✅ | ✅ | ✅ | ✅ |
 | 本地 pack skill | ✅ | ✅ | ✅ | ✅ | ✅ |
 | MCP(9 always-on) | ✅ | ✅ | ✅ | ✅ | ❌ 官方不支持 |
 | guard/format hooks | ✅ | ✅ | ❌ | ❌ | ❌ 无声明式 hooks |
@@ -77,7 +77,7 @@ DESIGN-IT-TWICE、`improve-codebase-architecture`、`dispatching-parallel-agents
 - **CLAUDE.md / AGENTS.md** — 分层上下文,每会话自动加载(6 原则 + 路由)。
 - **Hooks** — `guard.mjs`(PreToolUse:拦密钥文件 / 危险命令)+ `format.mjs`(PostToolUse:
   项目 opt-in 才格式化),跑在 **Claude + Codex**。(Cursor/OpenCode 走各自机制,待补。)
-- **Skills** — 渐进式披露:39 个全局 skill 描述匹配自动触发;~365 个 local pack skill 进目录才加载。
+- **Skills** — 渐进式披露:38 个全局 skill 描述匹配自动触发;357 个 local pack skill 进目录才加载。
 - **LSP** — Claude:pyright / typescript / gopls / rust-analyzer;OpenCode:原生(`lsp:true`,40+ 语言);
   Cursor:编辑器内建;Codex:无。
 - **MCP** — 9 always-on + 10 opt-in(见下),API key 全走 Windows env var。
@@ -108,21 +108,21 @@ DESIGN-IT-TWICE、`improve-codebase-architecture`、`dispatching-parallel-agents
 
 ---
 
-## 📦 Local Project Packs(8 个,~365 skills)
+## 📦 Local Project Packs(8 个,357 skills)
 
 按领域组织。**`cd` 进目录,agent 自动加载该 pack 的 skills**(token 成本最低)。
 **每个 pack 的完整 skill 清单见 `HARNESS.md`**(生成、不漂移)——下表只给领域和规模:
 
 | Pack | 规模 | 领域 / 何时进 |
 | --- | --- | --- |
-| `~/dev-project/` | 87 | 软件开发(8 层:frontend / backend / cloud-platform / testing-qa / devops-sre / agent-dev / ml + 根) |
+| `~/dev-project/` | 94 | 软件开发(8 层:frontend / backend / cloud-platform / testing-qa / devops-sre / agent-dev / ml + 根) |
 | `~/finance-project/` | 129 | 金融/投资/交易(容器:trading / research / macro / modeling / portfolio / quant-methods / advisory) |
-| `~/research-project/` | 45 | 学术/科研(AI/CS 取向:文献 / 写作 / latex / 图表 / paper-library / repro-pack / 深度检索管线) |
-| `~/marketing-project/` | 39 | 营销/SEO/增长/音频(ElevenLabs 套件)/ 小红书 · WeChat |
+| `~/research-project/` | 24 | 学术/科研(AI/CS 取向。容器,5 个子包:literature / gates / manuscript / review / talks) |
+| `~/marketing-project/` | 40 | 营销/SEO/增长/音频(ElevenLabs 套件)/ 小红书 · WeChat |
 | `~/productivity-project/` | 22 | 工作流/PM(Jira / Notion / Obsidian / Google Workspace) |
 | `~/data-analysis-project/` | 18 | 数据分析/EDA/统计/可视化 |
 | `~/ios-project/` | 21 | iOS/SwiftUI(widget/Live Activity / Rive / 动画 / HIG 设计 / Mac 构建 runbook) |
-| `~/craft-project/` | 3 | 跨领域「功力」(writing:去 AI 味;design:审美/anti-slop) |
+| `~/craft-project/` | 9 | 跨领域「功力」(writing:去 AI 味;design:审美/anti-slop) |
 
 新开一个任意项目时:让 agent 读 `C:\Users\PC\HARNESS.md`,它据此决定 cd 进哪个 pack。
 
@@ -193,7 +193,7 @@ copy "C:\Users\PC\MCP-Templates\<x>.mcp.json" ".mcp.json"   # 项目级 opt-in M
 | --- | --- |
 | 主 agent | **5**(Claude / Cursor / Codex / OpenCode / Pi)+ 1(LM Studio,仅 MCP) |
 | 全局 skills | **39**(10 分类) |
-| 项目本地 skills | **~365**(8 packs;权威清单见 `HARNESS.md`) |
+| 项目本地 skills | **357**(8 packs;权威清单见 `HARNESS.md`) |
 | MCP | 9 always-on + 10 opt-in（+3 iOS/macOS 模板） |
 | Skill parity | ✅ 5/5 · MCP 4/5 · hooks 2/5(见能力矩阵) |
 

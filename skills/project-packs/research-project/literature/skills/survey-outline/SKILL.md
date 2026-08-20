@@ -1,9 +1,21 @@
 ---
-user-invocable: true
+name: survey-outline
+description: >-
+  Builds a comparison table for a landscape survey — decides the items (what is being compared)
+  and the fields (what is being compared about them), then fills a first pass from model knowledge
+  and confirms it with you before any web search runs. Use for "调研一下这个领域有哪些方案",
+  "做个技术选型对比", "benchmark 调研", "survey the landscape", "compare these tools",
+  "补充调研对象", "补充调研字段". Produces outline.yaml and fields.yaml, which survey-deep then
+  fans out over. Distinct from literature-review, which follows a systematic-review protocol over
+  academic databases and writes prose, and from paper-library, which searches PDFs you already
+  have. This one produces a table, not a manuscript.
 allowed-tools: Read, Write, Glob, WebSearch, Task, AskUserQuestion
-description: 对目标话题进行初步调研，生成调研outline。用于学术调研、benchmark调研、技术选型等场景。
+user-invocable: true
+compatibility: "network — WebSearch and Task; no credentials required"
+metadata:
+  category: research
+  tags: [survey, landscape, comparison-table, technology-selection]
 ---
-
 # Research Skill - 初步调研
 
 ## 触发方式
@@ -142,3 +154,18 @@ prompt = f"""## 任务
 - `/research-add-items` - 补充items
 - `/research-add-fields` - 补充字段
 - `/research-deep` - 开始深度调研
+
+## 补充模式
+
+Outline 建好之后，两种就地追加的模式。都是原地修改，都需要你确认。
+
+### 补充 items（调研对象）
+
+在当前工作目录找 `*/outline.yaml`，然后并行取两路来源：问你需要补哪些、有没有具体名称；同时问要不要
+启动 agent 搜索更多 items。合并时追加到 `outline.yaml`、展示给你确认、避免重复，再保存。
+
+### 补充 fields（调研字段）
+
+在当前工作目录找 `*/fields.yaml`，读现有字段定义。来源二选一：你直接给出字段名称和描述，或启动
+web-search-agent 搜索该领域常用字段。展示建议的新字段列表 → 你确认哪些要加、指定分类和
+`detail_level` → 追加到 `fields.yaml` 保存。

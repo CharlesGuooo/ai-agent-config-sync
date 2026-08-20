@@ -136,7 +136,7 @@ When a task is domain-specific, open the matching project directory in Cursor an
 | Finance (container, cd a sub) | `~/finance-project/{trading,research,macro,modeling,portfolio,quant-methods,advisory/{ib,pe,wealth,fund-admin,compliance}}/` |
 | Data analysis | `~/data-analysis-project/` |
 | Marketing | `~/marketing-project/` |
-| Research / Academic | `~/research-project/` |
+| Research / Academic | `~/research-project/<sub>/` (literature / gates / manuscript / review / talks) |
 | Productivity / PM | `~/productivity-project/` |
 | iOS / Swift / SwiftUI | `~/ios-project/` |
 | Craft (writing / design, cross-cutting) | `~/craft-project/{writing,design}/` |

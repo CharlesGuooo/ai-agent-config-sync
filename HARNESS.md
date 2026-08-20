@@ -79,7 +79,7 @@ Pick by task, then `cd ~/<pack>[/<sub>]` so the pack's skills auto-load. Documen
 | --- | --- | --- |
 | Software dev (general) | `~/dev-project/` | `frontend` `backend` `cloud-platform` `testing-qa` `devops-sre` `agent-dev` `ml` |
 | Finance / investing / trading | `~/finance-project/<sub>/` | `trading` `research` `macro` `modeling` `portfolio` `quant-methods` `advisory/{ib,pe,wealth,fund-admin,compliance}` |
-| Academic / 科研 (AI/CS focus) | `~/research-project/` | flat (LLM/3DGS/systems paper workflow) |
+| Academic / 科研 (AI/CS focus) | `~/research-project/<sub>/` | `literature` `gates` `manuscript` `review` `talks` |
 | Data analysis / stats / viz | `~/data-analysis-project/` | flat |
 | Marketing / SEO / content / ads | `~/marketing-project/` | flat |
 | Productivity / PM / notes | `~/productivity-project/` | flat |
@@ -344,32 +344,36 @@ index anymore.
   - `value-dividend-screener` — Screen US stocks for high-quality dividend opportunities combining value characteristics (P/E ratio under 20, P/B ratio under 2), attract...
   - `vcp-screener` — Screen S&P 500 stocks for Mark Minervini's Volatility Contraction Pattern (VCP).
 
-#### research-project (25)
-- `academic-humanizer` — Strips AI tells from academic prose — papers, theses, abstracts, rebuttals — and from NSF/NIH funding proposals, while keeping the precis...
-- `auto-review-loop` — Iteratively improve YOUR OWN research artifact (paper draft, experiment writeup, or codebase) by having a DIFFERENT model review it adver...
-- `bibtex-manager` — Turns a reference you already have into a correct BibTeX entry, and checks the ones already in your .bib.
-- `hypothesis-generation` — Structured hypothesis formulation from observations.
-- `latex-paper-en` — Operates on an existing .tex manuscript — compiles it and diagnoses build failures, checks venue formatting and bibliography, and reviews...
-- `latex-posters` — Create professional research posters in LaTeX using beamerposter, tikzposter, or baposter.
-- `literature-review` — Conduct comprehensive, systematic literature reviews using multiple academic databases (arXiv, Semantic Scholar, ACL Anthology, DBLP, Ope...
-- `narrative-flow` — Revise an already-drafted paper for STRUCTURE and FLOW — reverse-outline diagnostics, one-message-per-paragraph rewriting, and section-sp...
-- `paper-figures` — Makes a paper's matplotlib figures — house style, journal sizing, colorblind and grayscale survival, multi-panel layout, export.
-- `paper-library` — Search and reason over a LOCAL library of collected research papers (downloaded arXiv/conference PDFs).
-- `paper-reading-guide` — Use this whenever the user wants to read, understand, or be walked through an academic paper — whether they share a PDF, arxiv/URL link, ...
-- `paper-stress-test` — Adversarially stress-test YOUR OWN paper draft before submission — as the harshest fair reviewer would.
-- `peer-review` — Reviews someone else's manuscript or grant against a checklist, and grades the quality of the evidence behind its claims.
-- `pptx-posters` — Create research posters using HTML/CSS that can be exported to PDF or PPTX.
-- `repro-pack` — Assemble a reproducibility package for an ML/systems paper so a reviewer or future-you can re-run the experiments.
-- `research-lookup` — Look up current research information using the Parallel Chat API (primary) or Perplexity sonar-pro-search (academic paper searches).
-- `research-zh/research` — 对目标话题进行初步调研，生成调研outline。用于学术调研、benchmark调研、技术选型等场景。
-- `research-zh/research-add-fields` — 向现有调研outline补充字段定义。
-- `research-zh/research-add-items` — 向现有调研outline补充items（调研对象）。
-- `research-zh/research-deep` — 读取调研outline，为每个item启动独立agent进行深度调研。禁用task output。
-- `research-zh/research-report` — 将deep调研结果汇总为markdown报告，覆盖所有字段，跳过不确定值。
-- `scientific-slides` — Build slide decks and presentations for research talks.
-- `scientific-writing` — Core skill for the deep research and writing tool.
-- `terminology-ledger` — Keep terminology, acronyms, and notation consistent across a manuscript.
-- `venue-templates` — Access comprehensive LaTeX templates, formatting requirements, and submission guidelines for major scientific publication venues (Nature,...
+#### research-project (24)
+- `research-router` — Routes a research task to one of five sub-packs under ~/research-project/ — literature, gates, manuscript, review, talks.
+- **gates/**
+  - `hypothesis-generation` — Structured hypothesis formulation from observations.
+- **literature/**
+  - `bibtex-manager` — Turns a reference you already have into a correct BibTeX entry, and checks the ones already in your .bib.
+  - `literature-review` — Conduct comprehensive, systematic literature reviews using multiple academic databases (arXiv, Semantic Scholar, ACL Anthology, DBLP, Ope...
+  - `paper-library` — Search and reason over a LOCAL library of collected research papers (downloaded arXiv/conference PDFs).
+  - `paper-reading-guide` — Use this whenever the user wants to read, understand, or be walked through an academic paper — whether they share a PDF, arxiv/URL link, ...
+  - `research-lookup` — Look up current research information using the Parallel Chat API (primary) or Perplexity sonar-pro-search (academic paper searches).
+  - `survey-deep` — Fans out one independent agent per item in a survey outline, each researching that item against every field and writing a structured JSON...
+  - `survey-outline` — Builds a comparison table for a landscape survey — decides the items (what is being compared) and the fields (what is being compared abou...
+  - `survey-report` — Collapses the per-item JSON results of a deep survey pass into one markdown report covering every field, and leaves uncertain values mark...
+- **manuscript/**
+  - `academic-humanizer` — Strips AI tells from academic prose — papers, theses, abstracts, rebuttals — and from NSF/NIH funding proposals, while keeping the precis...
+  - `latex-paper-en` — Operates on an existing .tex manuscript — compiles it and diagnoses build failures, checks venue formatting and bibliography, and reviews...
+  - `narrative-flow` — Revise an already-drafted paper for STRUCTURE and FLOW — reverse-outline diagnostics, one-message-per-paragraph rewriting, and section-sp...
+  - `paper-figures` — Makes a paper's matplotlib figures — house style, journal sizing, colorblind and grayscale survival, multi-panel layout, export.
+  - `repro-pack` — Assemble a reproducibility package for an ML/systems paper so a reviewer or future-you can re-run the experiments.
+  - `scientific-writing` — Core skill for the deep research and writing tool.
+  - `terminology-ledger` — Keep terminology, acronyms, and notation consistent across a manuscript.
+  - `venue-templates` — Access comprehensive LaTeX templates, formatting requirements, and submission guidelines for major scientific publication venues (Nature,...
+- **review/**
+  - `auto-review-loop` — Iteratively improve YOUR OWN research artifact (paper draft, experiment writeup, or codebase) by having a DIFFERENT model review it adver...
+  - `paper-stress-test` — Adversarially stress-test YOUR OWN paper draft before submission — as the harshest fair reviewer would.
+  - `peer-review` — Reviews someone else's manuscript or grant against a checklist, and grades the quality of the evidence behind its claims.
+- **talks/**
+  - `latex-posters` — Create professional research posters in LaTeX using beamerposter, tikzposter, or baposter.
+  - `pptx-posters` — Create research posters using HTML/CSS that can be exported to PDF or PPTX.
+  - `scientific-slides` — Build slide decks and presentations for research talks.
 
 #### data-analysis-project (18)
 - `dask` — Distributed computing for larger-than-RAM pandas/NumPy workflows.

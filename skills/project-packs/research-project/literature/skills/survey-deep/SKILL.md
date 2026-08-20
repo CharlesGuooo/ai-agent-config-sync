@@ -1,9 +1,19 @@
 ---
-user-invocable: true
-description: 读取调研outline，为每个item启动独立agent进行深度调研。禁用task output。
+name: survey-deep
+description: >-
+  Fans out one independent agent per item in a survey outline, each researching that item against
+  every field and writing a structured JSON result. Use after survey-outline has produced
+  outline.yaml and fields.yaml: "深入调研每一个", "跑 deep 调研", "run the deep pass",
+  "research each item in detail". Disables task output so N parallel agents do not flood the
+  session. Distinct from survey-outline, which decides what to compare, and survey-report, which
+  collapses these results into a readable document.
 allowed-tools: Bash, Read, Write, Glob, WebSearch, Task
+user-invocable: true
+compatibility: "network — WebSearch and Task; no credentials required"
+metadata:
+  category: research
+  tags: [survey, parallel-agents, deep-research]
 ---
-
 # Research Deep - 深度调研
 
 ## 触发方式
@@ -52,7 +62,7 @@ prompt = f"""## 任务
 
 ## 验证
 完成JSON输出后，运行验证脚本确保字段完整覆盖：
-python ~/.claude/skills/research/validate_json.py -f {fields_path} -j {output_path}
+python ../survey-outline/scripts/validate_json.py -f {fields_path} -j {output_path}
 验证通过后才算完成任务。
 """
 ```
@@ -62,10 +72,10 @@ python ~/.claude/skills/research/validate_json.py -f {fields_path} -j {output_pa
 ## 任务
 调研 name: GitHub Copilot
 category: 国际产品
-description: Microsoft/GitHub开发，首个主流AI编程助手，市场份额约40%，输出结构化JSON到 /home/weizhena/AIcoding/aicoding-history/results/GitHub_Copilot.json
+description: Microsoft/GitHub开发，首个主流AI编程助手，市场份额约40%，输出结构化JSON到 ./<topic_slug>/results/GitHub_Copilot.json
 
 ## 字段定义
-读取 /home/weizhena/AIcoding/aicoding-history/fields.yaml 获取所有字段定义
+读取 ./<topic_slug>/fields.yaml 获取所有字段定义
 
 ## 输出要求
 1. 按fields.yaml定义的字段输出JSON
@@ -74,11 +84,11 @@ description: Microsoft/GitHub开发，首个主流AI编程助手，市场份额�
 4. 所有字段值必须使用中文输出（调研过程可用英文，但最终JSON值为中文）
 
 ## 输出路径
-/home/weizhena/AIcoding/aicoding-history/results/GitHub_Copilot.json
+./<topic_slug>/results/GitHub_Copilot.json
 
 ## 验证
 完成JSON输出后，运行验证脚本确保字段完整覆盖：
-python ~/.claude/skills/research/validate_json.py -f /home/weizhena/AIcoding/aicoding-history/fields.yaml -j /home/weizhena/AIcoding/aicoding-history/results/GitHub_Copilot.json
+python ../survey-outline/scripts/validate_json.py -f ./<topic_slug>/fields.yaml -j ./<topic_slug>/results/GitHub_Copilot.json
 验证通过后才算完成任务。
 ```
 

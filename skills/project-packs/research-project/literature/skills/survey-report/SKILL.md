@@ -1,9 +1,19 @@
 ---
-user-invocable: true
-description: 将deep调研结果汇总为markdown报告，覆盖所有字段，跳过不确定值。
+name: survey-report
+description: >-
+  Collapses the per-item JSON results of a deep survey pass into one markdown report covering
+  every field, and leaves uncertain values marked rather than guessed. Use after survey-deep:
+  "汇总成报告", "生成调研报告", "write up the survey", "turn these results into a document".
+  Skipping an uncertain value is deliberate — a survey table that quietly fills gaps is worse
+  than one with holes in it. Distinct from survey-outline and survey-deep, which produce the
+  table and fill it.
 allowed-tools: Read, Write, Glob, Bash, AskUserQuestion
+user-invocable: true
+compatibility: "offline — reads the JSON results already on disk"
+metadata:
+  category: research
+  tags: [survey, report, synthesis]
 ---
-
 # Research Report - 汇总报告
 
 ## 触发方式

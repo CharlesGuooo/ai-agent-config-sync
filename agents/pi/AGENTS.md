@@ -188,7 +188,7 @@ pack's skills load.
 | Data analysis | `~/data-analysis-project/` |
 | Development | `~/dev-project/` |
 | Marketing | `~/marketing-project/` |
-| Research | `~/research-project/` |
+| Research | `~/research-project/` (cd into `literature/` `gates/` `manuscript/` `review/` `talks/`) |
 | Productivity | `~/productivity-project/` |
 | Craft / 表达功力 | `~/craft-project/` (cd into `writing/` `design/`) |
 

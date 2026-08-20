@@ -138,7 +138,7 @@ Use these directories as entry points:
 - `~/data-analysis-project/`
 - `~/dev-project/`
 - `~/marketing-project/`
-- `~/research-project/`
+- `~/research-project/<sub>/` (container: literature / gates / manuscript / review / talks)
 - `~/office-project/`
 - `~/productivity-project/`
 - `~/craft-project/` (container: cd into `writing/` / `design/`)

@@ -130,7 +130,7 @@ When a task becomes domain-specific, switch to the matching project directory an
 | Data analysis | `~/data-analysis-project/` | EDA, visualization, statistics, forecasting |
 | Development | `~/dev-project/` | frontend, backend, API, Docker, CI/CD, React |
 | Marketing | `~/marketing-project/` | SEO, ad copy, content strategy, campaigns |
-| Research | `~/research-project/` | papers, reviews, grants, peer review |
+| Research | `~/research-project/<sub>/` | container: `literature` `gates` `manuscript` `review` `talks` |
 | Office | `~/office-project/` | PDF, Word, Excel, PowerPoint |
 | Productivity | `~/productivity-project/` | Obsidian, Jira, Google Workspace, PM workflows |
 | Craft (cross-cutting) | `~/craft-project/<sub>/` | writing (humanizer / anti-slop), design (taste / aesthetics) |

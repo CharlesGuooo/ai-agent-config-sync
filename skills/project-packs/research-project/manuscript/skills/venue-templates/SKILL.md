@@ -303,7 +303,7 @@ This skill works seamlessly with other scientific skills:
 - Combine for complete manuscript preparation
 
 ### Literature Review
-- Use **literature-review** skill for systematic literature search and synthesis
+- Use **paper-lookup** for literature search, and **field-map** (gates/) to map the field
 - Apply appropriate citation style from venue requirements
 - Format references according to template specifications
 

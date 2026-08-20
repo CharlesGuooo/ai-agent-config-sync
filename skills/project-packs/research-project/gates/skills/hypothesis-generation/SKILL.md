@@ -1,6 +1,6 @@
 ---
 name: hypothesis-generation
-description: Structured hypothesis formulation from observations. Use when you have experimental observations or data and need to formulate testable hypotheses with predictions, propose mechanisms, and design experiments to test them. Follows scientific method framework. For open-ended ideation use the global brainstorming skill.
+description: Structured hypothesis formulation from observations. Use when you have experimental observations or data and need to formulate testable hypotheses with predictions, propose mechanisms, and design experiments to test them. Follows scientific method framework. For turning a research direction into candidates in the first place use field-map then idea-forge; this skill starts from an observation you already have.
 allowed-tools: Read Write Edit Bash
 compatibility: "offline — no scripts, no network, no credentials"
 license: MIT license
@@ -94,9 +94,15 @@ Assess each hypothesis against established quality criteria from `references/hyp
 **Explanatory Power:** How much of the phenomenon does it explain?
 **Scope:** What range of observations does it cover?
 **Consistency:** Does it align with established principles?
-**Novelty:** Does it offer new insights beyond existing explanations?
 
 Explicitly note the strengths and weaknesses of each hypothesis.
+
+> **Do not score novelty here, or anywhere.** A time-split evaluation against what actually got
+> published in the following 30 months found LLM-judged novelty correlates *negatively* with real
+> future impact (rho = -0.29, p < 0.01) — models "systematically overvalue novel-sounding ideas
+> that never materialize" ([2603.15164](https://arxiv.org/abs/2603.15164)). A novelty column is
+> not a weak signal to down-weight; it points the wrong way. Novelty is settled by a documented
+> search boundary and the named nearest prior work, which is `field-map`'s job, not a rating.
 
 ### 6. Design Experimental Tests
 

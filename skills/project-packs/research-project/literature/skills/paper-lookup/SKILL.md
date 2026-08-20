@@ -7,8 +7,8 @@ description: >-
   cites what, list an author's work, or get an open-access PDF. Use for "找几篇关于 X 的论文",
   "这个 DOI 是什么", "谁引用了这篇", "有没有开放获取的版本", "find papers on X", "look up this
   DOI", "who cites this paper", "get me the PDF". Needs no credentials. Distinct from
-  paper-library, which searches PDFs you have already downloaded; from literature-review, which
-  runs a systematic-review protocol and writes prose; and from bibtex-manager, which turns an
+  paper-library, which searches PDFs you have already downloaded; from field-map in gates/, which
+  maps what a field contests rather than retrieving; and from bibtex-manager, which turns an
   identifier you already have into a correct BibTeX entry rather than finding it.
 allowed-tools: Read, Bash
 license: MIT
@@ -19,7 +19,7 @@ metadata:
   source: >-
     Vendored verbatim from github.com/K-Dense-AI/scientific-agent-skills skills/paper-lookup
     (MIT, (c) 2025 K-Dense Inc.), at v2.0. Frontmatter adapted here: Chinese triggers added,
-    boundaries stated against paper-library / literature-review / bibtex-manager, allowed-tools
+    boundaries stated against paper-library / field-map / bibtex-manager, allowed-tools
     written in the comma form skill-scanner parses, and the upstream-relative tests/ pointer
     dropped. Body and all 11 reference files and 5 scripts are unmodified.
   scanner-note: >-

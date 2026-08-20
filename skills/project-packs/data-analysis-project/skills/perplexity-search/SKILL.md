@@ -305,7 +305,7 @@ This skill complements other scientific skills:
 
 ### Literature Review
 
-Use with `literature-review` skill:
+Use with the `field-map` skill (~/research-project/gates/):
 1. Use Perplexity to find recent papers and preprints
 2. Supplement PubMed searches with real-time web results
 3. Verify citations and find related work

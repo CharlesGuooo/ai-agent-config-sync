@@ -39,7 +39,7 @@ Use this skill for **ALL** of the following:
 
 **Do NOT use this skill for:**
 - Academic paper searches (use `paper-lookup` in ~/research-project/literature/ — 11 scholarly APIs, no credentials)
-- Academic database searches (use the research-project pack: `paper-library` for a local corpus, `literature-review` for a systematic protocol)
+- Academic database searches (use the research-project pack: `paper-lookup` for retrieval, `paper-library` for a local corpus)
 
 ---
 
@@ -310,5 +310,5 @@ The script handles errors gracefully and returns structured error responses:
 |-------|---------|
 | `paper-lookup` (~/research-project/literature/) | Academic paper searches across 11 scholarly APIs |
 | `bibtex-manager` (~/research-project/) | DOI/PMID/arXiv to BibTeX, and validating an existing .bib |
-| `literature-review` | Systematic literature reviews across academic databases |
+| `field-map` (~/research-project/gates/) | Mapping what a field contests, to find research ideas |
 | `scientific-schematics` | Generate diagrams from research findings |

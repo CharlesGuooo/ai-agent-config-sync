@@ -6,8 +6,8 @@ description: >-
   and confirms it with you before any web search runs. Use for "调研一下这个领域有哪些方案",
   "做个技术选型对比", "benchmark 调研", "survey the landscape", "compare these tools",
   "补充调研对象", "补充调研字段". Produces outline.yaml and fields.yaml, which survey-deep then
-  fans out over. Distinct from literature-review, which follows a systematic-review protocol over
-  academic databases and writes prose, and from paper-library, which searches PDFs you already
+  fans out over. Distinct from field-map in gates/, which maps what a field contests in order to find research
+  ideas, and from paper-library, which searches PDFs you already
   have. This one produces a table, not a manuscript.
 allowed-tools: Read, Write, Glob, WebSearch, Task, AskUserQuestion
 user-invocable: true

@@ -7,7 +7,7 @@ description: >-
   resolves and flags duplicates. Use for "转成 bibtex", "DOI 转引用", "参考文献格式不对",
   "检查一下引用", "clean up my .bib", "does this citation resolve", "fix the bibliography".
   Does NOT find papers — for discovery use paper-lookup, and for a systematic search protocol
-  use literature-review. Distinct from latex-paper-en, whose bibliography module checks how
+  use field-map in gates/. Distinct from latex-paper-en, whose bibliography module checks how
   citations are used inside a .tex file rather than whether the entries themselves are right.
 allowed-tools: Read, Write, Edit, Bash
 license: MIT License
@@ -22,7 +22,7 @@ metadata:
 
 Turn identifiers into correct BibTeX, and keep an existing `.bib` correct. This skill extracts accurate metadata from CrossRef, PubMed and arXiv, validates citation information, and generates properly formatted entries. It does not search for papers — that is `paper-lookup`'s job, and keeping the two apart is what stops both firing on "find me papers about X".
 
-Critical for maintaining citation accuracy, avoiding reference errors, and ensuring reproducible research. Integrates seamlessly with the literature-review skill for comprehensive research workflows.
+Critical for maintaining citation accuracy, avoiding reference errors, and ensuring reproducible research. Pairs with `paper-lookup` for discovery and `field-map` for mapping a field.
 
 ## When to Use This Skill
 
@@ -321,15 +321,15 @@ cat validation.json
 
 #### Integration with Literature Review Skill
 
-This skill complements the `literature-review` skill:
+This skill complements `paper-lookup` and `field-map`:
 
 **Literature Review Skill** → Systematic search and synthesis
 **Citation Management Skill** → Technical citation handling
 
 **Combined Workflow**:
-1. Use `literature-review` for comprehensive multi-database search
+1. Use `paper-lookup` for multi-database search
 2. Use `bibtex-manager` to extract and validate all citations
-3. Use `literature-review` to synthesize findings thematically
+3. Use `field-map` (gates/) to map what the field contests
 4. Use `bibtex-manager` to verify final bibliography accuracy
 
 ```bash
@@ -682,9 +682,9 @@ cat final_validation.json
 - **Citation Management**: Metadata extraction and validation
 
 **Combined workflow**:
-1. Use literature-review for systematic search methodology
+1. Use paper-lookup for search
 2. Use bibtex-manager to extract and validate citations
-3. Use literature-review to synthesize findings
+3. Use field-map to map the field
 4. Use bibtex-manager to ensure bibliography accuracy
 
 ### Scientific Writing Skill

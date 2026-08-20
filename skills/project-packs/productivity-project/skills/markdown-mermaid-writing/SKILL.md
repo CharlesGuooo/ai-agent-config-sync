@@ -263,7 +263,7 @@ Workflow:
 3. Use scientific-schematics only for figures that truly need photorealistic/complex rendering
 ```
 
-### With `literature-review`
+### With `field-map` (~/research-project/gates/)
 
 Literature review produces summaries with lots of relationship data. Use this skill to:
 

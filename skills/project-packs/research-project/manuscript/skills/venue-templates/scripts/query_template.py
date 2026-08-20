@@ -196,9 +196,9 @@ def print_requirements(venue):
     if template['category'] == "journals":
         print(f"   {skill_path}/references/journals_formatting.md")
     elif template['category'] == "posters":
-        print(f"   {skill_path}/references/posters_guidelines.md")
+        print("   posters: see latex-posters in ~/research-project/talks/")
     elif template['category'] == "grants":
-        print(f"   {skill_path}/references/grants_requirements.md")
+        print("   grants: not covered in this pack")
     
     print()
 

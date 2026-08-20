@@ -365,7 +365,7 @@ index anymore.
   - `paper-writing` — Decides what a paper's prose should say, then writes it — argument first, sentences second.
   - `repro-pack` — Assemble a reproducibility package for an ML/systems paper so a reviewer or future-you can re-run the experiments.
   - `terminology-ledger` — Keep terminology, acronyms, and notation consistent across a manuscript.
-  - `venue-templates` — Access comprehensive LaTeX templates, formatting requirements, and submission guidelines for major scientific publication venues (Nature,...
+  - `venue-templates` — Gets the right template and the formatting rules for a specific venue, and checks a manuscript against them.
 - **review/**
   - `auto-review-loop` — Iteratively improve YOUR OWN research artifact (paper draft, experiment writeup, or codebase) by having a DIFFERENT model review it adver...
   - `paper-stress-test` — Adversarially stress-test YOUR OWN paper draft before submission — as the harshest fair reviewer would.

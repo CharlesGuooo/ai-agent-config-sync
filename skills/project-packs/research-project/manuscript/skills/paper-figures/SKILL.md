@@ -14,7 +14,7 @@ description: >-
   Illustrator/Figma-first infographic work.
 license: MIT license
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep
-compatibility: "offline — matplotlib and seaborn only; no network, no credentials"
+compatibility: "offline — matplotlib, seaborn, numpy, pandas, scipy, Pillow (see requirements.txt); optional SciencePlots, kaleido, pypdf. No network, no credentials."
 metadata:
   category: research
   tags: [matplotlib, figures, publication, palette, journal-compliance, house-style]
@@ -27,7 +27,11 @@ metadata:
     journal-compliance layer (references/journal-workflow.md and the other references, plus
     scripts/ and assets/) comes from K-Dense Inc.'s scientific-visualization (MIT), whose
     777-line body was moved wholesale into references/journal-workflow.md so this file could
-    become a router. Nothing was rewritten in either.
+    become a router. The chart-selection layer (references/chart_selection.md, data_profiling.md,
+    viz_pitfalls.md, plot_recipes.md, journal_specs.md, visual_review.md, publication_checklist.md
+    and six scripts) is vendored from github.com/Haojae/scipilot-figure-skill (MIT, (c) 2026
+    Haojae); its SKILL.md was discarded in the merge because its description is Chinese-only and
+    would not have triggered on an English prompt. Nothing was rewritten in any of the three.
 ---
 
 > **Vendored content.** Two things that only make sense with that context:
@@ -41,17 +45,44 @@ metadata:
 
 # Paper figures
 
-Two layers, and they answer different questions. Read the one the request is actually about;
-do not preload both.
+Three layers, answering three different questions. Read the one the request is actually about;
+do not preload all three.
 
 | Layer | The question it answers | Start here |
 |---|---|---|
+| **Chart choice** | What should it **plot**? Profile the data first, then pick the chart from what the data is — and push back when the requested chart is wrong for it. | [references/chart_selection.md](references/chart_selection.md) |
 | **House style** | What should it **look** like? A concrete published-paper look with a fixed semantic palette (`#0F4D92` blue = proposed method, greens = gains, reds = baselines), ultra-wide multi-metric panels, a dedicated legend axis, black bar edges plus hatch. | [references/tutorials.md](references/tutorials.md) |
 | **Journal compliance** | What is **allowed**? Nature/Science/Cell column widths, resolution and format, colorblind safety, significance annotation, multi-panel conventions. | [references/journal-workflow.md](references/journal-workflow.md) |
 
-Most requests need both: the journal decides the constraints, the house style decides the look
-inside them. When they conflict, **the journal wins** — a beautiful figure at the wrong column
-width gets sent back.
+Most requests need all three. Chart choice comes first and is the one people skip: the question
+is not "what chart do you want" but **what do you want this figure to convince the reader of**.
+When house style and the journal conflict, **the journal wins** — a beautiful figure at the wrong
+column width gets sent back.
+
+## Do not plot first
+
+The order is: profile → choose → style → plot at final size → QA → export.
+
+```bash
+python scripts/profile_data.py <data>     # what IS this data
+python scripts/visual_qa.py <figure.png>  # what is wrong with the render
+```
+
+`visual_qa.py` catches deterministically what a description cannot: missing glyphs, clipped text,
+overlapping ticks. **Then look at the PNG yourself** — read the rendered image and check the
+perceptual things no linter sees: a legend covering data, misaligned subplot labels, whether the
+series are still separable in grayscale.
+
+*If your agent cannot read images*, skip the look-at-it step, say so rather than claiming the
+figure passed visual review, and fall back to `check_figure.py` plus
+[references/publication_checklist.md](references/publication_checklist.md).
+
+[references/viz_pitfalls.md](references/viz_pitfalls.md) carries the hard bans — no mean bars for
+n < 10, no pie charts, no dual Y-axis, no rainbow colormaps, no truncated Y axes, no lines
+connecting categorical points.
+
+`scripts/README.md` disambiguates the two script lineages; read it before picking between
+similarly-named scripts.
 
 ## The four rules worth having in context before you open anything
 
@@ -85,6 +116,13 @@ behind a pointer.
 | [references/publication_guidelines.md](references/publication_guidelines.md) | General publication figure standards |
 | [references/color_palettes.md](references/color_palettes.md) | Palette choices and colorblind checking |
 | [references/matplotlib_examples.md](references/matplotlib_examples.md) | Worked matplotlib snippets |
+| [references/chart_selection.md](references/chart_selection.md) | Which chart fits this data and this claim |
+| [references/data_profiling.md](references/data_profiling.md) | What `profile_data.py` reports and how to read it |
+| [references/viz_pitfalls.md](references/viz_pitfalls.md) | 18 named pitfalls, and the hard bans |
+| [references/plot_recipes.md](references/plot_recipes.md) | Per-chart-type recipes |
+| [references/journal_specs.md](references/journal_specs.md) | Per-journal dimension specs (scipilot's table) |
+| [references/visual_review.md](references/visual_review.md) | The perceptual checklist for looking at a rendered PNG |
+| [references/publication_checklist.md](references/publication_checklist.md) | Pre-submission figure checklist |
 
 ## Scripts and assets
 

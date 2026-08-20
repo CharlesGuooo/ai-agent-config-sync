@@ -1,10 +1,26 @@
 ---
 name: venue-templates
-description: Access comprehensive LaTeX templates, formatting requirements, and submission guidelines for major scientific publication venues (Nature, Science, PLOS, IEEE, ACM), academic conferences (NeurIPS, ICML, CVPR, CHI), research posters, and grant proposals (NSF, NIH, DOE, DARPA). This skill should be used when preparing manuscripts for journal submission, conference papers, research posters, or grant proposals and need venue-specific formatting requirements and templates.
-allowed-tools: Read Write Edit Bash
+description: >-
+  Gets the right template and the formatting rules for a specific venue, and checks a manuscript
+  against them. Ships real author-kit style files for NeurIPS 2025, ICLR 2026, ICML 2026, ACL,
+  AAAI-26 and COLM 2025, plus formatting requirements for Nature, Science, PLOS, IEEE and ACM.
+  Use for "投 ICLR 要用什么模板", "换投到 CVPR", "页数限制是多少", "格式对不对",
+  "NeurIPS template", "reformat for ACL", "what is the page limit", "which style file".
+  Distinct from latex-paper-en, which checks and repairs an existing .tex against a spec — this
+  one hands you the spec and the starting files. Posters are latex-posters' job, and grant
+  proposals are not covered in this pack.
+allowed-tools: Read, Write, Edit, Bash
 license: MIT license
+compatibility: "local-tools — the templates need a LaTeX engine to build; the skill itself is offline with no credentials"
 metadata:
     skill-author: K-Dense Inc.
+    source: >-
+      Body from K-Dense Inc. (MIT). assets/venues/ added here from
+      Orchestra-Research/AI-Research-SKILLs — see assets/venues/PROVENANCE.md, which records that
+      the conference .sty/.bst files carry their venues' own terms rather than either repository's
+      licence. Removed here: assets/grants/ and references/grants_requirements.md, since
+      research-grants is no longer in this pack; assets/posters/ and references/posters_guidelines.md
+      moved to latex-posters in talks/.
 ---
 
 # Venue Templates
@@ -189,23 +205,16 @@ Search for: "NeurIPS" or specific conference
 Template: assets/journals/neurips_article.tex
 ```
 
-**For Posters**:
+**For Posters**: not this skill. `latex-posters` in `~/research-project/talks/` owns poster
+templates and the readability rules that go with them.
+
+**For ML conferences** — the common case here:
 ```bash
-# Load poster guidelines
-Reference: references/posters_guidelines.md
+# Real author-kit style files, one directory per venue
+assets/venues/neurips2025/  iclr2026/  icml2026/  acl/  aaai2026/  colm2025/
 
-# Retrieve template
-Template: assets/posters/beamerposter_academic.tex
-```
-
-**For Grants**:
-```bash
-# Load grant requirements
-Reference: references/grants_requirements.md
-Search for: "NSF" or specific agency
-
-# Retrieve template
-Template: assets/grants/nsf_proposal_template.tex
+# Read this first
+assets/venues/PROVENANCE.md
 ```
 
 ### Step 3: Review Formatting Requirements
@@ -521,8 +530,7 @@ Concrete examples are available in `assets/examples/`:
 **Formatting Requirements** (in `references/`):
 - `journals_formatting.md`: Comprehensive journal formatting requirements
 - `conferences_formatting.md`: Conference paper specifications
-- `posters_guidelines.md`: Research poster design and sizing
-- `grants_requirements.md`: Grant proposal requirements by agency
+  (Poster sizing moved to `latex-posters` in `~/research-project/talks/`.)
 
 **Writing Examples** (in `assets/examples/`):
 - `nature_abstract_examples.md`: High-impact journal abstract examples
@@ -598,14 +606,14 @@ From references/conferences_formatting.md:
 User: "Help me format an NSF proposal"
 
 Response:
-NSF requirements (from references/grants_requirements.md):
+NSF requirements (grants are not covered in this pack; kept as a formatting illustration only):
 - Project Description: 15 pages maximum
 - Project Summary: 1 page (Overview, Intellectual Merit, Broader Impacts)
 - Budget Justification: 3-5 pages
 - Biographical Sketch: 3 pages per senior personnel
 - Font: Minimum 10pt, Times Roman or similar
 - Margins: 1 inch all sides
-Template: assets/grants/nsf_proposal_template.tex
+(Grant templates are not in this pack — `research-grants` was removed.)
 ```
 
 ### Example 4: Conference Poster
@@ -619,9 +627,7 @@ ISMB poster specifications:
 - Recommended template: beamerposter or tikzposter
 - Font sizes: Title 60-85pt, Headers 36-48pt, Body 24-32pt
 - Include: QR code for paper/supplementary materials
-Available templates:
-- assets/posters/beamerposter_academic.tex
-- assets/posters/tikzposter_research.tex
+Templates live with `latex-posters` in `~/research-project/talks/`, not here.
 ```
 
 ## Updates and Maintenance

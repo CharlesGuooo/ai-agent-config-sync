@@ -344,7 +344,7 @@ index anymore.
   - `value-dividend-screener` — Screen US stocks for high-quality dividend opportunities combining value characteristics (P/E ratio under 20, P/B ratio under 2), attract...
   - `vcp-screener` — Screen S&P 500 stocks for Mark Minervini's Volatility Contraction Pattern (VCP).
 
-#### research-project (27)
+#### research-project (26)
 - `academic-humanizer` — Strips AI tells from academic prose — papers, theses, abstracts, rebuttals — and from NSF/NIH funding proposals, while keeping the precis...
 - `auto-review-loop` — Iteratively improve YOUR OWN research artifact (paper draft, experiment writeup, or codebase) by having a DIFFERENT model review it adver...
 - `citation-management` — Comprehensive citation management for academic research.
@@ -353,6 +353,7 @@ index anymore.
 - `latex-posters` — Create professional research posters in LaTeX using beamerposter, tikzposter, or baposter.
 - `literature-review` — Conduct comprehensive, systematic literature reviews using multiple academic databases (arXiv, Semantic Scholar, ACL Anthology, DBLP, Ope...
 - `narrative-flow` — Revise an already-drafted paper for STRUCTURE and FLOW — reverse-outline diagnostics, one-message-per-paragraph rewriting, and section-sp...
+- `paper-figures` — Makes a paper's matplotlib figures — house style, journal sizing, colorblind and grayscale survival, multi-panel layout, export.
 - `paper-library` — Search and reason over a LOCAL library of collected research papers (downloaded arXiv/conference PDFs).
 - `paper-reading-guide` — Use this whenever the user wants to read, understand, or be walked through an academic paper — whether they share a PDF, arxiv/URL link, ...
 - `paper-stress-test` — Adversarially stress-test YOUR OWN paper draft before submission — as the harshest fair reviewer would.
@@ -366,9 +367,7 @@ index anymore.
 - `research-zh/research-deep` — 读取调研outline，为每个item启动独立agent进行深度调研。禁用task output。
 - `research-zh/research-report` — 将deep调研结果汇总为markdown报告，覆盖所有字段，跳过不确定值。
 - `scientific-critical-thinking` — Evaluate scientific claims and evidence quality.
-- `scientific-figure-making` — Build matplotlib figures in the figures4papers house style — a concrete published-paper look with a fixed semantic palette (#0F4D92 blue ...
 - `scientific-slides` — Build slide decks and presentations for research talks.
-- `scientific-visualization` — Meta-skill for publication-ready figures.
 - `scientific-writing` — Core skill for the deep research and writing tool.
 - `terminology-ledger` — Keep terminology, acronyms, and notation consistent across a manuscript.
 - `venue-templates` — Access comprehensive LaTeX templates, formatting requirements, and submission guidelines for major scientific publication venues (Nature,...

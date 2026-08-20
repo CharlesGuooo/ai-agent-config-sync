@@ -577,7 +577,7 @@ print(f"TimesFM MAE: {np.mean(np.abs(actual - tfm_point[0])):.2f}")
 print(f"ARIMA MAE:   {np.mean(np.abs(actual - arima_forecast)):.2f}")
 ```
 
-### With `matplotlib` / `scientific-visualization`
+### With `matplotlib` / `paper-figures` (~/research-project/)
 
 Plot forecasts with prediction intervals as publication-quality figures.
 

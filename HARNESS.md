@@ -344,9 +344,10 @@ index anymore.
   - `value-dividend-screener` — Screen US stocks for high-quality dividend opportunities combining value characteristics (P/E ratio under 20, P/B ratio under 2), attract...
   - `vcp-screener` — Screen S&P 500 stocks for Mark Minervini's Volatility Contraction Pattern (VCP).
 
-#### research-project (23)
+#### research-project (25)
 - `research-router` — Routes a research task to one of five sub-packs under ~/research-project/ — literature, gates, manuscript, review, talks.
 - **gates/**
+  - `experimental-design` — Designs a study BEFORE data is collected — the design type, randomization, blocking, and how treatment combinations are laid out so the r...
   - `hypothesis-generation` — Structured hypothesis formulation from observations.
 - **literature/**
   - `bibtex-manager` — Turns a reference you already have into a correct BibTeX entry, and checks the ones already in your .bib.
@@ -368,7 +369,8 @@ index anymore.
 - **review/**
   - `auto-review-loop` — Iteratively improve YOUR OWN research artifact (paper draft, experiment writeup, or codebase) by having a DIFFERENT model review it adver...
   - `paper-stress-test` — Adversarially stress-test YOUR OWN paper draft before submission — as the harshest fair reviewer would.
-  - `peer-review` — Reviews someone else's manuscript or grant against a checklist, and grades the quality of the evidence behind its claims.
+  - `peer-review` — Reviews someone else's manuscript, protocol, preprint or proposal, and grades the evidence behind its claims.
+  - `rebuttal` — Writes, audits or revises a point-by-point response to reviewers.
 - **talks/**
   - `latex-posters` — Create professional research posters in LaTeX using beamerposter, tikzposter, or baposter.
   - `pptx-posters` — Create research posters using HTML/CSS that can be exported to PDF or PPTX.

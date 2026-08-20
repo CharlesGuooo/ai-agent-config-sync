@@ -24,13 +24,13 @@ sub-pack, `cd` into it, and that pack's skills load — the others stay out of c
 
 | You are… | Go | Reach for |
 |---|---|---|
-| Looking for prior work, or mining papers you already have | `literature/` | `paper-library` (your own PDFs), `literature-review` (systematic protocol), `survey-outline` (comparison table) |
+| Looking for prior work, or mining papers you already have | `literature/` | `paper-lookup` (11 scholarly APIs, free), `paper-library` (your own PDFs), `literature-review` (systematic protocol), `survey-outline` (comparison table) |
 | Turning a reference into BibTeX, or checking a `.bib` | `literature/` | `bibtex-manager` |
-| Deciding what to do, or how you would know it failed | `gates/` | `hypothesis-generation` |
-| Writing or restructuring the manuscript | `manuscript/` | `latex-paper-en` (inside the `.tex`), `academic-humanizer` (de-AI a draft), `terminology-ledger` (notation consistency) |
+| Deciding what to do, or how you would know it failed | `gates/` | `hypothesis-generation`, then `experimental-design` |
+| Writing or restructuring the manuscript | `manuscript/` | `paper-writing` (what the prose says), `latex-paper-en` (inside the `.tex`), `academic-humanizer` (de-AI a draft), `terminology-ledger` (notation consistency) |
 | Making the figures | `manuscript/` | `paper-figures` |
 | Formatting for a venue, or packaging the artifact | `manuscript/` | `venue-templates`, `repro-pack` |
-| Attacking a draft — yours or someone else's | `review/` | `paper-stress-test` (yours), `peer-review` (theirs), `auto-review-loop` (yours, iterated with a second model) |
+| Attacking a draft, or answering reviewers | `review/` | `paper-stress-test` (yours), `peer-review` (theirs), `auto-review-loop` (yours, iterated with a second model), `rebuttal` (answering the reviews you got) |
 | Standing in front of people | `talks/` | `scientific-slides`, `latex-posters`, `pptx-posters` |
 
 ## By where the paper is in its cycle
@@ -41,25 +41,26 @@ papers in flight are usually in different ones.
 | Phase | `cd` | First moves |
 |---|---|---|
 | No committed direction | `gates/` | `hypothesis-generation` |
-| Direction chosen, nothing run | `gates/` then `literature/` | scope the claim, then check nobody has published it |
-| Results in hand, nothing written | `manuscript/` | `latex-paper-en`, `paper-figures` |
+| Direction chosen, nothing run | `gates/` then `literature/` | `experimental-design`, then `paper-lookup` to check nobody has published it |
+| Results in hand, nothing written | `manuscript/` | `paper-writing` first (decide the argument), then `paper-figures` and `latex-paper-en` |
 | Draft exists, ~2 weeks out | `manuscript/` | `paper-figures` → `terminology-ledger` → `academic-humanizer` |
 | Days out | `review/` | `paper-stress-test` → fix → `auto-review-loop` |
 | Submitting | `manuscript/` | `venue-templates`, then compile |
-| Reviews received | `review/` | `peer-review` for the norms, then write the response |
+| Reviews received | `review/` | `rebuttal` |
 | Accepted | `talks/` + `manuscript/` | `scientific-slides` / `latex-posters`, and `repro-pack` |
 
 ## Cost and credentials
 
-After the restructure, **nothing in this pack requires a paid API key.** Every skill declares a
+**The whole paper pipeline — literature, gates, manuscript, review — runs without a paid API
+key.** Exactly one skill is billed, it lives in `talks/`, and it says so. Every skill declares a
 `compatibility:` line whose first word is its tier:
 
 | Tier | Meaning |
 |---|---|
 | `offline` | No network, no credentials. Most of the pack. |
-| `network` | Public APIs, no credentials required. `bibtex-manager` (CrossRef, NCBI), the `survey-*` chain (WebSearch). |
-| `local-tools` | Needs a binary. `latex-paper-en` needs a LaTeX engine — Tectonic is self-contained and is what this machine has. |
-| `paid` | Requires a billed key. **Nothing in this pack is on this tier.** |
+| `network` | Public APIs, no credentials required. `paper-lookup` (11 scholarly APIs), `bibtex-manager` (CrossRef, NCBI), the `survey-*` chain (WebSearch). |
+| `local-tools` | Needs a binary. `latex-paper-en` and `venue-templates` need a LaTeX engine — Tectonic is self-contained and is what this machine has. `pptx-posters` needs libreoffice. `auto-review-loop` needs a second agent CLI to be the reviewer. |
+| `paid` | Requires a billed key. **`talks/scientific-slides` only**, for its AI slide-image path — and only that path. Its structure, timing, Beamer and PPTX paths are free. It carries a `## Cost` section; read it before running the billed path, because `OPENROUTER_API_KEY` is set here, so it will not error, it will charge. |
 
 One rule keeps it that way: *a skill may not tell the agent to invoke a `paid` skill unless it
 declares `paid` itself, names the key, and carries a `## Cost` section.* Twelve skills used to

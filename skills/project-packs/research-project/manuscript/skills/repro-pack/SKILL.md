@@ -1,5 +1,6 @@
 ---
 name: repro-pack
+compatibility: "offline — Python stdlib only"
 description: >-
   Assemble a reproducibility package for an ML/systems paper so a reviewer or
   future-you can re-run the experiments. Use when preparing a code+artifact

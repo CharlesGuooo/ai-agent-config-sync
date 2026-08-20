@@ -2,6 +2,7 @@
 name: literature-review
 description: Conduct comprehensive, systematic literature reviews using multiple academic databases (arXiv, Semantic Scholar, ACL Anthology, DBLP, OpenReview, Papers with Code, etc.). This skill should be used when conducting systematic literature reviews, research synthesis, or comprehensive literature searches across AI/ML, computer science, and technical domains. Creates professionally formatted markdown documents and PDFs with verified citations in multiple citation styles (APA, IEEE, ACM, etc.).
 allowed-tools: Read Write Edit Bash
+compatibility: "network — WebSearch over public academic databases, no credentials. generate_pdf.py additionally needs pandoc and a LaTeX engine."
 license: MIT license
 metadata:
     skill-author: K-Dense Inc.

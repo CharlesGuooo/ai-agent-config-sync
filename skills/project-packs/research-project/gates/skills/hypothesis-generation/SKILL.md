@@ -2,6 +2,7 @@
 name: hypothesis-generation
 description: Structured hypothesis formulation from observations. Use when you have experimental observations or data and need to formulate testable hypotheses with predictions, propose mechanisms, and design experiments to test them. Follows scientific method framework. For open-ended ideation use the global brainstorming skill.
 allowed-tools: Read Write Edit Bash
+compatibility: "offline — no scripts, no network, no credentials"
 license: MIT license
 metadata:
     skill-author: K-Dense Inc.

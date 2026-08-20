@@ -13,6 +13,7 @@ description: >-
   claims without rewriting.
 license: MIT
 allowed-tools: Read, Write, Edit, Grep, Glob, AskUserQuestion
+compatibility: "offline — no scripts, no network, no credentials"
 metadata:
   category: academic-writing
   tags: [writing, de-ai, academic, grants, nsf, nih, claim-evidence]

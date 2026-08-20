@@ -374,7 +374,7 @@ index anymore.
 - **talks/**
   - `latex-posters` — Create professional research posters in LaTeX using beamerposter, tikzposter, or baposter.
   - `pptx-posters` — Create research posters using HTML/CSS that can be exported to PDF or PPTX.
-  - `scientific-slides` — Build slide decks and presentations for research talks.
+  - `scientific-slides` — Builds a research talk — slide structure, what goes on each slide, timing, and a visual validation pass.
 
 #### data-analysis-project (18)
 - `dask` — Distributed computing for larger-than-RAM pandas/NumPy workflows.

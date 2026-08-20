@@ -1,5 +1,6 @@
 ---
 name: terminology-ledger
+compatibility: "offline — Python stdlib only"
 description: >-
   Keep terminology, acronyms, and notation consistent across a manuscript. Use
   when writing or polishing a paper/thesis and the user wants to catch

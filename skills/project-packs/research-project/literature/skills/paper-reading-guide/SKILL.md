@@ -1,5 +1,6 @@
 ---
 name: paper-reading-guide
+compatibility: "offline — no scripts, no network, no credentials"
 description: Use this whenever the user wants to read, understand, or be walked through an academic paper — whether they share a PDF, arxiv/URL link, pasted text, title, or just describe it. Triggers include "help me read this paper", "walk me through this paper", "I want to understand this paper", "introduce this paper", "read this paper with me", or sharing a paper alongside any learning intent. Activates a Socratic guide that first asks targeted one-at-a-time questions to understand the reader's background and purpose, then introduces the paper through guided questioning rather than a passive lecture. Use this even when the user hasn't explicitly asked for "Socratic" or "guided" — it is the better default whenever a reader wants to engage with a paper, not just receive a summary.
 ---
 

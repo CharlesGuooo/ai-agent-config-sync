@@ -1,13 +1,42 @@
 ---
 name: scientific-slides
-description: Build slide decks and presentations for research talks. Use this for making PowerPoint slides, conference presentations, seminar talks, research presentations, thesis defense slides, or any scientific talk. Provides slide structure, design templates, timing guidance, and visual validation. Works with PowerPoint and LaTeX Beamer.
-allowed-tools: Read Write Edit Bash
+description: >-
+  Builds a research talk — slide structure, what goes on each slide, timing, and a visual
+  validation pass. Covers conference presentations, seminar talks, thesis defence and job talks,
+  in PowerPoint or LaTeX Beamer. Use for "做个 slides", "组会汇报", "会议报告 15 分钟",
+  "答辩 PPT", "make slides for this paper", "conference talk deck", "how long should each
+  section be". **The default image-generation path is billed** — see the Cost section before
+  running it; the structure, timing and Beamer paths are free. Distinct from latex-posters and
+  pptx-posters, which make a poster rather than a talk.
+allowed-tools: Read, Write, Edit, Bash
 license: MIT license
+compatibility: "paid — scripts/generate_slide_image.py and generate_slide_image_ai.py require OPENROUTER_API_KEY and are billed per generated image. Everything else in this skill is offline apart from pymupdf/Pillow/python-pptx and an optional LaTeX engine."
 metadata:
     skill-author: K-Dense Inc.
 ---
 
 # Scientific Slides
+
+## Cost
+
+This is the only skill in `research-project` on the `paid` tier, and it is opt-in.
+
+| Path | Cost |
+|---|---|
+| Slide structure, section timing, what belongs on each slide | free |
+| LaTeX Beamer output | free (needs a LaTeX engine) |
+| PPTX assembly, `pdf_to_images.py`, `slides_to_pdf.py`, `validate_presentation.py` | free |
+| `generate_slide_image.py` / `generate_slide_image_ai.py` | **billed per image** via `OPENROUTER_API_KEY` |
+
+`OPENROUTER_API_KEY` is set in this environment, so **the billed path will not fail with an
+error — it will simply charge.** A deck is typically 15-25 slides; generating each as an image is
+15-25 calls, plus review calls where the quality loop is enabled.
+
+Say which path you are taking before you start. If the user has not asked for AI-generated slide
+imagery, build the deck from real figures — the ones `paper-figures` produced — and text. For a
+research talk that is usually better anyway: your actual results plot is more convincing than a
+generated illustration of one.
+
 
 ## Overview
 

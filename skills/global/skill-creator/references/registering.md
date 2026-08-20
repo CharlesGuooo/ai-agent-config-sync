@@ -73,6 +73,38 @@ foreach ($p in '.claude\skills','.cursor\skills','.codex\skills','.opencode\skil
 Codex reports one extra directory: `.system`, created by the sync. Project-pack skills live under
 `~/<pack-name>/` and use `.pi\skills` rather than `.pi\agent\skills` for Pi.
 
+## Declare what it costs
+
+Every pack skill states its cost tier on a `compatibility:` line. The first token is one of four
+values and is greppable; the rest is prose for a human.
+
+```yaml
+compatibility: "offline — no scripts, no network, no credentials"
+compatibility: "network — public APIs, no credentials required; optional NCBI_API_KEY raises rate limits"
+compatibility: "local-tools — needs a TeX engine (Tectonic auto-installs its own packages)"
+compatibility: "paid — requires OPENROUTER_API_KEY; billed per generated image"
+```
+
+**The propagation rule, which is the point of the convention:**
+
+> A skill may not instruct the agent to invoke a `paid` skill unless the calling skill itself
+> declares `paid`, names the key, and carries a `## Cost` section in its body.
+
+This exists because of a real failure. One image-generation skill required a billed key, and
+twelve others told the agent to call it through a copied boilerplate block — none of which
+disclosed the cost in frontmatter. On a machine where the key happens to be set, that does not
+fail with an error. It charges, silently, and the only way to find out is the invoice.
+
+Audit a pack with:
+
+```bash
+grep -rL "^compatibility:" <pack>/**/SKILL.md          # any skill that declares nothing
+grep -rn '^compatibility: "paid' <pack>/               # every billed skill, by name
+```
+
+A `paid` skill is not a defect. An undeclared one is.
+
+
 ## Optional: activation rules
 
 `skills/global/skill-rules.json` carries keyword and intent patterns for a minority of global

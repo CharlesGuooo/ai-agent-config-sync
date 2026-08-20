@@ -11,6 +11,7 @@ description: >-
   from this machine (Codex CLI, Gemini CLI, or manual paste). Distinct from
   paper-stress-test, which is a one-shot SELF-review by this same model.
 allowed-tools: Read Write Edit Bash
+compatibility: "local-tools — needs a SECOND agent CLI on PATH to be the reviewer (codex, or claude when the session itself is Codex). No API key of its own; it spends whatever that CLI spends."
 metadata:
   category: research
   tags: [autonomous, cross-model, review-loop, adversarial, codex, iteration]

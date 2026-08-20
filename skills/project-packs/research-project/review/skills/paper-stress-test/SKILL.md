@@ -1,5 +1,6 @@
 ---
 name: paper-stress-test
+compatibility: "offline — no scripts, no network, no credentials"
 description: >-
   Adversarially stress-test YOUR OWN paper draft before submission — as the
   harshest fair reviewer would. Use before submitting to a venue or sending to an

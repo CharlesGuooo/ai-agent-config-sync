@@ -2,6 +2,7 @@
 import { mkdtempSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { tmpdir } from 'node:os';
+import { makeRun } from '../lib/run.mjs';
 
 export const tempDir = (prefix = 'harness-') => mkdtempSync(join(tmpdir(), prefix));
 
@@ -37,3 +38,5 @@ export function fixtureRepo() {
   put(repo, 'scripts/hooks/format.mjs', '// format\n');
   return repo;
 }
+
+export const newRun = ({ state = emptyState(), resolutions, dryRun } = {}) => makeRun({ state, resolutions, dryRun });

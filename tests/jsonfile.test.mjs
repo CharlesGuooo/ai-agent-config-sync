@@ -402,3 +402,22 @@ test('after a write, a hook group the machine deleted is a conflict and is not a
   applyJson({ file, hooks: [guard('node g.mjs')] }, newRun({ state: run.state, resolutions: { g: 'repo' } }));
   assert.deepEqual(read(file).hooks.PreToolUse, [mine, { matcher: 'Bash', hooks: [{ type: 'command', command: 'node g.mjs' }] }]);
 });
+
+test('a top level that is not an object stops a write, dry run or not, naming the file, before anything is recorded', () => {
+  for (const text of ['[]', 'null', '"text"', '5']) {
+    for (const dryRun of [false, true]) {
+      const what = `${text}${dryRun ? ' (dry run)' : ''}`;
+      const file = join(tempDir(), 'cfg.json');
+      writeFileSync(file, text);
+      const bytes = readFileSync(file);
+      const run = newRun({ dryRun });
+      const state = structuredClone(run.state);
+      const names = (e) => e.message.includes(file) && e.message.includes('the top level is not an object');
+      assert.throws(() => applyJson({ file, entries: [memory()], hooks: [guard('node g.mjs')] }, run), names, what);
+      // The file is broken whatever the run would have written to it.
+      assert.throws(() => applyJson({ file }, newRun({ dryRun })), names, what);
+      assert.ok(readFileSync(file).equals(bytes), what);
+      assert.deepEqual(run.state, state, what);
+    }
+  }
+});

@@ -35,7 +35,7 @@ This keeps the global layer small and stable.
 
 ## Local Skill Packs
 
-When a task becomes domain-specific, switch to the matching project directory so that pack's skills load.
+When a task becomes domain-specific, start the agent from (or open) the matching project directory: that pack's skills are linked there and load at session start — a `cd` inside a running session does not load them.
 
 | Domain | Directory |
 | --- | --- |
@@ -53,7 +53,7 @@ Document tasks (PDF / Word / Excel / PowerPoint) use the global `pdf`, `officecl
 The global layer routes to the right directory and stops there; the local pack owns the domain guidance.
 
 The full per-skill pack index is `{{REPO}}/HARNESS.md`; the human usage guide is `{{REPO}}/PLAYBOOK.md`.
-Skills reach you as links into that repo: to change a skill, edit it there and commit.
+Skills reach you as links into that repo: to change a skill, edit it there, not in a copy.
 
 ---
 

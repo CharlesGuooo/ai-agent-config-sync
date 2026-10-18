@@ -17,6 +17,13 @@ test('makeContext puts state in <repo>/.local unless told otherwise', () => {
   assert.ok(samePath(makeContext({ repo: '/r', home: '/h', local: '/x' }).local, '/x'));
 });
 
+test('makeContext spells a Windows drive letter in upper case', { skip: process.platform !== 'win32' }, () => {
+  const ctx = makeContext({ repo: 'd:\\x', home: 'c:\\u' });
+  assert.equal(ctx.repo, 'D:\\x');
+  assert.equal(ctx.home, 'C:\\u');
+  assert.equal(ctx.local, 'D:\\x\\.local');
+});
+
 test('a directory link reads through and removing it leaves the target', () => {
   const dir = tempDir();
   const target = join(dir, 'target');

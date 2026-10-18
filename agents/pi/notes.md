@@ -17,8 +17,8 @@ only** be reached that way: currently `action-first`.
   credential files (`.env`, `auth.json`, `*.pem`, `id_rsa`, cloud credential stores) unless the
   user asked you to work on that exact file.
 - **No `format.mjs`.** Formatting is not applied automatically after edits.
-- **No sub-agents.** Five global skills assume you can fan out to parallel agents. On Pi, run
-  their steps **sequentially in this one context, and say in your output that you did so** — do
+- **No sub-agents.** Whenever a skill says to dispatch a sub-agent, do that step yourself, in order, and say so. The skills that lean on this most:
+  On Pi, run their steps **sequentially in this one context, and say in your output that you did so** — do
   not silently skip the step or pretend a parallel run happened:
 
   | Skill | What it asks for | What to do on Pi |

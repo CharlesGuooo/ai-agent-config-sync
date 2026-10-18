@@ -114,7 +114,7 @@ test('catalogProblems: shape of the catalog and of each entry', () => {
 });
 
 test('catalogProblems: os, env, overrides and extra', () => {
-    assert.equal(one({ os: 'mac' }).filter((p) => p.includes('"os"')).length, 1);
+  assert.equal(one({ os: 'mac' }).filter((p) => p.includes('"os"')).length, 1);
   assert.ok(mentions(one({ os: [] }), 's', '"os"'));
   assert.ok(mentions(one({ os: ['bsd'] }), 's', '"os"', 'bsd'));
   assert.ok(mentions(one({ env: 'x' }), 's', '"env"'));

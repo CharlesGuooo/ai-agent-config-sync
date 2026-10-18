@@ -1,0 +1,30 @@
+{
+  "$comment": "Single source for every agent's MCP config; rendered per agent and OS by lib/mcp.mjs. npx = local server started with `npx -y`; http = remote server; bearerEnv = Authorization: Bearer ${VAR}; {HOME} = this machine's home; on = enabled by default; os = only on these systems; agents.<agent> = override for one agent (on / skip / extra). See docs/harness-v2.md.",
+  "servers": {
+    "github": { "http": "https://api.githubcopilot.com/mcp", "bearerEnv": "GITHUB_PERSONAL_ACCESS_TOKEN", "on": true },
+    "memory": { "npx": ["@modelcontextprotocol/server-memory@2026.1.26"], "on": true },
+    "filesystem": { "npx": ["@modelcontextprotocol/server-filesystem@2026.1.14", "{HOME}"], "on": true },
+    "context7": { "npx": ["@upstash/context7-mcp@2.2.5"], "on": true },
+    "sequential-thinking": { "npx": ["@modelcontextprotocol/server-sequential-thinking@2025.12.18"], "on": true },
+    "brave-search": { "npx": ["@brave/brave-search-mcp-server@2.0.80"], "env": { "BRAVE_API_KEY": "${BRAVE_API_KEY}" }, "on": true },
+    "playwright": { "npx": ["@executeautomation/playwright-mcp-server@1.0.12"], "on": true },
+    "chrome-devtools": { "npx": ["chrome-devtools-mcp@0.26.0"], "on": true },
+    "web-reader": {
+      "http": "https://api.z.ai/api/mcp/web_reader/mcp", "bearerEnv": "Z_AI_API_KEY", "on": true,
+      "agents": { "codex": { "on": false }, "opencode": { "extra": { "oauth": false } } }
+    },
+    "zai-mcp-server": { "npx": ["@z_ai/mcp-server@0.1.4"], "env": { "Z_AI_MODE": "ZAI", "Z_AI_API_KEY": "${Z_AI_API_KEY}" }, "on": false },
+    "supabase": { "http": "https://mcp.supabase.com/mcp?project_ref=${SUPABASE_PROJECT_REF}", "bearerEnv": "SUPABASE_ACCESS_TOKEN", "on": false },
+    "vercel": { "http": "https://mcp.vercel.com", "on": false },
+    "railway": { "npx": ["@railway/mcp-server@0.1.8"], "on": false },
+    "expo-mcp": { "http": "https://mcp.expo.dev/mcp", "bearerEnv": "EXPO_TOKEN", "on": false, "agents": { "opencode": { "extra": { "oauth": false } } } },
+    "magic": { "npx": ["@magicuidesign/mcp@2.0.0"], "on": false },
+    "cloudflare-docs": { "http": "https://docs.mcp.cloudflare.com/mcp", "on": false },
+    "cloudflare-workers-builds": { "http": "https://builds.mcp.cloudflare.com/mcp", "on": false },
+    "cloudflare-workers-bindings": { "http": "https://bindings.mcp.cloudflare.com/mcp", "on": false },
+    "cloudflare-observability": { "http": "https://observability.mcp.cloudflare.com/mcp", "on": false },
+    "revenuecat": { "http": "https://mcp.revenuecat.ai/mcp", "bearerEnv": "REVENUECAT_API_V2_KEY", "on": false },
+    "xcodebuildmcp": { "npx": ["xcodebuildmcp@latest", "mcp"], "on": false, "os": ["mac"] },
+    "ios-simulator": { "npx": ["ios-simulator-mcp"], "on": false, "os": ["mac"] }
+  }
+}

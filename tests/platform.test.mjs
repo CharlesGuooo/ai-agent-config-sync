@@ -61,6 +61,15 @@ test('removeTree with a protected root refuses the root itself', () => {
   assert.ok(existsSync(join(repo, 'f')));
 });
 
+test('removeTree with a protected root refuses a parent of the root', () => {
+  const dir = tempDir();
+  const repo = join(dir, 'repo');
+  mkdirSync(repo);
+  writeFileSync(join(repo, 'f'), 'x');
+  assert.throws(() => removeTree(dir, repo), /contains/);
+  assert.ok(existsSync(join(repo, 'f')));
+});
+
 test('removeTree with a protected root still removes a real directory and a single file outside it', () => {
   const dir = tempDir();
   const repo = join(dir, 'repo');

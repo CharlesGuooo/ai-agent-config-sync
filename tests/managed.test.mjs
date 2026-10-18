@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, readdirSync, linkSync } from 'node:fs';
 import { join } from 'node:path';
 import { tempDir, newRun } from './helpers.mjs';
 import { applyBlock, removeBlock, applyFile, removeFile, isV1Prompt, BEGIN, END } from '../lib/managed.mjs';
@@ -182,6 +182,24 @@ test('damaged markers are a conflict with a warning, with or without state, and 
   }
 });
 
+test('a file with a damaged v2 block is never taken for a v1 prompt, even with a v1-style table in the user\'s notes', () => {
+  const file = join(tempDir(), 'AGENTS.md');
+  const run = newRun();
+  applyBlock({ id: 'p', file, content: 'v1' }, run);
+  const text = `${BEGIN}\nv1\n\nmy notes\n<!-- SKILLS:BEGIN -->\n| a | b |\n<!-- SKILLS:END -->\n`;
+  writeFileSync(file, text);
+  assert.ok(isV1Prompt(text));
+  const conflicted = newRun({ state: run.state });
+  applyBlock({ id: 'p', file, content: 'v2' }, conflicted);
+  assert.deepEqual(conflicted.report.conflicts, [{ id: 'p', msg: `write ${file}` }]);
+  assert.deepEqual(conflicted.report.warnings, [`managed markers damaged in ${file}; fix them by hand`]);
+  assert.equal(read(file), text);
+  const resolved = newRun({ state: run.state, resolutions: { p: 'repo' } });
+  applyBlock({ id: 'p', file, content: 'v2' }, resolved);
+  assert.deepEqual(resolved.report.changes, [`write ${file}`]);
+  assert.equal(read(file), `${BEGIN}\nv2\n${END}\n\n${text}`);
+});
+
 test('removeBlock leaves a file whose block lost a marker alone, warns, and stops tracking it', () => {
   const file = join(tempDir(), 'CLAUDE.md');
   const run = newRun();
@@ -233,6 +251,19 @@ test('removeBlock right after applyBlock gives back the original bytes, blank li
     removeBlock({ id: 'p', file }, newRun({ state: run.state }));
     assert.equal(read(file), original, JSON.stringify(original));
   }
+});
+
+test('removeBlock empties a hard-linked file instead of deleting it, so the other name stays in step', () => {
+  const dir = tempDir();
+  const file = join(dir, 'CLAUDE.md');
+  const other = join(dir, 'dotfiles-copy.md');
+  const run = newRun();
+  applyBlock({ id: 'p', file, content: 'gen' }, run);
+  linkSync(file, other);
+  removeBlock({ id: 'p', file }, newRun({ state: run.state }));
+  assert.ok(existsSync(file));
+  assert.equal(read(file), '');
+  assert.equal(read(other), '');
 });
 
 test('removing a block or a file that was edited by hand is a conflict and leaves it alone', () => {

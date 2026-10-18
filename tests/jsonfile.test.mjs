@@ -291,22 +291,75 @@ test('a hook group from another clone of the repo is found by its script: a conf
   const format = { matcher: 'Bash', hooks: [{ type: 'command', command: 'node "/old/clone/scripts/hooks/format.mjs"' }] };
   const fresh = guard('node "/new/clone/scripts/hooks/guard.mjs"');
   const written = { matcher: 'Bash', hooks: [{ type: 'command', command: fresh.command }] };
-  // The old clone's command with forward slashes, and the way a Windows path looks.
-  for (const old of ['node "/old/clone/scripts/hooks/guard.mjs"', 'node "C:\\old\\clone\\scripts\\hooks\\guard.mjs"']) {
+  // The old clone's command as a POSIX path, as a Windows path with forward slashes, and with backslashes.
+  const forms = ['node "/old/clone/scripts/hooks/guard.mjs"', 'node "C:/old/clone/scripts/hooks/guard.mjs"', 'node "C:\\old\\clone\\scripts\\hooks\\guard.mjs"'];
+  for (const old of forms) {
     const file = join(tempDir(), 'settings.json');
     const stale = { matcher: 'Bash', hooks: [{ type: 'command', command: old }] };
     writeFileSync(file, JSON.stringify({ hooks: { PreToolUse: [mine, stale, format] } }));
     const bytes = readFileSync(file);
+    // The conflict and the change both name the command the group runs now, so it is clear what resolving to the repo replaces.
+    const label = `hook PreToolUse ${fresh.command} in ${file} (in place of ${old})`;
     const first = newRun();
     applyJson({ file, hooks: [fresh] }, first);
-    assert.deepEqual(first.report.conflicts.map((c) => c.id), ['g'], old);
+    assert.deepEqual(first.report.conflicts, [{ id: 'g', msg: label }], old);
     assert.ok(readFileSync(file).equals(bytes), old);
-    applyJson({ file, hooks: [fresh] }, newRun({ state: first.state, resolutions: { g: 'repo' } }));
+    const resolved = newRun({ state: first.state, resolutions: { g: 'repo' } });
+    applyJson({ file, hooks: [fresh] }, resolved);
+    assert.deepEqual(resolved.report.changes, [label], old);
     assert.deepEqual(read(file).hooks.PreToolUse, [mine, written, format], old);
     const settled = newRun({ state: first.state });
     applyJson({ file, hooks: [fresh] }, settled);
     assert.deepEqual([settled.report.changes, settled.report.conflicts], [[], []], old);
+    // Found by a command we know, there is nothing to name.
+    const next = guard('node "/newer/clone/scripts/hooks/guard.mjs"');
+    const moved = newRun({ state: first.state });
+    applyJson({ file, hooks: [next] }, moved);
+    assert.deepEqual(moved.report.changes, [`hook PreToolUse ${next.command} in ${file}`], old);
   }
+});
+
+test('only a whole command of the shape the repo writes is taken over; the machine\'s own commands that merely look similar stay, and ours is added', () => {
+  const fresh = guard('node "/new/clone/scripts/hooks/guard.mjs"');
+  const ours = { matcher: 'Bash', hooks: [{ type: 'command', command: fresh.command }] };
+  const foreign = [
+    'node "$CLAUDE_PROJECT_DIR/scripts/hooks/guard.mjs"',
+    'bun run ./scripts/hooks/guard.mjs --strict',
+    'node C:/Users/me/my-scripts/hooks/guard.mjs',
+    'node "/old/clone/scripts/hooks/guard.mjs" --strict',
+    'node "./scripts/hooks/guard.mjs"',
+    'node "/old/my-scripts/hooks/guard.mjs"',
+    'cmd /c node "C:/old/clone/scripts/hooks/guard.mjs"',
+  ];
+  for (const command of foreign) {
+    const file = join(tempDir(), 'settings.json');
+    const theirs = { matcher: 'Bash', hooks: [{ type: 'command', command }] };
+    writeFileSync(file, JSON.stringify({ hooks: { PreToolUse: [theirs] } }));
+    const run = newRun();
+    applyJson({ file, hooks: [fresh] }, run);
+    assert.deepEqual(run.report.conflicts, [], command);
+    assert.deepEqual(run.report.changes, [`hook PreToolUse ${fresh.command} in ${file}`], command);
+    assert.deepEqual(read(file).hooks.PreToolUse, [theirs, ours], command);
+  }
+  // The same the other way round: a command of ours in another shape never goes looking for a group to take over.
+  const file = join(tempDir(), 'settings.json');
+  const stale = { matcher: 'Bash', hooks: [{ type: 'command', command: 'node "/old/clone/scripts/hooks/guard.mjs"' }] };
+  writeFileSync(file, JSON.stringify({ hooks: { PreToolUse: [stale] } }));
+  const run = newRun();
+  applyJson({ file, hooks: [guard('node "$CLAUDE_PROJECT_DIR/scripts/hooks/guard.mjs"')] }, run);
+  assert.deepEqual(run.report.conflicts, []);
+  assert.equal(read(file).hooks.PreToolUse.length, 2);
+});
+
+test('the command named as being replaced is the one that matched, not the machine\'s own hook in the same group', () => {
+  const old = 'node "/old/clone/scripts/hooks/guard.mjs"';
+  const file = join(tempDir(), 'settings.json');
+  const stale = { matcher: 'Bash', hooks: [{ type: 'command', command: 'my-own-hook' }, { type: 'command', command: old }] };
+  writeFileSync(file, JSON.stringify({ hooks: { PreToolUse: [stale] } }));
+  const fresh = guard('node "/new/clone/scripts/hooks/guard.mjs"');
+  const run = newRun();
+  applyJson({ file, hooks: [fresh] }, run);
+  assert.deepEqual(run.report.conflicts, [{ id: 'g', msg: `hook PreToolUse ${fresh.command} in ${file} (in place of ${old})` }]);
 });
 
 test('with several groups running the guard from other clones, only other scripts, or the guard under another event, nothing is guessed and ours is added', () => {

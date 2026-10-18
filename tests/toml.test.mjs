@@ -449,3 +449,28 @@ test('a multi-line string in an owned table reads the same from a CRLF file', ()
   assert.equal(readMcpTable(text, 'm').note, 'first\nsecond');
   assert.deepEqual(readMcpTable(crlf(text), 'm'), readMcpTable(text, 'm'));
 });
+
+test('a key with an opening quote and no closing one is refused, not misread', () => {
+  // "A=1" = 2: the "=" inside the quotes used to cut the key short.
+  const file = configFile(lines('[mcp_servers.memory]', 'command = "npx"', '"A=1" = 2', ''));
+  assert.throws(() => applyCodexMcp({ file, servers: [server('memory', MEMORY)] }, newRun()), (e) => e.message === `${file}: line 3: bad TOML key`);
+  assert.throws(() => parseKey('a."b'), (e) => e.message === 'bad TOML key');
+  // The "]" and "#" inside the quotes of this header used to end it early.
+  assert.throws(() => segments('a = 1\n[mcp_servers."memory]#x"]\n'), (e) => e.message === 'line 2: bad TOML table name');
+});
+
+test('DEL and text that is not well-formed are handled when writing', () => {
+  const bs = String.fromCharCode(92);
+  const del = String.fromCharCode(127);
+  const lone = String.fromCharCode(0xd800);
+  const out = renderMcpTable('m', { k: `a${del}b`, [`k${del}`]: 1 });
+  assert.ok(!out.includes(del) && out.includes(`"a${bs}u007fb"`) && out.includes(`"k${bs}u007f" = 1`));
+  assert.deepEqual(readMcpTable(out, 'm'), { k: `a${del}b`, [`k${del}`]: 1 });
+  assert.throws(() => renderMcpTable('m', { env: { K: `x${lone}` } }), (e) => e.message === 'cannot write mcp_servers.m.env.K as TOML (text that is not well-formed Unicode)');
+  assert.throws(() => renderMcpTable('m', { [`k${lone}`]: 'v' }), (e) => e.message === 'cannot write a key of mcp_servers.m as TOML (text that is not well-formed Unicode)');
+});
+
+test('an escape that is not a character is refused with the usual line error', () => {
+  const file = configFile(lines('[mcp_servers.memory]', 'k = "\\UFFFFFFFF"', ''));
+  assert.throws(() => applyCodexMcp({ file, servers: [server('memory', MEMORY)] }, newRun()), (e) => e.message === `${file}: line 2: bad TOML escape`);
+});

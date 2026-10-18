@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
+import { inspect } from 'node:util';
 import { tempDir, newRun } from './helpers.mjs';
 import { applyJson, removeJson } from '../lib/jsonfile.mjs';
 
@@ -269,7 +270,8 @@ test('a config that is not valid JSON is named and located in the error but neve
       assert.ok(e.message.startsWith(`${file}: invalid JSON`), text);
       assert.ok(!e.message.includes(secret) && !e.message.includes('TOKEN'), text);
       if (place) assert.equal(e.message, `${file}: invalid JSON${place}`);
-      assert.ok(e.cause instanceof SyntaxError, text);
+      assert.equal(e.cause, undefined, text);
+      assert.ok(!inspect(e).includes(secret), text);
       return true;
     };
     assert.throws(() => applyJson({ file, entries: [memory()] }, newRun()), names, text);

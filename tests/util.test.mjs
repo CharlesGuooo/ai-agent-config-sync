@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { inspect } from 'node:util';
 import { canon, hashValue, hashText, getPath, setPath, deletePath, lf, readText, readJson, parseJson, writeText, writeJson } from '../lib/util.mjs';
 import { tempDir, put } from './helpers.mjs';
 
@@ -54,11 +55,13 @@ test('a JSON syntax error names the file and the place but never quotes the sour
   assert.throws(() => readJson(quoted), (e) => {
     assert.match(e.message.slice(quoted.length), /^: invalid JSON( \(line \d+, column \d+\))?$/);
     assert.ok(e.message.startsWith(quoted) && !e.message.includes(secret) && !e.message.includes('TOKEN'));
-    assert.ok(e.cause instanceof SyntaxError);
+    // Node prints a cause when an error goes uncaught, and V8's carries a piece of the source.
+    assert.equal(e.cause, undefined);
+    assert.ok(!inspect(e).includes(secret) && !inspect(e).includes('sk-live'));
     return true;
   });
   const placed = put(tempDir(), 'placed.json', `{\n  "a": 1,\n  "TOKEN" "${secret}"\n}`);
-  assert.throws(() => readJson(placed), (e) => e.message === `${placed}: invalid JSON (line 3, column 11)` && e.cause instanceof SyntaxError);
+  assert.throws(() => readJson(placed), (e) => e.message === `${placed}: invalid JSON (line 3, column 11)` && e.cause === undefined && !inspect(e).includes(secret));
   const ended = put(tempDir(), 'ended.json', '{"a":');
   assert.throws(() => readJson(ended), (e) => e.message === `${ended}: invalid JSON`);
 });

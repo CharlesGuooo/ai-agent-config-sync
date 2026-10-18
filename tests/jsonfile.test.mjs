@@ -258,3 +258,147 @@ test('a config that is not valid JSON or not UTF-8 stops the run, names the file
     assert.ok(readFileSync(file).equals(bytes), file);
   }
 });
+
+test('the file\'s line ending is kept: CRLF stays CRLF everywhere, LF stays LF, and a new file is LF', () => {
+  const dir = tempDir();
+  const mine = { model: 'opus', note: 'a\nb', mcpServers: { flaui: { command: 'x.exe' }, memory: { command: 'npx', args: ['-y', 'm'] } } };
+  const layout = (value, eol) => JSON.stringify(value, null, 2).replace(/\n/g, eol) + eol;
+  const edited = structuredClone(mine);
+  edited.mcpServers.memory.args = ['-y', 'm2'];
+  edited.hooks = { PreToolUse: [{ matcher: 'Bash', hooks: [{ type: 'command', command: 'node g.mjs' }] }] };
+  const removed = structuredClone(mine);
+  delete removed.mcpServers.memory;
+  removed.hooks = { PreToolUse: [] };
+  for (const eol of ['\r\n', '\n']) {
+    const file = join(dir, eol === '\n' ? 'lf.json' : 'crlf.json');
+    writeFileSync(file, layout(mine, eol));
+    const run = newRun();
+    // The memory entry is identical, so it is adopted; then one entry changes and a hook is added.
+    applyJson({ file, entries: [memory()] }, run);
+    applyJson({ file, entries: [memory(['-y', 'm2'])], hooks: [guard('node g.mjs')] }, newRun({ state: run.state }));
+    // The user's layout with those changes and nothing else: no bare LF in a CRLF file, and the newline inside the note is still an escape.
+    assert.equal(readFileSync(file, 'utf8'), layout(edited, eol), JSON.stringify(eol));
+    removeJson(file, items(run), run);
+    assert.equal(readFileSync(file, 'utf8'), layout(removed, eol), JSON.stringify(eol));
+  }
+  const created = join(dir, 'new', 'mcp.json');
+  applyJson({ file: created, entries: [memory()] }, newRun());
+  assert.equal(readFileSync(created, 'utf8'), layout({ mcpServers: { memory: { command: 'npx', args: ['-y', 'm'] } } }, '\n'));
+});
+
+test('a hook group from another clone of the repo is found by its script: a conflict with no state, replaced in place on repo, never a second group', () => {
+  const mine = { matcher: 'Write', hooks: [{ type: 'command', command: 'cu-guard.exe' }] };
+  const format = { matcher: 'Bash', hooks: [{ type: 'command', command: 'node "/old/clone/scripts/hooks/format.mjs"' }] };
+  const fresh = guard('node "/new/clone/scripts/hooks/guard.mjs"');
+  const written = { matcher: 'Bash', hooks: [{ type: 'command', command: fresh.command }] };
+  // The old clone's command with forward slashes, and the way a Windows path looks.
+  for (const old of ['node "/old/clone/scripts/hooks/guard.mjs"', 'node "C:\\old\\clone\\scripts\\hooks\\guard.mjs"']) {
+    const file = join(tempDir(), 'settings.json');
+    const stale = { matcher: 'Bash', hooks: [{ type: 'command', command: old }] };
+    writeFileSync(file, JSON.stringify({ hooks: { PreToolUse: [mine, stale, format] } }));
+    const bytes = readFileSync(file);
+    const first = newRun();
+    applyJson({ file, hooks: [fresh] }, first);
+    assert.deepEqual(first.report.conflicts.map((c) => c.id), ['g'], old);
+    assert.ok(readFileSync(file).equals(bytes), old);
+    applyJson({ file, hooks: [fresh] }, newRun({ state: first.state, resolutions: { g: 'repo' } }));
+    assert.deepEqual(read(file).hooks.PreToolUse, [mine, written, format], old);
+    const settled = newRun({ state: first.state });
+    applyJson({ file, hooks: [fresh] }, settled);
+    assert.deepEqual([settled.report.changes, settled.report.conflicts], [[], []], old);
+  }
+});
+
+test('with several groups running the guard from other clones, only other scripts, or the guard under another event, nothing is guessed and ours is added', () => {
+  const at = (clone, name) => ({ matcher: 'Bash', hooks: [{ type: 'command', command: `node "/${clone}/scripts/hooks/${name}.mjs"` }] });
+  const fresh = guard('node "/new/clone/scripts/hooks/guard.mjs"');
+  const ours = { matcher: 'Bash', hooks: [{ type: 'command', command: fresh.command }] };
+  const cases = {
+    'two other clones': { PreToolUse: [at('old1', 'guard'), at('old2', 'guard')] },
+    'another script only': { PreToolUse: [at('old1', 'format')] },
+    'the guard under another event': { PostToolUse: [at('old1', 'guard')] },
+  };
+  for (const [what, hooks] of Object.entries(cases)) {
+    const file = join(tempDir(), 'settings.json');
+    writeFileSync(file, JSON.stringify({ hooks }));
+    const run = newRun();
+    applyJson({ file, hooks: [fresh] }, run);
+    assert.deepEqual(run.report.conflicts, [], what);
+    assert.deepEqual(read(file).hooks, { ...hooks, PreToolUse: [...(hooks.PreToolUse ?? []), ours] }, what);
+  }
+});
+
+test('a container of another shape on an entry\'s path or under hooks stops a write, naming the file and the key path, before anything is recorded', () => {
+  const mcpEntry = { id: 'o', path: ['mcp', 'memory'], value: { type: 'local' } };
+  const hook = { hooks: [guard('node g.mjs')] };
+  const noBrackets = { hooks: { PreToolUse: { matcher: 'Bash', hooks: [{ type: 'command', command: 'mine' }] } } };
+  const cases = [
+    ['an array where the entry\'s object should be', { mcp: ['x'] }, { entries: [mcpEntry] }, 'mcp'],
+    ['a string', { mcp: 'x' }, { entries: [mcpEntry] }, 'mcp'],
+    ['null', { mcp: null }, { entries: [mcpEntry] }, 'mcp'],
+    ['a container further down the path', { a: { b: [] } }, { entries: [{ id: 'n', path: ['a', 'b', 'c'], value: 1 }] }, 'a.b'],
+    ['a bad container after a good entry', { mcp: ['x'] }, { entries: [memory(), mcpEntry] }, 'mcp'],
+    ['hooks that is not an object', { hooks: [] }, hook, 'hooks'],
+    ['an event whose array lost its brackets', noBrackets, hook, 'hooks.PreToolUse'],
+  ];
+  for (const [what, content, spec, keyPath] of cases) {
+    const file = join(tempDir(), 'cfg.json');
+    writeFileSync(file, JSON.stringify(content));
+    const bytes = readFileSync(file);
+    const run = newRun();
+    assert.throws(() => applyJson({ file, ...spec }, run), (e) => e.message.includes(file) && e.message.includes(`${keyPath} is not`), what);
+    assert.ok(readFileSync(file).equals(bytes), what);
+    assert.deepEqual(run.state.entries, {}, what);
+  }
+});
+
+test('removal replaces nothing, so containers of another shape are left as they are and the entries forgotten', () => {
+  const file = join(tempDir(), 'cfg.json');
+  writeFileSync(file, JSON.stringify({ mcp: ['x'], hooks: { PreToolUse: 'oops' } }));
+  const bytes = readFileSync(file);
+  const run = newRun();
+  run.state.entries.o = { agent: null, kind: 'json', file, path: ['mcp', 'memory'], hash: 'h' };
+  run.state.entries.g = { agent: null, kind: 'hook', file, event: 'PreToolUse', command: 'node g.mjs', hash: 'h' };
+  removeJson(file, items(run), run);
+  assert.ok(readFileSync(file).equals(bytes));
+  assert.deepEqual(run.state.entries, {});
+});
+
+test('hooks with no state: an identical group is adopted; the same command under another matcher is a conflict and no second group is added', () => {
+  const ours = { matcher: 'Bash', hooks: [{ type: 'command', command: 'node g.mjs' }] };
+  const file = join(tempDir(), 'settings.json');
+  writeFileSync(file, JSON.stringify({ hooks: { PreToolUse: [ours] } }));
+  const bytes = readFileSync(file);
+  const same = newRun();
+  applyJson({ file, hooks: [guard('node g.mjs')] }, same);
+  assert.deepEqual([same.report.changes, same.report.conflicts], [[], []]);
+  assert.equal(same.state.entries.g.command, 'node g.mjs');
+  assert.ok(readFileSync(file).equals(bytes));
+  const elsewhere = join(tempDir(), 'settings.json');
+  writeFileSync(elsewhere, JSON.stringify({ hooks: { PreToolUse: [{ ...ours, matcher: 'Write' }] } }));
+  const before = readFileSync(elsewhere);
+  const other = newRun();
+  applyJson({ file: elsewhere, hooks: [guard('node g.mjs')] }, other);
+  assert.deepEqual(other.report.conflicts.map((c) => c.id), ['g']);
+  assert.deepEqual(other.state.entries, {});
+  assert.ok(readFileSync(elsewhere).equals(before));
+});
+
+test('after a write, a hook group the machine deleted is a conflict and is not added back until the repo is chosen', () => {
+  const mine = { matcher: 'Write', hooks: [{ type: 'command', command: 'cu-guard.exe' }] };
+  const file = join(tempDir(), 'settings.json');
+  writeFileSync(file, JSON.stringify({ hooks: { PreToolUse: [mine] } }));
+  const run = newRun();
+  applyJson({ file, hooks: [guard('node g.mjs')] }, run);
+  assert.equal(read(file).hooks.PreToolUse.length, 2);
+  // The machine takes our group out again and keeps its own.
+  writeFileSync(file, JSON.stringify({ hooks: { PreToolUse: [mine] } }));
+  const bytes = readFileSync(file);
+  const again = newRun({ state: run.state });
+  applyJson({ file, hooks: [guard('node g.mjs')] }, again);
+  assert.deepEqual(again.report.conflicts.map((c) => c.id), ['g']);
+  assert.deepEqual(again.report.changes, []);
+  assert.ok(readFileSync(file).equals(bytes));
+  applyJson({ file, hooks: [guard('node g.mjs')] }, newRun({ state: run.state, resolutions: { g: 'repo' } }));
+  assert.deepEqual(read(file).hooks.PreToolUse, [mine, { matcher: 'Bash', hooks: [{ type: 'command', command: 'node g.mjs' }] }]);
+});

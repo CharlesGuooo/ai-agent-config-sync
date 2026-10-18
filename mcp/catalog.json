@@ -1,5 +1,5 @@
 {
-  "$comment": "Single source for every agent's MCP config; rendered per agent and OS by lib/mcp.mjs. npx = local server started with `npx -y`; http = remote server; bearerEnv = Authorization: Bearer ${VAR}; {HOME} = this machine's home; on = enabled by default; os = only on these systems; agents.<agent> = override for one agent (on / skip / extra). See docs/harness-v2.md.",
+  "$comment": "Single source for every agent's MCP config; rendered per agent and OS by lib/mcp.mjs. npx = local server started with `npx -y`; http = remote server; bearerEnv = Authorization: Bearer ${VAR}; {HOME} = this machine's home; on = enabled by default; os = only on these systems; agents.<agent> = override for one agent (on / skip / extra). URL variables (${VAR} in http) are written as values into Codex and Pi configs, so they must never hold secrets; secrets go in env (pass-through under the variable's own name) or bearerEnv. See docs/harness-v2.md.",
   "servers": {
     "github": { "http": "https://api.githubcopilot.com/mcp", "bearerEnv": "GITHUB_PERSONAL_ACCESS_TOKEN", "on": true },
     "memory": { "npx": ["@modelcontextprotocol/server-memory@2026.1.26"], "on": true },

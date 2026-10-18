@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { canon, hashValue, hashText, getPath, setPath, deletePath, lf } from '../lib/util.mjs';
+import { canon, hashValue, hashText, getPath, setPath, deletePath, lf, readText, readJson } from '../lib/util.mjs';
+import { tempDir, put } from './helpers.mjs';
 
 test('canon sorts object keys at every level', () => {
   assert.equal(canon({ b: 1, a: { d: 1, c: [2, { z: 1, y: 2 }] } }), '{"a":{"c":[2,{"y":2,"z":1}],"d":1},"b":1}');
@@ -25,4 +26,10 @@ test('setPath creates parents; getPath and deletePath use the same path', () => 
   assert.equal(getPath(o, ['nope', 'x']), undefined);
   deletePath(o, ['mcpServers', 'x']);
   assert.deepEqual(o, { mcpServers: {} });
+});
+
+test('readText and readJson drop a leading BOM', () => {
+  const p = put(tempDir(), 'bom.json', '\uFEFF{"a":1}');
+  assert.equal(readText(p), '{"a":1}');
+  assert.deepEqual(readJson(p), { a: 1 });
 });

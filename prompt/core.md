@@ -40,14 +40,17 @@ When a task becomes domain-specific, switch to the matching project directory so
 | Domain | Directory |
 | --- | --- |
 | ML / DL / RL training | `~/dev-project/ml/` (sklearn / PyTorch / transformers / RL) |
-| Finance / 投资 / 交易 | `~/finance-project/` (container; cd into `trading/` `research/` `macro/` `modeling/` `portfolio/` `quant-methods/` `advisory/` for actual skills) |
+| Finance / 投资 / 交易 | `~/finance-project/` (container; cd into `trading/` `research/` `macro/` `modeling/` `portfolio/` `quant-methods/`, or `advisory/ib/` `advisory/pe/` `advisory/wealth/` `advisory/fund-admin/` `advisory/compliance/`, for actual skills) |
 | Data analysis | `~/data-analysis-project/` |
-| Development | `~/dev-project/` |
+| Development | `~/dev-project/` (general dev skills; cd into `frontend/` `backend/` `cloud-platform/` `testing-qa/` `devops-sre/` `agent-dev/` for specialized ones) |
 | Marketing | `~/marketing-project/` |
 | Research | `~/research-project/` (container; cd into `literature/` `gates/` `manuscript/` `review/` `talks/` for actual skills) |
 | Productivity | `~/productivity-project/` |
 | iOS / Swift / SwiftUI | `~/ios-project/` |
 | Craft / 表达功力 (cross-cutting) | `~/craft-project/` (container; cd into `writing/` `design/`) |
+
+Document tasks (PDF / Word / Excel / PowerPoint) use the global `pdf`, `officecli` and `markitdown` skills directly — no project switch needed.
+The global layer routes to the right directory and stops there; the local pack owns the domain guidance.
 
 The full per-skill pack index is `{{REPO}}/HARNESS.md`; the human usage guide is `{{REPO}}/PLAYBOOK.md`.
 Skills reach you as links into that repo: to change a skill, edit it there and commit.

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { tempDir, newRun } from './helpers.mjs';
-import { applyBlock, removeBlock, applyFile, removeFile, BEGIN, END } from '../lib/managed.mjs';
+import { applyBlock, removeBlock, applyFile, removeFile, isV1Prompt, BEGIN, END } from '../lib/managed.mjs';
 
 const read = (f) => readFileSync(f, 'utf8');
 
@@ -126,7 +126,35 @@ test('a CRLF v1 prompt is still recognised and replaced whole, in CRLF', () => {
   assert.equal(read(file), `${BEGIN}\r\ngen\r\n${END}\r\n`);
 });
 
-test('damaged markers are a conflict and the file stays as it is; resolving to the repo puts a fresh block on top and keeps the rest', () => {
+test('isV1Prompt needs both v1 markers alone on their own lines, BEGIN first', () => {
+  const v1 = '# old\n<!-- SKILLS:BEGIN -->\nx\n<!-- SKILLS:END -->\n';
+  assert.ok(isV1Prompt(v1));
+  assert.ok(isV1Prompt(v1.replace(/\n/g, '\r\n')));
+  assert.ok(isV1Prompt('<!-- SKILLS:BEGIN -->\n<!-- SKILLS:END -->'));
+  assert.ok(!isV1Prompt('The table sits between <!-- SKILLS:BEGIN --> and <!-- SKILLS:END --> in the old files.\n'));
+  assert.ok(!isV1Prompt('`<!-- SKILLS:BEGIN -->`\nx\n`<!-- SKILLS:END -->`\n'));
+  assert.ok(!isV1Prompt('<!-- SKILLS:BEGIN -->\nonly the start\n'));
+  assert.ok(!isV1Prompt('<!-- SKILLS:END -->\nx\n<!-- SKILLS:BEGIN -->\n'));
+});
+
+test('a v1 prompt is replaced whole and reported as replace-v1; a file that only mentions the v1 markers keeps its text', () => {
+  const dir = tempDir();
+  const v1 = join(dir, 'v1.md');
+  writeFileSync(v1, '# old\n<!-- SKILLS:BEGIN -->\nx\n<!-- SKILLS:END -->\n');
+  const replaced = newRun();
+  applyBlock({ id: 'a', file: v1, content: 'gen' }, replaced);
+  assert.deepEqual(replaced.report.changes, [`replace-v1 ${v1}`]);
+  assert.equal(read(v1), `${BEGIN}\ngen\n${END}\n`);
+  const doc = join(dir, 'notes.md');
+  const text = 'The v1 sync wrote a table between <!-- SKILLS:BEGIN --> and <!-- SKILLS:END --> in each prompt.\n';
+  writeFileSync(doc, text);
+  const kept = newRun();
+  applyBlock({ id: 'b', file: doc, content: 'gen' }, kept);
+  assert.equal(read(doc), `${BEGIN}\ngen\n${END}\n\n${text}`);
+  assert.deepEqual(kept.report.changes, [`write ${doc}`]);
+});
+
+test('damaged markers are a conflict with a warning, with or without state, and the file stays as it is; resolving to the repo puts a fresh block on top and keeps the rest', () => {
   const damaged = {
     'END deleted': `${BEGIN}\nv1\n\nmy notes\n`,
     'BEGIN deleted': `v1\n${END}\n\nmy notes\n`,
@@ -137,20 +165,24 @@ test('damaged markers are a conflict and the file stays as it is; resolving to t
     const run = newRun();
     applyBlock({ id: 'p', file, content: 'v1' }, run);
     writeFileSync(file, text);
-    const conflicted = newRun({ state: run.state });
-    applyBlock({ id: 'p', file, content: 'v2' }, conflicted);
-    assert.deepEqual(conflicted.report.conflicts.map((c) => c.id), ['p'], what);
-    assert.equal(read(file), text, what);
+    // After an earlier install, and on a machine that has no state at all.
+    for (const state of [run.state, undefined]) {
+      const conflicted = newRun({ state });
+      applyBlock({ id: 'p', file, content: 'v2' }, conflicted);
+      assert.deepEqual(conflicted.report.conflicts.map((c) => c.id), ['p'], what);
+      assert.deepEqual(conflicted.report.warnings, [`managed markers damaged in ${file}; fix them by hand`], what);
+      assert.equal(read(file), text, what);
+    }
     applyBlock({ id: 'p', file, content: 'v2' }, newRun({ state: run.state, resolutions: { p: 'repo' } }));
     assert.ok(read(file).startsWith(`${BEGIN}\nv2\n${END}\n`), what);
     assert.match(read(file), /my notes/, what);
     const again = newRun({ state: run.state });
     applyBlock({ id: 'p', file, content: 'v2' }, again);
-    assert.deepEqual([again.report.changes, again.report.conflicts], [[], []], what);
+    assert.deepEqual([again.report.changes, again.report.conflicts, again.report.warnings], [[], [], []], what);
   }
 });
 
-test('removeBlock leaves a file whose block lost a marker alone, and stops tracking it', () => {
+test('removeBlock leaves a file whose block lost a marker alone, warns, and stops tracking it', () => {
   const file = join(tempDir(), 'CLAUDE.md');
   const run = newRun();
   applyBlock({ id: 'p', file, content: 'gen' }, run);
@@ -160,7 +192,68 @@ test('removeBlock leaves a file whose block lost a marker alone, and stops track
   removeBlock({ id: 'p', file }, removal);
   assert.equal(read(file), damaged);
   assert.deepEqual([removal.report.changes, removal.report.conflicts], [[], []]);
+  assert.deepEqual(removal.report.warnings, [`managed markers damaged in ${file}; fix them by hand`]);
   assert.ok(!('p' in run.state.entries));
+});
+
+test('a stray END or an orphan BEGIN above a valid block does not hide it; the block is updated and removed exactly', () => {
+  const above = { 'stray END': `${END}\n\n`, 'orphan BEGIN': `${BEGIN}\nleft over\n\n` };
+  for (const [what, top] of Object.entries(above)) {
+    const file = join(tempDir(), 'CLAUDE.md');
+    const run = newRun();
+    applyBlock({ id: 'p', file, content: 'v1' }, run);
+    writeFileSync(file, `${top}${read(file)}\nmy notes\n`);
+    const update = newRun({ state: run.state });
+    applyBlock({ id: 'p', file, content: 'v2' }, update);
+    assert.equal(read(file), `${top}${BEGIN}\nv2\n${END}\n\nmy notes\n`, what);
+    assert.deepEqual([update.report.conflicts, update.report.warnings], [[], []], what);
+    const again = newRun({ state: run.state });
+    applyBlock({ id: 'p', file, content: 'v2' }, again);
+    assert.deepEqual([again.report.changes, again.report.conflicts, again.report.warnings], [[], [], []], what);
+    removeBlock({ id: 'p', file }, newRun({ state: run.state }));
+    assert.equal(read(file), `${top}my notes\n`, what);
+  }
+});
+
+test('applyBlock refuses content that contains a managed marker, naming the block', () => {
+  const file = join(tempDir(), 'AGENTS.md');
+  for (const marker of [BEGIN, END]) {
+    assert.throws(() => applyBlock({ id: 'claude:prompt', file, content: `text\n${marker}\nmore` }, newRun()), (e) => e.message.includes('claude:prompt'));
+  }
+  assert.ok(!existsSync(file));
+});
+
+test('removeBlock right after applyBlock gives back the original bytes, blank lines and all', () => {
+  const originals = ['my notes\n', '\n\nfoo\n', 'no newline at the end', 'a\n\n\nb\n', 'my notes\r\nmore\r\n', '\r\n\r\nfoo\r\n'];
+  for (const original of originals) {
+    const file = join(tempDir(), 'AGENTS.md');
+    writeFileSync(file, original);
+    const run = newRun();
+    applyBlock({ id: 'p', file, content: 'gen' }, run);
+    removeBlock({ id: 'p', file }, newRun({ state: run.state }));
+    assert.equal(read(file), original, JSON.stringify(original));
+  }
+});
+
+test('removing a block or a file that was edited by hand is a conflict and leaves it alone', () => {
+  const dir = tempDir();
+  const run = newRun();
+  const blockFile = join(dir, 'a.md');
+  applyBlock({ id: 'a', file: blockFile, content: 'v1' }, run);
+  writeFileSync(blockFile, read(blockFile).replace('\nv1\n', '\nhand edit\n'));
+  const editedBlock = read(blockFile);
+  const blockRemoval = newRun({ state: run.state });
+  removeBlock({ id: 'a', file: blockFile }, blockRemoval);
+  assert.deepEqual(blockRemoval.report.conflicts.map((c) => c.id), ['a']);
+  assert.equal(read(blockFile), editedBlock);
+  const cmdFile = join(dir, 'cmd.md');
+  applyFile({ id: 'c', file: cmdFile, content: 'body\n' }, run);
+  writeFileSync(cmdFile, 'my version\n');
+  const fileRemoval = newRun({ state: run.state });
+  removeFile({ id: 'c', file: cmdFile }, fileRemoval);
+  assert.deepEqual(fileRemoval.report.conflicts.map((c) => c.id), ['c']);
+  assert.equal(read(cmdFile), 'my version\n');
+  assert.ok('a' in run.state.entries && 'c' in run.state.entries);
 });
 
 test('a file that is not UTF-8 stops the run and is left as it was', () => {

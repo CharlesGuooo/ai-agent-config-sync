@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { rmSync } from 'node:fs';
 import { fixtureRepo, put } from './helpers.mjs';
 import { makeContext, slash } from '../lib/platform.mjs';
 import { skillTable, catalogErrors, renderPrompt } from '../lib/prompt.mjs';
@@ -72,8 +73,15 @@ test('catalogErrors returns a message for a missing or malformed catalog instead
   assert.match(catalogErrors(bare)[0], /"categories" must be an array/);
 });
 
-test('catalogErrors reports a missing catalog.json by name', async () => {
-  const { rmSync } = await import('node:fs');
+test('catalogErrors reports a duplicate category key once', () => {
+  const repo = fixtureRepo();
+  catalog(repo, both, [...cats, { key: 'process', title: 'Again', blurb: 'b' }]);
+  const errors = catalogErrors(repo);
+  assert.equal(errors.length, 1);
+  assert.match(errors[0], /category key "process" is used more than once/);
+});
+
+test('catalogErrors reports a missing catalog.json by name', () => {
   const repo = fixtureRepo();
   rmSync(`${repo}/skills/global/catalog.json`);
   assert.match(catalogErrors(repo)[0], /skills\/global\/catalog\.json does not exist/);
@@ -87,8 +95,7 @@ test('a skill directory named like an Object property still counts as uncatalogu
   assert.match(errors[0], /skills\/global\/constructor has no entry/);
 });
 
-test('renderPrompt rejects an unknown placeholder and a missing core.md', async () => {
-  const { rmSync } = await import('node:fs');
+test('renderPrompt rejects an unknown placeholder and a missing core.md', () => {
   const repo = fixtureRepo();
   const ctx = makeContext({ repo, home: repo });
   put(repo, 'prompt/core.md', '# {{TITLE}}\n\n{{SKILL}}\n');

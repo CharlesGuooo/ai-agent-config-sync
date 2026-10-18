@@ -259,6 +259,25 @@ test('a config that is not valid JSON or not UTF-8 stops the run, names the file
   }
 });
 
+test('a config that is not valid JSON is named and located in the error but never quoted, so a token in it stays out', () => {
+  const secret = 'sk-live-abc123';
+  const file = join(tempDir(), 'mcp.json');
+  const x = { id: 'x', kind: 'json', path: ['mcpServers', 'x'] };
+  for (const [text, place] of [[`{"mcpServers": {"x": {"TOKEN": ${secret}}}}`, null], [`{\n  "mcpServers": {},\n  "TOKEN" "${secret}"\n}`, ' (line 3, column 11)']]) {
+    writeFileSync(file, text);
+    const names = (e) => {
+      assert.ok(e.message.startsWith(`${file}: invalid JSON`), text);
+      assert.ok(!e.message.includes(secret) && !e.message.includes('TOKEN'), text);
+      if (place) assert.equal(e.message, `${file}: invalid JSON${place}`);
+      assert.ok(e.cause instanceof SyntaxError, text);
+      return true;
+    };
+    assert.throws(() => applyJson({ file, entries: [memory()] }, newRun()), names, text);
+    assert.throws(() => removeJson(file, [x], newRun()), names, text);
+    assert.equal(readFileSync(file, 'utf8'), text);
+  }
+});
+
 test('the file\'s line ending is kept: CRLF stays CRLF everywhere, LF stays LF, and a new file is LF', () => {
   const dir = tempDir();
   const mine = { model: 'opus', note: 'a\nb', mcpServers: { flaui: { command: 'x.exe' }, memory: { command: 'npx', args: ['-y', 'm'] } } };

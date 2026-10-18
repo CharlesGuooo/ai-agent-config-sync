@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { canon, hashValue, hashText, getPath, setPath, deletePath, lf, readText, readJson, writeText, writeJson } from '../lib/util.mjs';
+import { canon, hashValue, hashText, getPath, setPath, deletePath, lf, readText, readJson, parseJson, writeText, writeJson } from '../lib/util.mjs';
 import { tempDir, put } from './helpers.mjs';
 
 test('canon sorts object keys at every level', () => {
@@ -45,6 +45,34 @@ test('readText refuses a file that is not UTF-8 and names it', () => {
 test('readJson names the file when its content is not valid JSON', () => {
   const p = put(tempDir(), 'broken.json', '{"a":');
   assert.throws(() => readJson(p), (e) => e.message.includes(p));
+});
+
+test('a JSON syntax error names the file and the place but never quotes the source', () => {
+  const secret = 'sk-live-abc123';
+  // V8 quotes a piece of the source in this error and gives no position: the message holds neither.
+  const quoted = put(tempDir(), 'quoted.json', `{"TOKEN": ${secret}}`);
+  assert.throws(() => readJson(quoted), (e) => {
+    assert.match(e.message.slice(quoted.length), /^: invalid JSON( \(line \d+, column \d+\))?$/);
+    assert.ok(e.message.startsWith(quoted) && !e.message.includes(secret) && !e.message.includes('TOKEN'));
+    assert.ok(e.cause instanceof SyntaxError);
+    return true;
+  });
+  const placed = put(tempDir(), 'placed.json', `{\n  "a": 1,\n  "TOKEN" "${secret}"\n}`);
+  assert.throws(() => readJson(placed), (e) => e.message === `${placed}: invalid JSON (line 3, column 11)` && e.cause instanceof SyntaxError);
+  const ended = put(tempDir(), 'ended.json', '{"a":');
+  assert.throws(() => readJson(ended), (e) => e.message === `${ended}: invalid JSON`);
+});
+
+test('where V8 gives only a position, parseJson works out the line and column from it', () => {
+  const real = JSON.parse;
+  JSON.parse = () => {
+    throw new SyntaxError('Unexpected token } in JSON at position 14');
+  };
+  try {
+    assert.throws(() => parseJson('{\n  "a": 1,\n  }', 'f.json'), (e) => e.message === 'f.json: invalid JSON (line 3, column 3)');
+  } finally {
+    JSON.parse = real;
+  }
 });
 
 test('readText and readJson return null for a missing file', () => {

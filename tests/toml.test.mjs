@@ -320,3 +320,132 @@ test('removeHookGroups keeps the line endings, the final line break and the comm
   // A group in the middle: the user's comment and group after it are not part of it.
   assert.equal(removeHookGroups(lines('model = "m"', '', ...group, '', '# my own hook', ...mine, ''), v1), lines('model = "m"', '', '# my own hook', ...mine, ''));
 });
+
+test('an escaped quote inside a """ string does not end it: the tables after it stay visible', () => {
+  const shape = lines('x = """', 'Quote it as \\""" here', '"""');
+  // Above the server table: the table is found, an equal one is a no-op, and a repo write leaves exactly one table.
+  const above = lines(shape, '', '[mcp_servers.memory]', 'command = "npx"', 'args = ["-y", "old"]', '');
+  assert.deepEqual(segments(above).filter((s) => s.header).map((s) => s.header), ['[mcp_servers.memory]']);
+  assert.deepEqual(readMcpTable(above, 'memory'), { command: 'npx', args: ['-y', 'old'] });
+  const file = configFile(above);
+  const same = newRun();
+  applyCodexMcp({ file, servers: [server('memory', { command: 'npx', args: ['-y', 'old'] })] }, same);
+  assert.deepEqual([same.report.changes, same.report.conflicts], [[], []]);
+  applyCodexMcp({ file, servers: [server('memory', { command: 'npx', args: ['-y', 'new'] })] }, newRun({ resolutions: { all: 'repo' } }));
+  assert.equal(readFileSync(file, 'utf8'), `${shape}\n\n[mcp_servers.memory]\ncommand = "npx"\nargs = ["-y", "new"]\n`);
+  // Inside the server table, with a user table behind it: the user table survives a rewrite.
+  const inside = lines('[mcp_servers.memory]', 'command = "npx"', 'note = """', 'Quote it as \\""" here', '"""', '', "[projects.'x']", 'trust_level = "trusted"', '');
+  const other = configFile(inside);
+  applyCodexMcp({ file: other, servers: [server('memory', MEMORY)] }, newRun({ resolutions: { all: 'repo' } }));
+  assert.equal(readFileSync(other, 'utf8'), `[projects.'x']\ntrust_level = "trusted"\n\n${MEMORY_TABLE}`);
+  // One or two quotes just inside the closing delimiter belong to the string, so the closing run is three to five long.
+  const runs = lines('[mcp_servers.m]', 'a = """say "hi""""', "b = '''say 'hi''''", 'c = ["""x""""]', '', '[next]', 'k = 1', '');
+  assert.deepEqual(segments(runs).filter((s) => s.header).map((s) => s.header), ['[mcp_servers.m]', '[next]']);
+  assert.deepEqual(readMcpTable(runs, 'm'), { a: 'say "hi"', b: "say 'hi'", c: ['x"'] });
+});
+
+test('errors name the line and never quote the file: a token beside what the parser cannot read stays out of the message', () => {
+  const token = 'sk-live-abc123';
+  const memory = (...body) => lines('[mcp_servers.memory]', 'command = "npx"', ...body, '');
+  const cases = {
+    'a value it cannot read': [memory('weird = inf', `API_KEY = "${token}"`), 'line 3: unsupported TOML'],
+    'a key it cannot read': [memory(`token ${token}! = "x"`), 'line 3: bad TOML key'],
+    'a string that never ends': [memory(`note = "${token}`, 'other = 1'), 'line 3: unsupported TOML'],
+    'an inline table under [mcp_servers]': [lines('[mcp_servers]', `memory = { command = "x", API_KEY = "${token}" }`, ''), 'line 1: mcp_servers.memory is written as an inline table'],
+    'an array of tables under the server': [lines(`[[mcp_servers.memory.${token}]]`, 'x = 1', ''), 'line 1: mcp_servers.memory is written with an array of tables'],
+    'a top-level inline table': [lines(`mcp_servers = { memory = { API_KEY = "${token}" } }`, ''), 'line 1: mcp_servers is written as dotted keys or an inline table'],
+  };
+  for (const [what, [text, message]] of Object.entries(cases)) {
+    const file = configFile(text);
+    assert.throws(() => applyCodexMcp({ file, servers: [server('memory', MEMORY)] }, newRun()), (e) => {
+      assert.ok(e.message.startsWith(`${file}: ${message}`), `${what}: ${e.message}`);
+      assert.ok(!e.message.includes(token) && !e.cause.message.includes(token), what);
+      return true;
+    }, what);
+  }
+  // The pieces report on their own too: a line number for the parser, nothing at all from the key parser.
+  assert.throws(() => parseBody(`a = 1\nweird = inf # ${token}\n`), (e) => e.message === 'line 2: unsupported TOML');
+  assert.throws(() => parseBody(`weird = inf # ${token}\n`, 10), (e) => e.message === 'line 10: unsupported TOML');
+  assert.throws(() => parseKey(`a.'${token}`), (e) => e.message === 'bad TOML key');
+  assert.throws(() => segments(`a = 1\n[token ${token}!]\nb = 2\n`), (e) => e.message === 'line 2: bad TOML table name');
+  // A value that cannot be written is named by its key, never shown.
+  assert.throws(() => renderMcpTable('memory', { command: 'npx', env: { API_KEY: { deeper: token } } }), (e) => e.message === 'cannot write mcp_servers.memory.env.API_KEY as TOML (object)');
+});
+
+test('a key path that reaches into object prototypes is refused, naming the file and line, and Object.prototype stays as it was', () => {
+  const cases = {
+    'a dotted key': [lines('[mcp_servers.memory]', 'command = "npx"', '__proto__.all = "repo"', ''), 'line 3: a key named __proto__ is not allowed'],
+    'a dotted key through constructor': [lines('[mcp_servers.memory]', 'command = "npx"', 'constructor.prototype.all = "repo"', ''), 'line 3: a key named constructor is not allowed'],
+    'a key in an inline table': [lines('[mcp_servers.memory]', 'env = { __proto__ = { all = "repo" } }', ''), 'line 2: a key named __proto__ is not allowed'],
+    'a sub-table header': [lines('[mcp_servers.memory]', 'command = "npx"', '', '[mcp_servers.memory.__proto__.all]', 'x = 1', ''), 'line 4: a table named __proto__ is not allowed'],
+    'a key under [mcp_servers]': [lines('[mcp_servers]', '__proto__.all = "repo"', ''), 'line 2: a key named __proto__ is not allowed'],
+  };
+  const known = new Set(Object.getOwnPropertyNames(Object.prototype));
+  try {
+    for (const [what, [text, message]] of Object.entries(cases)) {
+      const file = configFile(text);
+      const run = newRun();
+      assert.throws(() => applyCodexMcp({ file, servers: [server('memory', MEMORY)] }, run), (e) => e.message === `${file}: ${message}`, what);
+      assert.deepEqual(Object.getOwnPropertyNames(Object.prototype).filter((k) => !known.has(k)), [], what);
+      assert.equal(readFileSync(file, 'utf8'), text, what);
+      assert.deepEqual(run.state.entries, {}, what);
+    }
+  } finally {
+    for (const k of Object.getOwnPropertyNames(Object.prototype)) if (!known.has(k)) delete Object.prototype[k];
+  }
+});
+
+test('every value is rendered before anything is recorded: an unwritable one fails a dry run too, named by its key', () => {
+  const token = 'sk-live-abc123';
+  const text = 'model = "m"\n';
+  const file = configFile(text);
+  const cases = {
+    'an object nested too deep': [{ command: 'npx', env: { API_KEY: { deeper: token } } }, 'mcp_servers.memory.env.API_KEY as TOML (object)'],
+    'a null': [{ command: 'npx', args: ['a', null] }, 'mcp_servers.memory.args[1] as TOML (null)'],
+  };
+  for (const [what, [value, message]] of Object.entries(cases)) {
+    for (const dryRun of [false, true]) {
+      const run = newRun({ dryRun });
+      assert.throws(() => applyCodexMcp({ file, servers: [server('other', { command: 'o' }), server('memory', value)] }, run), (e) => e.message === `${file}: cannot write ${message}`, what);
+      assert.deepEqual(run.state.entries, {}, what);
+      assert.equal(readFileSync(file, 'utf8'), text, what);
+    }
+  }
+  // A key whose value is undefined is left out, the way hashValue leaves it out, so what was written reads back equal.
+  const value = { command: 'npx', url: undefined, env: { A: 'x', B: undefined } };
+  const first = newRun();
+  applyCodexMcp({ file, servers: [server('memory', value)] }, first);
+  assert.equal(readFileSync(file, 'utf8'), `${text}\n[mcp_servers.memory]\ncommand = "npx"\n\n[mcp_servers.memory.env]\nA = "x"\n`);
+  const again = newRun({ state: first.state });
+  applyCodexMcp({ file, servers: [server('memory', value)] }, again);
+  assert.deepEqual([again.report.changes, again.report.conflicts], [[], []]);
+});
+
+test('a sub-table that comes before its parent table is merged into, not replaced', () => {
+  const text = lines('[mcp_servers.s.tools.t]', 'approval = "x"', '', '[mcp_servers.s.tools]', 'other = 1', '', '[mcp_servers.s]', 'command = "npx"', '');
+  assert.deepEqual(readMcpTable(text, 's'), { command: 'npx', tools: { other: 1, t: { approval: 'x' } } });
+});
+
+test('a new or emptied config.toml does not start with blank lines', () => {
+  const dir = tempDir();
+  // A file that does not exist yet: the tables and nothing else.
+  const fresh = join(dir, 'new', 'config.toml');
+  applyCodexMcp({ file: fresh, servers: [server('memory', MEMORY), server('extra', { command: 'x' })] }, newRun());
+  assert.equal(readFileSync(fresh, 'utf8'), `${MEMORY_TABLE}\n[mcp_servers.extra]\ncommand = "x"\n`);
+  // The same for a file with nothing but blank lines in it.
+  const blank = configFile('\n  \n\n');
+  applyCodexMcp({ file: blank, servers: [server('memory', MEMORY)] }, newRun());
+  assert.equal(readFileSync(blank, 'utf8'), MEMORY_TABLE);
+  // Taking out the only table leaves an empty file, and so does dropping the only hook group.
+  const only = configFile(MEMORY_TABLE);
+  applyCodexMcp({ file: only, servers: [server('memory', undefined)] }, newRun({ resolutions: { all: 'repo' } }));
+  assert.equal(readFileSync(only, 'utf8'), '');
+  assert.equal(removeHookGroups(lines('[[hooks.PreToolUse]]', 'matcher = "Bash"', '[[hooks.PreToolUse.hooks]]', 'command = "node C:/x/.agent-hooks/guard.mjs"', ''), /\.agent-hooks/), '');
+  assert.equal(writeMcpTables('', { m: { command: 'x' } }), '[mcp_servers.m]\ncommand = "x"\n');
+});
+
+test('a multi-line string in an owned table reads the same from a CRLF file', () => {
+  const text = lines('[mcp_servers.m]', 'note = """', 'first', 'second"""', "raw = '''", 'a', "b'''", '');
+  assert.equal(readMcpTable(text, 'm').note, 'first\nsecond');
+  assert.deepEqual(readMcpTable(crlf(text), 'm'), readMcpTable(text, 'm'));
+});

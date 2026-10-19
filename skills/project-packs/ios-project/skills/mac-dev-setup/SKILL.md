@@ -26,7 +26,7 @@ brew --version || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/H
 brew tap getsentry/xcodebuildmcp && brew install xcodebuildmcp   # or: npm i -g xcodebuildmcp@latest
 xcodebuildmcp-doctor                                             # verify environment
 ```
-Enable it in the MCP config (the template is at `~/MCP-Templates/xcodebuildmcp.mcp.json`):
+Enable it in the MCP config (Claude Code: the template is at `~/.claude/mcp-templates/xcodebuildmcp.mcp.json`; other agents list it as an off-by-default server in their instructions):
 copy it into the project as `.mcp.json`, or merge into the global MCP config. Launch form is
 `npx -y xcodebuildmcp@latest mcp` (note the `mcp` subcommand). Requires macOS 14.5+, Xcode 16.
 It ships Sentry telemetry — opt out per xcodebuildmcp.com/docs/privacy if desired.
@@ -46,7 +46,7 @@ tap/type/swipe/accessibility-tree control.
 brew tap facebook/fb && brew install idb-companion
 pip3 install fb-idb                    # provides the `idb` CLI (verify current pkg at fbidb.io/docs/installation)
 ```
-Enable `~/MCP-Templates/ios-simulator.mcp.json` (launch `npx -y ios-simulator-mcp`, ≥1.3.3).
+Enable `ios-simulator` (Claude Code template: `~/.claude/mcp-templates/ios-simulator.mcp.json`; launch `npx -y ios-simulator-mcp`, ≥1.3.3).
 
 ## 5. Verify the loop
 - Create/open a scratch iOS project.
@@ -55,7 +55,7 @@ Enable `~/MCP-Templates/ios-simulator.mcp.json` (launch `npx -y ios-simulator-mc
 - For Dynamic Island work, boot an **iPhone 14 Pro+** simulator.
 
 ## Later-phase MCPs (enable when you reach that stage)
-- **RevenueCat** (monetization): `~/MCP-Templates/revenuecat.mcp.json` — remote MCP, needs a
+- **RevenueCat** (monetization): `revenuecat` (Claude Code template: `~/.claude/mcp-templates/revenuecat.mcp.json`) — remote MCP, needs a
   RevenueCat API v2 key. See the app's monetization plan first.
 - **fastlane** (distribution): see the `fastlane` skill — `brew install fastlane`.
 

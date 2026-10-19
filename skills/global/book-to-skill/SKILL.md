@@ -32,22 +32,30 @@ CLI). Cleaner to install on demand than to mirror into the sync repo.
 Upstream's primary instruction is:
 
 ```bash
-# DO NOT DO THIS on a machine synced by this repo
+# DO NOT DO THIS on a machine set up by this repo
 git clone https://github.com/virgiliojr94/book-to-skill.git ~/.claude/skills/book-to-skill
 ```
 
-`~/.claude/skills/` (and the Cursor/Codex/OpenCode equivalents) is **mirrored** from
-this repo with `robocopy /MIR` / `rsync --delete`. Anything living there that isn't in
-`skills/global/` is **deleted on the next sync, silently.** A skill installed that way
-will vanish and you won't be told.
-
-**Install the standalone CLI instead** — it lives outside the mirrored tree, so sync
-never touches it.
+`~/.claude/skills/book-to-skill` is this pointer skill — a link into the repo, put there by
+`node harness.mjs`. A clone at that path replaces the link, the next `update` reports a
+conflict, and the other agents never see the clone anyway.
 
 ## Setup (first use)
 
+**`book-to-skill` is not on PyPI** — verified 2026-09-05, `pip install book-to-skill` returns
+*No matching distribution found*. Upstream now ships it as an agent skill (the `/book-to-skill`
+slash command) plus an optional pip-from-git extractor.
+
+Install the **agent skill** into a *project-level* `.claude/skills/` instead:
+
 ```bash
-pip install "book-to-skill[pdf,epub,docx]"   # extras as needed
+git clone https://github.com/virgiliojr94/book-to-skill.git   <your-project>/.claude/skills/book-to-skill
+```
+
+Or, if you only want the text extractor as a CLI (no slash command):
+
+```bash
+pip install "book-to-skill[pdf,epub,docx] @ git+https://github.com/virgiliojr94/book-to-skill.git"
 book-to-skill --check                        # verify parsers are present
 ```
 
@@ -78,8 +86,8 @@ The output is a **draft**, not a finished skill. Before it goes anywhere:
 3. **Decide where it belongs.** Domain-specific (almost always, for a book) → the
    matching local pack, not `skills/global/`. Use `skill-router` if unsure.
 4. **Register it** if it lands in `skills/global/`: add a `catalog.json` entry, then
-   run `node scripts/gen-skill-table.mjs` + `gen-harness.mjs`. The drift gate fails
-   otherwise.
+   run `node harness.mjs check` and `node scripts/gen-harness.mjs`, and finally
+   `node harness.mjs update`. `check` fails until the catalog matches.
 
 ## Security
 

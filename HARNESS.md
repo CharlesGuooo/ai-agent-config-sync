@@ -14,30 +14,30 @@ fresh repo on another drive). Use the routing table below to pick the right pack
 
 ---
 
-## Agent roster — 5 supported; how many you configure is set by the instruction
+## Agent roster — 5 supported; which ones a machine gets is chosen at install time
 
-If you are configuring this harness (you are always an agent when that happens), the
-number of agents is **not fixed at four**. Five are supported; the default is all five;
-the caller's instruction decides the subset via `--agents=` / `-Agents`. Never assume.
+`node harness.mjs install --agents <list>` decides the subset; nothing is installed for an agent
+you did not name. Never assume all five.
 
 | Agent | Entry | Config home | Gets MCP? | Gets hooks? | Sub-agents? |
 | --- | --- | --- | :-: | :-: | :-: |
 | Claude Code | `claude` | `~/.claude/` | ✅ | ✅ | ✅ |
 | Codex CLI | `codex` | `~/.codex/` | ✅ | ✅ | ✅ |
 | Cursor | open a dir | `~/.cursor/` | ✅ | ❌ | ✅ |
-| OpenCode | `opencode` | `~/.opencode/` | ✅ | ❌ | ✅ |
-| **Pi** | `pi` | `~/.pi/agent/` | ❌ | ❌ | ❌ |
+| OpenCode | `opencode` | `~/.config/opencode/` | ✅ | ❌ | ✅ |
+| **Pi** | `pi` | `~/.pi/agent/` | ✅ | ❌ | ❌ |
 
-All five get the six Core Principles, every global skill (count in the generated block
-below), and every local pack.
-**Pi is deliberately minimal upstream** — no MCP, no declarative hooks, no sub-agents.
-That is not a misconfiguration; `agents/pi/AGENTS.md` tells Pi how to degrade the five
-fan-out skills to sequential execution and to say so in its output.
+All five get the six Core Principles (Cursor: pasted once into Settings → Rules), every global
+skill (count in the generated block below), every local pack, and the MCP servers from
+`mcp/catalog.json`.
+**Pi has no declarative hooks and no sub-agents upstream** — not a misconfiguration;
+`agents/pi/notes.md` tells Pi how to degrade the five fan-out skills to sequential execution and
+to say so in its output.
 
-Pi path quirk worth knowing before you touch sync: global skills live at
-`~/.pi/agent/skills/` but project-pack skills at `<project>/.pi/skills/` — the only agent
-whose two paths differ. `agent_skill_dir` / `agent_pack_skill_dir` in the sync scripts
-own that distinction; don't hardcode `.<agent>/skills`.
+Path quirk worth knowing: two agents keep global and project-pack skills in differently shaped
+places — Pi at `~/.pi/agent/skills/` vs `<project>/.pi/skills/`, OpenCode at
+`~/.config/opencode/skills/` vs `<project>/.opencode/skills/`. Each adapter in `lib/agents/`
+owns its two paths; don't hardcode `.<agent>/skills`.
 
 ---
 
@@ -48,18 +48,21 @@ own that distinction; don't hardcode `.<agent>/skills`.
   `AGENTS.md`/rules). Keep project CLAUDE.md focused on broadly-applicable knowledge.
 - **Hooks** — `guard.mjs` (PreToolUse: blocks secret-file access + destructive shell)
   and `format.mjs` (PostToolUse: formats edited files only if the project opts in) run
-  on **Claude Code + Codex**. A `SessionStart → any-buddy` hook may also be present.
-  (Cursor/OpenCode hook wiring is a known TODO.)
+  on **Claude Code + Codex**, straight from this repo's `scripts/hooks/`. A `SessionStart → any-buddy` hook may also be present.
+  (Cursor, OpenCode and Pi get no hooks; their instructions tell them to confirm destructive
+  commands and to leave credential files alone instead.)
 - **Skills** — progressive disclosure. Global skills auto-load by description match;
   **local packs** below load when you're in their directory. Don't dump reusable
   expertise into CLAUDE.md — that's what skills are for.
 - **Plugins** — (Claude) marketplace plugins carry the LSPs (below); no repo-managed
   plugin bundles beyond that.
-- **MCP servers** — 9 always-on (`github`, `memory`, `filesystem`, `context7`,
-  `sequential-thinking`, `brave-search`, `playwright`, `chrome-devtools`, `web-reader`)
-  + 10 opt-in via per-project `.mcp.json` (`supabase`, `vercel`, `railway`, `expo-mcp`,
-  `magic`, `zai-mcp-server`, `cloudflare-{docs,workers-builds,workers-bindings,observability}`).
-  Reach for MCP to touch tools/data the model can't otherwise; templates in `~/MCP-Templates/`.
+- **MCP servers** — one catalog, `mcp/catalog.json`, rendered into each agent's own format.
+  On by default: `github`, `memory`, `filesystem`, `context7`, `sequential-thinking`,
+  `brave-search`, `playwright`, `chrome-devtools`, `web-reader` (off in Codex). Off by default,
+  turned on per project: `supabase`, `vercel`, `railway`, `expo-mcp`, `magic`, `zai-mcp-server`,
+  `cloudflare-{docs,workers-builds,workers-bindings,observability}`, `revenuecat`, and on macOS
+  `xcodebuildmcp`, `ios-simulator`. Your instructions say how to turn one on in your agent
+  (Claude: templates in `~/.claude/mcp-templates/`).
 - **LSP** — symbol-level navigation. Claude: `pyright` (Python), `typescript`, `gopls`
   (Go), `rust-analyzer`. OpenCode: native (`"lsp": true`, 40+ langs incl. bash). Cursor:
   built into the editor. Codex: no LSP mechanism.

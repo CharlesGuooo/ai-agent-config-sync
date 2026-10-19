@@ -161,10 +161,10 @@ OpenSpec 那 4 个走 `/opsx:` 命令,不靠描述触发。
 `skill-creator` —— 写新 skill 和审已有 skill 都是它,自带标尺(`references/rubric.md`)、
 术语表、注册契约和 eval 工具。说"帮我写个 skill"或"审一下这个 SKILL.md"就来,不用喊。
 外面挖来的:`book-to-skill`(把一本书挖成 skill)→ `skill-scanner`(装任何外部 skill 前先扫)
-→ 跑 `node scripts/gen-skill-table.mjs` + `gen-harness.mjs`
+→ 跑 `node harness.mjs check` + `node scripts/gen-harness.mjs`,再 `node harness.mjs update`
 
-> ⚠️ **别把外部 skill 直接 clone 进 `~/.claude/skills/`** —— 那个目录是被 `/MIR` 镜像的,
-> 不在本仓库 `skills/global/` 里的东西**下次 sync 会被静默删除**。要装就装进仓库再同步。
+> ⚠️ **别把外部 skill 直接 clone 进 `~/.claude/skills/`** —— 那样它只在这一个 agent、这一台电脑上有;
+> 和仓库里的 skill 同名的话,安装器还会报冲突。要装就装进仓库 `skills/global/`(或某个 pack),再 `update`。
 
 **非代码工作(研究 / 写作 / 金融 / 营销)**
 `skill-router` 送你进对应 pack。全局层里仍然好用的:`brainstorming`(盘问任何决策,
@@ -236,5 +236,6 @@ OpenSpec 那 4 个走 `/opsx:` 命令,不靠描述触发。
 - **"全局技能越多越强"** —— 重叠的技能会互相稀释,让模型无从选择。宁可合并。
 - **"跳过 grill 直接写"** —— 最常见的浪费。需求没问透写出来的东西大概率要返工。
 - **"说完成了就是完成了"** —— `verification-before-completion` 存在的理由:证据优先于断言。
-- **手改生成块** —— `<!-- SKILLS:BEGIN -->` / `<!-- PACKS:BEGIN -->` 之间的内容跑生成器,
-  别手写,`--check` 门禁会拦你。
+- **手改生成的内容** —— `HARNESS.md` 里 `<!-- PACKS:BEGIN -->` 之间的内容跑 `node scripts/gen-harness.mjs`,
+  别手写,`node harness.mjs check` 会拦你;各 agent 指令文件里 `ai-agent-config-sync` 标记之间的那段
+  改仓库的 `prompt/core.md` / `skills/global/catalog.json`,别在本机改 —— 本机改了 `update` 会报冲突。

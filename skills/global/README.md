@@ -90,7 +90,7 @@ Examples:
 
 - Global rules: [`skill-rules.json`](skill-rules.json)
 - Global router: [`skill-router/SKILL.md`](skill-router/SKILL.md)
-- Global architecture guide: [`C:\\Users\\PC\\.claude\\CLAUDE.md`](C:\Users\PC\.claude\CLAUDE.md)
+- Global architecture guide: [`prompt/core.md`](../../prompt/core.md) (installed into every agent's instructions)
 - Routing regression cases: [`C:\\Users\\PC\\.claude\\ROUTING_REGRESSION_TESTS.md`](C:\Users\PC\.claude\ROUTING_REGRESSION_TESTS.md)
 
 ---
@@ -101,6 +101,6 @@ When changing global skill behavior:
 
 1. Update `skill-rules.json`
 2. Update `skill-router/SKILL.md` if routing behavior changes
-3. Update `CLAUDE.md` if the architecture contract changes
+3. Update `prompt/core.md` if the architecture contract changes (not the installed `CLAUDE.md` / `AGENTS.md` copies)
 4. Re-check `ROUTING_REGRESSION_TESTS.md`
 5. Keep domain details in local project packs, not in the global layer

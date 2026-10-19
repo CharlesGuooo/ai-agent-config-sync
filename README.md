@@ -1,57 +1,59 @@
 # Agents Overview — 人看的总览手册
 
-本仓库把**一套** skill / harness 配置同步给本机 5 个 AI agent(Claude Code · Codex ·
-Cursor · OpenCode · Pi)。这份 README 是**给人看的概览**:是什么、怎么组织、怎么用。
+本仓库把**一套** skill / 指令 / MCP / hook 配置装到任意电脑(Windows · macOS · Linux)上的任意几个
+AI agent:Claude Code · Codex · Cursor · OpenCode · Pi。这份 README 是**给人看的概览**。
 
 > **👉 怎么用这些 skill(流程 + 该说什么话)在 `PLAYBOOK.md`** —— 装了不会用等于没装,先读它。
-> **给 agent 看的运行时路由**在 `HARNESS.md`(自动生成,权威、不漂移)。
-> **装机指南**在 `INSTALL.md`,**精确文件映射**在 `INVENTORY.md`。
-> 本文刻意**不逐个枚举** 357 个 skill —— 那份清单在 `HARNESS.md`,改一个 skill 就自动更新。
+> **给 agent 看的路由清单**在 `HARNESS.md`(pack 索引是生成的)。
+> **装机步骤**在 `INSTALL.md`,**设计和原理**在 `docs/harness-v2.md`。
+
+---
+
+## ⚙️ 怎么装、怎么同步
+
+```bash
+node harness.mjs install --agents claude --dry-run   # 先看会做什么
+node harness.mjs install --agents claude,codex       # 装哪几个 agent 由你点名
+git pull && node harness.mjs update                  # 之后每次更新
+node harness.mjs doctor                              # 体检:漂移、冲突、遗留、缺的环境变量
+```
+
+三条原理:
+
+- **skill 是链接,不是拷贝**:每个 agent 的 skill 目录里放的是指回本仓库的链接(Windows 用 junction),
+  只有一份文件;在本机改 skill 就是在改仓库,`git status` 里直接看得到。
+- **按条目合并**:仓库只管它定义的条目(某个 MCP、某个 hook、提示词里标记圈出的一段),agent 配置
+  文件里其他东西(模型、登录、你自己加的 MCP 和插件)一律不碰。
+- **三方比较**:本机改过仓库管的条目,安装器不覆盖,报冲突,用 `node harness.mjs resolve` 决定用哪边。
 
 ---
 
 ## 🤖 Agents
 
-| Agent | 入口 | 主配置 |
-| --- | --- | --- |
-| **Claude Code** | `claude` | `~/.claude/CLAUDE.md` + `settings.json` |
-| **Codex CLI** | `codex` | `~/.codex/AGENTS.md` + `config.toml` |
-| **Cursor** | 打开目录 | `~/.cursor/rules/global-rules.md` |
-| **OpenCode** | `opencode` | `~/.opencode/AGENTS.md` |
-| **Pi** | `pi` | `~/.pi/agent/AGENTS.md` |
-| **LM Studio** | 应用 | `~/.lmstudio/mcp.json`(仅 MCP) |
+| Agent | 入口 | 指令 | skill | MCP |
+| --- | --- | --- | --- | --- |
+| **Claude Code** | `claude` | `~/.claude/CLAUDE.md` | `~/.claude/skills/` | `~/.claude.json` |
+| **Codex CLI** | `codex` | `~/.codex/AGENTS.md` | `~/.codex/skills/` | `~/.codex/config.toml` |
+| **Cursor** | 打开目录 | 设置 → Rules(粘贴一次) | `~/.cursor/skills/` | `~/.cursor/mcp.json` |
+| **OpenCode** | `opencode` | `~/.config/opencode/AGENTS.md` | `~/.config/opencode/skills/` | `~/.config/opencode/opencode.json` |
+| **Pi** | `pi` | `~/.pi/agent/AGENTS.md` | `~/.pi/agent/skills/` | `~/.pi/agent/mcp.json` |
 
-### 📋 配几个 agent?——**由指令决定,不是写死的**
+**能力矩阵(诚实版)**:
 
-**支持 5 个,默认全配。** 配几个由**当次的指令**决定 —— 每次配置 harness 的都是一个 agent
-在执行,它应当照指令办,而不是假设"就是那 4 个"。
-
-```powershell
-.\scripts\sync.ps1                                  # 默认:全部 5 个
-.\scripts\sync.ps1 -Agents claude,pi                # 只配这两个
-./scripts/install.sh --agents=claude,cursor,codex   # 只配这三个
-```
-
-**能力矩阵(诚实版,不是 parity 宣传)** —— Pi 是 *"minimal agent harness"*,官方**刻意**
-不做 MCP / hooks / 子 agent,不是配置遗漏:
-
-| | Claude Code | Codex | Cursor | OpenCode | **Pi** |
+| | Claude Code | Codex | Cursor | OpenCode | Pi |
 | --- | :-: | :-: | :-: | :-: | :-: |
-| 6 条核心原则 | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 38 个全局 skill | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 6 条核心原则 | ✅ | ✅ | ✅(手动粘贴) | ✅ | ✅ |
+| 全局 skill | ✅ | ✅ | ✅ | ✅ | ✅ |
 | 本地 pack skill | ✅ | ✅ | ✅ | ✅ | ✅ |
-| MCP(9 always-on) | ✅ | ✅ | ✅ | ✅ | ❌ 官方不支持 |
+| MCP | ✅ | ✅ | ✅ | ✅ | ✅ |
 | guard/format hooks | ✅ | ✅ | ❌ | ❌ | ❌ 无声明式 hooks |
-| 子 agent(并行扇出) | ✅ | ✅ | ✅ | ✅ | ❌ 官方不做 |
+| 子 agent(并行扇出) | ✅ | ✅ | ✅ | ✅ | ❌ |
 | LSP | ✅ 4 语言 | ❌ | ✅ 内建 | ✅ 原生 40+ | ❌ |
 
 Pi 上有 5 个 skill 会降级为顺序执行(`requesting-code-review` 双轴、`codebase-design`
 DESIGN-IT-TWICE、`improve-codebase-architecture`、`dispatching-parallel-agents`、
-`subagent-driven-development`)—— 处理办法写在 `agents/pi/AGENTS.md` 里,它会照做并**主动
+`subagent-driven-development`)—— 处理办法写在 `agents/pi/notes.md` 里,它会照做并**主动
 声明自己是顺序跑的**,不会假装并行过。
-
-5 家**共享同一套 skill + 指令**;MCP 与 hooks 只有前 4 家有(Pi 官方不支持,见下方能力矩阵)。仓库是 source of truth,`scripts/sync.ps1`
-/ `sync.sh` 下发到本机。
 
 ---
 
@@ -67,31 +69,13 @@ DESIGN-IT-TWICE、`improve-codebase-architecture`、`dispatching-parallel-agents
 6. **Preserve context and align with the goal** — 不为子任务牺牲真实目标。
 
 > 对齐 andrej-karpathy-skills 的 `karpathy-guidelines`,装在 system-prompt 层,零 skill-match 开销。
-
----
-
-## 🏗️ Harness 架构(5 扩展点 + 2 补充)
-
-按 Anthropic 的框架,harness = 围绕模型的整套脚手架。本仓库配了:
-
-- **CLAUDE.md / AGENTS.md** — 分层上下文,每会话自动加载(6 原则 + 路由)。
-- **Hooks** — `guard.mjs`(PreToolUse:拦密钥文件 / 危险命令)+ `format.mjs`(PostToolUse:
-  项目 opt-in 才格式化),跑在 **Claude + Codex**。(Cursor/OpenCode 走各自机制,待补。)
-- **Skills** — 渐进式披露:38 个全局 skill 描述匹配自动触发;357 个 local pack skill 进目录才加载。
-- **LSP** — Claude:pyright / typescript / gopls / rust-analyzer;OpenCode:原生(`lsp:true`,40+ 语言);
-  Cursor:编辑器内建;Codex:无。
-- **MCP** — 9 always-on + 10 opt-in(见下),API key 全走 Windows env var。
-- **Subagents** — Explore(只读搜索)/ Plan(设计)/ general-purpose 等,委托探索不挤占主上下文。
-
-**防漂移基建(本仓库的关键工程)**:skill 表和 HARNESS.md 都从**单一源头生成** ——
-`scripts/gen-skill-table.mjs`(从 `skills/global/catalog.json`)和 `scripts/gen-harness.mjs`
-(扫 `skills/project-packs/`),各带 `--check` 漂移门,接进 sync。**手抄清单一律不留**。
+> 源头是 `prompt/core.md`,安装时拼进每个 agent 的指令。
 
 ---
 
 ## 🌐 Global Skills(38 个,5 agent 共享,启动自动可用)
 
-位置 `~/.{claude,cursor,codex,opencode}/skills/`。按分类(权威清单见 `HARNESS.md` / `catalog.json`):
+每个 agent 的 skill 目录里各有一份指向仓库的链接。按分类(权威清单见 `skills/global/catalog.json`):
 
 | 分类 | 数 | 是什么 |
 | --- | --- | --- |
@@ -108,94 +92,66 @@ DESIGN-IT-TWICE、`improve-codebase-architecture`、`dispatching-parallel-agents
 
 ---
 
-## 📦 Local Project Packs(8 个,357 skills)
+## 📦 Local Project Packs(8 个)
 
-按领域组织。**`cd` 进目录,agent 自动加载该 pack 的 skills**(token 成本最低)。
-**每个 pack 的完整 skill 清单见 `HARNESS.md`**(生成、不漂移)——下表只给领域和规模:
+按领域组织。**在那个目录里启动 agent(Cursor:打开那个目录),该 pack 的 skills 就会加载**(token 成本最低);
+已经开着的会话里 `cd` 过去不算。每个 pack 的完整 skill 清单和数量见 `HARNESS.md`(生成、不漂移):
 
-| Pack | 规模 | 领域 / 何时进 |
-| --- | --- | --- |
-| `~/dev-project/` | 94 | 软件开发(8 层:frontend / backend / cloud-platform / testing-qa / devops-sre / agent-dev / ml + 根) |
-| `~/finance-project/` | 129 | 金融/投资/交易(容器:trading / research / macro / modeling / portfolio / quant-methods / advisory) |
-| `~/research-project/` | 24 | 学术/科研(AI/CS 取向。容器,5 个子包:literature / gates / manuscript / review / talks) |
-| `~/marketing-project/` | 40 | 营销/SEO/增长/音频(ElevenLabs 套件)/ 小红书 · WeChat |
-| `~/productivity-project/` | 22 | 工作流/PM(Jira / Notion / Obsidian / Google Workspace) |
-| `~/data-analysis-project/` | 18 | 数据分析/EDA/统计/可视化 |
-| `~/ios-project/` | 21 | iOS/SwiftUI(widget/Live Activity / Rive / 动画 / HIG 设计 / Mac 构建 runbook) |
-| `~/craft-project/` | 9 | 跨领域「功力」(writing:去 AI 味;design:审美/anti-slop) |
+| Pack | 领域 / 何时进 |
+| --- | --- |
+| `~/dev-project/` | 软件开发(8 层:frontend / backend / cloud-platform / testing-qa / devops-sre / agent-dev / ml + 根) |
+| `~/finance-project/` | 金融/投资/交易(容器:trading / research / macro / modeling / portfolio / quant-methods / advisory) |
+| `~/research-project/` | 学术/科研(AI/CS 取向。容器,5 个子包:literature / gates / manuscript / review / talks) |
+| `~/marketing-project/` | 营销/SEO/增长/音频(ElevenLabs 套件)/ 小红书 · WeChat |
+| `~/productivity-project/` | 工作流/PM(Jira / Notion / Obsidian / Google Workspace) |
+| `~/data-analysis-project/` | 数据分析/EDA/统计/可视化 |
+| `~/ios-project/` | iOS/SwiftUI(widget/Live Activity / Rive / 动画 / HIG 设计 / Mac 构建 runbook) |
+| `~/craft-project/` | 跨领域「功力」(writing:去 AI 味;design:审美/anti-slop) |
 
-新开一个任意项目时:让 agent 读 `C:\Users\PC\HARNESS.md`,它据此决定 cd 进哪个 pack。
+新开一个任意项目时:让 agent 读本仓库的 `HARNESS.md`,它据此决定去哪个 pack。
 
 ---
 
 ## 🔌 MCP Servers
 
-**前四家**跑同一套(Pi 无 MCP),API key 全走 Windows User-scope env var(`${VAR}` / `${env:VAR}` / `bearer_token_env_var`)。
+唯一来源 `mcp/catalog.json`,安装时按各 agent 的格式和当前系统生成。API key 全走环境变量(见 `INSTALL.md`)。
 
-**✅ Always-on(9,启动自动)**:`github` · `memory` · `filesystem` · `context7` ·
-`sequential-thinking` · `brave-search` · `playwright` · `chrome-devtools` ·
-`web-reader`(Codex 禁用)。
+**默认开(9)**:`github` · `memory` · `filesystem` · `context7` · `sequential-thinking` ·
+`brave-search` · `playwright` · `chrome-devtools` · `web-reader`(Codex 里默认关)。
 
-**💤 Opt-in(10,按项目启用)**:`supabase` · `vercel` · `railway` · `expo-mcp` · `magic` ·
-`zai-mcp-server` · `cloudflare-{docs,workers-builds,workers-bindings,observability}`。
+**默认关,按项目打开(11)**:`supabase` · `vercel` · `railway` · `expo-mcp` · `magic` ·
+`zai-mcp-server` · `cloudflare-{docs,workers-builds,workers-bindings,observability}` · `revenuecat`;
+macOS 上另有 `xcodebuildmcp` · `ios-simulator`。
 
-**🍎 iOS/macOS opt-in 模板(3,仅 Mac)**:`xcodebuildmcp` · `ios-simulator` · `revenuecat`。
-
-### 启用 opt-in
-| Agent | 方法 |
-| --- | --- |
-| Claude Code | 项目级 `.mcp.json`,或 `claude --mcp-config <template>` |
-| Codex | `codex -c mcp_servers.<name>.enabled=true` |
-| Cursor | 编辑 `~/.cursor/mcp.json` 改 `"enabled": true` + reload |
-| OpenCode | 编辑 `~/.opencode/opencode.json` 改 `"enabled": true` + restart |
-
-**模板库** `C:\Users\PC\MCP-Templates\`(13 个 `.mcp.json`)。长期项目:`copy <template>.mcp.json <project>\.mcp.json`。
+怎么打开:每个 agent 的指令里都写了(Claude:`claude --mcp-config ~/.claude/mcp-templates/<名>.mcp.json`,
+或把那个文件拷进项目当 `.mcp.json`;Codex:`codex -c mcp_servers.<名>.enabled=true`)。
 
 ---
 
 ## 🪝 Hooks
 
-- **Hooks**:`~/.agent-hooks/{guard,format}.mjs` —— guard 拦密钥文件 + `rm -rf /`/`curl|sh`/force-push
-  等危险命令;format 仅当项目有 formatter 配置才格式化。装在 Claude + Codex(additive merge,保留
-  机器上已有的其它 hooks)。
+`scripts/hooks/guard.mjs`(在 Bash / PowerShell / Read / Edit / Write 之前运行,拦密钥文件 + `rm -rf /` /
+`curl|sh` / force-push 等危险命令)和 `format.mjs`(项目有 formatter 配置才格式化),直接从仓库运行,
+装在 Claude Code 和 Codex。Codex 要在它自己里面信任一次这两个 hook 才会运行(装好后、clone 挪了位置后)。
+Cursor / OpenCode / Pi 没有 hook,它们的指令里写了:危险命令先确认,不读凭证文件。
 
 ---
 
-## ⌨️ 常用命令
+## 📁 仓库结构
 
-```powershell
-cd C:\Users\PC\<project>\<sub> && claude    # 进 pack(或 codex / opencode;Cursor 打开目录)
-claude  →  /mcp                              # 看激活的 MCP
-copy "C:\Users\PC\MCP-Templates\<x>.mcp.json" ".mcp.json"   # 项目级 opt-in MCP
-.\scripts\sync.ps1 -DryRun                   # 从仓库下发到本机(先 dry-run)
-```
-装新社区 skill 前:先用 `skill-scanner` 扫安全(injection / 凭证泄露)。
-
----
-
-## 📁 配置位置
-
-| 项 | 位置 |
+| 路径 | 是什么 |
 | --- | --- |
-| 全局 skill | `~/.{claude,cursor,opencode,codex}/skills/` |
-| 项目 skill | `~/<project>/<sub>/.{agent}/skills/` |
-| System prompt | `~/.claude/CLAUDE.md` · `~/.{codex,opencode}/AGENTS.md` · `~/.cursor/rules/global-rules.md` |
-| Hooks | `~/.agent-hooks/` + Claude `settings.json` / Codex `config.toml` |
-| MCP | Claude `~/.claude.json` · Cursor `~/.cursor/mcp.json` · OpenCode `opencode.json` · Codex `config.toml` |
-| MCP 模板 | `C:\Users\PC\MCP-Templates\` |
-| Agent 路由清单 | `C:\Users\PC\HARNESS.md` |
-
----
-
-## 📊 全栈数据
-
-| 维度 | 数量 |
-| --- | --- |
-| 主 agent | **5**(Claude / Cursor / Codex / OpenCode / Pi)+ 1(LM Studio,仅 MCP) |
-| 全局 skills | **39**(10 分类) |
-| 项目本地 skills | **357**(8 packs;权威清单见 `HARNESS.md`) |
-| MCP | 9 always-on + 10 opt-in（+3 iOS/macOS 模板） |
-| Skill parity | ✅ 5/5 · MCP 4/5 · hooks 2/5(见能力矩阵) |
+| `harness.mjs` + `lib/` | 安装器(Node 20+,零依赖) |
+| `skills/global/` | 全局 skill + `catalog.json` |
+| `skills/project-packs/` | 各领域 pack |
+| `prompt/core.md` + `agents/<agent>/notes.md` | 提示词的公共部分和各 agent 自己的那一段 |
+| `agents/claude/commands/` · `agents/opencode/commands/` | 斜杠命令 |
+| `mcp/catalog.json` | MCP 清单 |
+| `scripts/hooks/` | guard / format |
+| `scripts/gen-harness.mjs` | 生成 `HARNESS.md` 的 pack 索引 |
+| `tests/` | `node --test "tests/*.test.mjs"` |
+| `docs/harness-v2.md` | 设计、规则、已知限制 |
+| `.local/`(不提交) | 本机的安装状态 + 生成的 Cursor 规则;挪 clone 时要一起带走 |
 
 ---
 
@@ -252,6 +208,7 @@ copy "C:\Users\PC\MCP-Templates\<x>.mcp.json" ".mcp.json"   # 项目级 opt-in M
 | 文档 | 给谁 | 干嘛 |
 | --- | --- | --- |
 | **README.md**(本文) | 人 | 概览 / 架构 / 怎么用 + skill meta 知识 |
-| **HARNESS.md** | agent | 运行时路由(生成:pack 索引 + harness 一览) |
-| **INSTALL.md** | 装机的人/agent | 新机器怎么装 |
-| **INVENTORY.md** | 选装 | 精确 source→target 文件映射 + "不装什么" |
+| **PLAYBOOK.md** | 人 | 什么时候用哪个 skill、该说什么话 |
+| **HARNESS.md** | agent | 运行时路由(pack 索引是生成的) |
+| **INSTALL.md** | 装机的人/agent | 新机器怎么装、环境变量怎么设 |
+| **docs/harness-v2.md** | 维护者 | 安装器的设计、规则和已知限制 |

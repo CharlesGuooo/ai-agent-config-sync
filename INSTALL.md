@@ -1,135 +1,152 @@
-# INSTALL — Step-by-step install guide
+# INSTALL — set up the harness on a machine
 
-Audience: an AI agent (or a human) running this on a fresh machine.
-
-## TL;DR
-
-```bash
-git clone <repo>
-cd ai-agent-config-sync
-cp .env.example .env             # fill in keys you have
-./scripts/install.sh             # or with flags below
-```
+Audience: an agent or a human on a fresh Windows, macOS or Linux machine.
+How it works and why: `docs/harness-v2.md`.
 
 ## Prerequisites
 
 | Required | Why |
 | --- | --- |
 | `git` | Clone this repo. |
-| `bash` or `pwsh` | Run install scripts. |
-| `rsync` (Unix) / `robocopy` (Win) | Copy skill directories. |
-| `jq` | Merge MCP JSON into existing configs. |
-| Node 20+ | Required by some MCP servers (`npx -y`). |
-| Python 3.10+ | Some Codex MCP servers and verification scripts. |
+| Node 20+ | The installer, the guard/format hooks, and most MCP servers (`npx`). Node 22+ to run the tests; 22.5+ for `doctor --deep` to check Cursor's rules. |
+| The agents you want | Install them first. The installer configures agents; it does not install them. |
 
-| Optional | When |
+## Install
+
+```bash
+git clone https://github.com/CharlesGuooo/ai-agent-config-sync.git
+cd ai-agent-config-sync
+node harness.mjs install --agents claude --dry-run   # print exactly what would change
+node harness.mjs install --agents claude             # then do it
+```
+
+Name the agents you have — any of `claude`, `codex`, `cursor`, `opencode`, `pi`. Only those
+agents' files are touched, plus the pack folders in your home (`~/dev-project/`, …) where each
+pack's skills are linked. The first install takes all eight packs; narrow them with
+`--packs dev,research`. A later `install` without `--packs` (to add an agent, say) keeps the packs
+this machine already has.
+
+Close Claude Code before installing if you can: while it runs it rewrites `~/.claude.json`, and it
+can drop an entry the installer has just written there.
+
+Where the clone lives matters: every agent's skills are links into it, and its `.local/` folder
+holds this machine's install state. Pick a stable place before installing. To move it later, move
+the whole folder and run `node harness.mjs update` from the new place. For a fresh clone, copy
+`.local/` over from the old one first. Without it, `update` finds nothing installed; run
+`install --agents …` again and expect a conflict for every item that still points at the old
+clone — settle them as on a first install (below).
+
+Install from the main checkout, never from a `git worktree` — the installer refuses, because the
+worktree would become what your agents run.
+
+### Coming from the old sync scripts
+
+On a machine that the v1 `sync` scripts set up, `install` also takes out what they left behind,
+and only what is recognisably theirs: the copies in your home (`~/HARNESS.md`, `~/PLAYBOOK.md`,
+`~/.agent-hooks/`, `~/MCP-Templates/`), their hook entries and whole-file configs, and skill copies
+identical to the repo's, which become links. A skill copy you changed is a conflict instead.
+`install --dry-run` lists every one of these first.
+
+## After installing
+
+- **Codex** runs a new or changed hook only after you trust it. After the first install, and after
+  anything that changes the hook command (moving the clone), open Codex and approve the `guard`
+  and `format` hooks; the installer prints a note when that is due.
+- **Cursor** reads global rules only from its settings, not from a file. Paste
+  `.local/cursor-rules.md` (in this clone) into **Cursor Settings → Rules → User Rules**, and again
+  whenever the installer says it changed. `node harness.mjs doctor --deep` tells you when it is
+  missing or out of date.
+- **Cursor, OpenCode and Pi** get no guard hook; their instructions tell them to confirm
+  destructive commands and to leave credential files alone instead.
+- **Claude Code**: the installer turns on four LSP plugins but does not install them;
+  `doctor --deep` names the missing ones and the `/plugin install` command for each.
+
+## Environment variables for MCP
+
+API keys are read from the environment, never written into files:
+
+| Variable | Used by |
 | --- | --- |
-| 1Password CLI | If you want to inject secrets without writing `.env`. |
+| `GITHUB_PERSONAL_ACCESS_TOKEN` | `github` |
+| `BRAVE_API_KEY` | `brave-search` |
+| `Z_AI_API_KEY` | `web-reader`, `zai-mcp-server` |
+| `SUPABASE_ACCESS_TOKEN`, `SUPABASE_PROJECT_REF` | `supabase` |
+| `EXPO_TOKEN` | `expo-mcp` |
+| `REVENUECAT_API_V2_KEY` | `revenuecat` |
 
-## Install flags
+Windows (PowerShell), then restart your agents:
 
-**How many agents do you configure?** Five are supported and the default is **all five**;
-the subset is decided by the instruction you were given, via `--agents=`. Don't assume four.
-
-The single entry script `scripts/install.sh` (or `install.ps1`) supports:
-
-```
---agents=claude,cursor,codex,opencode,pi # subset; default = ALL FIVE (see the roster in README)
---packs=dev,finance,ios,data,marketing,research,productivity,craft   # subset; default = all
---skip-mcp                                # skip MCP server config (skills + system prompts only)
---global-only                             # 39 global skills only, no project packs
---dry-run                                 # print planned ops without writing
+```powershell
+[Environment]::SetEnvironmentVariable('BRAVE_API_KEY', '<value>', 'User')
 ```
 
-Examples:
+macOS / Linux: add `export BRAVE_API_KEY=<value>` to `~/.zshrc` or `~/.bashrc`.
+
+Codex and Pi cannot read variables inside a URL, so `SUPABASE_PROJECT_REF` is filled in at install
+time: set it before `install` or `update` (until then the run warns and leaves their `supabase`
+entry as it is). `node harness.mjs doctor` lists the variables that servers which are on by
+default need and that are not set.
+
+## Conflicts on the first install
+
+On a machine that already has its own settings, the first install can list conflicts: where it
+wants to write, it found a value it did not write, so it left that alone. Go through them
+(`node harness.mjs resolve` lists them):
+
+- a value you set on purpose — OpenCode's `lsp` set your own way or to `false`, a Claude LSP
+  plugin you switched off: `node harness.mjs resolve keep <id>`;
+- anything else: `node harness.mjs resolve repo <id>`, or `resolve repo all` once only those are left.
+
+## Keeping it current
 
 ```bash
-# Full install
-./scripts/install.sh
-
-# Only Claude + Codex, no MCP
-./scripts/install.sh --agents=claude,codex --skip-mcp
-
-# Only dev + finance packs
-./scripts/install.sh --packs=dev,finance
-
-# Just the 39 global skills, nothing else
-./scripts/install.sh --global-only
+git pull
+node harness.mjs update          # re-apply for the agents and packs installed here
+node harness.mjs doctor          # drift, conflicts, leftovers, missing variables
 ```
 
-## What each step does
+`--dry-run` on `install`, `update`, `resolve` or `uninstall` shows what would change and writes
+nothing; `--verbose` lists every change instead of a count per kind.
 
-0. **Regenerate** — `node scripts/gen-skill-table.mjs` + `gen-harness.mjs` refresh the per-agent skill tables and `HARNESS.md` from the single source (`catalog.json` + the skill dirs) before anything is copied; a `--check` drift gate aborts a dirty dry-run.
-1. **Validate env** — confirm required env vars from `.env` are present.
-2. **Backup** — snapshot any existing target dirs to `~/.agent-config-backup/<timestamp>/`.
-3. **Copy global skills** — `skills/global/*` → `~/.{claude,cursor,codex,opencode}/skills/` (per `--agents`).
-4. **Copy Codex `.system`** — `skills/codex-system/*` → `~/.codex/skills/.system/` (Codex only).
-5. **Copy project packs** — `skills/project-packs/<pack>/skills/` and any sub-pack `<pack>/<sub>/skills/` → corresponding `~/<pack>/[<sub>/].{claude,cursor,codex,opencode}/skills/` (per `--packs`).
-6. **Copy agent system prompts** — `agents/<agent>/<prompt-file>` → live machine paths (see `INVENTORY.md`).
-6b. **Hooks + Claude settings + HARNESS** — copy `scripts/hooks/{guard,format}.mjs` → `~/.agent-hooks/`; deep-merge `agents/claude/settings.fragment.json` (LSP plugins + guard/format hooks) into `~/.claude/settings.json` (preserving existing keys/hooks); resolve the Codex `{{HOOKS_DIR}}` placeholder in `config.toml`; copy `HARNESS.md` → `~/HARNESS.md`.
-7. **Merge MCP configs** — unless `--skip-mcp`:
-   - Claude → merge `mcp/always-on/claude.template.json` into `~/.claude.json` (and `~/.claude/settings.json` if present).
-   - Cursor → write `~/.cursor/mcp.json` from `cursor.template.json`.
-   - Codex → append `mcp/always-on/codex.template.toml` blocks to `~/.codex/config.toml`.
-   - OpenCode → write `~/.opencode/opencode.json` from `opencode.template.json`.
-8. **Copy opt-in MCP templates** — `mcp/opt-in/*` → `~/MCP-Templates/` (Windows: `C:\Users\<user>\MCP-Templates\`). Not enabled by default — users opt them in via `.mcp.json` per project, or `claude --mcp-config <template>`.
-9. **Persist env vars** (Windows only, via `install.ps1`) — write `.env` keys to User-scope environment so Cursor / Codex / OpenCode can resolve `${env:VAR}`.
-
-## Verification after install
+If something the repo manages was changed on this machine, `update` leaves it alone and lists it
+as a conflict:
 
 ```bash
-# Skill counts
-ls ~/.claude/skills/ | wc -l           # → 39 (+ agent-specific extras)
-ls ~/.codex/skills/.system/ | wc -l    # → 5
-ls ~/ios-project/.claude/skills/ | wc -l   # → 21
-
-# Claude MCP
-cat ~/.claude.json | jq '.mcpServers | keys'   # → 9 always-on
-
-# Hooks + agent-facing manifest
-ls ~/.agent-hooks/                     # guard.mjs, format.mjs
-test -f ~/HARNESS.md && echo "HARNESS present"
-
-# System prompt sanity
-head -6 ~/.claude/CLAUDE.md   # should show the Core Principles
+node harness.mjs resolve                 # list conflicts and the items kept on this machine
+node harness.mjs resolve repo <id|all>   # take the repo's version
+node harness.mjs resolve keep <id|all>   # keep this machine's version and stop managing it
 ```
+
+`all` settles only the conflicts listed right now; it never undoes an earlier `keep`. To hand a
+kept item back to the repo, name it: `resolve repo <id>`. A kept item is also managed again on its
+own once the machine's version matches the repo's.
+
+An entry that has disappeared from a config (a running Claude Code can write `~/.claude.json` over
+it) is a conflict too: `resolve repo <id>` puts it back.
+
+`node harness.mjs doctor --deep` also starts the installed agents (`opencode debug skill`,
+`codex debug prompt-input`) to see which skills they really load, compares Cursor's pasted rules
+with `.local/cursor-rules.md`, and checks Claude's LSP plugins. The agents may write their own logs
+and caches while it runs.
+
+## When a run stops with an error
+
+The message names the file. Fix it and run the command again; nothing is recorded as done until a
+whole run succeeds. On Windows, a config file with the Hidden attribute cannot be rewritten in
+place (`EPERM`): unhide it (`attrib -h <file>`) first. More known limits: `docs/harness-v2.md`.
+
+## Removing an agent
+
+```bash
+node harness.mjs uninstall --agents codex
+```
+
+Removes that agent's skill links and what the installer wrote for it; your own content stays. A
+file or entry you changed since it was installed is left as it is, and the report says so. For
+Cursor, also take the pasted rules out of Cursor Settings → Rules.
 
 ## Do not install
 
-Read this before adding anything beyond what the scripts do.
-
-- **`claude-mem` — do NOT install it.** Retired 2026-07 (unused in practice). It is
-  gone from this repo on purpose: no `claude-mem/` directory, no MCP stanza in
-  `agents/cursor/mcp.json`, no marketplace block in `agents/codex/config.toml`. If you
-  find it referenced anywhere, that reference is stale — delete it, don't act on it.
-  On a machine where a previous setup already installed it, leaving it alone is fine;
-  just never re-add it to this repo or to a fresh machine.
-- **Anything not listed in `INVENTORY.md`.** That table is the complete source→target
-  map. If a step isn't there, it isn't part of this harness.
-
-## Selective install for an agent
-
-If you're a new-machine agent and the user only asked for partial setup, read `INVENTORY.md` — it's a table of every source→target mapping. You can either:
-
-1. Run the install script with appropriate `--agents` / `--packs` flags, or
-2. `cp` only the rows you need (the table is the source of truth).
-
-Both produce the same result.
-
-## Where things go (high-level)
-
-| Repo location | Lands at |
-| --- | --- |
-| `skills/global/` | `~/.{agent}/skills/` for all 5 agents (Pi: `~/.pi/agent/skills/`) |
-| `skills/codex-system/` | `~/.codex/skills/.system/` |
-| `skills/project-packs/<pack>/skills/` | `~/<pack>/.{agent}/skills/` |
-| `skills/project-packs/<pack>/<sub>/skills/` | `~/<pack>/<sub>/.{agent}/skills/` |
-| `agents/claude/CLAUDE.md` | `~/.claude/CLAUDE.md` |
-| `agents/cursor/rules/global-rules.md` | `~/.cursor/rules/global-rules.md` |
-| `agents/codex/AGENTS.md` | `~/.codex/AGENTS.md` |
-| `agents/opencode/AGENTS.md` | `~/.opencode/AGENTS.md` |
-| `mcp/always-on/claude.template.json` | merged into `~/.claude.json` (mcpServers block) |
-| `mcp/always-on/cursor.template.json` | written to `~/.cursor/mcp.json` |
-| `mcp/always-on/codex.template.toml` | appended to `~/.codex/config.toml` |
-| `mcp/always-on/opencode.template.json` | written to `~/.opencode/opencode.json` (mcp block) |
-| `mcp/opt-in/*` | copied to `~/MCP-Templates/` |
+- **`claude-mem` — do NOT install it.** Retired 2026-07 (unused in practice). Never add it back
+  to this repo or to a machine.
+- Anything not described here or in `docs/harness-v2.md`.

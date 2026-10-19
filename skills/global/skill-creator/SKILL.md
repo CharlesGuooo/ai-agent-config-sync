@@ -123,7 +123,8 @@ benchmark.
 Low freedom — the commands are exact and a drift gate goes red on a mistake. Follow
 [references/registering.md](references/registering.md) verbatim.
 
-**Done when:** both drift gates exit 0 and the skill is confirmed on disk for all five agents.
+**Done when:** `node harness.mjs check` exits 0 and `node harness.mjs doctor` confirms the skill is
+linked for every installed agent.
 
 ## Audit
 

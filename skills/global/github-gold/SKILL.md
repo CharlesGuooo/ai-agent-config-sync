@@ -178,8 +178,8 @@ Cite every claim with the repo URL. Never state a star count or a date you did n
 ## Step 5 — Remember what you showed
 
 Append every shown repo to a seen-list as `YYYY-MM-DD | owner/repo | verdict`, and read it
-at the start of Step 3 to drop repeats. Put it **outside the synced skills tree** (that
-tree is mirrored from the repo and would wipe it):
+at the start of Step 3 to drop repeats. Put it **outside the skills tree** (each skill
+there is a link into the harness repo, so a file written there lands in the repo):
 
 - Windows: `%TEMP%\github-gold\seen.md`
 - macOS / Linux: `${TMPDIR:-/tmp}/github-gold/seen.md`

@@ -1,7 +1,6 @@
 # Registering a skill in this repo
 
-Narrow bridge. Run these commands as written, in this order, from the repo root
-(`D:/Projects2/ai-agent-config-sync`).
+Narrow bridge. Run these commands as written, in this order, from the repo root.
 
 ## 1. Place the directory
 
@@ -10,8 +9,9 @@ Narrow bridge. Run these commands as written, in this order, from the repo root
 | Global | `skills/global/<name>/` | every agent, every directory |
 | Local pack | `skills/project-packs/<pack>/skills/<name>/` | that pack's directory only |
 
-Author it **inside the repo**. `sync.ps1` mirrors with `robocopy /MIR`, so a skill written straight
-into `~/.claude/skills/` and not present in the repo is deleted on the next sync without a warning.
+Author it **inside the repo**. Agents reach skills through links into the repo, so a skill written
+straight into `~/.claude/skills/` exists for that one agent on that one machine only — and if its
+name matches a repo skill, the installer reports a conflict.
 
 ## 2. Catalog the skill — global only
 
@@ -22,21 +22,19 @@ exists in that file's `categories` array:
 "<name>": { "category": "process", "tagline": "One line, imperative, no trailing period" },
 ```
 
-`gen-skill-table.mjs` reconciles this against the actual directories and **fails if they disagree**,
-so a skill cannot silently drift out of the tables.
+`node harness.mjs check` reconciles the catalog against the actual directories and **fails if they
+disagree**, so a skill cannot silently drift out of the generated tables.
 
-Local-pack skills skip this step — `gen-harness.mjs` finds them by scanning for `SKILL.md`.
+Local-pack skills skip this step — `scripts/gen-harness.mjs` finds them by scanning for `SKILL.md`.
 
 ## 3. Regenerate, then prove it is clean
 
 ```bash
-node scripts/gen-skill-table.mjs
 node scripts/gen-harness.mjs
-node scripts/gen-skill-table.mjs --check
-node scripts/gen-harness.mjs --check
+node harness.mjs check
 ```
 
-Both `--check` runs must exit 0 before going further.
+`check` must exit 0 before going further.
 
 ## 4. Scan it
 
@@ -47,31 +45,23 @@ cd skills/global/skill-scanner && uv run scripts/scan_skill.py <absolute-path-to
 Expect `findings: 0`, `urls.untrusted: []`, and `tools.unrestricted: false`. A vendored skill that
 loads instructions from a remote URL fails here — that is the check's purpose.
 
-## 5. Sync to all five agents
+## 5. Link it into every installed agent
 
-```powershell
-.\scripts\sync.ps1 -SkipMcp
+```bash
+node harness.mjs update
 ```
 
-`-SkipMcp` is required. A full sync overwrites `~/.codex/config.toml` and destroys the Codex
-plugins, marketplaces, and MCP servers installed on the machine that the repo copy does not carry.
-Backups land in `~/.agent-config-backup/<timestamp>/`.
+Each installed agent gets one link to the new directory. Nothing is copied, and nothing in the
+agents' directories that the repo does not own is touched.
 
-Scope it further when only one pack changed: `-Packs research`.
+## 6. Confirm
 
-## 6. Confirm on disk
-
-Read the sync output for what it claims, then check what actually landed:
-
-```powershell
-foreach ($p in '.claude\skills','.cursor\skills','.codex\skills','.opencode\skills','.pi\agent\skills') {
-  $d = Join-Path $HOME $p
-  "{0,-24} {1,-4} {2}" -f $p, (Get-ChildItem $d -Directory).Count, (Test-Path (Join-Path $d '<name>\SKILL.md'))
-}
+```bash
+node harness.mjs doctor
 ```
 
-Codex reports one extra directory: `.system`, created by the sync. Project-pack skills live under
-`~/<pack-name>/` and use `.pi\skills` rather than `.pi\agent\skills` for Pi.
+Expect no pending changes and no conflicts. On disk, `~/.claude/skills/<name>` (and each other
+agent's skill directory) is a link that resolves into this repo — a junction on Windows.
 
 ## Declare what it costs
 

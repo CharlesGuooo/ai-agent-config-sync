@@ -35,6 +35,7 @@
     "skill-router":                  { "category": "routing",     "tagline": "Route the task to the correct local project pack" },
     "skill-creator":                 { "category": "routing",     "tagline": "Write a new skill, or audit an existing one against the rubric" },
     "skill-scanner":                 { "category": "routing",     "tagline": "Security-scan a community skill before installing it" },
+    "skillspector":                  { "category": "routing",     "tagline": "Second security scan (NVIDIA SkillSpector, 0-100 risk score) before installing or publishing a skill" },
     "book-to-skill":                 { "category": "routing",     "tagline": "Mine a technical book into a reusable SKILL.md (pointer: install from GitHub)" },
 
     "playwright-interactive":        { "category": "workflow",    "tagline": "Persistent browser session for iterative UI debugging" },

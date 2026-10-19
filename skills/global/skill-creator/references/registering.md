@@ -46,6 +46,16 @@ node harness.mjs check
 Expect `findings: 0`, `urls.untrusted: []`, and `tools.unrestricted: false`. A vendored skill that
 loads instructions from a remote URL fails here — that is the check's purpose.
 
+Then the second engine (setup and how to read it: the `skillspector` skill):
+
+```bash
+skillspector scan <absolute-path-to-skill> --no-llm --format json > <report-outside-the-skill>.json
+```
+
+Expect `risk_assessment.recommendation` `SAFE` and `analysis_completeness.is_complete` true. Read
+every issue it lists; a quoted attack used as an example is a false positive, a real one is fixed
+or the skill stays out.
+
 ## 5. Link it into every installed agent
 
 ```bash

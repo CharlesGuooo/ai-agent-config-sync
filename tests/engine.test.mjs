@@ -280,14 +280,23 @@ test('what was written before a run fails is recorded, but the agent list only c
   assert.deepEqual([state.agents, state.packs], [[], []]);
 });
 
-test('the v1 Cursor cleanup runs before the writes, so a dry run lists what the real run does', () => {
+test('a v1 Cursor entry for a server v2 now manages is left to the conflict rule, the same in a dry run and a real one', () => {
   const { ctx, home } = setup();
-  // v1 wrote this server off; the repo now ships it on.
+  const file = join(ctx.home, '.cursor', 'mcp.json');
+  // v1 wrote this server off; the repo now ships it on for Cursor.
   put(home, '.cursor/mcp.json', JSON.stringify({ mcpServers: { memory: { command: 'npx', enabled: false } } }));
-  const dry = install(ctx, ['cursor'], { dryRun: true, resolutions: { all: 'repo' } });
-  const real = install(ctx, ['cursor'], { resolutions: { all: 'repo' } });
-  assert.deepEqual(dry.changes, real.changes);
-  assert.equal(json(join(home, '.cursor', 'mcp.json')).mcpServers.memory.enabled, undefined);
+  const dry = install(ctx, ['cursor'], { dryRun: true });
+  const real = install(ctx, ['cursor']);
+  assert.deepEqual(dry, real);
+  assert.deepEqual(real.conflicts.map((c) => c.id), ['cursor:mcp:memory']);
+  assert.ok(!real.changes.some((c) => c.startsWith('remove-v1')));
+  assert.equal(json(file).mcpServers.memory.enabled, false);
+  const resolutions = { 'cursor:mcp:memory': 'repo' };
+  const dryResolved = install(ctx, ['cursor'], { dryRun: true, resolutions });
+  const resolved = install(ctx, ['cursor'], { resolutions });
+  assert.deepEqual(dryResolved, resolved);
+  assert.deepEqual([resolved.changes, resolved.conflicts], [[`set mcpServers.memory in ${file}`], []]);
+  assert.equal(json(file).mcpServers.memory.enabled, undefined);
   assert.deepEqual(install(ctx, ['cursor']).changes, []);
 });
 

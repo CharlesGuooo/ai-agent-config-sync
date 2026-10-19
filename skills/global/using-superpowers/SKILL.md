@@ -59,7 +59,7 @@ User message → Is this a substantive task?
 | Task type | Skill to use |
 |-----------|-------------|
 | Build something new | `brainstorming` first → `writing-plans` → implementation skills |
-| Idea/plan needs stress-testing ("grill me") | `brainstorming` — one question at a time, each with a recommendation |
+| Idea/plan needs stress-testing ("grill me") | `brainstorming` — rounds of independent questions, each with a recommendation |
 | Fix a bug | `systematic-debugging` |
 | Write or change code | `test-driven-development` |
 | Designing a module's interface / where a seam goes | `codebase-design` |

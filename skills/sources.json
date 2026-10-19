@@ -1,4 +1,11 @@
 {
+  "global/brainstorming": {
+    "repo": "obra/superpowers",
+    "path": "skills/brainstorming",
+    "commit": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
+    "date": "2026-10-09",
+    "license": "MIT"
+  },
   "global/dispatching-parallel-agents": {
     "repo": "obra/superpowers",
     "path": "skills/dispatching-parallel-agents",

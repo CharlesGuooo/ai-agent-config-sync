@@ -56,9 +56,9 @@ test('cursor: on servers only; rules go to <local>/cursor-rules.md for pasting',
   assert.equal(p.prompt.manual, join(ctx.local, 'cursor-rules.md'));
 });
 
-test('opencode: schema, lsp and every server; commands go to commands/', () => {
+test('opencode: lsp and every server; commands go to commands/', () => {
   const { p, home } = plan(opencode, 'opencode');
-  assert.deepEqual(p.json[0].entries.map((e) => e.id), ['opencode:schema', 'opencode:lsp', 'opencode:mcp:memory', 'opencode:mcp:remote']);
+  assert.deepEqual(p.json[0].entries.map((e) => e.id), ['opencode:lsp', 'opencode:mcp:memory', 'opencode:mcp:remote']);
   assert.deepEqual(p.files.map((f) => f.file), [join(home, '.config', 'opencode', 'commands', 'opsx-x.md')]);
   assert.equal(p.skills.pack(join(home, 'dev-project')), join(home, 'dev-project', '.opencode', 'skills'));
 });
@@ -69,4 +69,13 @@ test('pi: global skills under agent/, pack skills under .pi/skills, every server
   assert.equal(p.skills.pack(join(home, 'dev-project')), join(home, 'dev-project', '.pi', 'skills'));
   assert.deepEqual(p.json[0].entries.map((e) => e.id), ['pi:mcp:memory', 'pi:mcp:remote']);
   assert.equal(p.json[0].entries[1].value.enabled, false);
+});
+
+test('no adapter writes the value of a bearer variable into its plan', () => {
+  const env = { REMOTE_TOKEN: 'tok-secret-123' };
+  for (const [adapter, name] of [[claude, 'claude'], [codex, 'codex'], [cursor, 'cursor'], [opencode, 'opencode'], [pi, 'pi']]) {
+    const { p } = plan(adapter, name, { env });
+    assert.ok(JSON.stringify(p).includes('REMOTE_TOKEN') || name === 'cursor', `${name}: reference expected`);
+    assert.ok(!JSON.stringify(p).includes('tok-secret-123'), name);
+  }
 });

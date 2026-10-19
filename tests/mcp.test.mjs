@@ -142,3 +142,12 @@ test('codex refuses to resolve an env reference, and never shows a value', () =>
   const s = serversFor(c, 'codex', 'linux')[0];
   assert.throws(() => render.codex(s, { ...linux, env: { OTHER: secret, T: secret } }), (e) => e.message.includes('x') && e.message.includes('env.GH') && !e.message.includes(secret));
 });
+
+test('catalogProblems: server names must be safe file names, unique ignoring case, and not "everything"', () => {
+  const s = { npx: ['p'], on: true };
+  assert.deepEqual(catalogProblems({ servers: { 'ok-1_a': s } }), []);
+  assert.match(catalogProblems({ servers: { 'a/b': s } })[0], /a\/b: name/);
+  assert.match(catalogProblems({ servers: { '-x': s } })[0], /name/);
+  assert.match(catalogProblems({ servers: { Everything: s } })[0], /reserved/);
+  assert.match(catalogProblems({ servers: { Mem: s, mem: s } })[0], /collides/);
+});

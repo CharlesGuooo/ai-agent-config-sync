@@ -6,6 +6,8 @@ Generates feedback for edge-signal-aggregator weight calibration
 and skill improvement backlog entries from postmortem records.
 """
 
+from __future__ import annotations
+
 import argparse
 import json
 import sys
@@ -14,13 +16,19 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 
-def load_postmortems(postmortems_dir: str, days_back: int = 90) -> list:
+def load_postmortems(
+    postmortems_dir: str, days_back: int = 90, now: datetime | None = None
+) -> list:
     """
     Load postmortem records from directory.
 
     Args:
         postmortems_dir: Directory containing postmortem JSON files
         days_back: Only include postmortems from this many days back
+        now: Optional fixed reference time for the cutoff window. When omitted,
+            wall-clock time is used. Passing a fixed anchor keeps the window
+            deterministic for replay harnesses whose fixtures are dated
+            independently of the run date.
 
     Returns:
         List of postmortem records
@@ -31,7 +39,8 @@ def load_postmortems(postmortems_dir: str, days_back: int = 90) -> list:
     if not dir_path.exists():
         return postmortems
 
-    cutoff_date = datetime.now() - timedelta(days=days_back)
+    ref_time = (now or datetime.now()).replace(tzinfo=None)
+    cutoff_date = ref_time - timedelta(days=days_back)
 
     for json_file in dir_path.glob("pm_*.json"):
         try:
@@ -475,7 +484,7 @@ def main():
     if args.generate_weight_feedback:
         feedback = generate_weight_feedback(metrics, args.min_sample_size)
         output_file = output_dir / f"weight_feedback_{timestamp}.json"
-        with open(output_file, "w") as f:
+        with open(output_file, "w", encoding="utf-8") as f:
             json.dump(feedback, f, indent=2)
         print(f"Saved weight feedback: {output_file}")
         print(f"  Adjustments: {len(feedback['skill_adjustments'])}")
@@ -487,7 +496,7 @@ def main():
         output_file = output_dir / f"skill_improvement_backlog_{timestamp}.yaml"
 
         # Write as YAML-like format
-        with open(output_file, "w") as f:
+        with open(output_file, "w", encoding="utf-8") as f:
             for entry in backlog:
                 f.write(f"- skill: {entry['skill']}\n")
                 f.write(f"  issue_type: {entry['issue_type']}\n")
@@ -510,7 +519,7 @@ def main():
         group_by = [g.strip() for g in args.group_by.split(",")]
         summary = generate_summary(metrics, postmortems, group_by)
         output_file = output_dir / f"postmortem_summary_{timestamp}.md"
-        with open(output_file, "w") as f:
+        with open(output_file, "w", encoding="utf-8") as f:
             f.write(summary)
         print(f"Saved summary: {output_file}")
 

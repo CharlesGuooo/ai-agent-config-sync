@@ -1,5 +1,5 @@
 ---
-name: feature-flags-react
+name: posthog-feature-flags-react
 description: PostHog feature flags for React applications
 metadata:
   author: PostHog

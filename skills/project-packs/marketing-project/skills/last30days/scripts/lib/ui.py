@@ -121,6 +121,7 @@ SOURCE_COMPLETION_ORDER = [
     "tiktok",
     "instagram",
     "hackernews",
+    "devto",
     "bluesky",
     "truthsocial",
     "polymarket",
@@ -130,6 +131,8 @@ SOURCE_COMPLETION_ORDER = [
     "arxiv",
     "techmeme",
     "trustpilot",
+    "amazon",
+    "meta_ads",
 ]
 
 SOURCE_COMPLETION_META = {
@@ -139,6 +142,7 @@ SOURCE_COMPLETION_META = {
     "tiktok": ("TikTok", "video", "videos", Colors.PURPLE),
     "instagram": ("Instagram", "reel", "reels", Colors.PURPLE),
     "hackernews": ("HN", "story", "stories", Colors.YELLOW),
+    "devto": ("dev.to", "article", "articles", Colors.GREEN),
     "bluesky": ("Bluesky", "post", "posts", Colors.BLUE),
     "truthsocial": ("Truth Social", "post", "posts", Colors.CYAN),
     "polymarket": ("Polymarket", "market", "markets", Colors.GREEN),
@@ -148,6 +152,8 @@ SOURCE_COMPLETION_META = {
     "arxiv": ("arXiv", "paper", "papers", Colors.RED),
     "techmeme": ("Techmeme", "headline", "headlines", Colors.CYAN),
     "trustpilot": ("Trustpilot", "review", "reviews", Colors.GREEN),
+    "amazon": ("Amazon", "product", "products", Colors.YELLOW),
+    "meta_ads": ("Meta Ads", "creative", "creatives", Colors.BLUE),
 }
 
 

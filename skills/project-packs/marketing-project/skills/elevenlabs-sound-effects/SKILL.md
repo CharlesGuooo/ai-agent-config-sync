@@ -1,5 +1,5 @@
 ---
-name: sound-effects
+name: elevenlabs-sound-effects
 description: Generate sound effects from text descriptions using ElevenLabs. Use when creating sound effects, generating audio textures, producing ambient sounds, cinematic impacts, UI sounds, or any audio that isn't speech. Supports looping, duration control, and prompt influence tuning.
 license: MIT
 compatibility: Requires internet access and an ElevenLabs API key (ELEVENLABS_API_KEY).
@@ -10,7 +10,7 @@ metadata: {"openclaw": {"requires": {"env": ["ELEVENLABS_API_KEY"]}, "primaryEnv
 
 Generate sound effects from text descriptions — supports looping, custom duration, and prompt adherence control.
 
-> **Setup:** See [Installation Guide](references/installation.md). For JavaScript, use `@elevenlabs/*` packages only.
+> **Setup, before writing any code:** if `ELEVENLABS_API_KEY` isn't set for this project, run `npx -y @elevenlabs/cli@latest onboard init` from the app's folder first and follow what it prints: it signs the user in and stores a key for the project, so nobody copies one by hand. Otherwise see the [Installation Guide](references/installation.md). For JavaScript, use `@elevenlabs/*` packages only.
 
 ## Quick Start
 
@@ -43,12 +43,11 @@ const audio = await client.textToSoundEffects.convert({
 audio.pipe(createWriteStream("thunder.mp3"));
 ```
 
-### cURL
+### CLI
 
 ```bash
-curl -X POST "https://api.elevenlabs.io/v1/sound-generation" \
-  -H "xi-api-key: $ELEVENLABS_API_KEY" -H "Content-Type: application/json" \
-  -d '{"text": "Thunder rumbling in the distance with light rain"}' \
+elevenlabs text-to-sound-effects convert \
+  --text "Thunder rumbling in the distance with light rain" \
   --output thunder.mp3
 ```
 
@@ -83,7 +82,7 @@ audio = client.text_to_sound_effects.convert(
 
 ## Output Formats
 
-Pass `output_format` as a query parameter (cURL) or SDK parameter:
+Pass `--output-format` (CLI) or `output_format` as an SDK parameter:
 
 | Format | Description |
 |--------|-------------|

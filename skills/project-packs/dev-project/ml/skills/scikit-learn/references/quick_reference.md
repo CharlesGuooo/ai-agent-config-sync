@@ -1,5 +1,7 @@
 # Scikit-learn Quick Reference
 
+Targets scikit-learn 1.9.1. Snippets with caller-supplied data/columns are illustrative; fit all learned preprocessing inside the training folds when estimating predictive performance.
+
 ## Common Import Patterns
 
 ```python
@@ -29,7 +31,8 @@ from sklearn.decomposition import PCA, NMF
 # Metrics
 from sklearn.metrics import (
     accuracy_score, precision_score, recall_score, f1_score,
-    mean_squared_error, r2_score, confusion_matrix, classification_report
+    mean_squared_error, root_mean_squared_error, r2_score,
+    confusion_matrix, classification_report
 )
 
 # Pipeline
@@ -44,12 +47,14 @@ import matplotlib.pyplot as plt
 
 ## Installation
 
+Targets scikit-learn **1.9.1** (tested on Python 3.13; requires Python 3.11+). Install the PyPI package `scikit-learn` (import as `sklearn`).
+
 ```bash
 # Using uv (recommended)
-uv pip install scikit-learn
+uv pip install "scikit-learn==1.9.1"
 
 # Optional dependencies
-uv pip install scikit-learn[plots]  # For plotting utilities
+uv pip install "scikit-learn[plots]==1.9.1"  # For plotting utilities
 uv pip install pandas numpy matplotlib seaborn  # Common companions
 ```
 
@@ -89,7 +94,7 @@ print(confusion_matrix(y_test, y_pred))
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import GradientBoostingRegressor
-from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.metrics import mean_squared_error, root_mean_squared_error, r2_score
 
 # Split
 X_train, X_test, y_train, y_test = train_test_split(
@@ -106,7 +111,7 @@ model.fit(X_train_scaled, y_train)
 
 # Evaluate
 y_pred = model.predict(X_test_scaled)
-print(f"RMSE: {mean_squared_error(y_test, y_pred, squared=False):.3f}")
+print(f"RMSE: {root_mean_squared_error(y_test, y_pred):.3f}")
 print(f"R² Score: {r2_score(y_test, y_pred):.3f}")
 ```
 
@@ -118,7 +123,7 @@ from sklearn.ensemble import RandomForestClassifier
 
 model = RandomForestClassifier(n_estimators=100, random_state=42)
 scores = cross_val_score(model, X, y, cv=5, scoring='accuracy')
-print(f"CV Accuracy: {scores.mean():.3f} (+/- {scores.std() * 2:.3f})")
+print(f"CV Accuracy: {scores.mean():.3f} (fold SD {scores.std():.3f})")
 ```
 
 ### Complete Pipeline with Mixed Data Types
@@ -283,6 +288,8 @@ plt.title(f'PCA (explained variance: {pca.explained_variance_ratio_.sum():.2%})'
 
 ### Model Persistence
 
+Load pickle/joblib artifacts only from a trusted source: loading can execute code. Persist the fitted pipeline and training schema, package versions, and evaluation provenance. Loading across different scikit-learn versions is unsupported.
+
 ```python
 import joblib
 
@@ -315,12 +322,12 @@ pipeline = Pipeline([
     ('scaler', StandardScaler()),
     ('model', LogisticRegression())
 ])
-pipeline.fit(X_train, y_train)  # No leakage!
+pipeline.fit(X_train, y_train)  # Then pass this entire pipeline to CV/search
 ```
 
 ### Stratified Splitting for Classification
 ```python
-# Always use stratify for classification
+# For independent classification rows; groups/time need appropriate splitters
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, stratify=y, random_state=42
 )
@@ -353,7 +360,7 @@ feature_names = preprocessor.get_feature_names_out()
 |---------|-----------|-------------|
 | Binary/Multiclass | Logistic Regression | Fast baseline, interpretability |
 | Binary/Multiclass | Random Forest | Good default, robust |
-| Binary/Multiclass | Gradient Boosting | Best accuracy, willing to tune |
+| Binary/Multiclass | Gradient Boosting | Strong candidate, validate and tune |
 | Binary/Multiclass | SVM | Small data, complex boundaries |
 | Binary/Multiclass | Naive Bayes | Text classification, fast |
 | High dimensions | Linear SVM or Logistic | Text, many features |
@@ -365,7 +372,7 @@ feature_names = preprocessor.get_feature_names_out()
 | Continuous target | Linear Regression | Fast baseline, interpretability |
 | Continuous target | Ridge/Lasso | Regularization needed |
 | Continuous target | Random Forest | Good default, non-linear |
-| Continuous target | Gradient Boosting | Best accuracy |
+| Continuous target | Gradient Boosting | Candidate to compare |
 | Continuous target | SVR | Small data, non-linear |
 
 ### Clustering
@@ -393,7 +400,7 @@ feature_names = preprocessor.get_feature_names_out()
 # Use n_jobs=-1 for parallel processing
 model = RandomForestClassifier(n_estimators=100, n_jobs=-1)
 
-# Use warm_start for incremental learning
+# Grow the same fitted forest on the same training data; not online learning
 model = RandomForestClassifier(n_estimators=100, warm_start=True)
 model.fit(X, y)
 model.n_estimators += 50
@@ -430,4 +437,10 @@ print(f"scikit-learn version: {sklearn.__version__}")
 - User Guide: https://scikit-learn.org/stable/user_guide.html
 - API Reference: https://scikit-learn.org/stable/api/index.html
 - Examples: https://scikit-learn.org/stable/auto_examples/index.html
-- Tutorials: https://scikit-learn.org/stable/tutorial/index.html
+- Tutorials: https://scikit-learn.org/stable/getting_started.html
+
+## Upstream references
+
+- https://scikit-learn.org/stable/whats_new/v1.9.html
+- https://scikit-learn.org/stable/common_pitfalls.html
+- https://scikit-learn.org/stable/model_persistence.html

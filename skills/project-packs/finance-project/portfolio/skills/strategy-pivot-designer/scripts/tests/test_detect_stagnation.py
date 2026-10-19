@@ -1,5 +1,8 @@
 """Unit tests for detect_stagnation.py."""
 
+from __future__ import annotations
+
+import importlib.util
 import json
 from pathlib import Path
 
@@ -230,6 +233,68 @@ def test_cost_defeat_not_fires_high_expectancy() -> None:
     assert result is None
 
 
+@pytest.mark.parametrize(
+    ("win_rate", "avg_win", "avg_loss", "expected_trigger"),
+    [
+        (100, 0.1, 1.0, None),
+        (0, 0.0, 0.0, "insufficient_profit_factor"),
+        (50, 1e300, 1e-9, "insufficient_profit_factor"),
+    ],
+)
+def test_backtest_eval_null_profit_factor_survives_history_pipeline(
+    tmp_path: Path, win_rate: float, avg_win: float, avg_loss: float, expected_trigger: str | None
+) -> None:
+    script = Path(__file__).resolve().parents[3] / "backtest-expert/scripts/evaluate_backtest.py"
+    spec = importlib.util.spec_from_file_location("backtest_evaluator_for_pivot", script)
+    assert spec is not None and spec.loader is not None
+    evaluator = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(evaluator)
+    result = evaluator.evaluate(
+        total_trades=200,
+        win_rate=win_rate,
+        avg_win_pct=avg_win,
+        avg_loss_pct=avg_loss,
+        max_drawdown_pct=10,
+        years_tested=10,
+        num_parameters=4,
+        slippage_tested=True,
+    )
+    eval_path, _ = evaluator.write_outputs(result, tmp_path / "reports")
+    history_path = tmp_path / "history.json"
+    ds.append_eval(eval_path, history_path, "fictional-strategy")
+    ds.append_eval(eval_path, history_path, "fictional-strategy")
+    history = json.loads(history_path.read_text())
+    diagnosis = ds.run_all_triggers(history)
+    trigger_ids = [trigger["trigger"] for trigger in diagnosis["triggers_fired"]]
+    assert (
+        (expected_trigger in trigger_ids)
+        if expected_trigger
+        else ("insufficient_profit_factor" not in trigger_ids)
+    )
+    assert (
+        diagnosis["latest_eval_summary"]["profit_factor_status"] == result["profit_factor_status"]
+    )
+    assert diagnosis["latest_eval_summary"]["decision"] == result["decision"]
+    if expected_trigger:
+        assert diagnosis["recommendation"] == "review_required"
+        assert diagnosis["stagnation_detected"] is False
+    else:
+        assert diagnosis["recommendation"] == "continue"
+
+
+def test_not_evaluable_sample_does_not_trigger_pivot() -> None:
+    history = {
+        "strategy_id": "fictional-strategy",
+        "iterations": [
+            make_iteration(1, make_eval(75)),
+            make_iteration(2, {**make_eval(76), "decision": "NOT_EVALUABLE"}),
+        ],
+    }
+    diagnosis = ds.run_all_triggers(history)
+    assert diagnosis["recommendation"] == "review_required"
+    assert diagnosis["stagnation_detected"] is False
+
+
 # ---- Tail risk tests ----
 
 
@@ -311,11 +376,11 @@ def test_append_eval_strategy_id_mismatch_raises(tmp_path: Path) -> None:
         ],
     }
     history_path = tmp_path / "history.json"
-    history_path.write_text(json.dumps(existing))
+    history_path.write_text(json.dumps(existing), encoding="utf-8")
 
     eval_data = {"total_score": 60, "dimensions": [], "red_flags": [], "inputs": {}}
     eval_path = tmp_path / "eval_mismatch.json"
-    eval_path.write_text(json.dumps(eval_data))
+    eval_path.write_text(json.dumps(eval_data), encoding="utf-8")
 
     with pytest.raises(ValueError, match="strategy_id mismatch"):
         ds.append_eval(eval_path, history_path, "strat_beta", changes="Wrong id")
@@ -333,7 +398,7 @@ def test_append_eval_creates_new_history(tmp_path: Path) -> None:
         "inputs": {"total_trades": 60, "slippage_tested": False},
     }
     eval_path = tmp_path / "eval.json"
-    eval_path.write_text(json.dumps(eval_data))
+    eval_path.write_text(json.dumps(eval_data), encoding="utf-8")
 
     history_path = tmp_path / "history.json"
     assert not history_path.exists()
@@ -362,7 +427,7 @@ def test_append_eval_increments_iteration(tmp_path: Path) -> None:
         ],
     }
     history_path = tmp_path / "history.json"
-    history_path.write_text(json.dumps(existing))
+    history_path.write_text(json.dumps(existing), encoding="utf-8")
 
     eval_data = {
         "total_score": 60,
@@ -372,7 +437,7 @@ def test_append_eval_increments_iteration(tmp_path: Path) -> None:
         "inputs": {},
     }
     eval_path = tmp_path / "eval2.json"
-    eval_path.write_text(json.dumps(eval_data))
+    eval_path.write_text(json.dumps(eval_data), encoding="utf-8")
 
     result = ds.append_eval(eval_path, history_path, "existing_strat", changes="Added filter")
 
@@ -390,7 +455,7 @@ def test_main_corrupt_history_returns_error(
 ) -> None:
     """Detection mode with corrupt JSON history returns 1, not traceback."""
     history_path = tmp_path / "bad.json"
-    history_path.write_text("{broken json!!!")
+    history_path.write_text("{broken json!!!", encoding="utf-8")
     monkeypatch.setattr(
         "sys.argv",
         ["detect_stagnation.py", "--history", str(history_path), "--output-dir", str(tmp_path)],

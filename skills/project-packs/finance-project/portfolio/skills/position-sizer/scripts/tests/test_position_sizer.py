@@ -13,6 +13,7 @@ from position_sizer import (
     calculate_kelly,
     calculate_position,
     generate_markdown_report,
+    main,
     validate_parameters,
 )
 
@@ -256,6 +257,127 @@ class TestConstraints:
         assert result["binding_constraint"] == "max_sector_pct"
 
 
+# ─── Test: Fractional Shares ─────────────────────────────────────────────────
+
+
+class TestFractionalShares:
+    def test_fractional_exact_precision_boundary_is_preserved(self):
+        """Binary float noise must not floor an exact decimal boundary twice."""
+        params = SizingParameters(
+            account_size=1_150,
+            entry_price=100.0,
+            stop_price=90.0,
+            risk_pct=1.0,
+            fractional_shares=True,
+            share_precision=2,
+        )
+        result = calculate_position(params)
+        assert result["calculations"]["fixed_fractional"]["shares"] == 1.15
+        assert result["final_recommended_shares"] == 1.15
+        assert result["final_risk_dollars"] == 11.5
+
+    def test_fractional_decimal_inputs_are_used_before_subtraction(self):
+        """Entry-stop subtraction must not pollute an exact share boundary."""
+        params = SizingParameters(
+            account_size=18.81,
+            entry_price=10.0,
+            stop_price=9.01,
+            risk_pct=1.0,
+            fractional_shares=True,
+            share_precision=2,
+        )
+        result = calculate_position(params)
+        assert result["calculations"]["fixed_fractional"]["shares"] == 0.19
+        assert result["final_recommended_shares"] == 0.19
+        assert result["final_risk_dollars"] == 0.19
+
+    def test_fractional_fixed_fractional_floors_to_precision(self):
+        """--fractional supports small-account sizing without exceeding risk."""
+        params = SizingParameters(
+            account_size=1_000,
+            entry_price=155.0,
+            stop_price=148.50,
+            risk_pct=1.0,
+            fractional_shares=True,
+            share_precision=4,
+        )
+        result = calculate_position(params)
+        assert result["calculations"]["fixed_fractional"]["shares"] == 1.5384
+        assert result["final_recommended_shares"] == 1.5384
+        assert result["final_risk_dollars"] == 10.0
+        assert result["final_risk_pct"] == 1.0
+        assert result["parameters"]["fractional_shares"] is True
+        assert result["parameters"]["share_precision"] == 4
+
+    def test_fractional_atr_based_floors_to_precision(self):
+        """ATR mode uses the same fractional flooring logic."""
+        params = SizingParameters(
+            account_size=1_000,
+            entry_price=100.0,
+            risk_pct=1.0,
+            atr=3.0,
+            atr_multiplier=2.0,
+            fractional_shares=True,
+            share_precision=4,
+        )
+        result = calculate_position(params)
+        assert result["calculations"]["atr_based"]["shares"] == 1.6666
+        assert result["final_recommended_shares"] == 1.6666
+        assert result["final_risk_dollars"] == 10.0
+
+    def test_fractional_kelly_shares_with_stop(self):
+        """Kelly shares mode supports fractional output when a stop is provided."""
+        params = SizingParameters(
+            account_size=100,
+            entry_price=155.0,
+            stop_price=148.50,
+            win_rate=0.55,
+            avg_win=2.5,
+            avg_loss=1.0,
+            fractional_shares=True,
+            share_precision=4,
+        )
+        result = calculate_position(params)
+        assert result["calculations"]["kelly"]["half_kelly_pct"] == 18.5
+        assert result["final_recommended_shares"] == 2.8461
+        assert result["final_risk_dollars"] == 18.5
+
+    def test_fractional_max_position_constraint(self):
+        """Max-position constraints floor fractional shares before binding."""
+        params = SizingParameters(
+            account_size=1_000,
+            entry_price=155.0,
+            stop_price=148.50,
+            risk_pct=1.0,
+            max_position_pct=10.0,
+            fractional_shares=True,
+            share_precision=4,
+        )
+        result = calculate_position(params)
+        assert result["final_recommended_shares"] == 0.6451
+        assert result["final_position_value"] == 99.99
+        assert result["binding_constraint"] == "max_position_pct"
+        assert result["final_position_value"] <= 100.0
+
+    def test_fractional_max_sector_constraint(self):
+        """Max-sector constraints floor fractional shares before binding."""
+        params = SizingParameters(
+            account_size=1_000,
+            entry_price=155.0,
+            stop_price=148.50,
+            risk_pct=1.0,
+            max_sector_pct=30.0,
+            current_sector_exposure=22.0,
+            fractional_shares=True,
+            share_precision=4,
+        )
+        result = calculate_position(params)
+        assert result["final_recommended_shares"] == 0.5161
+        assert result["final_position_value"] == 80.0
+        assert result["binding_constraint"] == "max_sector_pct"
+        assert result["final_position_value"] <= 80.0
+
+
 # ─── Test: Input Validation ──────────────────────────────────────────────────
 
 
@@ -359,6 +481,32 @@ class TestValidation:
         with pytest.raises(ValueError, match="entry_price must be positive"):
             validate_parameters(params)
 
+    def test_share_precision_below_zero_error(self):
+        """share_precision below zero -> ValueError."""
+        params = SizingParameters(
+            account_size=100_000,
+            entry_price=155.0,
+            stop_price=150.0,
+            risk_pct=1.0,
+            fractional_shares=True,
+            share_precision=-1,
+        )
+        with pytest.raises(ValueError, match="share_precision must be between 0 and 8"):
+            validate_parameters(params)
+
+    def test_share_precision_above_eight_error(self):
+        """share_precision above eight -> ValueError."""
+        params = SizingParameters(
+            account_size=100_000,
+            entry_price=155.0,
+            stop_price=150.0,
+            risk_pct=1.0,
+            fractional_shares=True,
+            share_precision=9,
+        )
+        with pytest.raises(ValueError, match="share_precision must be between 0 and 8"):
+            validate_parameters(params)
+
     def test_risk_pct_and_kelly_mutual_exclusive(self):
         """Both risk_pct and win_rate via CLI -> SystemExit (argparse error)."""
         script = "skills/position-sizer/scripts/position_sizer.py"
@@ -426,6 +574,46 @@ class TestOutput:
         assert "## Final Recommendation" in md
         assert "153" in md  # final shares
 
+    def test_main_writes_risk_pct_reports_in_process(self, monkeypatch, tmp_path, capsys):
+        """The CLI entry point writes both reports and prints its share summary."""
+        monkeypatch.setattr(
+            sys,
+            "argv",
+            [
+                "position_sizer.py",
+                "--account-size",
+                "100000",
+                "--entry",
+                "155",
+                "--stop",
+                "148.50",
+                "--risk-pct",
+                "1.0",
+                "--output-dir",
+                str(tmp_path),
+            ],
+        )
+
+        main()
+
+        stdout = capsys.readouterr().out
+        assert "Final: 153 shares" in stdout
+        assert "JSON report:" in stdout
+        assert "Markdown report:" in stdout
+
+        json_reports = list(tmp_path.glob("position_sizer_*.json"))
+        markdown_reports = list(tmp_path.glob("position_sizer_*.md"))
+        assert len(json_reports) == 1
+        assert len(markdown_reports) == 1
+
+        payload = json.loads(json_reports[0].read_text(encoding="utf-8"))
+        assert payload["mode"] == "shares"
+        assert payload["final_recommended_shares"] == 153
+
+        markdown = markdown_reports[0].read_text(encoding="utf-8")
+        assert "# Position Sizing Report" in markdown
+        assert "**Shares:** 153" in markdown
+
     def test_cli_arguments(self):
         """Verify argparse works for standard cases."""
         script = "skills/position-sizer/scripts/position_sizer.py"
@@ -450,6 +638,34 @@ class TestOutput:
         )
         assert result.returncode == 0
         assert "153 shares" in result.stdout
+
+    def test_cli_fractional_arguments(self):
+        """Verify CLI supports fractional share output."""
+        script = "skills/position-sizer/scripts/position_sizer.py"
+        result = subprocess.run(
+            [
+                sys.executable,
+                script,
+                "--account-size",
+                "1000",
+                "--entry",
+                "155",
+                "--stop",
+                "148.50",
+                "--risk-pct",
+                "1.0",
+                "--fractional",
+                "--share-precision",
+                "4",
+                "--output-dir",
+                "/tmp/position_sizer_test",
+            ],
+            capture_output=True,
+            text=True,
+            cwd=str(Path(__file__).resolve().parents[4]),
+        )
+        assert result.returncode == 0
+        assert "1.5384 shares" in result.stdout
 
     def test_cli_missing_required(self):
         """Missing --account-size -> SystemExit."""

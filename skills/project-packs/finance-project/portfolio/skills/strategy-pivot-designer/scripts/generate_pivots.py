@@ -603,6 +603,7 @@ def _build_base_draft(
             "risk_per_trade": 0.005,
             "max_positions": 5,
             "max_sector_exposure": 0.3,
+            "sector_group_by": "sector",
         },
         "validation_plan": {
             "period": "2016-01-01 to latest",
@@ -798,7 +799,9 @@ def write_outputs(
         # Write draft YAML (include timestamp to avoid overwrite on re-run)
         draft_filename = f"{draft['id']}_{timestamp_str}.yaml"
         draft_path = target_dir / draft_filename
-        draft_path.write_text(yaml.safe_dump(draft_with_meta, sort_keys=False, allow_unicode=True))
+        draft_path.write_text(
+            yaml.safe_dump(draft_with_meta, sort_keys=False, allow_unicode=True), encoding="utf-8"
+        )
 
         draft_entry: dict[str, Any] = {
             "id": draft["id"],
@@ -814,7 +817,9 @@ def write_outputs(
             if ticket:
                 ticket_filename = f"ticket_{draft['id'].replace('pivot_', '')}_{timestamp_str}.yaml"
                 ticket_path = exportable_dir / ticket_filename
-                ticket_path.write_text(yaml.safe_dump(ticket, sort_keys=False, allow_unicode=True))
+                ticket_path.write_text(
+                    yaml.safe_dump(ticket, sort_keys=False, allow_unicode=True), encoding="utf-8"
+                )
                 draft_entry["ticket_path"] = str(ticket_path.relative_to(output_dir))
             else:
                 errors.append(f"Ticket validation failed for {draft['id']}")
@@ -838,12 +843,12 @@ def write_outputs(
     }
 
     manifest_path = output_dir / f"pivot_manifest_{strategy_id}_{timestamp_str}.json"
-    manifest_path.write_text(json.dumps(manifest, indent=2, default=str))
+    manifest_path.write_text(json.dumps(manifest, indent=2, default=str), encoding="utf-8")
 
     # Write report
     report = _build_report(selected, diagnosis, source_draft, manifest)
     report_path = output_dir / f"pivot_report_{strategy_id}_{timestamp_str}.md"
-    report_path.write_text(report)
+    report_path.write_text(report, encoding="utf-8")
 
     return manifest
 
@@ -968,6 +973,9 @@ def main() -> int:
     source_draft["_source_path"] = str(strategy_path)
 
     triggers_fired = diagnosis.get("triggers_fired", [])
+    if diagnosis.get("recommendation") == "review_required":
+        print("[INFO] Evaluation needs review before pivot proposals can be generated")
+        return 0
     if not triggers_fired:
         print("[INFO] No triggers fired -- no pivots to generate")
         return 0

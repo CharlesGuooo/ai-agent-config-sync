@@ -1,5 +1,5 @@
 ---
-name: feature-flags-python
+name: posthog-feature-flags-python
 description: PostHog feature flags for Python applications
 metadata:
   author: PostHog

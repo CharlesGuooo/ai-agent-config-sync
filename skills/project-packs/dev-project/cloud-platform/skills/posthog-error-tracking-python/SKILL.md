@@ -1,5 +1,5 @@
 ---
-name: error-tracking-python
+name: posthog-error-tracking-python
 description: PostHog error tracking for Python
 metadata:
   author: PostHog

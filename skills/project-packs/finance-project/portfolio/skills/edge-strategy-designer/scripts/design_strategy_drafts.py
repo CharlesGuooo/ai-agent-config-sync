@@ -329,6 +329,7 @@ def build_draft(
             "risk_per_trade": risk_per_trade,
             "max_positions": max_positions,
             "max_sector_exposure": 0.3,
+            "sector_group_by": "sector",
         },
         "validation_plan": {
             "period": "2016-01-01 to latest",
@@ -464,13 +465,15 @@ def main() -> int:
                     exportable_families=ef_override,
                 )
                 draft_path = output_dir / f"{draft['id']}.yaml"
-                draft_path.write_text(yaml.safe_dump(draft, sort_keys=False))
+                draft_path.write_text(yaml.safe_dump(draft, sort_keys=False), encoding="utf-8")
                 draft_count += 1
 
                 if draft.get("export_ready_v1") and exportable_tickets_dir is not None:
                     ticket = build_export_ticket(draft)
                     ticket_path = exportable_tickets_dir / f"{ticket['id']}.yaml"
-                    ticket_path.write_text(yaml.safe_dump(ticket, sort_keys=False))
+                    ticket_path.write_text(
+                        yaml.safe_dump(ticket, sort_keys=False), encoding="utf-8"
+                    )
                     exportable_ticket_count += 1
 
         manifest = {
@@ -484,7 +487,9 @@ def main() -> int:
             if exportable_tickets_dir
             else None,
         }
-        (output_dir / "run_manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
+        (output_dir / "run_manifest.json").write_text(
+            json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
+        )
     except StrategyDesignError as exc:
         print(f"[ERROR] {exc}")
         return 1

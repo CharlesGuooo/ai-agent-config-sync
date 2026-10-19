@@ -28,6 +28,25 @@ uv run python -B scripts/deai_batch.py main.tex --all-sections
 
 - `deai_check.py` emits section-level analysis, trace scores, and optional fix suggestions.
 - `deai_batch.py` supports broader batch inspection across sections.
+- The `tense` category (`[Script]` LOW) flags present-tense reporting verbs in Methods / Experiments / Results, gated to those sections; see [tense-guide.md](tense-guide.md).
+- The `overclaim` category (`[Script]` LOW) flags unambiguous causal / firstness / universality phrasing; see [over-claim-guard.md](../evidence/over-claim-guard.md).
+
+- Hedge stacking, disclaimers before the first claim, and self-weakening collocations are **not** de-AI traces and this script carries no hedge regex by contract; route them to [claim-forward.md](claim-forward.md). `not X but Y` shells and "It is worth noting" stay here.
+
+## Density and Budget Semantics
+
+- Term counts and denominators share one visible-prose adapter that excludes comments,
+  citations, labels, math, figures, tables, and algorithms.
+- English `term_thresholds` use `threshold_unit: per_10k_words`. Each legacy absolute cap `A` was
+  converted to `2A` per 10,000 visible words, which preserves allowance only at the 5,000-word
+  baseline; other lengths intentionally scale. This is a baseline conversion, not corpus
+  calibration. Custom YAML without a unit still keeps legacy absolute-count semantics.
+- Documents below 1,500 visible words use the 1,500-word allowance. The initial
+  `section_factors.organization=6.6` is borrowed from Chinese calibration and remains
+  **UNVERIFIED** for English papers.
+- `throat_clearing` collects paragraph-opening hits across the whole document and reports only
+  occurrences beyond a 2.0-per-10,000-word budget with a minimum allowance of one. This value is
+  the same 5,000-word baseline conversion, not English-corpus calibration.
 
 ## Skill-Layer Response
 
@@ -37,6 +56,31 @@ uv run python -B scripts/deai_batch.py main.tex --all-sections
   invoke `academic-humanizer` on those sections. Do not reimplement its rules here.
 - Preserve `\cite{}`, `\ref{}`, `\label{}`, custom macros, and math environments.
 - Never invent new claims, metrics, baselines, or references while smoothing the prose.
+
+## Claim-Evidence-First Humanization
+
+Before reducing AI tone, preserve the academic payload:
+
+- **Facts/evidence**: numbers, datasets, experiments, figures, tables, citations, equations, and metrics.
+- **Claims/stance**: the paper's real contribution, uncertainty, design choice, and limitation.
+- **Logic**: paragraph role, section role, and claim-evidence map.
+- **Boundaries**: assumptions, scope, missing evidence, and unsupported claims.
+
+Only then remove rhetorical scaffolds such as `not merely A, but B`, `essentially`, `the key is`, `The conclusion is:`, or vague `this/things/factors`. Keep a contrast when it names a real baseline, criterion, and evidence; otherwise state the claim directly. The module should not promise lower detector scores or replace venue AI-use disclosure.
+
+For the seven evidence-aware H-* pattern clusters and the `audit -> rewrite -> fidelity audit`
+contract, progressively load [pattern-clusters.md](../deai/pattern-clusters.md). These are
+claim-local `[LLM]` review prompts, not AI-authorship or detector-score rules.
+
+Treat defensive speculative explanations as `[LLM]` findings: when a paragraph stacks
+multiple mechanisms and then says the current data verify none of them, map each retained
+mechanism to a visible evidence anchor or discriminating test. If no mechanism is supported,
+state that it remains undetermined and move testable alternatives to future work. Do not
+delete the caveat or strengthen the inference merely to sound decisive.
+
+The script's `hedge` / `hedge_application` suggestions still correctly calibrate
+over-confident wording and undemonstrated applications. `results suggest` and
+`may / could` reduce claim strength; they do not replace per-mechanism evidence.
 
 ## Disclosure obligation (read before de-AI editing)
 

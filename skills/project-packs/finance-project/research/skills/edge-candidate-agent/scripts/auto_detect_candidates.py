@@ -464,6 +464,12 @@ def render_daily_report(
     lines.append(f"- Watchlist candidates: **{watchlist_count}**")
     lines.append(f"- Exportable tickets: **{len(exportable_tickets)}**")
     lines.append(f"- Research-only tickets: **{len(research_tickets)}**")
+    news_count = sum(t.get("hypothesis_type") == "news_reaction" for t in research_tickets)
+    if news_count:
+        lines.append(
+            f"- News research-only tickets: **{news_count}** "
+            "(no downstream detector; excluded from strategy export)"
+        )
     if skipped_modules:
         lines.append("- Optional modules skipped: " + ", ".join(skipped_modules))
     lines.append("")
@@ -1503,8 +1509,12 @@ def write_outputs(
     exportable_dir.mkdir(parents=True, exist_ok=True)
     research_dir.mkdir(parents=True, exist_ok=True)
 
-    (output_dir / "market_summary.json").write_text(json.dumps(market_summary, indent=2) + "\n")
-    (output_dir / "anomalies.json").write_text(json.dumps(anomalies, indent=2) + "\n")
+    (output_dir / "market_summary.json").write_text(
+        json.dumps(market_summary, indent=2) + "\n", encoding="utf-8"
+    )
+    (output_dir / "anomalies.json").write_text(
+        json.dumps(anomalies, indent=2) + "\n", encoding="utf-8"
+    )
 
     if watchlist:
         watchlist_df = pd.DataFrame(watchlist)
@@ -1526,7 +1536,9 @@ def write_outputs(
             market_summary=market_summary,
         )
         ticket_path = exportable_dir / f"{payload['id']}.yaml"
-        ticket_path.write_text(yaml.safe_dump(payload, sort_keys=False, allow_unicode=False))
+        ticket_path.write_text(
+            yaml.safe_dump(payload, sort_keys=False, allow_unicode=False), encoding="utf-8"
+        )
         exportable_paths.append(ticket_path)
 
     for idx, ticket_seed in enumerate(research_tickets, start=1):
@@ -1538,7 +1550,9 @@ def write_outputs(
             market_summary=market_summary,
         )
         ticket_path = research_dir / f"{payload['id']}.yaml"
-        ticket_path.write_text(yaml.safe_dump(payload, sort_keys=False, allow_unicode=False))
+        ticket_path.write_text(
+            yaml.safe_dump(payload, sort_keys=False, allow_unicode=False), encoding="utf-8"
+        )
         research_paths.append(ticket_path)
 
     report_markdown = render_daily_report(
@@ -1552,7 +1566,7 @@ def write_outputs(
         skipped_modules=skipped_modules,
     )
     report_path = output_dir / "daily_report.md"
-    report_path.write_text(report_markdown)
+    report_path.write_text(report_markdown, encoding="utf-8")
 
     manifest = {
         "generated_at_utc": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
@@ -1564,7 +1578,9 @@ def write_outputs(
         "skipped_modules": skipped_modules,
         "output_dir": str(output_dir),
     }
-    (output_dir / "run_manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
+    (output_dir / "run_manifest.json").write_text(
+        json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
+    )
     return exportable_paths, research_paths, report_path
 
 
@@ -1686,7 +1702,11 @@ def main() -> int:
     news_path = Path(args.news_reactions).resolve() if args.news_reactions else None
     futures_path = Path(args.futures_ohlcv).resolve() if args.futures_ohlcv else None
     futures_map_path = Path(args.futures_map).resolve() if args.futures_map else None
-    as_of_date = parse_as_of_date(args.as_of)
+    try:
+        as_of_date = parse_as_of_date(args.as_of)
+    except AutoDetectError as exc:
+        print(f"[ERROR] {exc}")
+        return 1
 
     if not ohlcv_path.exists():
         print(f"[ERROR] OHLCV file not found: {ohlcv_path}")
@@ -1779,7 +1799,11 @@ def main() -> int:
             tradable=tradable,
             top_n=max(args.top_research_n, 0),
         )
-        exportable_ticket_seeds.extend(news_candidates)
+        # News has no downstream detector. Preserve the hypothesis/observations,
+        # but omit strategy compatibility fields and share the research-only cap.
+        research_ticket_seeds.extend(
+            {**candidate, "entry_family": None} for candidate in news_candidates
+        )
         if not news_available:
             skipped_modules.append("news_reaction(no_input)")
 
@@ -1822,6 +1846,12 @@ def main() -> int:
         f"watchlist={len(watchlist)} exportable_tickets={len(exportable_paths)} "
         f"research_tickets={len(research_paths)}"
     )
+    if news_candidates:
+        news_count = sum(t.get("hypothesis_type") == "news_reaction" for t in research_ticket_seeds)
+        print(
+            f"[OK] news_research_tickets={news_count} "
+            "(no downstream detector; excluded from strategy export)"
+        )
     print(f"[OK] output_dir={output_dir}")
     print(f"[OK] report={report_path}")
     if llm_hints:

@@ -1,661 +1,188 @@
 # Bayesian Statistical Analysis
 
-This document provides guidance on conducting and interpreting Bayesian statistical analyses, which offer an alternative framework to frequentist (classical) statistics.
+Reviewed 2026-10-01 for PyMC 6.3.2 and ArviZ 1.3.0 (Python 3.12+). The examples are local statistical APIs, with no authentication or service endpoint. PyMC returns xarray `DataTree` groups such as `posterior`, `sample_stats`, `observed_data` and `posterior_predictive`. ArviZ's current API is split across `arviz-stats` and `arviz-plots`, re-exported by `arviz`.
 
-## Bayesian vs. Frequentist Philosophy
+The model fragments below require finite, aligned data supplied by the analyst. Their API mechanics were exercised on small synthetic datasets with short native PyMC NUTS chains, using the Python PyTensor backend on the reviewed Mac. Those runs do not establish convergence or validate the scientific models. On this host C linking failed with missing `-ld64`; `PYTENSOR_FLAGS=cxx=` was an explicit runtime workaround, not evidence of successful C-backend execution.
 
-### Fundamental Differences
+## Questions, priors and uncertainty
 
-| Aspect | Frequentist | Bayesian |
-|--------|-------------|----------|
-| **Probability interpretation** | Long-run frequency of events | Degree of belief/uncertainty |
-| **Parameters** | Fixed but unknown | Random variables with distributions |
-| **Inference** | Based on sampling distributions | Based on posterior distributions |
-| **Primary output** | p-values, confidence intervals | Posterior probabilities, credible intervals |
-| **Prior information** | Not formally incorporated | Explicitly incorporated via priors |
-| **Hypothesis testing** | Reject/fail to reject null | Probability of hypotheses given data |
-| **Sample size** | Often requires minimum | Can work with any sample size |
-| **Interpretation** | Indirect (probability of data given H₀) | Direct (probability of hypothesis given data) |
+Bayes' theorem gives posterior density proportional to likelihood times prior density. A posterior probability statement is conditional on that likelihood, prior, sampling design and available data. A continuous prior generally assigns zero probability to an exact point null: posterior draws cannot by themselves give a Bayes factor for that null.
 
-### Key Question Difference
+Specify the estimand, units, independent sampling unit, censoring/missingness and dependence before choosing a model. Small samples may be weakly identified and sensitive to priors; Bayesian inference does not create information absent from the data.
 
-**Frequentist**: "If the null hypothesis is true, what is the probability of observing data this extreme or more extreme?"
+- Scale priors using meaningful units and external knowledge. A Normal(0, 10) prior is not universally weakly informative. Using the same data to tune priors is an empirical choice that must be disclosed.
+- A HalfNormal or HalfCauchy prior on `sigma` is a prior on standard deviation, not variance. Very heavy tails can cause computational problems.
+- A flat prior over the real line is improper, not a proper Uniform(-infinity, infinity) distribution; it can yield an improper posterior or undefined marginal likelihood.
+- Examine prior predictions, fit the prespecified model, and repeat with scientifically plausible alternative priors. Similar outputs across a few priors do not prove robustness to model misspecification.
+- Sequential analysis needs an explicit stopping/decision rule. A fixed-prior Bayes factor has different optional-stopping properties from a posterior-threshold rule; there is no blanket exemption from calibration or multiplicity concerns.
 
-**Bayesian**: "Given the observed data, what is the probability that the hypothesis is true?"
+## Two independent normal groups
 
-The Bayesian question is more intuitive and directly addresses what researchers want to know.
+This estimates a mean difference under a shared residual SD; it is not Welch's unequal-variance model. Set the prior scales to the measurement units. For unequal variances, model separate SDs and state the resulting model.
 
----
-
-## Bayes' Theorem
-
-**Formula**:
-```
-P(θ|D) = P(D|θ) × P(θ) / P(D)
-```
-
-**In words**:
-```
-Posterior = Likelihood × Prior / Evidence
-```
-
-Where:
-- **θ (theta)**: Parameter of interest (e.g., mean difference, correlation)
-- **D**: Observed data
-- **P(θ|D)**: Posterior distribution (belief about θ after seeing data)
-- **P(D|θ)**: Likelihood (probability of data given θ)
-- **P(θ)**: Prior distribution (belief about θ before seeing data)
-- **P(D)**: Marginal likelihood/evidence (normalizing constant)
-
----
-
-## Prior Distributions
-
-### Types of Priors
-
-#### 1. Informative Priors
-
-**When to use**: When you have substantial prior knowledge from:
-- Previous studies
-- Expert knowledge
-- Theory
-- Pilot data
-
-**Example**: Meta-analysis shows effect size d ≈ 0.40, SD = 0.15
-- Prior: Normal(0.40, 0.15)
-
-**Advantages**:
-- Incorporates existing knowledge
-- More efficient (smaller samples needed)
-- Can stabilize estimates with small data
-
-**Disadvantages**:
-- Subjective (but subjectivity can be strength)
-- Must be justified and transparent
-- May be controversial if strong prior conflicts with data
-
----
-
-#### 2. Weakly Informative Priors
-
-**When to use**: Default choice for most applications
-
-**Characteristics**:
-- Regularizes estimates (prevents extreme values)
-- Has minimal influence on posterior with moderate data
-- Prevents computational issues
-
-**Example priors**:
-- Effect size: Normal(0, 1) or Cauchy(0, 0.707)
-- Variance: Half-Cauchy(0, 1)
-- Correlation: Uniform(-1, 1) or Beta(2, 2)
-
-**Advantages**:
-- Balances objectivity and regularization
-- Computationally stable
-- Broadly acceptable
-
----
-
-#### 3. Non-Informative (Flat/Uniform) Priors
-
-**When to use**: When attempting to be "objective"
-
-**Example**: Uniform(-∞, ∞) for any value
-
-**⚠️ Caution**:
-- Can lead to improper posteriors
-- May produce non-sensible results
-- Not truly "non-informative" (still makes assumptions)
-- Often not recommended in modern Bayesian practice
-
-**Better alternative**: Use weakly informative priors
-
----
-
-### Prior Sensitivity Analysis
-
-**Always conduct**: Test how results change with different priors
-
-**Process**:
-1. Fit model with default/planned prior
-2. Fit model with more diffuse prior
-3. Fit model with more concentrated prior
-4. Compare posterior distributions
-
-**Reporting**:
-- If results are similar: Evidence is robust
-- If results differ substantially: Data are not strong enough to overwhelm prior
-
-**Python example**:
 ```python
-import pymc as pm
-
-# Model with different priors
-priors = [
-    ('weakly_informative', pm.Normal.dist(0, 1)),
-    ('diffuse', pm.Normal.dist(0, 10)),
-    ('informative', pm.Normal.dist(0.5, 0.3))
-]
-
-results = {}
-for name, prior in priors:
-    with pm.Model():
-        effect = pm.Normal('effect', mu=prior.mu, sigma=prior.sigma)
-        # ... rest of model
-        trace = pm.sample()
-        results[name] = trace
-```
-
----
-
-## Bayesian Hypothesis Testing
-
-### Bayes Factor (BF)
-
-**What it is**: Ratio of evidence for two competing hypotheses
-
-**Formula**:
-```
-BF₁₀ = P(D|H₁) / P(D|H₀)
-```
-
-**Interpretation**:
-
-| BF₁₀ | Evidence |
-|------|----------|
-| >100 | Decisive for H₁ |
-| 30-100 | Very strong for H₁ |
-| 10-30 | Strong for H₁ |
-| 3-10 | Moderate for H₁ |
-| 1-3 | Anecdotal for H₁ |
-| 1 | No evidence |
-| 1/3-1 | Anecdotal for H₀ |
-| 1/10-1/3 | Moderate for H₀ |
-| 1/30-1/10 | Strong for H₀ |
-| 1/100-1/30 | Very strong for H₀ |
-| <1/100 | Decisive for H₀ |
-
-**Advantages over p-values**:
-1. Can provide evidence for null hypothesis
-2. Not dependent on sampling intentions (no "peeking" problem)
-3. Directly quantifies evidence
-4. Can be updated with more data
-
-**Python calculation**:
-```python
-import pingouin as pg
-
-# Note: Limited BF support in Python
-# Better options: R packages (BayesFactor), JASP software
-
-# Approximate BF from t-statistic
-# Using Jeffreys-Zellner-Siow prior
-from scipy import stats
-
-def bf_from_t(t, n1, n2, r_scale=0.707):
-    """
-    Approximate Bayes Factor from t-statistic
-    r_scale: Cauchy prior scale (default 0.707 for medium effect)
-    """
-    # This is simplified; use dedicated packages for accurate calculation
-    df = n1 + n2 - 2
-    # Implementation requires numerical integration
-    pass
-```
-
----
-
-### Region of Practical Equivalence (ROPE)
-
-**Purpose**: Define range of negligible effect sizes
-
-**Process**:
-1. Define ROPE (e.g., d ∈ [-0.1, 0.1] for negligible effects)
-2. Calculate % of posterior inside ROPE
-3. Make decision:
-   - >95% in ROPE: Accept practical equivalence
-   - >95% outside ROPE: Reject equivalence
-   - Otherwise: Inconclusive
-
-**Advantage**: Directly tests for practical significance
-
-**Python example**:
-```python
-# Define ROPE
-rope_lower, rope_upper = -0.1, 0.1
-
-# Calculate % of posterior in ROPE
-in_rope = np.mean((posterior_samples > rope_lower) &
-                  (posterior_samples < rope_upper))
-
-print(f"{in_rope*100:.1f}% of posterior in ROPE")
-```
-
----
-
-## Bayesian Estimation
-
-### Credible Intervals
-
-**What it is**: Interval containing parameter with X% probability
-
-**95% Credible Interval interpretation**:
-> "There is a 95% probability that the true parameter lies in this interval."
-
-**This is what people THINK confidence intervals mean** (but don't in frequentist framework)
-
-**Types**:
-
-#### Equal-Tailed Interval (ETI)
-- 2.5th to 97.5th percentile
-- Simple to calculate
-- May not include mode for skewed distributions
-
-#### Highest Density Interval (HDI)
-- Narrowest interval containing 95% of distribution
-- Always includes mode
-- Better for skewed distributions
-
-**Python calculation**:
-```python
-import arviz as az
-
-# Equal-tailed interval
-eti = np.percentile(posterior_samples, [2.5, 97.5])
-
-# HDI
-hdi = az.hdi(posterior_samples, hdi_prob=0.95)
-```
-
----
-
-### Posterior Distributions
-
-**Interpreting posterior distributions**:
-
-1. **Central tendency**:
-   - Mean: Average posterior value
-   - Median: 50th percentile
-   - Mode: Most probable value (MAP - Maximum A Posteriori)
-
-2. **Uncertainty**:
-   - SD: Spread of posterior
-   - Credible intervals: Quantify uncertainty
-
-3. **Shape**:
-   - Symmetric: Similar to normal
-   - Skewed: Asymmetric uncertainty
-   - Multimodal: Multiple plausible values
-
-**Visualization**:
-```python
-import matplotlib.pyplot as plt
-import arviz as az
-
-# Posterior plot with HDI
-az.plot_posterior(trace, hdi_prob=0.95)
-
-# Trace plot (check convergence)
-az.plot_trace(trace)
-
-# Forest plot (multiple parameters)
-az.plot_forest(trace)
-```
-
----
-
-## Common Bayesian Analyses
-
-### Bayesian T-Test
-
-**Purpose**: Compare two groups (Bayesian alternative to t-test)
-
-**Outputs**:
-1. Posterior distribution of mean difference
-2. 95% credible interval
-3. Bayes Factor (BF₁₀)
-4. Probability of directional hypothesis (e.g., P(μ₁ > μ₂))
-
-**Python implementation**:
-```python
+import numpy as np
 import pymc as pm
 import arviz as az
 
-# Bayesian independent samples t-test
-with pm.Model() as model:
-    # Priors for group means
+with pm.Model() as group_model:
     mu1 = pm.Normal('mu1', mu=0, sigma=10)
     mu2 = pm.Normal('mu2', mu=0, sigma=10)
-
-    # Prior for pooled standard deviation
     sigma = pm.HalfNormal('sigma', sigma=10)
+    pm.Normal('y1', mu=mu1, sigma=sigma, observed=group1)
+    pm.Normal('y2', mu=mu2, sigma=sigma, observed=group2)
+    pm.Deterministic('diff', mu1 - mu2)
+    trace = pm.sample(2000, tune=1000, chains=4, cores=1,
+                      random_seed=42, nuts_sampler='pymc')
 
-    # Likelihood
-    y1 = pm.Normal('y1', mu=mu1, sigma=sigma, observed=group1)
-    y2 = pm.Normal('y2', mu=mu2, sigma=sigma, observed=group2)
-
-    # Derived quantity: mean difference
-    diff = pm.Deterministic('diff', mu1 - mu2)
-
-    # Sample posterior
-    trace = pm.sample(2000, tune=1000, return_inferencedata=True)
-
-# Analyze results
-print(az.summary(trace, var_names=['mu1', 'mu2', 'diff']))
-
-# Probability that group1 > group2
-prob_greater = np.mean(trace.posterior['diff'].values > 0)
-print(f"P(μ₁ > μ₂) = {prob_greater:.3f}")
-
-# Plot posterior
-az.plot_posterior(trace, var_names=['diff'], ref_val=0)
+# Explicit interval probability/type; avoid rounded diagnostics for decisions.
+print(az.summary(trace, var_names=['mu1', 'mu2', 'diff'],
+                 ci_prob=0.95, ci_kind='eti', round_to='none'))
+draws = trace.posterior['diff'].values
+print(f"P(mu1 > mu2 | data, model) = {np.mean(draws > 0):.3f}")
+az.plot_dist(trace, var_names=['diff'], ci_prob=0.95, ci_kind='eti')
 ```
 
----
+A posterior directional probability is not a one-sided Bayes factor. Pingouin 0.7 intentionally omits the `BF10` column for a one-sided `ttest`. Its two-sided default uses the documented JZS prior on standardized effect (Cauchy scale `r=0.707`):
 
-### Bayesian ANOVA
-
-**Purpose**: Compare three or more groups
-
-**Model**:
 ```python
-import pymc as pm
-
-with pm.Model() as anova_model:
-    # Hyperpriors
-    mu_global = pm.Normal('mu_global', mu=0, sigma=10)
-    sigma_between = pm.HalfNormal('sigma_between', sigma=5)
-    sigma_within = pm.HalfNormal('sigma_within', sigma=5)
-
-    # Group means (hierarchical)
-    group_means = pm.Normal('group_means',
-                            mu=mu_global,
-                            sigma=sigma_between,
-                            shape=n_groups)
-
-    # Likelihood
-    y = pm.Normal('y',
-                  mu=group_means[group_idx],
-                  sigma=sigma_within,
-                  observed=data)
-
-    trace = pm.sample(2000, tune=1000, return_inferencedata=True)
-
-# Posterior contrasts
-contrast_1_2 = trace.posterior['group_means'][:,:,0] - trace.posterior['group_means'][:,:,1]
+import pingouin as pg
+result = pg.ttest(group1, group2, correction=False, r=0.707)
+bf10 = float(result['BF10'].iloc[0])  # default output may be a formatted string
 ```
 
----
+BF10 is the ratio of the data's marginal likelihoods under H1 and H0. Posterior odds equal BF10 times prior odds. BF10=3 means threefold evidence for H1 relative to H0 under those models; it does not by itself mean H1 is three times as probable. Conventional labels (3–10 moderate, 10–30 strong, 30–100 very strong, >100 extreme) are reporting conventions. State both models, priors and sensitivity. The BF printed beside a Welch statistic is not an unequal-variance Bayesian model comparison.
 
-### Bayesian Correlation
+## Credible intervals and practical equivalence
 
-**Purpose**: Estimate correlation between two variables
+An equal-tailed 95% interval has 2.5% in each tail. A highest-density region favors high-density values and may be disconnected for multimodal posteriors; a single shortest interval need not contain every mode. Neither interval proves the model is correct.
 
-**Advantage**: Provides distribution of correlation values
-
-**Python implementation**:
 ```python
-import pymc as pm
-
-with pm.Model() as corr_model:
-    # Prior on correlation
-    rho = pm.Uniform('rho', lower=-1, upper=1)
-
-    # Convert to covariance matrix
-    cov_matrix = pm.math.stack([[1, rho],
-                                [rho, 1]])
-
-    # Likelihood (bivariate normal)
-    obs = pm.MvNormal('obs',
-                     mu=[0, 0],
-                     cov=cov_matrix,
-                     observed=np.column_stack([x, y]))
-
-    trace = pm.sample(2000, tune=1000, return_inferencedata=True)
-
-# Summarize correlation
-print(az.summary(trace, var_names=['rho']))
-
-# Probability that correlation is positive
-prob_positive = np.mean(trace.posterior['rho'].values > 0)
+posterior_samples = trace.posterior['diff']
+eti = posterior_samples.quantile([0.025, 0.975], dim=('chain', 'draw'))
+hdi = az.hdi(posterior_samples, prob=0.95, dim=['chain', 'draw'])
+# Define a negligible raw-unit difference BEFORE looking at the result.
+rope_lower, rope_upper = -0.1, 0.1
+in_rope = ((posterior_samples >= rope_lower) &
+           (posterior_samples <= rope_upper)).mean().item()
+print(f"Posterior probability inside the prespecified ROPE: {in_rope:.3f}")
 ```
 
----
+The ROPE must match the parameter's units: raw mean difference and standardized d cannot use the same threshold without justification. A posterior-mass decision rule and an HDI-inside-ROPE rule are distinct. Prespecify the rule and assess its consequences rather than presenting 95% as a universal decision threshold.
 
-### Bayesian Linear Regression
+## Hierarchical group comparisons / Bayesian ANOVA
 
-**Purpose**: Model relationship between predictors and outcome
+Use integer `group_idx` aligned with `y`, ranging from 0 to `n_groups-1`. The noncentered parameterization below gives partial pooling of group means. Prior scales remain illustrative; compare pooling assumptions and within-group residual distributions.
 
-**Advantages**:
-- Uncertainty in all parameters
-- Natural regularization (via priors)
-- Can incorporate prior knowledge
-- Credible intervals for predictions
-
-**Python implementation**:
-```python
-import pymc as pm
-
-with pm.Model() as regression_model:
-    # Priors for coefficients
-    alpha = pm.Normal('alpha', mu=0, sigma=10)  # Intercept
-    beta = pm.Normal('beta', mu=0, sigma=10, shape=n_predictors)
-    sigma = pm.HalfNormal('sigma', sigma=10)
-
-    # Expected value
-    mu = alpha + pm.math.dot(X, beta)
-
-    # Likelihood
-    y_obs = pm.Normal('y_obs', mu=mu, sigma=sigma, observed=y)
-
-    trace = pm.sample(2000, tune=1000, return_inferencedata=True)
-
-# Posterior predictive checks
-with regression_model:
-    ppc = pm.sample_posterior_predictive(trace)
-
-az.plot_ppc(ppc)
-
-# Predictions with uncertainty
-with regression_model:
-    pm.set_data({'X': X_new})
-    posterior_pred = pm.sample_posterior_predictive(trace)
-```
-
----
-
-## Hierarchical (Multilevel) Models
-
-**When to use**:
-- Nested/clustered data (students within schools)
-- Repeated measures
-- Meta-analysis
-- Varying effects across groups
-
-**Key concept**: Partial pooling
-- Complete pooling: Ignore groups (biased)
-- No pooling: Analyze groups separately (high variance)
-- Partial pooling: Borrow strength across groups (Bayesian)
-
-**Example: Varying intercepts**:
 ```python
 with pm.Model() as hierarchical_model:
-    # Hyperpriors
     mu_global = pm.Normal('mu_global', mu=0, sigma=10)
     sigma_between = pm.HalfNormal('sigma_between', sigma=5)
     sigma_within = pm.HalfNormal('sigma_within', sigma=5)
+    z_group = pm.Normal('z_group', mu=0, sigma=1, shape=n_groups)
+    group_means = pm.Deterministic('group_means', mu_global + sigma_between * z_group)
+    pm.Normal('y_obs', mu=group_means[group_idx], sigma=sigma_within, observed=y)
+    group_trace = pm.sample(2000, tune=1000, chains=4, cores=1,
+                            random_seed=42, nuts_sampler='pymc')
 
-    # Group-level intercepts
-    alpha = pm.Normal('alpha',
-                     mu=mu_global,
-                     sigma=sigma_between,
-                     shape=n_groups)
-
-    # Likelihood
-    y_obs = pm.Normal('y_obs',
-                     mu=alpha[group_idx],
-                     sigma=sigma_within,
-                     observed=y)
-
-    trace = pm.sample()
+contrast_1_2 = (group_trace.posterior['group_means'].isel(group_means_dim_0=0)
+                - group_trace.posterior['group_means'].isel(group_means_dim_0=1))
 ```
 
----
+The hierarchy models group intercepts only. Repeated measures may need subject effects, slopes or residual correlation; cluster identity is not optional. Contrasts are posterior estimates, not automatically Bayes factors or multiplicity-calibrated decisions.
 
-## Model Comparison
+## Correlation with uncertainty in location and scale
 
-### Methods
+Standardizing observed data does not make population means and variances known. Infer those nuisance parameters rather than fixing covariance diagonals to one. Here `xy` contains two columns in reasonable units; prior scales must be adapted to those units.
 
-#### 1. Bayes Factor
-- Directly compares model evidence
-- Sensitive to prior specification
-- Can be computationally intensive
-
-#### 2. Information Criteria
-
-**WAIC (Widely Applicable Information Criterion)**:
-- Bayesian analog of AIC
-- Lower is better
-- Accounts for effective number of parameters
-
-**LOO (Leave-One-Out Cross-Validation)**:
-- Estimates out-of-sample prediction error
-- Lower is better
-- More robust than WAIC
-
-**Python calculation**:
 ```python
-import arviz as az
-
-# Calculate WAIC and LOO
-waic = az.waic(trace)
-loo = az.loo(trace)
-
-print(f"WAIC: {waic.elpd_waic:.2f}")
-print(f"LOO: {loo.elpd_loo:.2f}")
-
-# Compare multiple models
-comparison = az.compare({
-    'model1': trace1,
-    'model2': trace2,
-    'model3': trace3
-})
-print(comparison)
+xy = np.column_stack([x, y])
+with pm.Model() as correlation_model:
+    mu = pm.Normal('mu', mu=0, sigma=10, shape=2)
+    chol, corr, sds = pm.LKJCholeskyCov(
+        'chol', n=2, eta=2, sd_dist=pm.HalfNormal.dist(sigma=10), compute_corr=True)
+    pm.Deterministic('rho', corr[0, 1])
+    pm.MvNormal('xy_obs', mu=mu, chol=chol, observed=xy)
+    correlation_trace = pm.sample(2000, tune=1000, chains=4, cores=1,
+                                  random_seed=42, nuts_sampler='pymc')
+print(az.summary(correlation_trace, var_names=['rho'], ci_prob=0.95))
 ```
 
----
+The bivariate normal likelihood is a substantive assumption; this is not a distribution-free rank correlation model. LKJ `eta=2` shrinks correlation toward zero.
 
-## Checking Bayesian Models
+## Regression, posterior prediction and restoration
 
-### 1. Convergence Diagnostics
+`X` is an n-by-p numeric array, `y` an aligned length-n array, and `X_new` has the same p features/coding. Fit any preprocessing on the training data and reuse it. `pm.Data` can change length, not rank; models using named observation coordinates also need updated coordinates via `pm.set_data(..., coords=...)`.
 
-**R-hat (Gelman-Rubin statistic)**:
-- Compares within-chain and between-chain variance
-- Values close to 1.0 indicate convergence
-- R-hat < 1.01: Good
-- R-hat > 1.05: Poor convergence
-
-**Effective Sample Size (ESS)**:
-- Number of independent samples
-- Higher is better
-- ESS > 400 per chain recommended
-
-**Trace plots**:
-- Should look like "fuzzy caterpillar"
-- No trends, no stuck chains
-
-**Python checking**:
 ```python
-# Automatic summary with diagnostics
-print(az.summary(trace, var_names=['parameter']))
+with pm.Model() as regression_model:
+    X_data = pm.Data('X', X)
+    alpha = pm.Normal('alpha', mu=0, sigma=10)
+    beta = pm.Normal('beta', mu=0, sigma=10, shape=X.shape[1])
+    sigma = pm.HalfNormal('sigma', sigma=10)
+    mu = alpha + pm.math.dot(X_data, beta)
+    pm.Normal('y_obs', mu=mu, sigma=sigma, observed=y, shape=mu.shape)
+    regression_trace = pm.sample(2000, tune=1000, chains=4, cores=1,
+                                 random_seed=42, nuts_sampler='pymc')
+    ppc = pm.sample_posterior_predictive(regression_trace, random_seed=43)
+    try:
+        pm.set_data({'X': X_new})
+        predictions = pm.sample_posterior_predictive(
+            regression_trace, predictions=True, random_seed=44)
+    finally:
+        pm.set_data({'X': X})
 
-# Visual diagnostics
-az.plot_trace(trace)
-az.plot_rank(trace)  # Rank plots
+az.plot_ppc_dist(ppc, var_names=['y_obs'], num_samples=100)
+# Noisy future observations are in a separate predictions group.
+predictive_interval = predictions.predictions['y_obs'].quantile(
+    [0.025, 0.975], dim=('chain', 'draw'))
 ```
 
----
+Observed-outcome predictions include residual noise. A posterior interval for the latent mean would be narrower and answers a different question. Do not compare changed-length predictions with the training outcomes as a posterior predictive check.
 
-### 2. Posterior Predictive Checks
+## Model comparison
 
-**Purpose**: Does model generate data similar to observed data?
+PSIS-LOO estimates predictive performance, not evidence for a point null. Compare models for the **same observed outcomes, rows and likelihood units**, with aligned pointwise log-likelihood coordinates. Ordinary observation-wise LOO is inappropriate when prediction targets new clusters or future dependent observations; use the appropriate grouped/temporal validation design.
 
-**Process**:
-1. Generate predictions from posterior
-2. Compare to actual data
-3. Look for systematic discrepancies
-
-**Python implementation**:
 ```python
-with model:
-    ppc = pm.sample_posterior_predictive(trace)
-
-# Visual check
-az.plot_ppc(ppc, num_pp_samples=100)
-
-# Quantitative checks
-obs_mean = np.mean(observed_data)
-pred_means = [np.mean(sample) for sample in ppc.posterior_predictive['y_obs']]
-p_value = np.mean(pred_means >= obs_mean)  # Bayesian p-value
+with regression_model:  # training inputs must have been restored
+    pm.compute_log_likelihood(regression_trace, var_names=['y_obs'])
+loo = az.loo(regression_trace, var_name='y_obs', pointwise=True)
+print(f"Expected log predictive density: {loo.elpd:.2f}")  # higher is better
+print(loo.pareto_k, loo.good_k, loo.warning)
 ```
 
----
+Investigate Pareto-k values above `good_k`, including refitting troublesome observations or suitable cross-validation. Differences small relative to their uncertainty do not identify a unique best model. For multiple prepared traces, `az.compare({'model1': trace1, 'model2': trace2}, var_name='y_obs')` reports rankings and stacking weights; stacking weights are not posterior model probabilities. ArviZ 1 removed `az.waic`; do not use an old WAIC fallback snippet. Default ArviZ intervals are configuration-dependent (89% in the reviewed defaults), so request `ci_prob=0.95` when needed.
 
-## Reporting Bayesian Results
+## Diagnostics and posterior predictive checks
 
-### Example T-Test Report
+- Use multiple independently initialized chains (usually at least four). Inspect finite rank-normalized R-hat, bulk/tail ESS and MCSE for every reported estimand; R-hat near 1, commonly below 1.01, is a screening target, not proof of convergence or identifiability.
+- Tail precision requires enough effective draws. An ESS cutoff does not establish precision for an extreme posterior probability. NaN diagnostics are unavailable/failed, not passed.
+- Inspect divergences, energy/BFMI and tree-depth warnings when using HMC; trace/rank plots can reveal slow exploration. Solve model geometry/identification problems rather than merely increasing draws.
+- Compare posterior replicated data with features relevant to the question: spread, tails, zeros, groups and dependence, not only the overall mean.
 
-> "A Bayesian independent samples t-test was conducted to compare groups A and B. Weakly informative priors were used: Normal(0, 1) for the mean difference and Half-Cauchy(0, 1) for the pooled standard deviation. The posterior distribution of the mean difference had a mean of 5.2 (95% CI [2.3, 8.1]), indicating that Group A scored higher than Group B. The Bayes Factor BF₁₀ = 23.5 provided strong evidence for a difference between groups, and there was a 99.7% probability that Group A's mean exceeded Group B's mean."
+```python
+print(az.summary(regression_trace, kind='diagnostics', round_to='none'))
+az.plot_trace(regression_trace)
+az.plot_rank(regression_trace)
+az.plot_forest(regression_trace, var_names=['beta'], ci_probs=[0.5, 0.95])
+pp = ppc.posterior_predictive['y_obs']
+# Mean over observation dimensions, retain chain/draw before aggregating.
+obs_dims = [dim for dim in pp.dims if dim not in ('chain', 'draw')]
+pred_means = pp.mean(dim=obs_dims)
+posterior_predictive_tail = (pred_means >= np.mean(y)).mean().item()
+```
 
-### Example Regression Report
+This posterior predictive tail area reuses the observed data through the posterior and is not a uniformly calibrated frequentist p-value. Visual distributional checks also do not certify predictive calibration.
 
-> "A Bayesian linear regression was fitted with weakly informative priors (Normal(0, 10) for coefficients, Half-Cauchy(0, 5) for residual SD). The model explained substantial variance (R² = 0.47, 95% CI [0.38, 0.55]). Study hours (β = 0.52, 95% CI [0.38, 0.66]) and prior GPA (β = 0.31, 95% CI [0.17, 0.45]) were credible predictors (95% CIs excluded zero). Posterior predictive checks showed good model fit. Convergence diagnostics were satisfactory (all R-hat < 1.01, ESS > 1000)."
+## Reporting
 
----
+Report likelihood, parameterization, prior units/hyperparameters, missingness and dependence handling, chains/tune/draws, sampler/backend and package versions. State the interval type/probability, estimand units, posterior diagnostic results, sensitivity checks and predictive discrepancies. Report a Bayes factor only if actually calculated under explicitly described models; posterior sample fractions do not supply it. Report Bayesian intervals as credible intervals (CrI), not frequentist confidence intervals (CI).
 
-## Advantages and Limitations
+For other front ends, [Bambi](https://bambinos.github.io/bambi/) provides formula-based modeling and [CmdStanPy](https://mc-stan.org/cmdstanpy/) interfaces to Stan (requires a separate CmdStan toolchain). These optional tools are not required or runtime-validated by this workflow. Do not describe PyStan as discontinued; [PyStan 3](https://pystan.readthedocs.io/en/latest/) is a separate supported interface with its own platform requirements.
 
-### Advantages
+## Primary API sources
 
-1. **Intuitive interpretation**: Direct probability statements about parameters
-2. **Incorporates prior knowledge**: Uses all available information
-3. **Flexible**: Handles complex models easily
-4. **No p-hacking**: Can look at data as it arrives
-5. **Quantifies uncertainty**: Full posterior distribution
-6. **Small samples**: Works with any sample size
-
-### Limitations
-
-1. **Computational**: Requires MCMC sampling (can be slow)
-2. **Prior specification**: Requires thought and justification
-3. **Complexity**: Steeper learning curve
-4. **Software**: Fewer tools than frequentist methods
-5. **Communication**: May need to educate reviewers/readers
-
----
-
-## Key Python Packages
-
-- **PyMC**: Full Bayesian modeling framework
-- **ArviZ**: Visualization and diagnostics
-- **Bambi**: High-level interface for regression models
-- **PyStan**: Python interface to Stan
-- **TensorFlow Probability**: Bayesian inference with TensorFlow
-
----
-
-## When to Use Bayesian Methods
-
-**Use Bayesian when**:
-- You have prior information to incorporate
-- You want direct probability statements
-- Sample size is small
-- Model is complex (hierarchical, missing data, etc.)
-- You want to update analysis as data arrives
-
-**Frequentist may be sufficient when**:
-- Standard analysis with large sample
-- No prior information
-- Computational resources limited
-- Reviewers unfamiliar with Bayesian methods
+- [PyMC sample](https://www.pymc.io/projects/docs/en/stable/api/generated/pymc.sample.html), [data](https://www.pymc.io/projects/docs/en/stable/api/generated/pymc.Data.html), [posterior prediction](https://www.pymc.io/projects/docs/en/stable/api/generated/pymc.sample_posterior_predictive.html), [LKJ covariance](https://www.pymc.io/projects/docs/en/stable/api/distributions/generated/pymc.LKJCholeskyCov.html).
+- [ArviZ summary](https://python.arviz.org/projects/stats/en/stable/api/generated/arviz_stats.summary.html), [HDI](https://python.arviz.org/projects/stats/en/stable/api/generated/arviz_stats.hdi.html), [LOO](https://python.arviz.org/projects/stats/en/stable/api/generated/arviz_stats.loo.html), [comparison](https://python.arviz.org/projects/stats/en/stable/api/generated/arviz_stats.compare.html), [PPC plotting](https://python.arviz.org/projects/plots/en/stable/api/generated/arviz_plots.plot_ppc_dist.html).
+- [Pingouin Bayes factor](https://pingouin-stats.org/generated/pingouin.bayesfactor_ttest.html).

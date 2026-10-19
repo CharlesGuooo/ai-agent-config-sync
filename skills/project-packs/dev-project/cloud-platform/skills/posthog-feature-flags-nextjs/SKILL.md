@@ -1,5 +1,5 @@
 ---
-name: feature-flags-nextjs
+name: posthog-feature-flags-nextjs
 description: PostHog feature flags for Next.js applications
 metadata:
   author: PostHog

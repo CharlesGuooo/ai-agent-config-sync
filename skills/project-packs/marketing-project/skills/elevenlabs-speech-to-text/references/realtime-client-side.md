@@ -44,6 +44,7 @@ function TranscriptionComponent() {
   const scribe = useScribe({
     modelId: "scribe_v2_realtime",
     commitStrategy: CommitStrategy.VAD, // Auto-commit on silence for mic input
+    includeLanguageDetection: true,
     onPartialTranscript: (data) => {
       // Show live feedback as user speaks
       console.log("Partial:", data.text);
@@ -118,6 +119,7 @@ async function startTranscription() {
     token,
     modelId: "scribe_v2_realtime",
     includeTimestamps: true,
+    includeLanguageDetection: true,
     keyterms: ["ElevenLabs", "Scribe"],
     noVerbatim: true,
     microphone: {
@@ -157,7 +159,24 @@ async function startTranscription() {
 }
 ```
 
-`keyterms` biases realtime recognition toward important terms. `noVerbatim` removes filler words, false starts, and disfluencies from committed transcripts.
+`keyterms` biases realtime recognition toward important terms. `noVerbatim` removes filler words,
+false starts, and disfluencies from committed transcripts. `includeLanguageDetection` returns the
+detected language code in a delayed final transcript event.
+
+Both `Scribe.connect` and `useScribe` accept `secondaryLanguages` for expected additional
+languages, `entityDetection` for entity events, and `filterBackgroundAudio` to reduce false
+activation from background speech and ambient noise. Do not combine `filterBackgroundAudio` with
+`includeTimestamps`. Enterprise zero-retention sessions can set `enableLogging: false`.
+
+In microphone mode, both also accept `previousText`: text that precedes the audio, such as existing
+document content. It is sent with the first audio chunk as context for casing, punctuation, and
+sentence continuation.
+
+Set `transcriptEdit` on `Scribe.connect` to apply a natural-language instruction of up to 2,000
+characters to each committed segment. Listen for `RealtimeEvents.EDITED_TRANSCRIPT`; each event
+contains the original `text` and the `edited_text`. Transcript editing cannot be combined with
+`entityDetection` and adds a 30% premium, billed for at least 10 seconds of audio per committed
+segment.
 
 ## Manual Audio Chunking
 
@@ -194,3 +213,5 @@ scribe.commit();
 - Never expose your API key to the client
 - Always generate single-use tokens on your backend
 - Use authentication middleware to protect token endpoints
+- For enterprise zero-retention sessions, set `enableLogging: false` in `Scribe.connect` or
+  `useScribe`; this disables history features for the session

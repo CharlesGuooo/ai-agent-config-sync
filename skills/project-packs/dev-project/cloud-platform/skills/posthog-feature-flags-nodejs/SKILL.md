@@ -1,5 +1,5 @@
 ---
-name: feature-flags-nodejs
+name: posthog-feature-flags-nodejs
 description: PostHog feature flags for Node.js applications
 metadata:
   author: PostHog

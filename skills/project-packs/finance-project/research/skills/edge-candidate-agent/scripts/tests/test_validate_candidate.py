@@ -34,6 +34,7 @@ def build_valid_strategy(strategy_id: str) -> dict:
             "risk_per_trade": 0.01,
             "max_positions": 5,
             "max_sector_exposure": 0.30,
+            "sector_group_by": "sector",
         },
         "cost_model": {
             "commission_per_share": 0.0,
@@ -53,7 +54,7 @@ def build_valid_strategy(strategy_id: str) -> dict:
 def write_strategy(path: Path, strategy_id: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = build_valid_strategy(strategy_id)
-    path.write_text(yaml.safe_dump(payload, sort_keys=False, allow_unicode=False))
+    path.write_text(yaml.safe_dump(payload, sort_keys=False, allow_unicode=False), encoding="utf-8")
 
 
 def test_validate_with_pipeline_schema_requires_src_dir(tmp_path: Path) -> None:

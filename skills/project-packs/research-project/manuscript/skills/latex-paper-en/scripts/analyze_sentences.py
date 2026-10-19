@@ -15,15 +15,32 @@ except ImportError:
     from parsers import get_parser, resolve_section_keys
 
 try:
-    from tex_loader import read_text_robust
+    from tex_loader import assemble, read_text_robust
 except ImportError:
     try:
-        from typ_loader import read_text_robust
+        from typ_loader import assemble, read_text_robust
     except ImportError:
+        assemble = None
         read_text_robust = None
 
 
 CLAUSE_MARKERS = {"which", "that", "because", "although", "while", "whereas", "if", "when"}
+
+GOAL_CHOICES = ("grammar", "clarity", "concision", "coherence")
+STRENGTH_CHOICES = ("minimal", "moderate", "restructure")
+
+# Goals this module has no rules for. Routed explicitly instead of returning an
+# empty result that reads like "nothing to fix".
+UNSUPPORTED_GOALS = {"coherence": "logic"}
+
+
+def _contract_lines(cp: str, changed: str, protected: str, risk_flags: str) -> list[str]:
+    return [
+        f"{cp} Changed:       {changed}",
+        f"{cp} Protected:     {protected}",
+        f"{cp} Meaning-Check: NEEDS-LLM",
+        f"{cp} Risk-Flags:    {risk_flags}",
+    ]
 
 
 def _count_words(text: str) -> int:
@@ -78,15 +95,50 @@ def _iter_paragraphs(parser, lines: list[str], start: int, end: int) -> list[tup
     return paragraphs
 
 
-def analyze(file_path: Path, section: str | None, max_words: int, max_clauses: int) -> list[str]:
+def analyze(
+    file_path: Path,
+    section: str | None,
+    max_words: int,
+    max_clauses: int,
+    goal: str = "grammar",
+    strength: str = "minimal",
+) -> list[str]:
     parser = get_parser(file_path)
-    if read_text_robust is not None:
+    doc = None
+    warning_lines: list[str] = []
+    if assemble is not None:
+        doc = assemble(file_path)
+        content, lines = doc.content, doc.lines
+    elif read_text_robust is not None:
         content, _warning = read_text_robust(file_path)
+        lines = content.split("\n")
     else:
         content = file_path.read_text(encoding="utf-8", errors="ignore")
-    lines = content.split("\n")
+        lines = content.split("\n")
     sections = parser.split_sections(content)
     cp = parser.get_comment_prefix()
+    if doc is not None:
+        warning_lines = doc.warning_lines(cp)
+
+    header = [f"{cp} CONTRACT [Script]: goal={goal} strength={strength}"]
+
+    if goal in UNSUPPORTED_GOALS:
+        return (
+            warning_lines
+            + header
+            + [
+                f"{cp} LONG SENTENCE [Severity: Info] [Priority: P3] [Script]: "
+                f"This module has no {goal} rules; run the "
+                f"`{UNSUPPORTED_GOALS[goal]}` module instead."
+            ]
+        )
+
+    # Splitting a sentence is a structural edit, which a `minimal` envelope does
+    # not authorize. The proposal is still shown — suppressing it would hide the
+    # finding — but it is labelled so nobody applies it outside its envelope.
+    envelope_note = (
+        " Applying the split needs --strength moderate or higher." if strength == "minimal" else ""
+    )
 
     if section:
         matched, available = resolve_section_keys(section, sections)
@@ -112,20 +164,27 @@ def analyze(file_path: Path, section: str | None, max_words: int, max_clauses: i
                     continue
 
                 simplified = _simplify_sentence(sent)
+                location = doc.lineref(line_no) if doc is not None else f"Line {line_no}"
                 output.extend(
                     [
-                        f"{cp} LONG SENTENCE (Line {line_no}, {words} words, {clauses} clauses) "
-                        "[Severity: Minor] [Priority: P2]",
+                        f"{cp} LONG SENTENCE ({location}, {words} words, {clauses} clauses) "
+                        "[Severity: Minor] [Priority: P2] [Script]",
                         f"{cp} Original: {sent}",
                         f"{cp} Suggested: {simplified}",
                         f"{cp} Rationale: Sentence exceeds complexity threshold, "
-                        "split for readability.",
+                        f"split for readability.{envelope_note}",
+                        *_contract_lines(
+                            cp,
+                            "none (split proposal only; source not rewritten)",
+                            "none",
+                            "not-assessed",
+                        ),
                         "",
                     ]
                 )
     if not output:
         output.append(f"{cp} LONG SENTENCE: No sentences exceeded configured thresholds.")
-    return output
+    return warning_lines + header + output
 
 
 def main() -> int:
@@ -134,13 +193,36 @@ def main() -> int:
     cli.add_argument("--section", help="Section name to analyze")
     cli.add_argument("--max-words", type=int, default=50, help="Max words per sentence")
     cli.add_argument("--max-clauses", type=int, default=3, help="Max clauses per sentence")
+    cli.add_argument(
+        "--goal",
+        choices=GOAL_CHOICES,
+        default="grammar",
+        help="Edit goal: what this pass is for (default: grammar)",
+    )
+    cli.add_argument(
+        "--strength",
+        choices=STRENGTH_CHOICES,
+        default="minimal",
+        help="Edit strength: how far the edit may go (default: minimal)",
+    )
     args = cli.parse_args()
 
     if not args.file.exists():
         print(f"[ERROR] File not found: {args.file}", file=sys.stderr)
         return 1
 
-    print("\n".join(analyze(args.file, args.section, args.max_words, args.max_clauses)))
+    print(
+        "\n".join(
+            analyze(
+                args.file,
+                args.section,
+                args.max_words,
+                args.max_clauses,
+                args.goal,
+                args.strength,
+            )
+        )
+    )
     return 0
 
 

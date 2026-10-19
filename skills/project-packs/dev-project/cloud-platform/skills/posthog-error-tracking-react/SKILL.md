@@ -1,5 +1,5 @@
 ---
-name: error-tracking-react
+name: posthog-error-tracking-react
 description: PostHog error tracking for React
 metadata:
   author: PostHog

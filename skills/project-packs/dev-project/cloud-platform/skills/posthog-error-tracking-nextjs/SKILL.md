@@ -1,5 +1,5 @@
 ---
-name: error-tracking-nextjs
+name: posthog-error-tracking-nextjs
 description: PostHog error tracking for Next.js
 metadata:
   author: PostHog

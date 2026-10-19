@@ -24,7 +24,7 @@ from __future__ import annotations
 
 import json
 import shutil
-from datetime import datetime, timezone
+from datetime import date, datetime, time, timezone
 from typing import Any, Dict, List, Optional
 
 from . import log, subproc
@@ -61,13 +61,21 @@ def _today() -> datetime:
     return datetime.now(timezone.utc)
 
 
-def _build_search_query(topic: str) -> str:
-    """Quote the topic so arXiv treats it as a phrase across all fields.
+def _build_search_query(topic: str, *, quoted: bool = True) -> str:
+    """Build the arXiv search-query string for ``topic``.
 
-    Inner double-quotes are stripped (arXiv has no phrase-escaping); the outer
-    quotes plus ``all:`` give a phrase-scoped relevance search.
+    Quoted (default): phrase-scoped exact match across all fields. Precise
+    for topics that genuinely appear as a phrase in a title/abstract, but a
+    natural-language multi-word topic ("AI video generation advances") almost
+    never appears verbatim, so it returns zero results (#908). Unquoted uses
+    an AND-conjoined clause for every individual term as a fallback retry.
+
+    Inner double-quotes are stripped (arXiv has no phrase-escaping) either way.
     """
-    return f'all:"{_clean_phrase(topic)}"'
+    phrase = _clean_phrase(topic)
+    if quoted:
+        return f'all:"{phrase}"'
+    return " AND ".join(f'all:"{term}"' for term in phrase.split())
 
 
 def _clean_phrase(topic: str) -> str:
@@ -75,12 +83,12 @@ def _clean_phrase(topic: str) -> str:
     return " ".join(topic.replace('"', " ").split())
 
 
-def _build_search_args(topic: str, limit: int) -> List[str]:
+def _build_search_args(topic: str, limit: int, *, quoted: bool = True) -> List[str]:
     return [
         CLI_BIN,
         "query",
         "--search-query",
-        _build_search_query(topic),
+        _build_search_query(topic, quoted=quoted),
         "--sort-by",
         "relevance",
         "--max-results",
@@ -118,12 +126,17 @@ def _run_cli(cmd: List[str], timeout: int) -> Dict[str, Any]:
 
     stdout = result.stdout or ""
     if not stdout.strip():
-        return {"results": []}
+        _log("CLI returned empty stdout")
+        return {"results": [], "error": "empty stdout"}
     try:
         data = json.loads(stdout)
     except json.JSONDecodeError as exc:
         _log(f"JSON decode failed: {exc}")
         return {"results": [], "error": f"json decode: {exc}"}
+
+    if not _is_entry_envelope(data):
+        _log("CLI returned an unrecognized JSON response")
+        return {"results": [], "error": "unrecognized JSON response"}
 
     return {"results": _extract_entries(data)}
 
@@ -150,6 +163,20 @@ def _extract_entries(data: Any) -> List[Dict[str, Any]]:
     return []
 
 
+def _is_entry_envelope(data: Any) -> bool:
+    """Return whether ``data`` has one of the supported entry-list shapes."""
+    if isinstance(data, list):
+        return True
+    if not isinstance(data, dict):
+        return False
+    results = data.get("results")
+    return (
+        isinstance(results, list)
+        or (isinstance(results, dict) and isinstance(results.get("entries"), list))
+        or isinstance(data.get("entries"), list)
+    )
+
+
 def search_arxiv(
     topic: str,
     from_date: str,
@@ -172,6 +199,13 @@ def search_arxiv(
     _log(f"query '{topic}' (relevance, max={limit})")
     response = _run_cli(cmd, timeout=SEARCH_TIMEOUT)
     _log(f"found {len(response.get('results') or [])} entries")
+    # Retry a clean zero-result phrase match with individually quoted AND terms.
+    # CLI failures, malformed responses, and missing binaries skip the retry.
+    if not response.get("error") and not response.get("results"):
+        retry_cmd = _build_search_args(topic, limit, quoted=False)
+        _log(f"quoted phrase matched nothing; retrying unquoted for '{topic}'")
+        response = _run_cli(retry_cmd, timeout=SEARCH_TIMEOUT)
+        _log(f"unquoted retry found {len(response.get('results') or [])} entries")
     return response
 
 
@@ -222,18 +256,25 @@ def parse_arxiv_response(
     response: Dict[str, Any],
     query: str = "",
     today: Optional[datetime] = None,
+    to_date: Optional[str] = None,
 ) -> List[Dict[str, Any]]:
     """Parse an arXiv envelope into normalized item dicts.
 
     Applies the recency cutoff (drops entries older than ``RECENCY_DAYS`` and
     entries with an unparseable date) and computes a token-overlap relevance
     hint. Returns dicts ready for ``normalize._normalize_arxiv``.
+
+    ``to_date`` (the report window's inclusive end, e.g. from ``--as-of``)
+    anchors the cutoff at that day and drops papers published after it.
     """
     raw = response.get("results") if isinstance(response, dict) else None
     if not isinstance(raw, list):
         return []
 
     now = today or _today()
+    end_date = date.fromisoformat(to_date) if to_date else None
+    if end_date is not None:
+        now = min(now, datetime.combine(end_date, time.max, tzinfo=timezone.utc))
     items: List[Dict[str, Any]] = []
     for i, entry in enumerate(raw):
         if not isinstance(entry, dict):
@@ -244,6 +285,8 @@ def parse_arxiv_response(
         published = _parse_published(entry.get("published") or entry.get("updated"))
         if published is None:
             # No usable date -> cannot honor the recency contract; drop.
+            continue
+        if end_date is not None and published.date() > end_date:
             continue
         age_days = (now - published).days
         # Allow a one-day grace on the future side: a paper announced later in

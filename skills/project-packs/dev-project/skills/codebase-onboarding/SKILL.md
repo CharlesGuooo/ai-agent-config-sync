@@ -1,6 +1,6 @@
 ---
 name: "codebase-onboarding"
-description: "Produce onboarding docs and a guided tour of an unfamiliar codebase. Use when the user is new to a repo, wants a codebase walkthrough, an architecture overview, or 'where do I start' orientation."
+description: "Analyze a codebase and generate onboarding documentation for engineers, tech leads, and contractors. Fast fact-gathering and repeatable onboarding outputs. Use when onboarding a new engineer, writing architecture-overview docs for a new project, or producing tech-lead briefings for unfamiliar repos."
 ---
 
 # Codebase Onboarding

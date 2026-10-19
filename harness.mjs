@@ -30,7 +30,7 @@ const COMMANDS = {
   install: { flags: { agents: true, packs: true, 'dry-run': false, verbose: false }, words: [0] },
   update: { flags: { 'dry-run': false, verbose: false }, words: [0] },
   uninstall: { flags: { agents: true, 'dry-run': false, verbose: false }, words: [0] },
-  resolve: { flags: { 'dry-run': false, verbose: false }, words: [0, 2] },
+  resolve: { flags: { 'dry-run': false, verbose: false }, words: [0, 1, 2] },
   doctor: { flags: { deep: false }, words: [0] },
   check: { flags: {}, words: [0] },
 };
@@ -135,18 +135,19 @@ try {
       process.exit(printReport(runInstall(ctx, { agents: state.agents, packs: state.packs, dryRun })));
     }
     case 'resolve': {
+      const [how, id] = words;
+      if (how && !['repo', 'keep'].includes(how)) usageError(`resolve: say repo or keep, not ${how}`);
+      if (how && !id) usageError(`resolve ${how} needs an id or all`);
       liveGuard();
       const state = installedState();
       const run = (opts) => runInstall(ctx, { agents: state.agents, packs: state.packs, ...opts });
-      if (!words.length) {
+      if (!how) {
         const r = run({ dryRun: true });
         if (!r.conflicts.length) console.log('no conflicts');
         for (const c of r.conflicts) console.log(`${c.id}\n    ${c.msg}`);
         for (const line of kept(state)) console.log(line);
         process.exit(0);
       }
-      const [how, id] = words;
-      if (!['repo', 'keep'].includes(how)) usageError(`resolve: say repo or keep, not ${how}`);
       // A mistyped id would settle nothing and still look like a run that worked.
       if (id !== 'all' && !Object.hasOwn(state.entries, id) && !run({ dryRun: true }).conflicts.some((c) => c.id === id)) {
         die(`no such conflict or managed item: ${id}`);

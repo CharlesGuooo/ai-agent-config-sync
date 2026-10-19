@@ -74,6 +74,9 @@ test('resolve with nothing installed says so and does nothing', () => {
     assert.equal(r.status, 2, r.stdout + r.stderr);
     assert.match(r.stderr, /nothing installed yet/);
   }
+  const noId = cli(['resolve', 'repo'], home);
+  assert.equal(noId.status, 2, noId.stdout + noId.stderr);
+  assert.match(noId.stderr, /^resolve repo needs an id or all$/m);
   assert.ok(!existsSync(join(home, '.harness-local')));
 });
 

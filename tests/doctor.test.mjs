@@ -99,11 +99,14 @@ test('opencodeNotLoaded reads the JSON list after any log lines', () => {
   assert.equal(opencodeNotLoaded('', names), null);
 });
 
-test('codexNotLoaded counts only the skills section, not our AGENTS.md text', () => {
-  const out = [
-    '# Codex Global Instructions',
-    '| `alpha` | Alpha tagline |',
-    '- alpha: named in our instructions only',
+// What `codex debug prompt-input` prints: the prompt as a JSON list of messages.
+const codexOut = (...texts) => JSON.stringify(texts.map((t) => ({ type: 'message', role: 'developer', content: [{ type: 'input_text', text: t }] })), null, 2);
+
+test('codexNotLoaded reads the JSON prompt and counts only its skills section', () => {
+  const out = JSON.stringify([{ type: 'message', role: 'developer', content: [{ type: 'input_text', text: '<skills_instructions>\n### Available skills\n- beta: x\n</skills_instructions>' }] }], null, 2);
+  assert.deepEqual(codexNotLoaded(out, ['beta', 'gamma']), ['gamma']);
+  const agents = ['# Codex Global Instructions', '| `alpha` | Alpha tagline |', '- alpha: named in our instructions only'].join('\n');
+  const skills = [
     '<skills_instructions>',
     '## Skills',
     '### Available skills',
@@ -113,8 +116,21 @@ test('codexNotLoaded counts only the skills section, not our AGENTS.md text', ()
     '- Discovery: the list above is what this session has',
     '</skills_instructions>',
   ].join('\n');
-  assert.deepEqual(codexNotLoaded(out, ['alpha', 'beta', 'a.b']), ['alpha', 'a.b']);
-  assert.deepEqual(codexNotLoaded('no skills section here\n- beta: x\n', ['beta']), ['beta']);
+  assert.deepEqual(codexNotLoaded(codexOut(agents, skills), ['alpha', 'beta', 'a.b']), ['alpha', 'a.b']);
+  assert.deepEqual(codexNotLoaded(codexOut('no skills section here\n- beta: x'), ['beta']), ['beta']);
+  assert.equal(codexNotLoaded('<skills_instructions>\n- beta: x\n</skills_instructions>', ['beta']), null);
+  assert.equal(codexNotLoaded('{"not": "a list"}', ['beta']), null);
+  assert.equal(codexNotLoaded('', ['beta']), null);
+});
+
+test('repoProblems tells a stale HARNESS.md from a generator that fails for another reason', () => {
+  const fixture = fixtureRepo();
+  const ctx = makeContext({ repo: fixture, home: tempDir('harness-dr-home-'), local: tempDir('harness-dr-local-') });
+  const gen = (stderr) => put(fixture, 'scripts/gen-harness.mjs', `console.error(${JSON.stringify(stderr)});\nprocess.exit(1);\n`);
+  gen('OUT OF DATE: HARNESS.md — run: node scripts/gen-harness.mjs');
+  assert.deepEqual(repoProblems(ctx), ['HARNESS.md is out of date — run: node scripts/gen-harness.mjs']);
+  gen('\nHARNESS.md has no PACKS markers.\nsecond line');
+  assert.deepEqual(repoProblems(ctx), ['scripts/gen-harness.mjs --check failed: HARNESS.md has no PACKS markers.']);
 });
 
 test('missingLspPlugins reads installed_plugins.json and leaves out the ones kept on this machine', () => {

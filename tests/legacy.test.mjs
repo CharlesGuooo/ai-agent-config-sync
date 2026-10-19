@@ -174,13 +174,13 @@ test('cursor: mcp.json keeps its CRLF line endings when edited', () => {
 test('opencode: removes what v1 put in ~/.opencode and the old command copies', () => {
   const { home, ctx } = setup();
   put(home, '.opencode/AGENTS.md', V1);
-  put(home, '.opencode/opencode.json', JSON.stringify({ $schema: 's', lsp: true, mcp: {} }));
+  put(home, '.opencode/opencode.json', JSON.stringify({ $schema: 's', lsp: true, mcp: { memory: {} } }));
   put(home, '.opencode/skills/catalog.json', JSON.stringify({ description: V1_CATALOG, skills: { alpha: {} } }));
   put(home, '.opencode/skills/alpha/SKILL.md', readFileSync(join(ctx.repo, 'skills/global/alpha/SKILL.md'), 'utf8'));
   put(home, '.opencode/command/opsx-x.md', 'opsx command\n');
   put(home, '.opencode/package.json', '{}');
   put(home, '.config/opencode/command/opsx-x.md', 'opsx command\r\n');
-  cleanAgent(ctx, 'opencode', [], newRun());
+  cleanAgent(ctx, 'opencode', ['memory'], newRun());
   for (const p of ['.opencode/AGENTS.md', '.opencode/opencode.json', '.opencode/skills', '.opencode/command', '.config/opencode/command']) assert.ok(!existsSync(join(home, p)), p);
   assert.ok(existsSync(join(home, '.opencode', 'package.json')));
 });
@@ -232,13 +232,13 @@ test('opencode skills: the directory itself goes once it is empty', () => {
   assert.ok(!existsSync(join(home, '.opencode', 'skills')));
 });
 
-test('opencode skills: an unreadable catalog.json is a warning and nothing is removed', () => {
+test('opencode skills: an unreadable catalog.json is skipped silently and nothing is removed', () => {
   const { home, ctx } = setup();
   v1Skills(home, ctx);
   put(home, '.opencode/skills/catalog.json', '{ not json');
   const run = newRun();
   cleanAgent(ctx, 'opencode', [], run);
-  assert.equal(run.report.warnings.length, 1);
+  assert.deepEqual([run.report.warnings, run.report.changes], [[], []]);
   assert.ok(existsSync(join(home, '.opencode', 'skills', 'alpha', 'SKILL.md')));
   assert.ok(existsSync(join(home, '.opencode', 'skills', 'skill-rules.json')));
 });
@@ -283,6 +283,21 @@ test('opencode: v1-looking files that hold anything of the users are kept', () =
   assert.ok(existsSync(join(home, '.config', 'opencode', 'command', 'opsx-x.md')));
 });
 
+test('opencode: an opencode.json is removed only when it is exactly what v1 wrote', () => {
+  const { home, ctx } = setup();
+  const file = join(home, '.opencode', 'opencode.json');
+  for (const cfg of [{ $schema: 's', lsp: { rust: { disabled: true } } }, { lsp: false, mcp: { memory: {} } }, { lsp: true }, { lsp: true, mcp: {} }]) {
+    put(home, '.opencode/opencode.json', JSON.stringify(cfg));
+    const run = newRun();
+    cleanAgent(ctx, 'opencode', ['memory'], run);
+    assert.ok(existsSync(file), JSON.stringify(cfg));
+    assert.equal(run.report.changes.length, 0);
+  }
+  put(home, '.opencode/opencode.json', JSON.stringify({ $schema: 's', mcp: { memory: {} } }));
+  cleanAgent(ctx, 'opencode', ['memory'], newRun());
+  assert.ok(!existsSync(file));
+});
+
 test('opencode: a command file that is the repos is removed, one that was edited stays', () => {
   const { home, ctx } = setup();
   put(home, '.opencode/command/opsx-x.md', 'opsx command\n');
@@ -321,7 +336,18 @@ test('home: folders with an extra file are kept, and a file in place of a folder
   assert.equal(run2.report.changes.length + run2.report.warnings.length, 0);
 });
 
-test('home: a link at a v1 path is a warning and its target stays', () => {
+test('home: a link that leads to something else is left alone silently', () => {
+  const { home, ctx } = setup();
+  const target = tempDir();
+  put(target, 'mine.txt', 'x');
+  makeDirLink(target, join(home, '.agent-hooks'));
+  makeDirLink(target, join(home, 'MCP-Templates'));
+  const run = newRun();
+  cleanHome(ctx, run);
+  assert.deepEqual([run.report.changes, run.report.warnings], [[], []]);
+});
+
+test('home: a link at a v1 path that leads to v1 content is a warning and its target stays', () => {
   const { repo, home, ctx } = setup();
   const target = tempDir();
   put(target, 'guard.mjs', 'x');
@@ -334,7 +360,7 @@ test('home: a link at a v1 path is a warning and its target stays', () => {
   assert.ok(existsSync(repo));
 });
 
-test('a file that is not UTF-8 is skipped with a warning naming it, never an abort', () => {
+test('a file that is not UTF-8 is skipped silently, never an abort', () => {
   const { home, ctx } = setup();
   const file = join(home, 'AGENTS.md');
   put(home, 'AGENTS.md', '');
@@ -346,9 +372,7 @@ test('a file that is not UTF-8 is skipped with a warning naming it, never an abo
   cleanHome(ctx, run);
   cleanAgent(ctx, 'claude', [], run);
   assert.ok(existsSync(file));
-  assert.equal(run.report.warnings.length, 2);
-  assert.ok(run.report.warnings[0].includes('AGENTS.md'));
-  assert.ok(run.report.warnings.every((w) => !w.includes('secret-content')));
+  assert.deepEqual([run.report.warnings, run.report.changes], [[], []]);
 });
 
 test('claude: a hook the user added to one of v1s groups survives, and odd shapes never crash', () => {
@@ -417,7 +441,7 @@ function v1Machine(home, ctx) {
   put(home, '.cursor/global-rules.md', V1);
   put(home, '.cursor/mcp.json', JSON.stringify({ mcpServers: { remote: { enabled: false } } }));
   put(home, '.opencode/AGENTS.md', V1);
-  put(home, '.opencode/opencode.json', JSON.stringify({ lsp: true, mcp: {} }));
+  put(home, '.opencode/opencode.json', JSON.stringify({ lsp: true, mcp: { memory: {} } }));
   put(home, '.opencode/command/opsx-x.md', 'opsx command\n');
   put(home, '.config/opencode/command/opsx-x.md', 'opsx command\n');
   v1Skills(home, ctx);

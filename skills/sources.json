@@ -1,0 +1,1654 @@
+{
+  "global/dispatching-parallel-agents": {
+    "repo": "obra/superpowers",
+    "path": "skills/dispatching-parallel-agents",
+    "commit": "6dbbbda3baeff8407f3dddb0cc9e8a9495a273bc",
+    "date": "2026-07-23",
+    "license": "MIT"
+  },
+  "global/executing-plans": {
+    "repo": "obra/superpowers",
+    "path": "skills/executing-plans",
+    "commit": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
+    "date": "2026-10-09",
+    "license": "MIT"
+  },
+  "global/finishing-a-development-branch": {
+    "repo": "obra/superpowers",
+    "path": "skills/finishing-a-development-branch",
+    "commit": "b36e0829c6d0140e93cfef2ca599b1b07d4a7797",
+    "date": "2026-08-12",
+    "license": "MIT"
+  },
+  "global/markitdown": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/markitdown",
+    "commit": "f7a50ed2956fb45e32bd44cc5c713d4f0ac99f93",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "global/no-ai-slop": {
+    "repo": "petergyang/no-ai-slop",
+    "path": "skills/no-ai-slop",
+    "commit": "000650b156983f5159695b441477f4e63b25dc85",
+    "date": "2026-09-01",
+    "license": "MIT"
+  },
+  "global/officecli": {
+    "repo": "iOfficeAI/OfficeCLI",
+    "path": "skills/officecli",
+    "commit": "3364cf5ef9f7cbbe72328e687848fbef780b5c1a",
+    "date": "2026-09-03",
+    "license": "Apache-2.0"
+  },
+  "global/openspec-apply-change": {
+    "repo": "Fission-AI/OpenSpec",
+    "path": "skills/openspec-apply-change",
+    "commit": "7056a580568a686ce8205961fea6e071052b5e15",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "global/openspec-archive-change": {
+    "repo": "Fission-AI/OpenSpec",
+    "path": "skills/openspec-archive-change",
+    "commit": "0ff63dbae60748aecde48c80835d63b010e71e75",
+    "date": "2026-09-29",
+    "license": "MIT"
+  },
+  "global/openspec-explore": {
+    "repo": "Fission-AI/OpenSpec",
+    "path": "skills/openspec-explore",
+    "commit": "276d015090965791d8be3d02daf6bfd71de884c3",
+    "date": "2026-10-17",
+    "license": "MIT"
+  },
+  "global/openspec-propose": {
+    "repo": "Fission-AI/OpenSpec",
+    "path": "skills/openspec-propose",
+    "commit": "276d015090965791d8be3d02daf6bfd71de884c3",
+    "date": "2026-10-17",
+    "license": "MIT"
+  },
+  "global/pdf": {
+    "repo": "anthropics/skills",
+    "path": "skills/pdf",
+    "commit": "1ed29a03dc852d30fa6ef2ca53a67dc2c2c2c563",
+    "date": "2026-02-06",
+    "license": null
+  },
+  "global/playwright-interactive": {
+    "repo": "openai/skills",
+    "path": "skills/.curated/playwright-interactive",
+    "commit": "ecc1fb8bc0b82f1d3c7a92a82167ae8e8e613a67",
+    "date": "2026-03-11",
+    "license": null
+  },
+  "global/receiving-code-review": {
+    "repo": "obra/superpowers",
+    "path": "skills/receiving-code-review",
+    "commit": "3fb75974186ea7fada621d8ab77b3b02169baf57",
+    "date": "2026-07-23",
+    "license": "MIT"
+  },
+  "global/skill-scanner": {
+    "repo": "getsentry/skills",
+    "path": "skills/skill-scanner",
+    "commit": "d18b7aa8ba878354e5c348310230e652f7690f9c",
+    "date": "2026-09-29",
+    "license": "Apache-2.0"
+  },
+  "global/subagent-driven-development": {
+    "repo": "obra/superpowers",
+    "path": "skills/subagent-driven-development",
+    "commit": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
+    "date": "2026-10-09",
+    "license": "MIT"
+  },
+  "global/systematic-debugging": {
+    "repo": "obra/superpowers",
+    "path": "skills/systematic-debugging",
+    "commit": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
+    "date": "2026-10-09",
+    "license": "MIT"
+  },
+  "global/test-driven-development": {
+    "repo": "obra/superpowers",
+    "path": "skills/test-driven-development",
+    "commit": "5bf4e78011075bcfc0dc295f0724994cd123ee71",
+    "date": "2026-09-18",
+    "license": "MIT"
+  },
+  "global/using-git-worktrees": {
+    "repo": "obra/superpowers",
+    "path": "skills/using-git-worktrees",
+    "commit": "bc868020bbcec32bbaf9d6b51fa0538dba0b487f",
+    "date": "2026-07-23",
+    "license": "MIT"
+  },
+  "global/verification-before-completion": {
+    "repo": "obra/superpowers",
+    "path": "skills/verification-before-completion",
+    "commit": "3be5aad3dd2400ef23b15680969f4bcd3b6d7b8b",
+    "date": "2026-07-23",
+    "license": "MIT"
+  },
+  "global/writing-plans": {
+    "repo": "obra/superpowers",
+    "path": "skills/writing-plans",
+    "commit": "8ca22dba9a94f28898bbce59f2537ff4d87c747d",
+    "date": "2026-09-25",
+    "license": "MIT"
+  },
+  "project-packs/craft-project/design/skills/brand": {
+    "repo": "nextlevelbuilder/ui-ux-pro-max-skill",
+    "path": "cli/assets/skills/brand",
+    "commit": "67803eac81607188194aea9842a723b89326d90d",
+    "date": "2026-10-11",
+    "license": "MIT"
+  },
+  "project-packs/craft-project/design/skills/brandkit": {
+    "repo": "Leonxlnx/taste-skill",
+    "path": "skills/brandkit",
+    "commit": "f6831c5df8ad546c2567535442f1691a823868e3",
+    "date": "2026-10-19",
+    "license": "MIT"
+  },
+  "project-packs/craft-project/design/skills/design-system": {
+    "repo": "nextlevelbuilder/ui-ux-pro-max-skill",
+    "path": "cli/assets/skills/design-system",
+    "commit": "91c193ac059b487d13ce535c7015b021eb71c841",
+    "date": "2026-09-03",
+    "license": "MIT"
+  },
+  "project-packs/craft-project/design/skills/design-taste-frontend-v1": {
+    "repo": "Leonxlnx/taste-skill",
+    "path": "skills/taste-skill-v1",
+    "commit": "f6831c5df8ad546c2567535442f1691a823868e3",
+    "date": "2026-10-19",
+    "license": "MIT"
+  },
+  "project-packs/craft-project/design/skills/gpt-taste": {
+    "repo": "Leonxlnx/taste-skill",
+    "path": "skills/gpt-tasteskill",
+    "commit": "f6831c5df8ad546c2567535442f1691a823868e3",
+    "date": "2026-10-19",
+    "license": "MIT"
+  },
+  "project-packs/craft-project/design/skills/high-end-visual-design": {
+    "repo": "Leonxlnx/taste-skill",
+    "path": "skills/soft-skill",
+    "commit": "f6831c5df8ad546c2567535442f1691a823868e3",
+    "date": "2026-10-19",
+    "license": "MIT"
+  },
+  "project-packs/craft-project/design/skills/image-to-code": {
+    "repo": "Leonxlnx/taste-skill",
+    "path": "skills/image-to-code-skill",
+    "commit": "f6831c5df8ad546c2567535442f1691a823868e3",
+    "date": "2026-10-19",
+    "license": "MIT"
+  },
+  "project-packs/craft-project/design/skills/imagegen-frontend-mobile": {
+    "repo": "Leonxlnx/taste-skill",
+    "path": "skills/imagegen-frontend-mobile",
+    "commit": "f6831c5df8ad546c2567535442f1691a823868e3",
+    "date": "2026-10-19",
+    "license": "MIT"
+  },
+  "project-packs/craft-project/design/skills/imagegen-frontend-web": {
+    "repo": "Leonxlnx/taste-skill",
+    "path": "skills/imagegen-frontend-web",
+    "commit": "f6831c5df8ad546c2567535442f1691a823868e3",
+    "date": "2026-10-19",
+    "license": "MIT"
+  },
+  "project-packs/craft-project/design/skills/industrial-brutalist-ui": {
+    "repo": "Leonxlnx/taste-skill",
+    "path": "skills/brutalist-skill",
+    "commit": "f6831c5df8ad546c2567535442f1691a823868e3",
+    "date": "2026-10-19",
+    "license": "MIT"
+  },
+  "project-packs/craft-project/design/skills/minimalist-ui": {
+    "repo": "Leonxlnx/taste-skill",
+    "path": "skills/minimalist-skill",
+    "commit": "f6831c5df8ad546c2567535442f1691a823868e3",
+    "date": "2026-10-19",
+    "license": "MIT"
+  },
+  "project-packs/craft-project/design/skills/redesign-existing-projects": {
+    "repo": "Leonxlnx/taste-skill",
+    "path": "skills/redesign-skill",
+    "commit": "f6831c5df8ad546c2567535442f1691a823868e3",
+    "date": "2026-10-19",
+    "license": "MIT"
+  },
+  "project-packs/craft-project/design/skills/slides": {
+    "repo": "nextlevelbuilder/ui-ux-pro-max-skill",
+    "path": ".claude/skills/slides",
+    "commit": "91c193ac059b487d13ce535c7015b021eb71c841",
+    "date": "2026-09-03",
+    "license": "MIT"
+  },
+  "project-packs/craft-project/design/skills/stitch-design-taste": {
+    "repo": "Leonxlnx/taste-skill",
+    "path": "skills/stitch-skill",
+    "commit": "f6831c5df8ad546c2567535442f1691a823868e3",
+    "date": "2026-10-19",
+    "license": "MIT"
+  },
+  "project-packs/craft-project/design/skills/taste-skill": {
+    "repo": "Leonxlnx/taste-skill",
+    "path": "skills/taste-skill",
+    "commit": "9919bcb117086422295044479d4a3c776c8f6834",
+    "date": "2026-10-19",
+    "license": "MIT"
+  },
+  "project-packs/craft-project/design/skills/ui-styling": {
+    "repo": "nextlevelbuilder/ui-ux-pro-max-skill",
+    "path": "cli/assets/skills/ui-styling",
+    "commit": "de5f12b400775997d213524ef02a7c7d2746806f",
+    "date": "2026-09-19",
+    "license": "MIT"
+  },
+  "project-packs/craft-project/writing/skills/humanizer-zh": {
+    "repo": "op7418/Humanizer-zh",
+    "path": ".",
+    "commit": "f4518a8eab97b8bfebc66a89d34320a89bef6930",
+    "date": "2026-09-23",
+    "license": "MIT"
+  },
+  "project-packs/data-analysis-project/skills/dask": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/dask",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/data-analysis-project/skills/defuddle": {
+    "repo": "kepano/obsidian-skills",
+    "path": "skills/defuddle",
+    "commit": "957c634e069c256270540d3f068b890cf2388b54",
+    "date": "2026-09-09",
+    "license": "MIT"
+  },
+  "project-packs/data-analysis-project/skills/exploratory-data-analysis": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/exploratory-data-analysis",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/data-analysis-project/skills/matplotlib": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/matplotlib",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/data-analysis-project/skills/networkx": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/networkx",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/data-analysis-project/skills/polars": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/polars",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/data-analysis-project/skills/pymc": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/pymc",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/data-analysis-project/skills/seaborn": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/seaborn",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/data-analysis-project/skills/statistical-analysis": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/statistical-analysis",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/data-analysis-project/skills/statsmodels": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/statsmodels",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/data-analysis-project/skills/sympy": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/sympy",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/data-analysis-project/skills/timesfm-forecasting": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/timesfm-forecasting",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/data-analysis-project/skills/vaex": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/vaex",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/data-analysis-project/skills/zarr-python": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/zarr-python",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/agent-dev/skills/claude-api": {
+    "repo": "anthropics/skills",
+    "path": "skills/claude-api",
+    "commit": "dbd4588f9e1033efb41dad4bef2f7947c8993d44",
+    "date": "2026-10-09",
+    "license": "Complete terms in LICENSE.txt"
+  },
+  "project-packs/dev-project/agent-dev/skills/deep-agents-core": {
+    "repo": "langchain-ai/langchain-skills",
+    "path": "config/skills/deep-agents-core",
+    "commit": "d00eed0bf1b3debfb8e248f98037da7ad07a0972",
+    "date": "2026-04-29",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/agent-dev/skills/deep-agents-memory": {
+    "repo": "langchain-ai/langchain-skills",
+    "path": "config/skills/deep-agents-memory",
+    "commit": "d00eed0bf1b3debfb8e248f98037da7ad07a0972",
+    "date": "2026-04-29",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/agent-dev/skills/deep-agents-orchestration": {
+    "repo": "langchain-ai/langchain-skills",
+    "path": "config/skills/deep-agents-orchestration",
+    "commit": "d00eed0bf1b3debfb8e248f98037da7ad07a0972",
+    "date": "2026-04-29",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/agent-dev/skills/langchain-dependencies": {
+    "repo": "langchain-ai/langchain-skills",
+    "path": "config/skills/langchain-dependencies",
+    "commit": "d00eed0bf1b3debfb8e248f98037da7ad07a0972",
+    "date": "2026-04-29",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/agent-dev/skills/langchain-fundamentals": {
+    "repo": "langchain-ai/langchain-skills",
+    "path": "config/skills/langchain-fundamentals",
+    "commit": "d00eed0bf1b3debfb8e248f98037da7ad07a0972",
+    "date": "2026-04-29",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/agent-dev/skills/langchain-middleware": {
+    "repo": "langchain-ai/langchain-skills",
+    "path": "config/skills/langchain-middleware",
+    "commit": "d00eed0bf1b3debfb8e248f98037da7ad07a0972",
+    "date": "2026-04-29",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/agent-dev/skills/langchain-rag": {
+    "repo": "langchain-ai/langchain-skills",
+    "path": "config/skills/langchain-rag",
+    "commit": "6c63acc130304741ce2a52e497ab58a7072f54c0",
+    "date": "2026-07-17",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/agent-dev/skills/langgraph-fundamentals": {
+    "repo": "langchain-ai/langchain-skills",
+    "path": "config/skills/langgraph-fundamentals",
+    "commit": "657ca08b6b8a4c8c9a2ef6cd49ec451597bdf1bc",
+    "date": "2026-09-17",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/agent-dev/skills/langgraph-human-in-the-loop": {
+    "repo": "langchain-ai/langchain-skills",
+    "path": "config/skills/langgraph-human-in-the-loop",
+    "commit": "d00eed0bf1b3debfb8e248f98037da7ad07a0972",
+    "date": "2026-04-29",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/agent-dev/skills/langgraph-persistence": {
+    "repo": "langchain-ai/langchain-skills",
+    "path": "config/skills/langgraph-persistence",
+    "commit": "488e510f880b8c4c6994fab37736faa7d1971d94",
+    "date": "2026-05-19",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/agent-dev/skills/mcp-builder": {
+    "repo": "anthropics/skills",
+    "path": "skills/mcp-builder",
+    "commit": "b9e19e6f44773509fbdd7001d77ff41a49a486c1",
+    "date": "2026-04-20",
+    "license": "Complete terms in LICENSE.txt"
+  },
+  "project-packs/dev-project/agent-dev/skills/prompt-optimizer": {
+    "repo": "getsentry/skills",
+    "path": "skills/prompt-optimizer",
+    "commit": "c190d369bcbaa6cfdd95e9edfdba040506b4db76",
+    "date": "2026-05-04",
+    "license": "Apache-2.0"
+  },
+  "project-packs/dev-project/backend/skills/backend-dev-guidelines": {
+    "repo": "diet103/claude-code-infrastructure-showcase",
+    "path": ".claude/skills/backend-dev-guidelines",
+    "commit": "f6ec1ef786ef4635d62a83bc7a103560df42a0d7",
+    "date": "2026-06-10",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/backend/skills/senior-architect": {
+    "repo": "alirezarezvani/claude-skills",
+    "path": "engineering-team/skills/senior-architect",
+    "commit": "1851c8fb09ea8ff0488d48bd7c312abb1bbf5850",
+    "date": "2026-05-02",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/backend/skills/senior-backend": {
+    "repo": "alirezarezvani/claude-skills",
+    "path": "engineering-team/skills/senior-backend",
+    "commit": "b99505446a787228e776bf51b49d8f4b5939e203",
+    "date": "2026-06-10",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/backend/skills/senior-fullstack": {
+    "repo": "alirezarezvani/claude-skills",
+    "path": "engineering-team/skills/senior-fullstack",
+    "commit": "b99505446a787228e776bf51b49d8f4b5939e203",
+    "date": "2026-06-10",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/cloud-platform/skills/aws-solution-architect": {
+    "repo": "alirezarezvani/claude-skills",
+    "path": "engineering-team/skills/aws-solution-architect",
+    "commit": "7405298b4b5d509e0386ca3833f255e052cc8868",
+    "date": "2026-08-21",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/cloud-platform/skills/durable-objects": {
+    "repo": "cloudflare/skills",
+    "path": "skills/durable-objects",
+    "commit": "41e0d19858946d18af9ee2c2feebbe2e11d829ff",
+    "date": "2026-10-01",
+    "license": "Apache-2.0"
+  },
+  "project-packs/dev-project/cloud-platform/skills/posthog-error-tracking-nextjs": {
+    "repo": "PostHog/skills",
+    "path": "skills/posthog/all/skills/error-tracking-nextjs",
+    "commit": "f322cbb89771c2cf5d3c2eafa973371633bef064",
+    "date": "2026-03-24",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/cloud-platform/skills/posthog-error-tracking-python": {
+    "repo": "PostHog/skills",
+    "path": "skills/posthog/all/skills/error-tracking-python",
+    "commit": "f322cbb89771c2cf5d3c2eafa973371633bef064",
+    "date": "2026-03-24",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/cloud-platform/skills/posthog-error-tracking-react": {
+    "repo": "PostHog/skills",
+    "path": "skills/posthog/all/skills/error-tracking-react",
+    "commit": "f322cbb89771c2cf5d3c2eafa973371633bef064",
+    "date": "2026-03-24",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/cloud-platform/skills/posthog-feature-flags-nextjs": {
+    "repo": "PostHog/skills",
+    "path": "skills/posthog/all/skills/feature-flags-nextjs",
+    "commit": "f322cbb89771c2cf5d3c2eafa973371633bef064",
+    "date": "2026-03-24",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/cloud-platform/skills/posthog-feature-flags-nodejs": {
+    "repo": "PostHog/skills",
+    "path": "skills/posthog/all/skills/feature-flags-nodejs",
+    "commit": "f322cbb89771c2cf5d3c2eafa973371633bef064",
+    "date": "2026-03-24",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/cloud-platform/skills/posthog-feature-flags-python": {
+    "repo": "PostHog/skills",
+    "path": "skills/posthog/all/skills/feature-flags-python",
+    "commit": "f322cbb89771c2cf5d3c2eafa973371633bef064",
+    "date": "2026-03-24",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/cloud-platform/skills/posthog-feature-flags-react": {
+    "repo": "PostHog/skills",
+    "path": "skills/posthog/all/skills/feature-flags-react",
+    "commit": "f322cbb89771c2cf5d3c2eafa973371633bef064",
+    "date": "2026-03-24",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/cloud-platform/skills/stripe-best-practices": {
+    "repo": "stripe/ai",
+    "path": "providers/claude/plugin/skills/stripe-best-practices",
+    "commit": "4f842d4e9084a941c12f1544006344036e0c28f9",
+    "date": "2026-10-15",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/cloud-platform/skills/stripe-integration-expert": {
+    "repo": "alirezarezvani/claude-skills",
+    "path": "engineering-team/skills/stripe-integration-expert",
+    "commit": "1b152ab67522298c8684ef862ad877bdb8cdfaf5",
+    "date": "2026-05-14",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/cloud-platform/skills/stripe-projects": {
+    "repo": "stripe/ai",
+    "path": "providers/claude/plugin/skills/stripe-projects",
+    "commit": "9bdda30e3caf8d512dd41c7304035ee891db5140",
+    "date": "2026-10-09",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/cloud-platform/skills/supabase": {
+    "repo": "supabase/agent-skills",
+    "path": "skills/supabase",
+    "commit": "c9be0e931b7930f7d02126d04774d904c381e7d7",
+    "date": "2026-10-02",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/cloud-platform/skills/supabase-postgres-best-practices": {
+    "repo": "supabase/agent-skills",
+    "path": "skills/supabase-postgres-best-practices",
+    "commit": "1207767388a0ffb55f21fb4e6988fee96942431d",
+    "date": "2026-07-30",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/cloud-platform/skills/upgrade-stripe": {
+    "repo": "stripe/ai",
+    "path": "providers/claude/plugin/skills/upgrade-stripe",
+    "commit": "2f68b6e13ceab52310058fd60d3ea24adaf8df32",
+    "date": "2026-10-19",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/cloud-platform/skills/web-perf": {
+    "repo": "cloudflare/skills",
+    "path": "skills/web-perf",
+    "commit": "3af2c77450c91af61384887def098fbfd247bbad",
+    "date": "2026-09-05",
+    "license": "Apache-2.0"
+  },
+  "project-packs/dev-project/cloud-platform/skills/workers-best-practices": {
+    "repo": "cloudflare/skills",
+    "path": "skills/workers-best-practices",
+    "commit": "cf56dd4c544917ca6692a475b65a181f2845d557",
+    "date": "2026-10-12",
+    "license": "Apache-2.0"
+  },
+  "project-packs/dev-project/cloud-platform/skills/wrangler": {
+    "repo": "cloudflare/skills",
+    "path": "skills/wrangler",
+    "commit": "cf56dd4c544917ca6692a475b65a181f2845d557",
+    "date": "2026-10-12",
+    "license": "Apache-2.0"
+  },
+  "project-packs/dev-project/devops-sre/skills/ci-cd-pipeline-builder": {
+    "repo": "alirezarezvani/claude-skills",
+    "path": "engineering/skills/ci-cd-pipeline-builder",
+    "commit": "1929b50742386918d318ebb1c9bf65075a3570e5",
+    "date": "2026-06-11",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/devops-sre/skills/docker-development": {
+    "repo": "alirezarezvani/claude-skills",
+    "path": "engineering/docker-development/skills/docker-development",
+    "commit": "c4801730f5f52da97d9123bed94dc830ff43678c",
+    "date": "2026-05-02",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/devops-sre/skills/performance-profiler": {
+    "repo": "alirezarezvani/claude-skills",
+    "path": "engineering/skills/performance-profiler",
+    "commit": "77b7b1a00dc09b2551cbcb47715218a6912e4055",
+    "date": "2026-06-12",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/frontend/skills/frontend-design": {
+    "repo": "anthropics/skills",
+    "path": "skills/frontend-design",
+    "commit": "41bbe19d1a1a7eaab5e7bb9050a417e5c6cffc8f",
+    "date": "2026-09-03",
+    "license": "Complete terms in LICENSE.txt"
+  },
+  "project-packs/dev-project/frontend/skills/frontend-dev-guidelines": {
+    "repo": "diet103/claude-code-infrastructure-showcase",
+    "path": ".claude/skills/frontend-dev-guidelines",
+    "commit": "f6ec1ef786ef4635d62a83bc7a103560df42a0d7",
+    "date": "2026-06-10",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/frontend/skills/senior-frontend": {
+    "repo": "alirezarezvani/claude-skills",
+    "path": "engineering-team/skills/senior-frontend",
+    "commit": "b99505446a787228e776bf51b49d8f4b5939e203",
+    "date": "2026-06-10",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/frontend/skills/ui-ux-pro-max": {
+    "repo": "nextlevelbuilder/ui-ux-pro-max-skill",
+    "path": ".claude/skills/ui-ux-pro-max",
+    "commit": "477bcb28c9812b385cb51a4605ddf30d7b2266e2",
+    "date": "2026-10-03",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/frontend/skills/web-artifacts-builder": {
+    "repo": "anthropics/skills",
+    "path": "skills/web-artifacts-builder",
+    "commit": "b9e19e6f44773509fbdd7001d77ff41a49a486c1",
+    "date": "2026-04-20",
+    "license": "Complete terms in LICENSE.txt"
+  },
+  "project-packs/dev-project/ml/skills/get-available-resources": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/get-available-resources",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/ml/skills/huggingface-best": {
+    "repo": "huggingface/skills",
+    "path": "skills/huggingface-best",
+    "commit": "cfcd0a8100524dd3b9680c3bd4418c6b2640853a",
+    "date": "2026-08-03",
+    "license": "Apache-2.0"
+  },
+  "project-packs/dev-project/ml/skills/huggingface-community-evals": {
+    "repo": "huggingface/skills",
+    "path": "skills/huggingface-community-evals",
+    "commit": "386571e3e65ef0c129af2747ff36d1fa6fc5b8a4",
+    "date": "2026-03-23",
+    "license": "Apache-2.0"
+  },
+  "project-packs/dev-project/ml/skills/huggingface-datasets": {
+    "repo": "huggingface/skills",
+    "path": "skills/huggingface-datasets",
+    "commit": "b3df145a3a5a3e64ac075d781c625896d9d2bfcd",
+    "date": "2026-04-30",
+    "license": "Apache-2.0"
+  },
+  "project-packs/dev-project/ml/skills/huggingface-gradio": {
+    "repo": "huggingface/skills",
+    "path": "skills/huggingface-gradio",
+    "commit": "ff28908172004ae4def67d7fe8b31b77482aa594",
+    "date": "2026-03-24",
+    "license": "Apache-2.0"
+  },
+  "project-packs/dev-project/ml/skills/huggingface-llm-trainer": {
+    "repo": "huggingface/skills",
+    "path": "skills/huggingface-llm-trainer",
+    "commit": "88e864e27586c1b43eb43610fd3d14252522400f",
+    "date": "2026-07-06",
+    "license": "Apache-2.0"
+  },
+  "project-packs/dev-project/ml/skills/huggingface-local-models": {
+    "repo": "huggingface/skills",
+    "path": "skills/huggingface-local-models",
+    "commit": "f4ddab46b9847c7005d7979fdfec36da1aec4e26",
+    "date": "2026-04-22",
+    "license": "Apache-2.0"
+  },
+  "project-packs/dev-project/ml/skills/huggingface-paper-publisher": {
+    "repo": "huggingface/skills",
+    "path": "skills/huggingface-paper-publisher",
+    "commit": "386571e3e65ef0c129af2747ff36d1fa6fc5b8a4",
+    "date": "2026-03-23",
+    "license": "Apache-2.0"
+  },
+  "project-packs/dev-project/ml/skills/huggingface-papers": {
+    "repo": "huggingface/skills",
+    "path": "skills/huggingface-papers",
+    "commit": "386571e3e65ef0c129af2747ff36d1fa6fc5b8a4",
+    "date": "2026-03-23",
+    "license": "Apache-2.0"
+  },
+  "project-packs/dev-project/ml/skills/huggingface-tool-builder": {
+    "repo": "huggingface/skills",
+    "path": "skills/huggingface-tool-builder",
+    "commit": "95640aa22f447f49ff1321dfa221873644415171",
+    "date": "2026-04-01",
+    "license": "Apache-2.0"
+  },
+  "project-packs/dev-project/ml/skills/huggingface-trackio": {
+    "repo": "huggingface/skills",
+    "path": "skills/huggingface-trackio",
+    "commit": "88e864e27586c1b43eb43610fd3d14252522400f",
+    "date": "2026-07-06",
+    "license": "Apache-2.0"
+  },
+  "project-packs/dev-project/ml/skills/huggingface-vision-trainer": {
+    "repo": "huggingface/skills",
+    "path": "skills/huggingface-vision-trainer",
+    "commit": "386571e3e65ef0c129af2747ff36d1fa6fc5b8a4",
+    "date": "2026-03-23",
+    "license": "Apache-2.0"
+  },
+  "project-packs/dev-project/ml/skills/pufferlib": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/pufferlib",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/ml/skills/pytorch-lightning": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/pytorch-lightning",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/ml/skills/scikit-learn": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/scikit-learn",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/ml/skills/shap": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/shap",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/ml/skills/stable-baselines3": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/stable-baselines3",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/ml/skills/torch-geometric": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/torch-geometric",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/ml/skills/train-sentence-transformers": {
+    "repo": "huggingface/skills",
+    "path": "skills/train-sentence-transformers",
+    "commit": "020194918dc4a27d5a5d9a154b6b56cc2bd21364",
+    "date": "2026-08-18",
+    "license": "Apache-2.0"
+  },
+  "project-packs/dev-project/ml/skills/transformers": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/transformers",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/ml/skills/transformers-js": {
+    "repo": "huggingface/skills",
+    "path": "skills/transformers-js",
+    "commit": "4db6015affd7779ca959b7c7c53cdcd3c8f4737b",
+    "date": "2026-04-10",
+    "license": "Apache-2.0"
+  },
+  "project-packs/dev-project/ml/skills/umap-learn": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/umap-learn",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/skills/archify": {
+    "repo": "tt-a1i/archify",
+    "path": "archify",
+    "commit": "12ff5477172230762746e6a03988dc55f830601f",
+    "date": "2026-10-18",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/skills/changelog-generator": {
+    "repo": "alirezarezvani/claude-skills",
+    "path": "engineering/skills/changelog-generator",
+    "commit": "aecfb8e0bb71dbf1413082f86b33a5c4c9b8f416",
+    "date": "2026-06-11",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/skills/codebase-onboarding": {
+    "repo": "alirezarezvani/claude-skills",
+    "path": "engineering/skills/codebase-onboarding",
+    "commit": "d3c822a51701f4c469052823bb79eb3b38485f66",
+    "date": "2026-05-14",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/skills/database-schema-designer": {
+    "repo": "alirezarezvani/claude-skills",
+    "path": "engineering/skills/database-schema-designer",
+    "commit": "1851c8fb09ea8ff0488d48bd7c312abb1bbf5850",
+    "date": "2026-05-02",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/skills/dependency-auditor": {
+    "repo": "alirezarezvani/claude-skills",
+    "path": "engineering/skills/dependency-auditor",
+    "commit": "aecfb8e0bb71dbf1413082f86b33a5c4c9b8f416",
+    "date": "2026-06-11",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/skills/drawio-skill": {
+    "repo": "Agents365-ai/drawio-skill",
+    "path": "skills/drawio-skill",
+    "commit": "57270820d3cd71cbdf4fb6b2f7091d4fb37bb019",
+    "date": "2026-10-11",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/skills/find-bugs": {
+    "repo": "getsentry/skills",
+    "path": "skills/find-bugs",
+    "commit": "24361e7958f9644d11f1de100654e3b04a509192",
+    "date": "2026-04-19",
+    "license": "Apache-2.0"
+  },
+  "project-packs/dev-project/skills/ponytail": {
+    "repo": "DietrichGebert/ponytail",
+    "path": "skills/ponytail",
+    "commit": "df9e89941d50419fd5bcf1de41e28097f1db49b2",
+    "date": "2026-10-16",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/skills/ponytail-audit": {
+    "repo": "DietrichGebert/ponytail",
+    "path": "skills/ponytail-audit",
+    "commit": "2a1fe842d078cf66ec7f3e6096a8ca4279c2cad7",
+    "date": "2026-10-08",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/skills/ponytail-review": {
+    "repo": "DietrichGebert/ponytail",
+    "path": "skills/ponytail-review",
+    "commit": "2a1fe842d078cf66ec7f3e6096a8ca4279c2cad7",
+    "date": "2026-10-08",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/skills/remotion-best-practices": {
+    "repo": "remotion-dev/skills",
+    "path": "skills/remotion-best-practices",
+    "commit": "1441a11e95db35443bd76bb318386c0d3ca00053",
+    "date": "2026-10-16",
+    "license": null
+  },
+  "project-packs/dev-project/skills/senior-security": {
+    "repo": "alirezarezvani/claude-skills",
+    "path": "engineering-team/skills/senior-security",
+    "commit": "5acece10acd47513bbc7b0c91fe88f54df138adc",
+    "date": "2026-06-11",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/skills/site-architecture": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/site-architecture",
+    "commit": "759933ed7690420d2e121a3e3955d7940c5effb5",
+    "date": "2026-10-02",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/skills/tech-debt-tracker": {
+    "repo": "alirezarezvani/claude-skills",
+    "path": "engineering/skills/tech-debt-tracker",
+    "commit": "aecfb8e0bb71dbf1413082f86b33a5c4c9b8f416",
+    "date": "2026-06-11",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/testing-qa/skills/api-test-suite-builder": {
+    "repo": "alirezarezvani/claude-skills",
+    "path": "engineering/skills/api-test-suite-builder",
+    "commit": "1851c8fb09ea8ff0488d48bd7c312abb1bbf5850",
+    "date": "2026-05-02",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/testing-qa/skills/senior-qa": {
+    "repo": "alirezarezvani/claude-skills",
+    "path": "engineering-team/skills/senior-qa",
+    "commit": "b99505446a787228e776bf51b49d8f4b5939e203",
+    "date": "2026-06-10",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/testing-qa/skills/webapp-testing": {
+    "repo": "anthropics/skills",
+    "path": "skills/webapp-testing",
+    "commit": "b9e19e6f44773509fbdd7001d77ff41a49a486c1",
+    "date": "2026-04-20",
+    "license": "Complete terms in LICENSE.txt"
+  },
+  "project-packs/finance-project/portfolio/skills/backtest-expert": {
+    "repo": "tradermonty/claude-trading-skills",
+    "path": "skills/backtest-expert",
+    "commit": "d92c667b332b9fd64c58f30945485b2269999c3d",
+    "date": "2026-10-11",
+    "license": "MIT"
+  },
+  "project-packs/finance-project/portfolio/skills/edge-concept-synthesizer": {
+    "repo": "tradermonty/claude-trading-skills",
+    "path": "skills/edge-concept-synthesizer",
+    "commit": "107dc5a06a1bdb52ec3439d2ef85a118e780e3d5",
+    "date": "2026-09-04",
+    "license": "MIT"
+  },
+  "project-packs/finance-project/portfolio/skills/edge-hint-extractor": {
+    "repo": "tradermonty/claude-trading-skills",
+    "path": "skills/edge-hint-extractor",
+    "commit": "107dc5a06a1bdb52ec3439d2ef85a118e780e3d5",
+    "date": "2026-09-04",
+    "license": "MIT"
+  },
+  "project-packs/finance-project/portfolio/skills/edge-pipeline-orchestrator": {
+    "repo": "tradermonty/claude-trading-skills",
+    "path": "skills/edge-pipeline-orchestrator",
+    "commit": "725ce0eb272600810545aa351eaaf5f38f2d4a72",
+    "date": "2026-10-11",
+    "license": "MIT"
+  },
+  "project-packs/finance-project/portfolio/skills/edge-signal-aggregator": {
+    "repo": "tradermonty/claude-trading-skills",
+    "path": "skills/edge-signal-aggregator",
+    "commit": "4d9088e814223cc83466c0b35a06e50fa3224612",
+    "date": "2026-10-11",
+    "license": "MIT"
+  },
+  "project-packs/finance-project/portfolio/skills/edge-strategy-designer": {
+    "repo": "tradermonty/claude-trading-skills",
+    "path": "skills/edge-strategy-designer",
+    "commit": "fa4ff9ec901c3cbcf0bb9abcfebdf75a10462a49",
+    "date": "2026-10-15",
+    "license": "MIT"
+  },
+  "project-packs/finance-project/portfolio/skills/edge-strategy-reviewer": {
+    "repo": "tradermonty/claude-trading-skills",
+    "path": "skills/edge-strategy-reviewer",
+    "commit": "ebcabf8ac5d511b4bcfeb6d77dd4fa2e562840e8",
+    "date": "2026-09-27",
+    "license": "MIT"
+  },
+  "project-packs/finance-project/portfolio/skills/position-sizer": {
+    "repo": "tradermonty/claude-trading-skills",
+    "path": "skills/position-sizer",
+    "commit": "107dc5a06a1bdb52ec3439d2ef85a118e780e3d5",
+    "date": "2026-09-04",
+    "license": "MIT"
+  },
+  "project-packs/finance-project/portfolio/skills/strategy-pivot-designer": {
+    "repo": "tradermonty/claude-trading-skills",
+    "path": "skills/strategy-pivot-designer",
+    "commit": "d92c667b332b9fd64c58f30945485b2269999c3d",
+    "date": "2026-10-11",
+    "license": "MIT"
+  },
+  "project-packs/finance-project/research/skills/edge-candidate-agent": {
+    "repo": "tradermonty/claude-trading-skills",
+    "path": "skills/edge-candidate-agent",
+    "commit": "7cafd480902a1557eab3afee8b960e003b8e5f65",
+    "date": "2026-10-16",
+    "license": "MIT"
+  },
+  "project-packs/finance-project/research/skills/signal-postmortem": {
+    "repo": "tradermonty/claude-trading-skills",
+    "path": "skills/signal-postmortem",
+    "commit": "3770ccf37da2410ea23c47417fe785bf64536c7b",
+    "date": "2026-10-05",
+    "license": "MIT"
+  },
+  "project-packs/finance-project/research/skills/thesis-tracker": {
+    "repo": "anthropics/financial-services-plugins",
+    "path": "plugins/vertical-plugins/equity-research/skills/thesis-tracker",
+    "commit": "ef165e4160f295cbe44b7797f434ddf11dbc36d8",
+    "date": "2026-05-20",
+    "license": "Apache-2.0"
+  },
+  "project-packs/finance-project/research/skills/trade-hypothesis-ideator": {
+    "repo": "tradermonty/claude-trading-skills",
+    "path": "skills/trade-hypothesis-ideator",
+    "commit": "143160289737132aae29ba3446260e53e0c5f7f4",
+    "date": "2026-09-27",
+    "license": "MIT"
+  },
+  "project-packs/finance-project/research/skills/trader-memory-core": {
+    "repo": "tradermonty/claude-trading-skills",
+    "path": "skills/trader-memory-core",
+    "commit": "e562af1fc4337c766e73f8b05f235acda83e5f56",
+    "date": "2026-09-26",
+    "license": "MIT"
+  },
+  "project-packs/finance-project/trading/skills/pair-trade-screener": {
+    "repo": "tradermonty/claude-trading-skills",
+    "path": "skills/pair-trade-screener",
+    "commit": "bfe8fd0e2ece6af845af1a7e003cde8ed26b85fa",
+    "date": "2026-10-15",
+    "license": "MIT"
+  },
+  "project-packs/finance-project/trading/skills/technical-analyst": {
+    "repo": "tradermonty/claude-trading-skills",
+    "path": "skills/technical-analyst",
+    "commit": "107dc5a06a1bdb52ec3439d2ef85a118e780e3d5",
+    "date": "2026-09-04",
+    "license": "MIT"
+  },
+  "project-packs/ios-project/skills/swiftui-animation": {
+    "repo": "jamesrochabrun/skills",
+    "path": "skills/swiftui-animation",
+    "commit": "ce824739a660f9fe8d4c38e6af4af7749967578d",
+    "date": "2025-12-10",
+    "license": "MIT"
+  },
+  "project-packs/life-project/skills/astrology-chart": {
+    "repo": "coderafk92/astrology-chart",
+    "path": ".",
+    "commit": "fdaade414e8f3784271b8aa888dcba075fdef907",
+    "date": "2026-06-18",
+    "license": "MIT"
+  },
+  "project-packs/life-project/skills/bazi": {
+    "repo": "jinchenma94/bazi-skill",
+    "path": ".",
+    "commit": "112a5d84cd1a001a0038cafca3be68d93e4c0cc9",
+    "date": "2026-08-18",
+    "license": "MIT"
+  },
+  "project-packs/life-project/skills/liuren-skill": {
+    "repo": "dglijin-oss/liuren-skill",
+    "path": ".",
+    "commit": "a3bbd3890bc9fc4c2fc97ab1d2e7a19a570c26db",
+    "date": "2026-07-02",
+    "license": "MIT"
+  },
+  "project-packs/life-project/skills/qimen": {
+    "repo": "dxbuyi/qimen.skill",
+    "path": ".",
+    "commit": "2c42e65ccdf61f3ceef1fff911214d8c4b561233",
+    "date": "2026-04-12",
+    "license": "MIT"
+  },
+  "project-packs/life-project/skills/qingsheng": {
+    "repo": "tomwong001/qingsheng-skill",
+    "path": "skill",
+    "commit": "fd762df2e0ce4b8ec68b0087ba7178761045bd1a",
+    "date": "2026-09-29",
+    "license": "MIT"
+  },
+  "project-packs/life-project/skills/simp": {
+    "repo": "BeamusWayne/simp-skill",
+    "path": ".",
+    "commit": "71f64215f50aeb5b619fb34fa44adb9247c85770",
+    "date": "2026-10-16",
+    "license": "MIT"
+  },
+  "project-packs/life-project/skills/tarot": {
+    "repo": "daman-ovo-0404/tarot-skill",
+    "path": ".",
+    "commit": "a9f59f02b3df8a539e9ec618fb4757d481443803",
+    "date": "2026-05-28",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/ab-testing": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/ab-testing",
+    "commit": "4082de57ce0765e71f32738c6ac9cb22fc1a51f1",
+    "date": "2026-10-10",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/ad-creative": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/ad-creative",
+    "commit": "e1e9f87fdfccdc6dbea72cd5b822b39a748ff7a7",
+    "date": "2026-10-15",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/ai-seo": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/ai-seo",
+    "commit": "b8c1cd0699e148c47a6c8647aa7231b6bc8a1ee4",
+    "date": "2026-10-15",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/aso": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/aso",
+    "commit": "0fe63115e0affd870ae161a83005bf9de3e7233b",
+    "date": "2026-10-06",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/attribution": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/attribution",
+    "commit": "cc2450706842dd60d8cccc4e539e9841c746dbcf",
+    "date": "2026-10-12",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/canvas-design": {
+    "repo": "anthropics/skills",
+    "path": "skills/canvas-design",
+    "commit": "b9e19e6f44773509fbdd7001d77ff41a49a486c1",
+    "date": "2026-04-20",
+    "license": "Complete terms in LICENSE.txt"
+  },
+  "project-packs/marketing-project/skills/co-marketing": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/co-marketing",
+    "commit": "cc2450706842dd60d8cccc4e539e9841c746dbcf",
+    "date": "2026-10-12",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/community-marketing": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/community-marketing",
+    "commit": "861ded5e2d4b49d2443772568a8fac85a96320f2",
+    "date": "2026-08-23",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/competitor-profiling": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/competitor-profiling",
+    "commit": "f51d91575512852a403d425e128df7f344f58c2a",
+    "date": "2026-10-07",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/content-strategy": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/content-strategy",
+    "commit": "4ca2d4c623e45f3aa7d0aaefcd33abc4331d77a2",
+    "date": "2026-10-07",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/copy-editing": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/copy-editing",
+    "commit": "158bd3af27b00323d5a950c033efa0256f7aa426",
+    "date": "2026-10-15",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/copywriting": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/copywriting",
+    "commit": "e6fb742a8321afc4c99a435610c1ef342a7d2219",
+    "date": "2026-10-15",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/cro": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/cro",
+    "commit": "e88ace76a791b7da6de58f7ee7dbcb38b6bbc136",
+    "date": "2026-10-08",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/customer-research": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/customer-research",
+    "commit": "a8ac2636ec38004c5a6ab08acde9d68f2d3d0e22",
+    "date": "2026-10-02",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/directory-submissions": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/directory-submissions",
+    "commit": "d7a1c7a45e9f1381032c52039c64532a3ad5a108",
+    "date": "2026-10-08",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/elevenlabs-agents": {
+    "repo": "elevenlabs/skills",
+    "path": "agents",
+    "commit": "f3c79c119a533e8175aa4f85a4802da59498bf0a",
+    "date": "2026-10-18",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/elevenlabs-music": {
+    "repo": "elevenlabs/skills",
+    "path": "music",
+    "commit": "f3c79c119a533e8175aa4f85a4802da59498bf0a",
+    "date": "2026-10-18",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/elevenlabs-setup-api-key": {
+    "repo": "elevenlabs/skills",
+    "path": "setup-api-key",
+    "commit": "f3c79c119a533e8175aa4f85a4802da59498bf0a",
+    "date": "2026-10-18",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/elevenlabs-sound-effects": {
+    "repo": "elevenlabs/skills",
+    "path": "sound-effects",
+    "commit": "f3c79c119a533e8175aa4f85a4802da59498bf0a",
+    "date": "2026-10-18",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/elevenlabs-speech-to-text": {
+    "repo": "elevenlabs/skills",
+    "path": "speech-to-text",
+    "commit": "f3c79c119a533e8175aa4f85a4802da59498bf0a",
+    "date": "2026-10-18",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/elevenlabs-text-to-speech": {
+    "repo": "elevenlabs/skills",
+    "path": "text-to-speech",
+    "commit": "f3c79c119a533e8175aa4f85a4802da59498bf0a",
+    "date": "2026-10-18",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/elevenlabs-voice-changer": {
+    "repo": "elevenlabs/skills",
+    "path": "voice-changer",
+    "commit": "f3c79c119a533e8175aa4f85a4802da59498bf0a",
+    "date": "2026-10-18",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/elevenlabs-voice-isolator": {
+    "repo": "elevenlabs/skills",
+    "path": "voice-isolator",
+    "commit": "f3c79c119a533e8175aa4f85a4802da59498bf0a",
+    "date": "2026-10-18",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/generate-image": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/generate-image",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/image": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/image",
+    "commit": "d76f41331d4c6e0ae58cbc32a623811508f1c6a5",
+    "date": "2026-10-02",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/influencer-marketing": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/influencer-marketing",
+    "commit": "3ec78860f1f1823c8983dd9a2c4a493035879cbe",
+    "date": "2026-10-15",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/last30days": {
+    "repo": "mvanhorn/last30days-skill",
+    "path": "skills/last30days",
+    "commit": "13a6cc5fd1f2d8a9b8420bbba6742599b2f4a077",
+    "date": "2026-10-18",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/launch": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/launch",
+    "commit": "b7fb899ff4aff55a61f3cbc692b3e2b50d3f013b",
+    "date": "2026-10-07",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/lead-magnets": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/lead-magnets",
+    "commit": "ac69fe6c8b7377047c859aded6759162192a1582",
+    "date": "2026-10-08",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/market-research-reports": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/market-research-reports",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/marketing-council": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/marketing-council",
+    "commit": "055f1818fc614873faf1d573a5046d1c67ecd230",
+    "date": "2026-07-06",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/marketing-ideas": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/marketing-ideas",
+    "commit": "cc1aca0b543fd5169976f08ea6e7147863343ff3",
+    "date": "2026-08-23",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/marketing-loops": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/marketing-loops",
+    "commit": "0e59abb7ff9c62234529c2315f9d3c2db0b97321",
+    "date": "2026-10-15",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/marketing-plan": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/marketing-plan",
+    "commit": "801b750f9a2d635d6461a1c8ab71a2eb4873065d",
+    "date": "2026-10-12",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/marketing-psychology": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/marketing-psychology",
+    "commit": "30f9b9a729bbbe3da562fc1108c31f3a35afcca1",
+    "date": "2026-05-13",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/offers": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/offers",
+    "commit": "cc2450706842dd60d8cccc4e539e9841c746dbcf",
+    "date": "2026-10-12",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/onboarding": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/onboarding",
+    "commit": "cc2450706842dd60d8cccc4e539e9841c746dbcf",
+    "date": "2026-10-12",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/paywalls": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/paywalls",
+    "commit": "30f9b9a729bbbe3da562fc1108c31f3a35afcca1",
+    "date": "2026-05-13",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/pricing": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/pricing",
+    "commit": "22dcd2644c12e5639a74ada522aef7c24948e677",
+    "date": "2026-10-10",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/product-marketing": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/product-marketing",
+    "commit": "0e59abb7ff9c62234529c2315f9d3c2db0b97321",
+    "date": "2026-10-15",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/public-relations": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/public-relations",
+    "commit": "a8ac2636ec38004c5a6ab08acde9d68f2d3d0e22",
+    "date": "2026-10-02",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/seo-audit": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/seo-audit",
+    "commit": "6b9e9387265d9e3049258f7eae3f746d3c3ddf87",
+    "date": "2026-10-10",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/signup": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/signup",
+    "commit": "fa8f0babdf096d5bfd63a610764a05fa5f3dd7b0",
+    "date": "2026-10-04",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/social": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/social",
+    "commit": "5110d1d5e9ad1624cf0106a9523a5a1e8ebc5bea",
+    "date": "2026-10-14",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/theme-factory": {
+    "repo": "anthropics/skills",
+    "path": "skills/theme-factory",
+    "commit": "b9e19e6f44773509fbdd7001d77ff41a49a486c1",
+    "date": "2026-04-20",
+    "license": "Complete terms in LICENSE.txt"
+  },
+  "project-packs/marketing-project/skills/video": {
+    "repo": "coreyhaines31/marketingskills",
+    "path": "skills/video",
+    "commit": "6e5ef94a53a1c9e7363c0659d4b2aa11f23611be",
+    "date": "2026-10-02",
+    "license": "MIT"
+  },
+  "project-packs/marketing-project/skills/xhs-visual-director": {
+    "repo": "ziguishian/xhs-visual-director-skill",
+    "path": "skill",
+    "commit": "5c730c688f2c7e64f798d611608997ffba43813d",
+    "date": "2026-07-03",
+    "license": "MIT"
+  },
+  "project-packs/media-project/skills/ffmpeg": {
+    "repo": "n0an/ffmpeg-skill",
+    "path": "ffmpeg",
+    "commit": "4f4d6d9518cb2e7bc97da472b2cbb7c2ae5e0b24",
+    "date": "2026-04-29",
+    "license": "MIT"
+  },
+  "project-packs/media-project/skills/openchatcut": {
+    "repo": "0xsline/OpenChatCut",
+    "path": "skills/openchatcut",
+    "commit": "c1b6340be29a74a408ed7827491f63f487bfc87e",
+    "date": "2026-10-04",
+    "license": "AGPL-3.0"
+  },
+  "project-packs/media-project/skills/wjs-burning-subtitles": {
+    "repo": "jianshuo/claude-skills",
+    "path": "wjs-burning-subtitles",
+    "commit": "543ca8b06cb837342d73d64a66ac2000ef6995be",
+    "date": "2026-05-13",
+    "license": "MIT"
+  },
+  "project-packs/media-project/skills/wjs-editing-multicam": {
+    "repo": "jianshuo/claude-skills",
+    "path": "wjs-editing-multicam",
+    "commit": "587665fdba7a0e589860ef9acb6e7803eae9807b",
+    "date": "2026-05-26",
+    "license": "MIT"
+  },
+  "project-packs/media-project/skills/wjs-overlaying-video": {
+    "repo": "jianshuo/claude-skills",
+    "path": "wjs-overlaying-video",
+    "commit": "c8fff827f5d453254ba5259ea5f9efddeb7c0d2a",
+    "date": "2026-05-26",
+    "license": "MIT"
+  },
+  "project-packs/media-project/skills/wjs-syncing-multicam": {
+    "repo": "jianshuo/claude-skills",
+    "path": "wjs-syncing-multicam",
+    "commit": "a1d923597f8f6b29b00ba0703dda3a33adaf2d1a",
+    "date": "2026-05-25",
+    "license": "MIT"
+  },
+  "project-packs/productivity-project/skills/agent-reach": {
+    "repo": "Panniantong/Agent-Reach",
+    "path": "agent_reach/skill",
+    "commit": "87d37c4b73d65dcb915d2bb92f67b235bbf53846",
+    "date": "2026-10-08",
+    "license": "MIT"
+  },
+  "project-packs/productivity-project/skills/career-ops": {
+    "repo": "career-ops-hq/career-ops",
+    "path": ".agents/skills/career-ops",
+    "commit": "306b9244607679ed9d37e9e9d8ddd4a072ca98b7",
+    "date": "2026-10-17",
+    "license": "MIT"
+  },
+  "project-packs/productivity-project/skills/job-application-assistant": {
+    "repo": "MadsLorentzen/ai-job-search",
+    "path": ".claude/skills/job-application-assistant",
+    "commit": "baf8c68e53c43500b1e74f76ad33456d1471e42e",
+    "date": "2026-10-17",
+    "license": "MIT"
+  },
+  "project-packs/productivity-project/skills/json-canvas": {
+    "repo": "kepano/obsidian-skills",
+    "path": "skills/json-canvas",
+    "commit": "5a557ceba792fcb4c58591f3117c6887810d8df1",
+    "date": "2026-02-25",
+    "license": "MIT"
+  },
+  "project-packs/productivity-project/skills/markdown-mermaid-writing": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/markdown-mermaid-writing",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/productivity-project/skills/notion-cli": {
+    "repo": "makenotion/skills",
+    "path": "skills/notion-cli",
+    "commit": "423af2bf546cd0354e5cc871017251945d9ad14f",
+    "date": "2026-05-04",
+    "license": "MIT"
+  },
+  "project-packs/productivity-project/skills/obsidian-bases": {
+    "repo": "kepano/obsidian-skills",
+    "path": "skills/obsidian-bases",
+    "commit": "9b736ba8da230341054cc668bedc0bcb041baa98",
+    "date": "2026-04-07",
+    "license": "MIT"
+  },
+  "project-packs/productivity-project/skills/obsidian-cli": {
+    "repo": "kepano/obsidian-skills",
+    "path": "skills/obsidian-cli",
+    "commit": "5a557ceba792fcb4c58591f3117c6887810d8df1",
+    "date": "2026-02-25",
+    "license": "MIT"
+  },
+  "project-packs/productivity-project/skills/obsidian-markdown": {
+    "repo": "kepano/obsidian-skills",
+    "path": "skills/obsidian-markdown",
+    "commit": "d790939c3e631d12c3047533fddaa7c0e0218304",
+    "date": "2026-03-22",
+    "license": "MIT"
+  },
+  "project-packs/productivity-project/skills/open-notebook": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/open-notebook",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/productivity-project/skills/planning-with-files": {
+    "repo": "OthmanAdi/planning-with-files",
+    "path": "skills/planning-with-files",
+    "commit": "d363544caea69df35ba624b238662ab861d1d92a",
+    "date": "2026-10-17",
+    "license": "MIT"
+  },
+  "project-packs/productivity-project/skills/upskill": {
+    "repo": "MadsLorentzen/ai-job-search",
+    "path": ".claude/skills/upskill",
+    "commit": "24db6b3b59c752e745a6729dccf01d038acf6490",
+    "date": "2026-10-18",
+    "license": "MIT"
+  },
+  "project-packs/productivity-project/skills/what-if-oracle": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/what-if-oracle",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/research-project/gates/skills/experimental-design": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/experimental-design",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/research-project/gates/skills/hypothesis-generation": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/hypothesis-generation",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/research-project/literature/skills/paper-lookup": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/paper-lookup",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/research-project/manuscript/skills/academic-humanizer": {
+    "repo": "AIScientists-Dev/academic-humanizer",
+    "path": ".",
+    "commit": "94b88b23703bed7df507acae7d6d5876209a0cdf",
+    "date": "2026-07-03",
+    "license": "MIT"
+  },
+  "project-packs/research-project/manuscript/skills/latex-paper-en": {
+    "repo": "bahayonghang/academic-writing-skills",
+    "path": "academic-writing-skills/latex-paper-en",
+    "commit": "8863c79d72f502a6c8ca83db6e2105f669f882d2",
+    "date": "2026-09-27",
+    "license": null
+  },
+  "project-packs/research-project/manuscript/skills/paper-writing": {
+    "repo": "Galaxy-Dawn/claude-scholar",
+    "path": "skills/nature-writing",
+    "commit": "6b6040e4600a723b6c77af7e2696552d79399303",
+    "date": "2026-09-23",
+    "license": "MIT"
+  },
+  "project-packs/research-project/manuscript/skills/venue-templates": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/venue-templates",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/research-project/review/skills/peer-review": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/peer-review",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/research-project/review/skills/rebuttal": {
+    "repo": "Galaxy-Dawn/claude-scholar",
+    "path": "skills/nature-response",
+    "commit": "6b6040e4600a723b6c77af7e2696552d79399303",
+    "date": "2026-09-23",
+    "license": "MIT"
+  },
+  "project-packs/research-project/talks/skills/latex-posters": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/latex-posters",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/research-project/talks/skills/nature-paper2ppt": {
+    "repo": "Yuan1z0825/nature-skills",
+    "path": "skills/nature-paper2ppt",
+    "commit": "35eb0bcd33a5d2239620db29dc00d825faa4d5c0",
+    "date": "2026-09-14",
+    "license": "Apache-2.0"
+  },
+  "project-packs/research-project/talks/skills/pptx-posters": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/pptx-posters",
+    "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
+    "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/research-project/talks/skills/scientific-slides": {
+    "repo": "K-Dense-AI/claude-scientific-skills",
+    "path": "skills/scientific-slides",
+    "commit": "f7a50ed2956fb45e32bd44cc5c713d4f0ac99f93",
+    "date": "2026-10-01",
+    "license": "MIT"
+  }
+}

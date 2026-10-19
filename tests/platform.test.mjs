@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { join, parse } from 'node:path';
 import { tempDir, put } from './helpers.mjs';
-import { osName, makeContext, isLink, linkTarget, samePath, inside, makeDirLink, removeLink, removeTree, isWorktree, slash } from '../lib/platform.mjs';
+import { osName, makeContext, isLink, linkTarget, samePath, inside, makeDirLink, removeLink, removeTree, isWorktree, slash, resolvesInto } from '../lib/platform.mjs';
 
 test('osName maps node platforms', () => {
   assert.equal(osName('win32'), 'windows');
@@ -144,6 +144,37 @@ test('removeTree with a protected root ignores a path that does not exist', () =
   const repo = join(dir, 'repo');
   mkdirSync(repo);
   assert.doesNotThrow(() => removeTree(join(dir, 'missing'), repo));
+});
+
+test('resolvesInto is true for the root and anything below it, existing or not, and false beside it', () => {
+  const dir = tempDir();
+  const repo = join(dir, 'repo');
+  mkdirSync(join(repo, 'skills'), { recursive: true });
+  mkdirSync(join(dir, 'repo-old'));
+  assert.ok(resolvesInto(repo, repo));
+  assert.ok(resolvesInto(repo, join(repo, 'skills')));
+  assert.ok(resolvesInto(repo, join(repo, 'missing', 'file')));
+  assert.ok(!resolvesInto(repo, dir));
+  assert.ok(!resolvesInto(repo, join(dir, 'repo-old', 'x')));
+  assert.ok(!resolvesInto(repo, join(dir, 'missing', 'x')));
+});
+
+test('resolvesInto follows a folder link higher up the path, even to a place that does not exist yet', () => {
+  const dir = tempDir();
+  const repo = join(dir, 'repo');
+  mkdirSync(join(repo, 'agents'), { recursive: true });
+  mkdirSync(join(dir, 'elsewhere'));
+  const home = join(dir, 'home');
+  makeDirLink(join(repo, 'agents'), join(home, '.claude'));
+  makeDirLink(join(dir, 'elsewhere'), join(home, '.cursor'));
+  assert.ok(resolvesInto(repo, join(home, '.claude')));
+  assert.ok(resolvesInto(repo, join(home, '.claude', 'skills', 'alpha')));
+  assert.ok(!resolvesInto(repo, join(home, '.cursor', 'mcp.json')));
+  assert.ok(!resolvesInto(repo, join(home, '.codex', 'config.toml')));
+  // The root given as a link is the place it leads to.
+  makeDirLink(repo, join(dir, 'repo-link'));
+  assert.ok(resolvesInto(join(dir, 'repo-link'), join(repo, 'agents', 'x')));
+  assert.ok(resolvesInto(join(dir, 'repo-link'), join(home, '.claude', 'x')));
 });
 
 test('inside() is true only below the root', () => {

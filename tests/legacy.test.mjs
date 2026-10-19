@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { fixtureRepo, tempDir, put, newRun } from './helpers.mjs';
 import { makeContext, makeDirLink } from '../lib/platform.mjs';
@@ -139,8 +139,8 @@ test('opencode: removes what v1 put in ~/.opencode and the old command copies', 
   const { home, ctx } = setup();
   put(home, '.opencode/AGENTS.md', V1);
   put(home, '.opencode/opencode.json', JSON.stringify({ $schema: 's', lsp: true, mcp: {} }));
-  put(home, '.opencode/skills/catalog.json', '{}');
-  put(home, '.opencode/skills/alpha/SKILL.md', 'x');
+  put(home, '.opencode/skills/catalog.json', JSON.stringify({ skills: { alpha: {} } }));
+  put(home, '.opencode/skills/alpha/SKILL.md', readFileSync(join(ctx.repo, 'skills/global/alpha/SKILL.md'), 'utf8'));
   put(home, '.opencode/command/opsx-x.md', 'opsx command\n');
   put(home, '.opencode/package.json', '{}');
   put(home, '.config/opencode/command/opsx-x.md', 'opsx command\r\n');
@@ -156,4 +156,53 @@ test('dry run removes nothing', () => {
   cleanHome(ctx, run);
   assert.ok(existsSync(join(home, 'HARNESS.md')));
   assert.equal(run.report.changes.length, 1);
+});
+
+function v1Skills(home, ctx, extra = () => {}) {
+  put(home, '.opencode/skills/catalog.json', JSON.stringify({ skills: { alpha: {}, beta: {}, gone: {} } }));
+  put(home, '.opencode/skills/skill-rules.json', '{}');
+  put(home, '.opencode/skills/alpha/SKILL.md', readFileSync(join(ctx.repo, 'skills/global/alpha/SKILL.md'), 'utf8'));
+  extra();
+}
+
+test('opencode skills: only the skills v1 mirrored go, the users own stay', () => {
+  const { home, ctx } = setup();
+  v1Skills(home, ctx, () => put(home, '.opencode/skills/mine/SKILL.md', 'mine'));
+  const run = newRun();
+  cleanAgent(ctx, 'opencode', [], run);
+  const d = join(home, '.opencode', 'skills');
+  assert.deepEqual(readdirSync(d), ['mine']);
+  assert.equal(run.report.notes.length, 1);
+  assert.match(run.report.notes[0], /mine/);
+});
+
+test('opencode skills: a v1-named skill that differs from the repo is labelled, also in a dry run', () => {
+  const { home, ctx } = setup();
+  v1Skills(home, ctx, () => put(home, '.opencode/skills/beta/SKILL.md', 'edited by hand'));
+  put(home, '.opencode/skills/gone/SKILL.md', 'x');
+  const run = newRun({ dryRun: true });
+  cleanAgent(ctx, 'opencode', [], run);
+  const labels = run.report.changes;
+  assert.ok(labels.some((c) => c.startsWith('remove-v1 (differs from the repo) ') && c.endsWith('beta')));
+  assert.ok(labels.some((c) => c.startsWith('remove-v1 (differs from the repo) ') && c.endsWith('gone')));
+  assert.ok(labels.some((c) => c.startsWith('remove-v1 ') && c.endsWith('alpha')));
+  assert.ok(existsSync(join(home, '.opencode', 'skills', 'beta')));
+});
+
+test('opencode skills: the directory itself goes once it is empty', () => {
+  const { home, ctx } = setup();
+  v1Skills(home, ctx);
+  cleanAgent(ctx, 'opencode', [], newRun());
+  assert.ok(!existsSync(join(home, '.opencode', 'skills')));
+});
+
+test('opencode skills: an unreadable catalog.json is a warning and nothing is removed', () => {
+  const { home, ctx } = setup();
+  v1Skills(home, ctx);
+  put(home, '.opencode/skills/catalog.json', '{ not json');
+  const run = newRun();
+  cleanAgent(ctx, 'opencode', [], run);
+  assert.equal(run.report.warnings.length, 1);
+  assert.ok(existsSync(join(home, '.opencode', 'skills', 'alpha', 'SKILL.md')));
+  assert.ok(existsSync(join(home, '.opencode', 'skills', 'skill-rules.json')));
 });

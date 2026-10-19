@@ -63,16 +63,19 @@ identical to the repo's, which become links. A skill copy you changed is a confl
 
 ## Environment variables for MCP
 
-API keys are read from the environment, never written into files:
+API keys are read from the environment, never written into files. This table is every variable
+`mcp/catalog.json` refers to; nothing reads a `.env` file. A server that is off by default needs its
+variable only once you turn it on.
 
-| Variable | Used by |
-| --- | --- |
-| `GITHUB_PERSONAL_ACCESS_TOKEN` | `github` |
-| `BRAVE_API_KEY` | `brave-search` |
-| `Z_AI_API_KEY` | `web-reader`, `zai-mcp-server` |
-| `SUPABASE_ACCESS_TOKEN`, `SUPABASE_PROJECT_REF` | `supabase` |
-| `EXPO_TOKEN` | `expo-mcp` |
-| `REVENUECAT_API_V2_KEY` | `revenuecat` |
+| Variable | Used by | Server on by default? |
+| --- | --- | --- |
+| `GITHUB_PERSONAL_ACCESS_TOKEN` | `github` | yes |
+| `BRAVE_API_KEY` | `brave-search` | yes |
+| `Z_AI_API_KEY` | `web-reader`, `zai-mcp-server` | `web-reader` yes (off in Codex); `zai-mcp-server` no |
+| `SUPABASE_ACCESS_TOKEN` | `supabase` | no |
+| `SUPABASE_PROJECT_REF` | `supabase` (part of its URL) | no |
+| `EXPO_TOKEN` | `expo-mcp` | no |
+| `REVENUECAT_API_V2_KEY` | `revenuecat` | no |
 
 Windows (PowerShell), then restart your agents:
 

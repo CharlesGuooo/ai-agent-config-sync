@@ -66,7 +66,8 @@ tests/                      node:test 测试
 各家整份配置、`agents/codex/profiles/`（整份替换 `config.toml`，和第 4 条冲突）、
 `agents/claude/profiles/`、`agents/cursor/skills-cursor/`、`skills/codex-system/`
 （这两个由 Cursor 和 Codex 自己维护）、`mcp/always-on/`、`mcp/opt-in/`、`mcp/README.md`、
-`INVENTORY.md`（`install --dry-run` 会打印精确的落点）。`agents/opencode/command/` 改名为
+`INVENTORY.md`（`install --dry-run` 会打印精确的落点）、`.env.example`（没有东西读 `.env`；变量清单在
+`INSTALL.md`）。`agents/opencode/command/` 改名为
 `commands/`（OpenCode 文档里的名字），文件内容不变：清理 v1 时拿本机的拷贝和这些文件逐字比较。
 
 ## 安装器

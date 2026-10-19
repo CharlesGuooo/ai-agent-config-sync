@@ -9,8 +9,10 @@ NOT get for free.
 global skills, global MCP servers, the global CLAUDE.md/AGENTS.md principles, and the
 skills of whatever directory you launched in. **What this file adds:** the home-level
 local packs at `~/<pack>/` are NOT auto-discovered when your cwd is elsewhere (e.g. a
-fresh repo on another drive). Use the routing table below to pick the right pack, then
-`cd ~/<pack>[/<sub>]` (or open it) so its skills auto-load.
+fresh repo on another drive). Use the routing table below to pick the right pack; its skills
+load when an agent session starts in `~/<pack>[/<sub>]` (or Cursor opens it) — a `cd` inside a
+running session does not load them, so if you are already running elsewhere, tell the user which
+directory to start from.
 
 ---
 
@@ -52,7 +54,7 @@ owns its two paths; don't hardcode `.<agent>/skills`.
   (Cursor, OpenCode and Pi get no hooks; their instructions tell them to confirm destructive
   commands and to leave credential files alone instead.)
 - **Skills** — progressive disclosure. Global skills auto-load by description match;
-  **local packs** below load when you're in their directory. Don't dump reusable
+  **local packs** below load when the session starts in their directory. Don't dump reusable
   expertise into CLAUDE.md — that's what skills are for.
 - **Plugins** — (Claude) marketplace plugins carry the LSPs (below); no repo-managed
   plugin bundles beyond that.
@@ -73,12 +75,13 @@ owns its two paths; don't hardcode `.<agent>/skills`.
 
 ---
 
-## Local skill packs — routing (cd into the right one first)
+## Local skill packs — routing (start the agent in the right one)
 
-Pick by task, then `cd ~/<pack>[/<sub>]` so the pack's skills auto-load. Document tasks
+Pick by task, then start the agent from `~/<pack>[/<sub>]` (or open it in Cursor) so the pack's
+skills load; a `cd` inside a running session does not load them. Document tasks
 (PDF/Word/Excel/PPT) use **global** skills directly — no pack needed.
 
-| Task domain | Pack | Sub-packs (cd deeper for the specialty) |
+| Task domain | Pack | Sub-packs (start one level deeper for the specialty) |
 | --- | --- | --- |
 | Software dev (general) | `~/dev-project/` | `frontend` `backend` `cloud-platform` `testing-qa` `devops-sre` `agent-dev` `ml` |
 | Finance / investing / trading | `~/finance-project/<sub>/` | `trading` `research` `macro` `modeling` `portfolio` `quant-methods` `advisory/{ib,pe,wealth,fund-admin,compliance}` |
@@ -89,8 +92,8 @@ Pick by task, then `cd ~/<pack>[/<sub>]` so the pack's skills auto-load. Documen
 | iOS / Swift / SwiftUI | `~/ios-project/` | flat |
 | Cross-cutting craft (writing/design quality) | `~/craft-project/<sub>/` | `writing` `design` |
 
-The per-skill index below is a discovery aid ("which pack has a skill for X?"). Once you
-`cd` into a pack, that pack's full SKILL.md descriptions auto-load — you don't need this
+The per-skill index below is a discovery aid ("which pack has a skill for X?"). Once an agent
+starts in a pack, that pack's full SKILL.md descriptions load with it — you don't need this
 index anymore.
 
 <!-- PACKS:BEGIN -->

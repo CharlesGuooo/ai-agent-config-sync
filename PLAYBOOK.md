@@ -28,7 +28,7 @@
 | 我们说的好像不是一个东西 | "把术语定下来" / "写个 ADR" | `domain-modeling` |
 | 上下文快满了但活没干完 | **"写个交接"** | `handoff` |
 | 合并前帮我审一遍 | "review 一下我的改动" | `requesting-code-review` |
-| 这活该在哪个目录干 | "我该 cd 去哪" | `skill-router` |
+| 这活该在哪个目录干 | "我该去哪个目录" | `skill-router` |
 | 想装个外面的 skill | "先扫一下安全" | `skill-scanner` |
 | GitHub 上最近有什么好东西 | **"挖点宝藏项目"** / "find me good repos" | `github-gold` |
 | 现在只想要"敲哪条命令",别解释 | 🔒 **`/action-first`** | `action-first`(开关,说"normal mode"关掉) |
@@ -109,9 +109,10 @@ OpenSpec 那 4 个走 `/opsx:` 命令,不靠描述触发。
 
 ### ③ 去对的地方
 
-> "这活该在哪做" → `skill-router` → 例如 `cd ~/dev-project/frontend`
+> "这活该在哪做" → `skill-router` → 例如在 `~/dev-project/frontend` 里启动 agent(Cursor:打开这个目录)
 
-**进目录之后,那个 pack 的领域技能才加载。** 这是分层的意义:不进去就完全不花钱。
+**在那个目录里开的会话,才加载那个 pack 的领域技能**(已经开着的会话里 `cd` 过去不算)。
+这是分层的意义:不进去就完全不花钱。
 
 ### ④ 写
 

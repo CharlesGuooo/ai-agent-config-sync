@@ -11,6 +11,10 @@ How it works and why: `docs/harness-v2.md`.
 | Node 20+ | The installer, the guard/format hooks, and most MCP servers (`npx`). Node 22+ to run the tests; 22.13+ for `doctor --deep` to check Cursor's rules (`node:sqlite`). |
 | The agents you want | Install them first. The installer configures agents; it does not install them. |
 
+| Optional | Why |
+| --- | --- |
+| `officecli` | The `officecli` skill drives it. Install with `npm install -g @officecli/officecli` — **not** the official `install.sh` / `install.ps1` / Homebrew / Scoop installers: they drop a copy of the skill into every agent's skills folder, and those entries are links into this repo, so the copy would overwrite the repo's file. officecli also refreshes those copies by itself after each self-update (`"autoUpdate"` in `~/.officecli/config.json`); turn that off and upgrade with npm, or expect `doctor` to report `skills/global/officecli/SKILL.md` as changed after an update (`git checkout -- skills/global/officecli` restores it). |
+
 ## Install
 
 ```bash

@@ -29,8 +29,8 @@ AI-friendly CLI for .docx, .xlsx, .pptx. Single binary, no dependencies, no Offi
 
 ## Install
 
-Managed by this repo via **npm**. On a synced machine `officecli` is already on
-PATH — check with `officecli --version`.
+Install it with **npm** (this repo's `INSTALL.md` lists it as optional); the harness
+installer does not install it. Check with `officecli --version`.
 
 ```bash
 npm install -g @officecli/officecli      # install / upgrade (the method this repo uses)
@@ -38,10 +38,11 @@ officecli --version                       # verify
 ```
 
 The official installers (`curl … install.sh | bash`, `irm … install.ps1 | iex`,
-Homebrew / Scoop) also work, but their installer auto-drops a copy of this
-SKILL.md into every detected agent directory. This repo owns the skill file
-instead (single source of truth), so prefer npm here. If `officecli` is still not
-found right after install, open a new terminal.
+Homebrew / Scoop) install the same binary, but they also drop a copy of this
+SKILL.md into every detected agent directory — and on a machine set up by this
+repo those skill entries are links into the repo, so the copy overwrites the
+repo's file. Use npm. If `officecli` is still not found right after install, open
+a new terminal.
 
 ---
 

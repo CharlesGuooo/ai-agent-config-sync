@@ -197,7 +197,7 @@ test('a kept skill directory of a pack no longer installed is only forgotten, an
   const note = `no longer shipped, left as it is: ${id}`;
   const dry = install(ctx, ['claude'], { packs: [], dryRun: true });
   assert.ok(dry.notes.includes(note));
-  assert.deepEqual(dry.changes, []);
+  assert.deepEqual(dry.changes, [`unlink ${join(ctx.home, 'dev-project', 'frontend', '.claude', 'skills', 'delta')}`]);
   assert.ok(readFileSync(stateFile).equals(bytes));
   const real = install(ctx, ['claude'], { packs: [] });
   assert.ok(real.notes.includes(note));
@@ -235,6 +235,113 @@ test('Codex is told once per run to trust its hooks, and only when they are writ
   assert.equal(trust(install(ctx, ALL)), 0);
   writeFileSync(join(home, '.codex', 'hooks.json'), '{}');
   assert.equal(trust(install(ctx, ['codex'], { resolutions: { all: 'repo' } })), 1);
+});
+
+test('links of a pack no longer selected go, on install and on uninstall; your own links there stay', () => {
+  const { ctx, repo } = setup();
+  const gamma = join(ctx.home, 'dev-project', '.claude', 'skills', 'gamma');
+  const delta = join(ctx.home, 'dev-project', 'frontend', '.claude', 'skills', 'delta');
+  const mine = join(ctx.home, 'dev-project', '.claude', 'skills', 'my-alpha');
+  makeDirLink(join(repo, 'skills', 'global', 'alpha'), mine);
+  install(ctx, ['claude']);
+  assert.deepEqual([isLink(gamma), isLink(delta)], [true, true]);
+  install(ctx, ['claude'], { packs: [] });
+  assert.deepEqual([isLink(gamma), isLink(delta), isLink(mine)], [false, false, true]);
+  install(ctx, ['claude']);
+  assert.deepEqual([isLink(gamma), isLink(delta)], [true, true]);
+  runInstall(ctx, { agents: ['claude'], packs: [], uninstall: true });
+  assert.deepEqual([isLink(gamma), isLink(delta), isLink(mine)], [false, false, true]);
+});
+
+test('an uninstall that meets a machine edit keeps it as it is and still finishes', () => {
+  const { ctx, home } = setup();
+  install(ctx, ['claude', 'pi']);
+  const file = join(home, '.claude.json');
+  const obj = json(file);
+  obj.mcpServers.memory.args.push('--extra');
+  writeFileSync(file, JSON.stringify(obj));
+  const r = runInstall(ctx, { agents: ['claude'], packs: ['dev'], uninstall: true });
+  assert.deepEqual(r.conflicts, []);
+  assert.ok(r.notes.includes("kept this machine's version and stopped managing it: claude:mcp:memory"));
+  assert.ok(json(file).mcpServers.memory.args.includes('--extra'));
+  const state = json(join(ctx.local, 'state.json'));
+  assert.deepEqual(Object.values(state.entries).filter((e) => e.agent === 'claude'), []);
+  assert.ok(Object.values(state.entries).some((e) => e.agent === 'pi'));
+  assert.deepEqual(state.agents, ['pi']);
+});
+
+test('what was written before a run fails is recorded, but the agent list only changes when the run finishes', () => {
+  const { ctx, home } = setup();
+  put(home, '.cursor/mcp.json', '{');
+  assert.throws(() => install(ctx, ['claude', 'cursor']), /invalid JSON/);
+  const state = json(join(ctx.local, 'state.json'));
+  assert.ok(state.entries['claude:mcp:memory']);
+  assert.ok(state.entries['claude:prompt']);
+  assert.deepEqual([state.agents, state.packs], [[], []]);
+});
+
+test('the v1 Cursor cleanup runs before the writes, so a dry run lists what the real run does', () => {
+  const { ctx, home } = setup();
+  // v1 wrote this server off; the repo now ships it on.
+  put(home, '.cursor/mcp.json', JSON.stringify({ mcpServers: { memory: { command: 'npx', enabled: false } } }));
+  const dry = install(ctx, ['cursor'], { dryRun: true, resolutions: { all: 'repo' } });
+  const real = install(ctx, ['cursor'], { resolutions: { all: 'repo' } });
+  assert.deepEqual(dry.changes, real.changes);
+  assert.equal(json(join(home, '.cursor', 'mcp.json')).mcpServers.memory.enabled, undefined);
+  assert.deepEqual(install(ctx, ['cursor']).changes, []);
+});
+
+test('an empty agent list and an unknown pack are refused before anything is written', () => {
+  const { ctx, home } = setup();
+  assert.throws(() => install(ctx, []), /no agents/);
+  assert.throws(() => install(ctx, ['claude'], { packs: ['dev', 'nope'] }), (e) => e.message.includes('unknown pack "nope"') && e.message.includes('dev'));
+  assert.deepEqual(readdirSync(home), []);
+  assert.ok(!existsSync(ctx.local));
+});
+
+test('a dangling folder link into the repo on the way is refused before anything is written', () => {
+  const { ctx, home, repo } = setup();
+  mkdirSync(join(repo, 'agents', 'claude-home'));
+  makeDirLink(join(repo, 'agents', 'claude-home'), join(home, '.claude'));
+  rmSync(join(repo, 'agents', 'claude-home'), { recursive: true });
+  const before = [snapshot(home), snapshot(repo)];
+  for (const opts of [{}, { dryRun: true }]) {
+    assert.throws(() => install(ctx, ['claude'], opts), (e) => /lead into the repo/.test(e.message) && e.message.includes(join(ctx.home, '.claude', 'CLAUDE.md')));
+  }
+  assert.deepEqual([snapshot(home), snapshot(repo)], before);
+});
+
+test('uninstalling Cursor removes its rules file and says to remove the pasted rules', () => {
+  const { ctx } = setup();
+  const rules = join(ctx.local, 'cursor-rules.md');
+  const note = 'remove the pasted harness rules from Cursor Settings → Rules → User Rules';
+  install(ctx, ['cursor']);
+  const dry = runInstall(ctx, { agents: ['cursor'], packs: ['dev'], uninstall: true, dryRun: true });
+  assert.ok(dry.changes.includes(`remove ${rules}`) && dry.notes.includes(note));
+  assert.ok(existsSync(rules));
+  const real = runInstall(ctx, { agents: ['cursor'], packs: ['dev'], uninstall: true });
+  assert.ok(real.changes.includes(`remove ${rules}`) && real.notes.includes(note));
+  assert.ok(!existsSync(rules));
+});
+
+test('a Codex or Pi server whose URL variable goes missing is warned about and left in place, on disk and in the state', () => {
+  const { ctx, home, repo } = setup();
+  put(repo, 'mcp/catalog.json', JSON.stringify({ servers: { remote: { http: 'https://${REMOTE_HOST}/mcp', on: true } } }));
+  ctx.env = { REMOTE_HOST: 'example.com' };
+  install(ctx, ['codex', 'pi']);
+  ctx.env = {};
+  const r = install(ctx, ['codex', 'pi']);
+  assert.deepEqual([r.changes, r.conflicts], [[], []]);
+  assert.deepEqual(r.warnings, ['codex:mcp:remote left as it is: environment variable REMOTE_HOST is not set', 'pi:mcp:remote left as it is: environment variable REMOTE_HOST is not set']);
+  assert.match(readFileSync(join(home, '.codex', 'config.toml'), 'utf8'), /url = "https:\/\/example\.com\/mcp"/);
+  assert.equal(json(join(home, '.pi', 'agent', 'mcp.json')).mcpServers.remote.url, 'https://example.com/mcp');
+  const entries = json(join(ctx.local, 'state.json')).entries;
+  assert.ok(entries['codex:mcp:remote'] && entries['pi:mcp:remote']);
+  // Uninstalling needs no URL: nothing to warn about, and the servers go.
+  const u = runInstall(ctx, { agents: ['codex', 'pi'], packs: ['dev'], uninstall: true });
+  assert.deepEqual([u.warnings, u.conflicts], [[], []]);
+  assert.doesNotMatch(readFileSync(join(home, '.codex', 'config.toml'), 'utf8'), /mcp_servers\.remote/);
+  assert.deepEqual(json(join(home, '.pi', 'agent', 'mcp.json')).mcpServers, {});
 });
 
 // What the v1 sync left on a machine that ran it for every agent.

@@ -177,6 +177,24 @@ test('resolvesInto follows a folder link higher up the path, even to a place tha
   assert.ok(resolvesInto(join(dir, 'repo-link'), join(home, '.claude', 'x')));
 });
 
+test('resolvesInto follows a dangling link on the way by where it points, and stops on links that point at each other', () => {
+  const dir = tempDir();
+  const repo = join(dir, 'repo');
+  mkdirSync(join(repo, 'gone'), { recursive: true });
+  mkdirSync(join(dir, 'gone-elsewhere'));
+  const home = join(dir, 'home');
+  makeDirLink(join(repo, 'gone'), join(home, '.claude'));
+  makeDirLink(join(dir, 'gone-elsewhere'), join(home, '.cursor'));
+  removeTree(join(repo, 'gone'));
+  removeTree(join(dir, 'gone-elsewhere'));
+  assert.ok(resolvesInto(repo, join(home, '.claude')));
+  assert.ok(resolvesInto(repo, join(home, '.claude', 'skills', 'alpha')));
+  assert.ok(!resolvesInto(repo, join(home, '.cursor', 'mcp.json')));
+  makeDirLink(join(dir, 'b'), join(dir, 'a'));
+  makeDirLink(join(dir, 'a'), join(dir, 'b'));
+  assert.ok(!resolvesInto(repo, join(dir, 'a', 'x')));
+});
+
 test('inside() is true only below the root', () => {
   const root = tempDir();
   assert.ok(inside(root, join(root, 'a', 'b')));

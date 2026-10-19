@@ -106,7 +106,7 @@ DESIGN-IT-TWICE、`improve-codebase-architecture`、`dispatching-parallel-agents
 | `~/productivity-project/` | 工作流(Notion / Obsidian / NotebookLM / Google Workspace) |
 | `~/data-analysis-project/` | 数据分析/EDA/统计/可视化 |
 | `~/ios-project/` | iOS/SwiftUI(widget/Live Activity / Rive / 动画 / HIG 设计 / Mac 构建 runbook) |
-| `~/craft-project/` | 跨领域「功力」(writing:去 AI 味;design:审美/anti-slop) |
+| `~/craft-project/` | 跨领域「功力」(design:审美/anti-slop;去 AI 味用全局的 `no-ai-slop`) |
 
 新开一个任意项目时:让 agent 读本仓库的 `HARNESS.md`,它据此决定去哪个 pack。
 

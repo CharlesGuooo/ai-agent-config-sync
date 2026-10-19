@@ -47,7 +47,7 @@ When a task becomes domain-specific, start the agent from (or open) the matching
 | Research | `~/research-project/` (container; start in `literature/` `gates/` `manuscript/` `review/` `talks/` for actual skills) |
 | Productivity | `~/productivity-project/` |
 | iOS / Swift / SwiftUI | `~/ios-project/` |
-| Craft / 表达功力 (cross-cutting) | `~/craft-project/` (container; start in `writing/` `design/`) |
+| Craft / 表达功力 (cross-cutting) | `~/craft-project/` (container; start in `design/`) |
 
 Document tasks (PDF / Word / Excel / PowerPoint) use the global `pdf`, `officecli` and `markitdown` skills directly — no project switch needed.
 The global layer routes to the right directory and stops there; the local pack owns the domain guidance.

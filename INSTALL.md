@@ -31,7 +31,7 @@ backed up. On Windows, some skill files sit deep in the tree; clone to a short p
 
 Name the agents you have — any of `claude`, `codex`, `cursor`, `opencode`, `pi`. Only those
 agents' files are touched, plus the pack folders in your home (`~/dev-project/`, …) where each
-pack's skills are linked. The first install takes all eight packs; narrow them with
+pack's skills are linked. The first install takes every pack; narrow them with
 `--packs dev,research`. A later `install` without `--packs` (to add an agent, say) keeps the packs
 this machine already has.
 
@@ -129,6 +129,10 @@ git pull
 node harness.mjs update          # re-apply for the agents and packs installed here
 node harness.mjs doctor          # drift, conflicts, leftovers, missing variables
 ```
+
+`update` keeps the packs this machine has, so a pack the repo gains later is not added on its own.
+To take it, name all the packs you want: `node harness.mjs install --agents <yours> --packs dev,research,media`
+(`node harness.mjs help` lists the pack names).
 
 `--dry-run` on `install`, `update`, `resolve` or `uninstall` shows what would change and writes
 nothing; `--verbose` lists every change instead of a count per kind.

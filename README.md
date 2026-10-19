@@ -92,7 +92,7 @@ DESIGN-IT-TWICE、`improve-codebase-architecture`、`dispatching-parallel-agents
 
 ---
 
-## 📦 Local Project Packs(8 个)
+## 📦 Local Project Packs(10 个)
 
 按领域组织。**在那个目录里启动 agent(Cursor:打开那个目录),该 pack 的 skills 就会加载**(token 成本最低);
 已经开着的会话里 `cd` 过去不算。每个 pack 的完整 skill 清单和数量见 `HARNESS.md`(生成、不漂移):
@@ -103,10 +103,12 @@ DESIGN-IT-TWICE、`improve-codebase-architecture`、`dispatching-parallel-agents
 | `~/finance-project/` | 量化/交易(容器:trading / research / portfolio / quant-methods) |
 | `~/research-project/` | 学术/科研(AI/CS 取向。容器,5 个子包:literature / gates / manuscript / review / talks) |
 | `~/marketing-project/` | 营销/SEO/增长/音频(ElevenLabs 套件)/ 小红书 · WeChat |
-| `~/productivity-project/` | 工作流(Notion / Obsidian / NotebookLM / Google Workspace) |
+| `~/productivity-project/` | 工作流(Notion / Obsidian / NotebookLM / Google Workspace)、求职与简历、调研到决策 |
 | `~/data-analysis-project/` | 数据分析/EDA/统计/可视化 |
 | `~/ios-project/` | iOS/SwiftUI(widget/Live Activity / Rive / 动画 / HIG 设计 / Mac 构建 runbook) |
-| `~/craft-project/` | 跨领域「功力」(design:审美/anti-slop;去 AI 味用全局的 `no-ai-slop`) |
+| `~/craft-project/` | 跨领域「功力」(writing:中文去 AI 味;design:审美/anti-slop) |
+| `~/media-project/` | 视频剪辑(ffmpeg / 多机位同步与剪辑 / 字幕 / 叠加 / 降噪) |
+| `~/life-project/` | 命理(八字 / 风水 / 六壬 / 梅花 / 奇门 / 塔罗 / 星盘)与情感 |
 
 新开一个任意项目时:让 agent 读本仓库的 `HARNESS.md`,它据此决定去哪个 pack。
 

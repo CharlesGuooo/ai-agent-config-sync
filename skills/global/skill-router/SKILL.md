@@ -64,7 +64,9 @@ These are available regardless of directory — don't route the user just to use
 | Data analysis | `~/data-analysis-project/` | EDA, statistics, visualization, notebooks, forecasting, time-series |
 | Marketing | `~/marketing-project/` | SEO, ads, copywriting, growth, social, **ElevenLabs audio** |
 | Research / academic | `~/research-project/<sub>/` (5 sub-folders) | Literature and surveys, experiment framing, manuscript writing and LaTeX, figures, review and rebuttal, talks and posters — see "Research sub-routing" below |
-| Productivity | `~/productivity-project/` | Obsidian, Notion, NotebookLM, Google Workspace, planning with files |
+| Productivity | `~/productivity-project/` | Obsidian, Notion, NotebookLM, Google Workspace, planning with files, job search and CVs, research-to-decision memos |
+| Video editing | `~/media-project/` | ffmpeg recipes, multicam sync and cuts, subtitles, overlays, audio cleanup |
+| Divination / dating | `~/life-project/` | 八字, 风水, 六壬, 梅花易数, 奇门, 塔罗, 星盘, dating advice |
 
 ## Domain Heuristics
 

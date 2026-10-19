@@ -87,7 +87,7 @@ node harness.mjs check                       # repo 自检，适合 CI：清单�
 
 `install`、`update`、`resolve`、`uninstall` 都能加 `--dry-run`（只报告，什么都不写）和
 `--verbose`（逐条列出改动；不加时超过 40 条就按类计数）。`install` 不带 `--packs` 时沿用本机
-已装的 pack（第一次装是全部 8 个），所以给一台机器加 agent 不会悄悄扩大 pack。拼错的选项直接
+已装的 pack（第一次装是全部 pack），所以给一台机器加 agent 不会悄悄扩大 pack。拼错的选项直接
 报错退出，不会被当成没写。有冲突时退出码是 1。
 
 `install`、`update`、`resolve`、`uninstall` 拒绝在 git worktree 里对真实 home 运行，因为链接会

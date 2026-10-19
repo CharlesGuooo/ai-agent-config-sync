@@ -105,9 +105,11 @@ index anymore.
 
 ### Local skill packs — index
 
-#### dev-project (83)
+#### dev-project (86)
+- `archify` — Create polished, validated architecture, workflow, sequence, data-flow, and lifecycle/state diagrams as explorable standalone HTML with i...
 - `changelog-generator` — Generate changelogs and release notes from git history/commits.
 - `codebase-onboarding` — Produce onboarding docs and a guided tour of an unfamiliar codebase.
+- `codebase-to-course` — Turn a codebase into an interactive single-page HTML course that teaches non-technical readers how the code works: scroll navigation, ani...
 - `database-schema-designer` — Design or review a database schema — tables, relationships, indexes, normalization, migrations.
 - `dependency-auditor` — Audit project dependencies for security vulnerabilities, outdated/abandoned packages, and license issues.
 - `drawio-skill` — Use when user requests diagrams, flowcharts, architecture charts, or visualizations.
@@ -134,6 +136,7 @@ index anymore.
   - `langgraph-human-in-the-loop` — INVOKE THIS SKILL when implementing human-in-the-loop patterns, pausing for approval, or handling errors in LangGraph.
   - `langgraph-persistence` — INVOKE THIS SKILL when your LangGraph needs to persist state, remember conversations, travel through history, or configure subgraph check...
   - `mcp-builder` — Guide for creating high-quality MCP (Model Context Protocol) servers that enable LLMs to interact with external services through well-des...
+  - `multi-agent-systems` — Design knowledge for agent loops and multi-agent graphs — when a task warrants a loop at all, when to escalate from one agent to many, to...
   - `prompt-optimizer` — Creates, optimizes, and iteratively refines agent prompts, system prompts, developer prompts, and reusable prompt templates.
 - **backend/**
   - `backend-dev-guidelines` — Comprehensive backend development guide for Node.js/Express/TypeScript microservices.
@@ -197,7 +200,7 @@ index anymore.
   - `senior-qa` — Generates unit tests, integration tests, and E2E tests for React/Next.js applications.
   - `webapp-testing` — Toolkit for interacting with and testing local web applications using Playwright.
 
-#### finance-project (31)
+#### finance-project (35)
 - **portfolio/**
   - `backtest-expert` — Expert guidance for systematic backtesting of trading strategies.
   - `edge-concept-synthesizer` — Abstract detector tickets and hints into reusable edge concepts with thesis, invalidation signals, and strategy playbooks before strategy...
@@ -231,10 +234,14 @@ index anymore.
   - `trade-hypothesis-ideator` — Generate falsifiable trade strategy hypotheses from market data, trade logs, and journal snippets.
   - `trader-memory-core` — Track investment theses across their lifecycle — from screening idea to closed position with postmortem.
 - **trading/**
+  - `ashare-nightly-judgment` — 在 15:00 → 次日 09:00 的夜间窗口跑 A 股短线（低吸/反包）研判：三步复盘 → 环境定调 → 板块归因 → 产出一份能被 `observer/scoreboard.py` 评分的次日预期（metric × direction + base_rate + co...
+  - `ashare-short-term-playbook` — A股短线（低吸/反包）研判的共用词汇与判读语义——初强与末强、物极必反、换手率的分歧与锁筹读数、 龙头与后排、板块逻辑归因、题材联想、出货特征，以及平台字段的语义陷阱（`up_ratio` 是涨跌家数比 而非上涨占比、`avg_turnover` 是成交额而非换手率、同表混...
+  - `ashare-strategy-validation` — 把交易书里的经验法则变成**可证伪的 A 股规格**再判死活：先算样本量够不够，再写零假设、 无条件基准、入场/离场/止损/持有期、预登记终止日期，**让回测下结论而不是让模型下结论**。
+  - `ashare-veto-review` — 对一份 A 股夜间研判计划或候选清单做**独立否决复核**：只能排除（附理由）或附加警示， **不新增标的、不重排序、不背书、不改写**。一轮，无修订循环，干净上下文，且必须与写计划的模型不同； 只读，不写。用于「帮我挑刺」「这批票有没有雷」「过一遍否决闸门」「复核一下今晚...
   - `pair-trade-screener` — Statistical arbitrage tool for identifying and analyzing pair trading opportunities.
   - `technical-analyst` — This skill should be used when analyzing weekly price charts for stocks, stock indices, cryptocurrencies, or forex pairs.
 
-#### research-project (30)
+#### research-project (31)
 - `research-router` — Routes a research task to one of five sub-packs under ~/research-project/ — literature, gates, manuscript, review, talks.
 - **gates/**
   - `ablation-planning` — Enumerates the ablations a paper actually needs, then costs and orders them against a compute budget and maps each to the claim it defends.
@@ -268,6 +275,7 @@ index anymore.
   - `rebuttal` — Writes, audits or revises a point-by-point response to reviewers.
 - **talks/**
   - `latex-posters` — Create professional research posters in LaTeX using beamerposter, tikzposter, or baposter.
+  - `nature-paper2ppt` — Build a complete Nature-style Chinese PPTX presentation from a scientific paper, preprint, PDF, article text, figure legends, or reading ...
   - `pptx-posters` — Create research posters using HTML/CSS that can be exported to PDF or PPTX.
   - `scientific-slides` — Builds a research talk — slide structure, what goes on each slide, timing, and a visual validation pass.
 
@@ -319,10 +327,19 @@ index anymore.
 - `wechat-ai-publisher` — 自动采集 AI 热门内容，撰写公众号文章，生成配图并发布到微信公众号草稿箱。当用户说"发布AI热点"、"写公众号文章"、"采集AI内容"、"publish AI news"时触发。
 - `xhs-visual-director` — Use this skill when planning, redesigning, or reviewing Xiaohongshu carousel visuals, covers, 3:4 image posts, page-by-page visual direct...
 
-#### productivity-project (12)
+#### productivity-project (24)
+- `agent-reach` — MUST USE when user wants to 调研/research/搜索/search/查/找/look up anything on the internet — e.g.
+- `autonomy-audit` — 逐环节审计一条变现路径能否真的无人托管，输出「人工小时/月」的可加总估算。
+- `career-ops` — AI job search command center -- evaluate offers, generate CVs, scan portals, track applications.
+- `decision-memo` — 把调研收口成一份可拍板的决策备忘录：选定 ONE 条路径，说清为什么淘汰另外两条最强候选， 给出 30 天落地方案、kill 判据和敞口自述。当你要「出最终结论」「选一条」「写决策文档」 「给落地方案」「收口」时使用。含六维加权打分卡与对抗性复核流程（打分必须在干净上下文里做）。
+- `evidence-ledger` — 维护证据台账并给来源分级，专治「AI 月入 X 万」类内容营销污染。
 - `gws` — Google Workspace CLI for AI agents.
+- `idea-haunter` — Data-driven 4-stage funnel for discovering and validating indie-hacker product ideas from Reddit pain points, sizing them with Google Tre...
+- `job-application-assistant` — Assists with job applications: evaluating job postings, tailoring CVs, writing cover letters, and preparing for interviews.
+- `joe-ielts-writing` — 按 Joe 老师的雅思写作教学体系陪学生练写作。大作文（Task 2）：审题四陷阱、"为什么"转述法、 题型与结构、具象化/情景化 Brainstorming、中心句与因果论证、冲 7 语言三件套；语法地基：主干法、 三类从句、五种修饰（汉译英、长难句）；按官方四项评分标准...
 - `json-canvas` — Create and edit JSON Canvas files (.canvas) with nodes, edges, groups, and connections.
 - `markdown-mermaid-writing` — Comprehensive markdown and Mermaid diagram writing skill.
+- `monetization-path-scan` — 枚举并初筛「可无人托管运转的变现路径」候选池。当你需要生成候选变现路径、 横向对比赚钱方式、回答「有哪些路可以走」「先把候选列出来」「筛掉不可行的」时使用。
 - `notebooklm` — Drive Google NotebookLM from the agent — auto-upload PDFs/sources, then get grounded summaries and Q&A back.
 - `notion-cli` — Use the Notion CLI (`ntn`) to interact with the Notion API, manage workers, and upload files.
 - `obsidian-bases` — Create and edit Obsidian Bases (.base files) with views, filters, formulas, and summaries.
@@ -331,7 +348,10 @@ index anymore.
 - `open-notebook` — Self-hosted, open-source alternative to Google NotebookLM for AI-powered research and document analysis.
 - `planning-with-files` — Implements Manus-style file-based planning to organize and track progress on complex tasks.
 - `ppt-master` — Generate truly EDITABLE PowerPoint (.pptx) from any document — native shapes and native animations (not slide images), optional speaker-n...
+- `resume-writing` — Use when writing, rewriting, or tailoring a resume or academic CV kept as LaTeX source in a repository: one shared class file, one .tex p...
+- `upskill` — Compares tracked job postings against the candidate profile to identify skill gaps and generate a prioritized learning plan with study re...
 - `what-if-oracle` — Run structured What-If scenario analysis with multi-branch possibility exploration.
+- `youtube-transcript` — 提取 YouTube 视频的字幕文本，用于"观看"并学习视频教程内容。当你遇到 YouTube 链接、需要了解某个视频讲了什么、或要照着视频教程操作时使用。也可用于列出视频有哪些字幕语言轨道。Triggers on YouTube URLs, youtu.be links,...
 
 #### ios-project (21)
 - `alarmkit` — Build alarms and timers with iOS 26's AlarmKit.
@@ -356,14 +376,38 @@ index anymore.
 - `swiftui-view-refactor` — SwiftUI view refactoring.
 - `widgetkit-liveactivity` — Build or review iOS widgets (WidgetKit), Live Activities (ActivityKit), and the Dynamic Island.
 
-#### craft-project (6)
+#### craft-project (8)
 - **design/**
   - `brand` — Brand voice, visual identity, messaging frameworks, asset management, brand consistency.
   - `design-system` — Token architecture, component specifications, and slide generation.
   - `impeccable` — Give an AI coding agent real design craft: a shared design vocabulary, live in-browser iteration, and 44 deterministic checks that catch ...
+  - `impeccable-ppt` — Use when the visual craft or aesthetics of a slide deck / PowerPoint / 演示文稿 / 答辩PPT / presentation matter — making slides look designed a...
   - `slides` — Create strategic HTML presentations with Chart.js, design tokens, responsive layouts, copywriting formulas, and contextual slide strategies.
   - `taste-skill` — Anti-slop frontend skill for landing pages, portfolios, and redesigns.
   - `ui-styling` — Create beautiful, accessible user interfaces with shadcn/ui components (built on Radix UI + Tailwind), Tailwind CSS utility-first styling...
+- **writing/**
+  - `humanizer-zh` — 去除文本中的 AI 生成痕迹。适用于编辑或审阅文本，使其听起来更自然、更像人类书写。
+
+#### life-project (10)
+- `astrology-chart` — Generate real, astronomically-calculated natal (birth) charts, planetary transits, and synastry/compatibility readings using Swiss Epheme...
+- `bazi` — 四柱八字命理分析。通过交互式步骤收集出生信息（姓名、曾用名、阳历/农历生日、时辰、性别、出生地）， 排出四柱八字，参照经典命理典籍（穷通宝典、三命通会、滴天髓、渊海子平、子平真诠等）进行专业分析。
+- `fengshui` — 传统堪舆风水顾问：玄空飞星、八宅、形势峦头、择日，兼配八字。
+- `liuren-skill` — 大六壬排盘与断卦技能。支持月将加时、起四课三传、排天将神煞、断课分析、课体关系判断、毕法赋断语自动化、占验反馈系统、金口诀集成、天将关系网、课经案例库（200+）。
+- `mangpai` — 盲派（盲师派）四柱命理断命。以「做功／体用／宫星／取象」为核心，不是传统子平的旺衰用神法。
+- `meihua-divination` — 梅花易数 / 五行生克风格的中式玄学解读：当前运势、感情、事业选择、项目走势、个人倾向， 侧重趋势诊断和可执行建议而非绝对预言。Use for 中式玄学 / 梅花易数 readings.
+- `qimen` — 奇门遁甲排盘与预测分析工具。使用Python脚本自动排盘（秒出结果），Claude负责综合断局分析。
+- `qingsheng` — 情圣 — 中文男性社交与恋爱私教（中文恋爱 AI · 恋爱话术生成器 · 微信聊天助手 · 高情商回复 · 情感咨询替代）。帮兄弟读懂女生发的消息、看懂聊天/朋友圈截图、判断对方是不是对自己有意思、想清楚下一步该回什么 / 该不该回 / 该怎么约。覆盖微信、探探、Soul、...
+- `simp` — 追爱军师 — 帮你用最纯情的话把心上人追到手 | Love Strategist — win over your crush with the most sincere words
+- `tarot` — Use when the user asks for tarot/塔罗/占卜/抽牌/牌阵/每日一牌/运势/感情、事业、决策指引.
+
+#### media-project (7)
+- `ffmpeg` — Provides FFmpeg commands and filter recipes for video automation pipelines - format conversion, resizing, trimming, audio mixing, subtitl...
+- `openchatcut` — Connect an MCP-capable coding agent to OpenChatCut and edit local video projects.
+- `video-audio-cleanup` — Clean up and improve the audio of a phone-recorded video or audio file — remove hiss/rumble/handling noise, fix a thin or boxy mic sound,...
+- `wjs-burning-subtitles` — Use when the user has a video + an SRT and wants the subtitles either burned into the pixels (libass, always-visible) or soft-muxed as a ...
+- `wjs-editing-multicam` — Use when the user has 2+ recordings of the same event (each with a `.sync.json` sidecar from wjs-syncing-multicam) and wants them combine...
+- `wjs-overlaying-video` — Use when the user has one or more video clips and wants to add post-production on top — AI-generated cover as first frame, HTML/CSS capti...
+- `wjs-syncing-multicam` — Use when the user has 2+ video / audio recordings of the same event captured by different devices (cameras, phones, separate audio record...
 
 <!-- PACKS:END -->
 

@@ -1,0 +1,216 @@
+/* ============================================================================
+   mangpai · 盲派详批报告 · print-first 样式表
+   ----------------------------------------------------------------------------
+   这是**唯一样式来源**。节内容片段（sections/*.html）不得自带 <style> 或
+   inline style=，build_pdf.py 会 lint 并报错退出。
+   可用类名清单见 output/SPEC.md「可用 CSS 类」。
+
+   字体栈按本机实测确定（InstalledFontCollection + 文件校验）：
+     微软雅黑 msyh.ttc 18.8MB · 宋体 simsun.ttc 17.5MB · 黑体 simhei.ttf 9.3MB
+     楷体 simkai.ttf 11.2MB · 等线 Deng.ttf 15.6MB · Noto Sans/Serif SC 各多字重
+   不使用 Source Han Serif SC —— 本机只装了 Heavy 一个字重。
+   ============================================================================ */
+
+@page { size: A4; margin: 17mm 15mm 15mm 15mm; }
+
+:root {
+  /* —— 墨色（文字）—— */
+  --ink:        #2b2825;
+  --ink-soft:   #55504a;
+  --ink-faint:  #8b8378;
+
+  /* —— 宣纸（底色，仅用于面板／引文，不铺满页）—— */
+  --paper:      #f7f4ed;
+  --paper-deep: #efeade;
+  --paper-card: #fbf8f1;
+
+  /* —— 语义色 —— */
+  --vermillion:      #c1432f;   /* 朱砂 · 凶 / 警示 */
+  --vermillion-deep: #8e2f20;
+  --jade:            #3f7a52;   /* 竹绿 · 吉 */
+  --jade-soft:       #eaf2ec;
+  --azure:           #2e5f8c;   /* 青金 · 标题 / 结构 */
+  --azure-deep:      #1f4361;
+  --gold:            #8a6d2f;   /* 赭金 · 引文 / 强调 */
+
+  /* —— 线 —— */
+  --line:       #cfc8ba;
+  --line-soft:  #e2dccf;
+  --line-faint: #eeeae0;
+
+  /* —— 字体栈 —— */
+  --f-sans:  "Microsoft YaHei", "Noto Sans SC", "Deng", sans-serif;
+  --f-serif: "SimSun", "Noto Serif SC", "STSong", serif;
+  --f-head:  "SimHei", "Microsoft YaHei", sans-serif;
+  --f-kai:   "KaiTi", "STKaiti", serif;
+  --f-mono:  "Consolas", "Courier New", monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: var(--f-sans);
+  color: var(--ink);
+  background: #fff;
+  font-size: 9.6pt;
+  line-height: 1.72;
+  margin: 0;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* ── 标题 ─────────────────────────────────────────────────────────── */
+h1, h2, h3, h4 { font-family: var(--f-head); font-weight: normal; margin: 0; }
+
+h2 {
+  font-size: 15pt; color: var(--azure);
+  margin: 0 0 9px; padding: 0 0 6px;
+  border-bottom: 2.2px solid var(--azure);
+  letter-spacing: .5px;
+  break-after: avoid;
+}
+h3 {
+  font-size: 11.4pt; color: var(--ink);
+  margin: 16px 0 7px; padding-left: 9px;
+  border-left: 4px solid var(--gold);
+  break-after: avoid;
+}
+h4 { font-size: 10.2pt; color: var(--ink-soft); margin: 12px 0 5px; break-after: avoid; }
+
+p  { margin: 0 0 7px; text-align: justify; }
+ul, ol { margin: 5px 0 8px; padding-left: 19px; }
+li { margin: 2.5px 0; }
+
+/* ── 分节：每个 .sec 起新页 ───────────────────────────────────────── */
+.sec { break-before: page; }
+.sec:first-of-type { break-before: auto; }
+
+/* ── 表格 ─────────────────────────────────────────────────────────── */
+table { width: 100%; border-collapse: collapse; font-size: 8.7pt; margin: 8px 0 11px; }
+th, td { border: 1px solid var(--line); padding: 4.5px 6px; vertical-align: top; text-align: left; }
+th { background: var(--paper-deep); font-weight: normal; font-family: var(--f-head); color: var(--ink-soft); }
+thead { display: table-header-group; }   /* 长表跨页时重复表头 */
+tr { break-inside: avoid; }
+td.c, th.c { text-align: center; }
+
+/* ── 金口诀引文（楷体，与正文视觉分离）───────────────────────────── */
+.q {
+  font-family: var(--f-kai); font-size: 10.2pt; line-height: 1.75;
+  background: var(--paper); border-left: 3px solid var(--gold);
+  padding: 8px 12px; margin: 8px 0 10px;
+  color: #4a3d22; break-inside: avoid;
+}
+.q b { color: var(--gold); }
+.src { font-family: var(--f-sans); font-size: 7.8pt; color: var(--ink-faint); }
+
+/* ── 面板 ─────────────────────────────────────────────────────────── */
+.box {
+  background: var(--paper-card); border: 1px solid var(--line-soft);
+  border-radius: 3px; padding: 9px 12px; margin: 9px 0; break-inside: avoid;
+}
+.box.warn { background: #fdf5f3; border-color: #e6c5be; }
+.box.good { background: var(--jade-soft); border-color: #c3ddca; }
+.box.key  { background: #f2f6fa; border-color: #c6d7e6; }
+.lbl {
+  font-family: var(--f-head); font-size: 8.6pt; color: var(--ink-faint);
+  letter-spacing: 1px; display: block; margin-bottom: 3px;
+}
+
+/* ── 语义色 ───────────────────────────────────────────────────────── */
+.ji    { color: var(--jade);       font-weight: bold; }   /* 吉 */
+.xiong { color: var(--vermillion); font-weight: bold; }   /* 凶 */
+.zh    { color: var(--ink-faint); }                       /* 中性 */
+
+/* ── 置信度标签 ───────────────────────────────────────────────────── */
+.cf   { font-size: 7.8pt; padding: 1px 5px; border-radius: 8px;
+        background: var(--paper-deep); color: var(--ink-soft); white-space: nowrap; }
+.cf.h { background: var(--jade-soft); color: var(--jade); }
+.cf.m { background: #f5efe0;          color: var(--gold); }
+.cf.l { background: #fbeae7;          color: var(--vermillion); }
+
+/* ── 四柱盘面表 ───────────────────────────────────────────────────── */
+.pillars { width: 100%; border-collapse: collapse; font-size: 9.2pt; margin: 10px 0; }
+.pillars th {
+  background: var(--azure); color: #fff; text-align: center;
+  font-size: 8.8pt; padding: 5px; border-color: var(--azure-deep);
+}
+.pillars td { text-align: center; padding: 5px 4px; }
+.pillars td.big { font-family: var(--f-serif); font-size: 19pt; line-height: 1.25; padding: 2px; color: var(--ink); }
+.pillars td.big.hi { color: var(--vermillion); }
+.pillars td.rk {
+  background: var(--paper-deep); text-align: right; font-size: 8.4pt;
+  color: var(--ink-faint); width: 52px; padding-right: 7px;
+}
+
+/* ── 封面 ─────────────────────────────────────────────────────────── */
+.cover { text-align: center; padding-top: 34mm; }
+.cover .t1 { font-family: var(--f-head); font-size: 27pt; letter-spacing: 9px; color: var(--azure); }
+.cover .t2 { font-size: 10.6pt; color: var(--ink-faint); letter-spacing: 4px; margin-top: 9px; }
+.cover .rule { width: 62mm; height: 2px; background: var(--gold); margin: 16px auto 20px; }
+.cover .gz { font-family: var(--f-serif); font-size: 32pt; letter-spacing: 12px; color: var(--ink); margin: 14px 0 4px; }
+.cover .meta { font-size: 9.6pt; color: var(--ink-soft); line-height: 2.1; margin-top: 16px; }
+.cover .oneline {
+  margin: 24px auto 0; max-width: 132mm;
+  font-family: var(--f-kai); font-size: 12pt; line-height: 2; color: #4a3d22;
+  background: var(--paper);
+  border-top: 2px solid var(--gold); border-bottom: 2px solid var(--gold);
+  padding: 13px 16px;
+}
+.foot { margin-top: 18px; font-size: 8pt; color: var(--ink-faint); text-align: center; }
+
+/* ── 大白话节「一看就懂」：字号更大、行距更松、零表格 ─────────────── */
+.plain { font-size: 10.6pt; line-height: 1.95; }
+.plain h3 {
+  font-size: 12.6pt; color: var(--azure); border-left-color: var(--vermillion);
+  border-left-width: 5px; margin: 20px 0 9px; padding-left: 11px;
+}
+.plain h3:first-child { margin-top: 4px; }
+.plain p { margin: 0 0 11px; }
+.plain .hi {
+  display: block; font-family: var(--f-kai); font-size: 12.4pt; line-height: 1.95;
+  background: var(--paper); border-left: 4px solid var(--vermillion);
+  padding: 11px 15px; margin: 12px 0; color: #4a3d22; break-inside: avoid;
+}
+.plain ul { margin: 6px 0 12px; padding-left: 21px; }
+.plain li { margin: 5px 0; }
+.plain .ask {
+  background: var(--jade-soft); border: 1px solid #c3ddca; border-radius: 3px;
+  padding: 11px 14px; margin: 14px 0; break-inside: avoid;
+}
+
+/* ── 时间轴（人生分段走势）─────────────────────────────────────────── */
+.tl { border-left: 2.5px solid var(--line-soft); margin-left: 5px; padding-left: 14px; }
+.tl .ev { position: relative; margin: 0 0 13px; break-inside: avoid; }
+.tl .ev::before {
+  content: ""; position: absolute; left: -19.5px; top: 5px;
+  width: 8px; height: 8px; border-radius: 50%; background: var(--azure);
+}
+.tl .ev.r::before { background: var(--vermillion); }
+.tl .ev.g::before { background: var(--jade); }
+.tl .yr { font-family: var(--f-head); font-size: 9.8pt; color: var(--azure); }
+.tl .ev.r .yr { color: var(--vermillion); }
+.tl .ev.g .yr { color: var(--jade); }
+
+/* ── 分页工具 ─────────────────────────────────────────────────────── */
+/* 节太长导致末尾一小块溢到新页（验收会报「近空页」）时，在合适的小标题上
+   加 class="pb" 主动断页，把内容切得均匀些。用在 h3/h4 上最自然。 */
+.pb { break-before: page; }
+/* 反之：不让这个块与上文分离 */
+.keep { break-inside: avoid; break-before: avoid; }
+
+/* ── 杂项 ─────────────────────────────────────────────────────────── */
+.two { display: flex; gap: 11px; }
+.two > div { flex: 1; min-width: 0; }
+code { font-family: var(--f-mono); font-size: 8.6pt; background: var(--paper-deep); padding: 0 3px; border-radius: 2px; }
+.nb { font-size: 8.4pt; color: var(--ink-faint); margin-top: 4px; }
+pre {
+  font-family: var(--f-mono); font-size: 9.4pt; line-height: 1.85;
+  background: var(--paper); border: 1px solid var(--line-soft); border-radius: 3px;
+  padding: 10px 12px; margin: 8px 0; overflow-x: auto; break-inside: avoid;
+}
+.disclaimer {
+  border: 1.5px solid var(--gold); border-radius: 3px;
+  padding: 14px 18px; background: #fbf9f4; margin-top: 26px; break-inside: avoid;
+}
+.disclaimer .t { font-family: var(--f-head); font-size: 11pt; color: var(--gold); margin-bottom: 7px; }
+.disclaimer p { font-family: var(--f-kai); font-size: 10.6pt; line-height: 1.95; color: #4a3d22; margin: 0; }

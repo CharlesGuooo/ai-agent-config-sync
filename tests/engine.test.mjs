@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync, readdirSync, writeFileSync, rmSync, mkdirSync, lstatSync, readlinkSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, writeFileSync, rmSync, mkdirSync, lstatSync, readlinkSync, chmodSync } from 'node:fs';
 import { join } from 'node:path';
 import { fixtureRepo, tempDir, put } from './helpers.mjs';
 import { makeContext, isLink, linkTarget, samePath, makeDirLink } from '../lib/platform.mjs';
@@ -184,6 +184,15 @@ test('a pack folder linked into the repo stops the run too, though the skills fo
   assert.deepEqual(readdirSync(home), ['dev-project']);
 });
 
+test('a pack folder linked into the repo is refused only when the run would write or prune through it', () => {
+  const { ctx, home, repo } = setup();
+  makeDirLink(join(repo, 'skills', 'project-packs', 'dev-project'), join(home, 'dev-project'));
+  const before = snapshot(join(repo, 'skills'));
+  assert.deepEqual(install(ctx, ['claude'], { packs: [] }).conflicts, []);
+  assert.throws(() => install(ctx, ['claude']), (e) => /lead into the repo/.test(e.message) && e.message.includes(join(ctx.home, 'dev-project', '.claude', 'skills')));
+  assert.deepEqual(snapshot(join(repo, 'skills')), before);
+});
+
 test('a kept skill directory of a pack no longer installed is only forgotten, and a dry run of that changes no state', () => {
   const { ctx } = setup();
   const gamma = join(ctx.home, 'dev-project', '.claude', 'skills', 'gamma');
@@ -270,14 +279,55 @@ test('an uninstall that meets a machine edit keeps it as it is and still finishe
   assert.deepEqual(state.agents, ['pi']);
 });
 
-test('what was written before a run fails is recorded, but the agent list only changes when the run finishes', () => {
-  const { ctx, home } = setup();
-  put(home, '.cursor/mcp.json', '{');
-  assert.throws(() => install(ctx, ['claude', 'cursor']), /invalid JSON/);
+// Whether a read-only file refuses writes on this host (it does not for root on POSIX).
+const readOnlyBlocksWrites = (() => {
+  const probe = put(tempDir(), 'probe', 'x');
+  chmodSync(probe, 0o444);
+  try {
+    writeFileSync(probe, 'y');
+    return false;
+  } catch {
+    return true;
+  } finally {
+    chmodSync(probe, 0o644);
+  }
+})();
+const noReadOnly = { skip: !readOnlyBlocksWrites && 'a read-only file is still writable on this host' };
+
+// The run records each item before writing it, so a run that fails partway must leave the state as it was.
+function readOnlyClaudeJson(t, ctx) {
+  const file = join(ctx.home, '.claude.json');
+  chmodSync(file, 0o444);
+  t.after(() => chmodSync(file, 0o644));
+  return file;
+}
+
+test('an install that fails on a read-only file writes cleanly once the file is writable again', noReadOnly, (t) => {
+  const { ctx, repo } = setup();
+  install(ctx, ['claude']);
+  const cat = json(join(repo, 'mcp', 'catalog.json'));
+  cat.servers.memory.npx = ['@modelcontextprotocol/server-memory@1.0.1'];
+  put(repo, 'mcp/catalog.json', JSON.stringify(cat));
+  const file = readOnlyClaudeJson(t, ctx);
+  assert.throws(() => install(ctx, ['claude']));
+  chmodSync(file, 0o644);
+  const r = install(ctx, ['claude']);
+  assert.deepEqual(r.conflicts, []);
+  assert.ok(r.changes.includes(`set mcpServers.memory in ${file}`));
+  assert.ok(json(file).mcpServers.memory.args.includes('@modelcontextprotocol/server-memory@1.0.1'));
+});
+
+test('an uninstall that fails on a read-only file removes everything once the file is writable again', noReadOnly, (t) => {
+  const { ctx } = setup();
+  install(ctx, ['claude']);
+  const file = readOnlyClaudeJson(t, ctx);
+  assert.throws(() => runInstall(ctx, { agents: ['claude'], packs: ['dev'], uninstall: true }));
+  chmodSync(file, 0o644);
+  const r = runInstall(ctx, { agents: ['claude'], packs: ['dev'], uninstall: true });
+  assert.deepEqual(r.conflicts, []);
+  assert.deepEqual(json(file).mcpServers, {});
   const state = json(join(ctx.local, 'state.json'));
-  assert.ok(state.entries['claude:mcp:memory']);
-  assert.ok(state.entries['claude:prompt']);
-  assert.deepEqual([state.agents, state.packs], [[], []]);
+  assert.deepEqual([state.agents, Object.keys(state.entries)], [[], []]);
 });
 
 test('a v1 Cursor entry for a server v2 now manages is left to the conflict rule, the same in a dry run and a real one', () => {

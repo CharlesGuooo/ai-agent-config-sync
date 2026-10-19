@@ -27,6 +27,8 @@ The shared architecture uses two layers:
 
 This keeps the global layer small and stable.
 
+Building something new or changing behaviour: load `brainstorming` before writing anything. It sizes the request first and lets a quick, clear task straight through.
+
 ---
 
 {{SKILLS}}

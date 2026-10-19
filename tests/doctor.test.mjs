@@ -1,12 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, rmSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { tempDir, put } from './helpers.mjs';
-import { makeContext } from '../lib/platform.mjs';
+import { tempDir, put, fixtureRepo } from './helpers.mjs';
+import { makeContext, makeDirLink } from '../lib/platform.mjs';
 import { runInstall } from '../lib/engine.mjs';
-import { doctor, repoProblems } from '../lib/doctor.mjs';
+import { doctor, repoProblems, opencodeNotLoaded, codexNotLoaded, missingLspPlugins } from '../lib/doctor.mjs';
 
 const repo = join(dirname(fileURLToPath(import.meta.url)), '..');
 // An empty env, so Codex and Pi never resolve a real variable of this machine into the scratch home's files.
@@ -72,4 +72,81 @@ test('doctor: warns about files that shadow or override what the harness wrote, 
   for (const p of shadows(ctx.home)) put(p, '', '{}\n');
   const found = await doctor(ctx);
   for (const p of shadows(ctx.home)) assert.ok(found.some((f) => f.level === 'warn' && f.msg.includes(p)), `${p}\n${msgs(found)}`);
+});
+
+test('repoProblems names a missing and an unknown placeholder, and skips the HARNESS.md check without its script', () => {
+  const fixture = fixtureRepo();
+  const ctx = makeContext({ repo: fixture, home: tempDir('harness-dr-home-'), local: tempDir('harness-dr-local-') });
+  assert.deepEqual(repoProblems(ctx), []);
+  put(fixture, 'prompt/core.md', '# {{TITLE}}\n\n{{SKILLS}}\n\n{{MCP}}\n\n{{NOTES}}\n\n{{REPOS}}\n');
+  assert.deepEqual(repoProblems(ctx), ['prompt/core.md is missing {{REPO}}', 'prompt/core.md has an unknown placeholder {{REPOS}}']);
+});
+
+test('doctor --deep runs no agent against a home that is not the real one', async () => {
+  const ctx = scratch();
+  runInstall(ctx, { agents: ['claude', 'codex', 'opencode'], packs: ['craft'] });
+  const found = await doctor(ctx, { deep: true });
+  assert.ok(found.some((f) => f.level === 'warn' && /deep checks skipped: they run the real agents and only make sense for the real home/.test(f.msg)), msgs(found));
+  assert.ok(!/is (opencode|codex) installed|does not load|plugin is enabled/.test(msgs(found)), msgs(found));
+});
+
+test('opencodeNotLoaded reads the JSON list after any log lines', () => {
+  const names = ['alpha', 'beta'];
+  assert.deepEqual(opencodeNotLoaded('INFO starting [svc=skill]\n[\n  {"name": "alpha", "location": "/x/alpha/SKILL.md"}\n]\n', names), ['beta']);
+  assert.deepEqual(opencodeNotLoaded('[opencode] log line\n[{"name":"alpha"},{"name":"beta"}]\nINFO done\n', names), []);
+  assert.deepEqual(opencodeNotLoaded('[]\n', names), names);
+  assert.equal(opencodeNotLoaded('Error: no config\n', names), null);
+  assert.equal(opencodeNotLoaded('', names), null);
+});
+
+test('codexNotLoaded counts only the skills section, not our AGENTS.md text', () => {
+  const out = [
+    '# Codex Global Instructions',
+    '| `alpha` | Alpha tagline |',
+    '- alpha: named in our instructions only',
+    '<skills_instructions>',
+    '## Skills',
+    '### Available skills',
+    '- beta: Beta skill (file: /home/u/.codex/skills/beta/SKILL.md)',
+    '- axb: a name that a.b must not match',
+    '### How to use skills',
+    '- Discovery: the list above is what this session has',
+    '</skills_instructions>',
+  ].join('\n');
+  assert.deepEqual(codexNotLoaded(out, ['alpha', 'beta', 'a.b']), ['alpha', 'a.b']);
+  assert.deepEqual(codexNotLoaded('no skills section here\n- beta: x\n', ['beta']), ['beta']);
+});
+
+test('missingLspPlugins reads installed_plugins.json and leaves out the ones kept on this machine', () => {
+  const installed = { version: 2, plugins: { 'pyright-lsp@claude-plugins-official': [{ scope: 'user' }], 'typescript-lsp@claude-plugins-official': [{ scope: 'user' }] } };
+  const entries = { 'claude:plugin:gopls-lsp@claude-plugins-official': { agent: 'claude', kind: 'json', hash: null, pinned: true } };
+  assert.deepEqual(missingLspPlugins(installed, entries), ['rust-analyzer-lsp@claude-plugins-official']);
+  assert.equal(missingLspPlugins(null, {}).length, 4);
+});
+
+test('doctor reports only skills folders the harness left behind under a pack, never a project\'s own', async () => {
+  const ctx = scratch();
+  runInstall(ctx, { agents: ['claude'], packs: ['craft'] });
+  const pack = join(ctx.home, 'dev-project');
+  put(pack, 'my-app/.claude/skills/my-skill/SKILL.md', '---\nname: my-skill\ndescription: mine\n---\n');
+  makeDirLink(tempDir('harness-dr-elsewhere-'), join(pack, 'my-tools', '.claude', 'skills', 'shared'));
+  makeDirLink(join(repo, 'skills', 'global', 'brainstorming'), join(pack, 'old', '.claude', 'skills', 'brainstorming'));
+  const gone = tempDir('harness-dr-gone-');
+  makeDirLink(gone, join(pack, 'gone', '.claude', 'skills', 'x'));
+  rmSync(gone, { recursive: true });
+  const found = msgs(await doctor(ctx));
+  assert.ok(!found.includes(join(pack, 'my-app')), found);
+  assert.ok(!found.includes(join(pack, 'my-tools')), found);
+  assert.ok(found.includes(join(pack, 'old', '.claude', 'skills')), found);
+  assert.ok(found.includes(join(pack, 'gone', '.claude', 'skills')), found);
+});
+
+test('doctor names a missing variable once, even when the dry run warns about it too', async () => {
+  const fixture = fixtureRepo();
+  put(fixture, 'mcp/catalog.json', JSON.stringify({ servers: { remote: { http: 'https://example.com/${REMOTE_REF}/mcp', bearerEnv: 'REMOTE_TOKEN', on: true } } }));
+  const ctx = { ...makeContext({ repo: fixture, home: tempDir('harness-dr-home-'), local: tempDir('harness-dr-local-') }), env: {} };
+  runInstall(ctx, { agents: ['pi'], packs: ['dev'] });
+  const found = await doctor(ctx);
+  assert.equal(found.filter((f) => f.msg.includes('REMOTE_REF')).length, 1, msgs(found));
+  assert.ok(found.some((f) => f.msg === 'environment variable REMOTE_TOKEN is not set, but a server that is on by default needs it'), msgs(found));
 });

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { tempDir } from './helpers.mjs';
@@ -93,5 +93,78 @@ test('resolve with no arguments lists the conflicts and the kept items', () => {
   const r = cli(['resolve'], home);
   assert.equal(r.status, 0, r.stdout + r.stderr);
   assert.match(r.stdout, /^claude:plugin:pyright-lsp@claude-plugins-official$/m);
-  assert.match(r.stdout, /^kept local, not managed: claude:mcp:memory$/m);
+  assert.match(r.stdout, /^kept on this machine, not managed: claude:mcp:memory$/m);
+  const bogus = cli(['resolve', 'repo', 'claude:mcp:nope'], home);
+  assert.equal(bogus.status, 2, bogus.stdout + bogus.stderr);
+  assert.match(bogus.stderr, /no such conflict or managed item: claude:mcp:nope/);
+});
+
+test('flags are strict: a typo, a repeat, a missing value or an extra word is a usage error and touches nothing', () => {
+  const home = tempDir('harness-cli-');
+  for (const args of [
+    ['install', '--agents', 'claude', '--dryrun'],
+    ['install', '--agents', 'claude', '--agents', 'pi'],
+    ['install', '--agents', 'claude', '--packs'],
+    ['install', '--agents', 'claude', '--packs', ''],
+    ['install', '--agents', 'claude', '--packs', '--dry-run'],
+    ['install', '--agents', 'claude', 'now'],
+    ['install', '--agents', 'claude', '-n'],
+    ['update', '--agents', 'codex'],
+    ['update', 'now'],
+    ['uninstall', '--agents', 'claude', '--packs', 'dev'],
+    ['resolve', 'repo'],
+    ['resolve', 'repo', 'all', 'more'],
+    ['doctor', '--dry-run'],
+    ['check', '--deep'],
+  ]) {
+    const r = cli(args, home);
+    assert.equal(r.status, 2, `${args.join(' ')}\n${r.stdout}${r.stderr}`);
+    assert.match(r.stderr, /usage:/, args.join(' '));
+  }
+  assert.deepEqual(readdirSync(home), []);
+});
+
+test('help goes to stdout and succeeds; no command at all is a usage error', () => {
+  for (const args of [['help'], ['--help'], ['-h'], ['install', '--help']]) {
+    const r = cli(args);
+    assert.equal(r.status, 0, args.join(' '));
+    assert.match(r.stdout, /usage:/);
+  }
+  const none = cli([]);
+  assert.equal(none.status, 2);
+  assert.match(none.stderr, /usage:/);
+});
+
+test('--dry-run writes nothing for install, uninstall, update and resolve', () => {
+  const home = tempDir('harness-cli-');
+  const dry = cli(['install', '--agents', 'claude', '--packs', 'craft', '--dry-run'], home);
+  assert.equal(dry.status, 0, dry.stdout + dry.stderr);
+  assert.match(dry.stdout, /^dry run — nothing was written$/m);
+  assert.match(dry.stdout, /^would change \(\d+\)/m);
+  assert.deepEqual(readdirSync(home), []);
+
+  assert.equal(cli(['install', '--agents', 'claude,claude', '--packs', 'craft,craft'], home).status, 0);
+  const statePath = join(home, '.harness-local', 'state.json');
+  assert.deepEqual(json(statePath).agents, ['claude']);
+  assert.deepEqual(json(statePath).packs, ['craft']);
+  const link = join(home, '.claude', 'skills', 'brainstorming');
+  const un = cli(['uninstall', '--agents', 'claude', '--dry-run'], home);
+  assert.equal(un.status, 0, un.stdout + un.stderr);
+  assert.match(un.stdout, /^would change/m);
+  assert.ok(isLink(link));
+  assert.deepEqual(json(statePath).agents, ['claude']);
+
+  const mcp = join(home, '.claude.json');
+  const obj = json(mcp);
+  obj.mcpServers.memory.args.push('--mine');
+  writeFileSync(mcp, JSON.stringify(obj));
+  const before = [readFileSync(mcp, 'utf8'), readFileSync(statePath, 'utf8')];
+  const upd = cli(['update', '--dry-run'], home);
+  assert.equal(upd.status, 1, upd.stdout + upd.stderr);
+  assert.match(upd.stdout, /claude:mcp:memory/);
+  const res = cli(['resolve', 'repo', 'all', '--dry-run'], home);
+  assert.equal(res.status, 0, res.stdout + res.stderr);
+  assert.match(res.stdout, /^dry run — nothing was written$/m);
+  assert.match(res.stdout, /^would change/m);
+  assert.deepEqual([readFileSync(mcp, 'utf8'), readFileSync(statePath, 'utf8')], before);
 });

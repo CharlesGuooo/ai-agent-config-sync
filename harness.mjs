@@ -12,43 +12,82 @@ import { doctor, repoProblems } from './lib/doctor.mjs';
 const USAGE = `usage:
   node harness.mjs install --agents claude,codex,cursor,opencode,pi [--packs ${Object.keys(PACKS).join(',')}] [--dry-run]
   node harness.mjs update [--dry-run]
-  node harness.mjs doctor [--deep]
-  node harness.mjs resolve                  list conflicts and the items kept on this machine
-  node harness.mjs resolve repo <id|all>    use the repo's version
-  node harness.mjs resolve keep <id|all>    keep this machine's version and stop managing it
-                                            all settles the current conflicts only: it never lifts
-                                            an earlier keep (give that item's id for that)
-  node harness.mjs uninstall --agents <list>
-  node harness.mjs check                    repo self-check
+  node harness.mjs uninstall --agents <list> [--dry-run]
+  node harness.mjs resolve                            list conflicts and the items kept on this machine
+  node harness.mjs resolve repo <id|all> [--dry-run]  use the repo's version
+  node harness.mjs resolve keep <id|all> [--dry-run]  keep this machine's version and stop managing it
+      all settles the current conflicts only: it never lifts an earlier keep (give that item's id for that)
+  node harness.mjs doctor [--deep]                    health check; --deep also starts the agents themselves
+                                                      (they may write their own logs and caches)
+  node harness.mjs check                              repo self-check
+  node harness.mjs help
 install without --packs keeps the packs already installed (all of them the first time)
-add --verbose to list every change`;
+add --verbose to install, update, uninstall or resolve to list every change`;
+
+// Each command's flags (true: takes a comma-separated list) and how many words may follow it. Anything else is refused,
+// so a misspelled --dry-run stops the command instead of letting it write.
+const COMMANDS = {
+  install: { flags: { agents: true, packs: true, 'dry-run': false, verbose: false }, words: [0] },
+  update: { flags: { 'dry-run': false, verbose: false }, words: [0] },
+  uninstall: { flags: { agents: true, 'dry-run': false, verbose: false }, words: [0] },
+  resolve: { flags: { 'dry-run': false, verbose: false }, words: [0, 2] },
+  doctor: { flags: { deep: false }, words: [0] },
+  check: { flags: {}, words: [0] },
+};
 
 const repo = dirname(fileURLToPath(import.meta.url));
 // HARNESS_HOME points the installer at another home (tests use it); its state then
 // lives in that home too, so the real machine state is never touched.
 const home = process.env.HARNESS_HOME || undefined;
 const ctx = makeContext({ repo, home, local: home ? join(home, '.harness-local') : undefined });
-const [cmd, ...args] = process.argv.slice(2);
-const has = (flag) => args.includes(`--${flag}`);
-const list = (flag) => {
-  const i = args.indexOf(`--${flag}`);
-  return i === -1 ? null : (args[i + 1] ?? '').split(',').map((s) => s.trim()).filter(Boolean);
-};
 
 function die(msg, code = 2) {
   console.error(msg);
   process.exit(code);
 }
 
+const usageError = (why) => die(`${why}\n${USAGE}`);
+
+function parse(cmd, argv) {
+  const spec = COMMANDS[cmd];
+  const flags = {};
+  const words = [];
+  for (let i = 0; i < argv.length; i++) {
+    const arg = argv[i];
+    if (!arg.startsWith('-')) {
+      words.push(arg);
+      continue;
+    }
+    const name = arg.slice(2);
+    if (!arg.startsWith('--') || !Object.hasOwn(spec.flags, name)) usageError(`${cmd}: unknown option ${arg}`);
+    if (Object.hasOwn(flags, name)) usageError(`${cmd}: ${arg} is given twice`);
+    if (!spec.flags[name]) {
+      flags[name] = true;
+      continue;
+    }
+    const value = argv[++i];
+    const items = value === undefined || value.startsWith('-') ? [] : [...new Set(value.split(',').map((s) => s.trim()).filter(Boolean))];
+    if (!items.length) usageError(`${cmd}: ${arg} needs a comma-separated list`);
+    flags[name] = items;
+  }
+  if (!spec.words.includes(words.length)) usageError(`${cmd}: unexpected arguments: ${words.join(' ') || '(none)'}`);
+  return { flags, words };
+}
+
+const argv = process.argv.slice(2);
+if (argv[0] === 'help' || argv.includes('--help') || argv.includes('-h')) {
+  console.log(USAGE);
+  process.exit(0);
+}
+const [cmd, ...rest] = argv;
+if (!cmd) die(USAGE);
+if (!Object.hasOwn(COMMANDS, cmd)) usageError(`unknown command: ${cmd}`);
+const { flags, words } = parse(cmd, rest);
+const dryRun = Boolean(flags['dry-run']);
+
 // Links make the checkout live; a worktree must never become what agents run.
 function liveGuard() {
   if (isWorktree(repo) && !home) die('This checkout is a git worktree: links would point into it. Run install/update from the main checkout.');
-}
-
-function agentList() {
-  const agents = list('agents');
-  if (!agents?.length) die(USAGE);
-  return agents;
 }
 
 function installedState() {
@@ -58,14 +97,16 @@ function installedState() {
 }
 
 function printReport(r) {
+  if (dryRun) console.log('dry run — nothing was written');
+  const changed = dryRun ? 'would change' : 'changes';
   if (!r.changes.length) console.log('no changes');
-  else if (has('verbose') || r.changes.length <= 40) {
-    console.log(`changes (${r.changes.length}):`);
+  else if (flags.verbose || r.changes.length <= 40) {
+    console.log(`${changed} (${r.changes.length}):`);
     for (const c of r.changes) console.log(`  ${c}`);
   } else {
     const byVerb = new Map();
     for (const c of r.changes) byVerb.set(c.split(' ')[0], (byVerb.get(c.split(' ')[0]) ?? 0) + 1);
-    console.log(`changes (${r.changes.length}): ${[...byVerb].map(([v, n]) => `${v} ×${n}`).join(', ')} — add --verbose to list them`);
+    console.log(`${changed} (${r.changes.length}): ${[...byVerb].map(([v, n]) => `${v} ×${n}`).join(', ')} — add --verbose to list them`);
   }
   for (const w of r.warnings) console.log(`warning: ${w}`);
   for (const n of r.notes) console.log(`note: ${n}`);
@@ -76,42 +117,49 @@ function printReport(r) {
   return 1;
 }
 
+const kept = (state) => Object.entries(state.entries).filter(([, e]) => e.pinned).map(([id]) => `kept on this machine, not managed: ${id}`);
+
 try {
   switch (cmd) {
     case 'install': {
       liveGuard();
-      const agents = agentList();
+      if (!flags.agents) usageError('install: --agents is required');
       const state = loadState(ctx.local);
       // Adding an agent must not quietly widen the packs this machine chose; only a first install takes them all.
-      const packs = list('packs') ?? (state.packs.length ? state.packs : Object.keys(PACKS));
-      process.exit(printReport(runInstall(ctx, { agents, packs, dryRun: has('dry-run') })));
+      const packs = flags.packs ?? (state.packs.length ? state.packs : Object.keys(PACKS));
+      process.exit(printReport(runInstall(ctx, { agents: flags.agents, packs, dryRun })));
     }
     case 'update': {
       liveGuard();
       const state = installedState();
-      process.exit(printReport(runInstall(ctx, { agents: state.agents, packs: state.packs, dryRun: has('dry-run') })));
+      process.exit(printReport(runInstall(ctx, { agents: state.agents, packs: state.packs, dryRun })));
     }
     case 'resolve': {
       liveGuard();
       const state = installedState();
-      const [how, id] = args;
-      if (!how) {
-        const r = runInstall(ctx, { agents: state.agents, packs: state.packs, dryRun: true });
+      const run = (opts) => runInstall(ctx, { agents: state.agents, packs: state.packs, ...opts });
+      if (!words.length) {
+        const r = run({ dryRun: true });
         if (!r.conflicts.length) console.log('no conflicts');
         for (const c of r.conflicts) console.log(`${c.id}\n    ${c.msg}`);
-        for (const [key, e] of Object.entries(state.entries)) if (e.pinned) console.log(`kept local, not managed: ${key}`);
+        for (const line of kept(state)) console.log(line);
         process.exit(0);
       }
-      if (!['repo', 'keep'].includes(how) || !id) die(USAGE);
-      process.exit(printReport(runInstall(ctx, { agents: state.agents, packs: state.packs, resolutions: { [id]: how } })));
+      const [how, id] = words;
+      if (!['repo', 'keep'].includes(how)) usageError(`resolve: say repo or keep, not ${how}`);
+      // A mistyped id would settle nothing and still look like a run that worked.
+      if (id !== 'all' && !Object.hasOwn(state.entries, id) && !run({ dryRun: true }).conflicts.some((c) => c.id === id)) {
+        die(`no such conflict or managed item: ${id}`);
+      }
+      process.exit(printReport(run({ resolutions: { [id]: how }, dryRun })));
     }
     case 'uninstall': {
       liveGuard();
-      const agents = agentList();
-      process.exit(printReport(runInstall(ctx, { agents, packs: loadState(ctx.local).packs, uninstall: true })));
+      if (!flags.agents) usageError('uninstall: --agents is required');
+      process.exit(printReport(runInstall(ctx, { agents: flags.agents, packs: loadState(ctx.local).packs, uninstall: true, dryRun })));
     }
     case 'doctor': {
-      const found = await doctor(ctx, { deep: has('deep') });
+      const found = await doctor(ctx, { deep: Boolean(flags.deep) });
       if (!found.length) console.log('all good');
       for (const f of found) console.log(`${f.level === 'fail' ? 'FAIL' : 'warn'}: ${f.msg}`);
       process.exit(found.some((f) => f.level === 'fail') ? 1 : 0);
@@ -122,8 +170,6 @@ try {
       if (!problems.length) console.log('repo is consistent');
       process.exit(problems.length ? 1 : 0);
     }
-    default:
-      die(USAGE, cmd ? 2 : 0);
   }
 } catch (e) {
   // The message only: a stack or a cause chain could carry text read from a config file, and that may hold a token.

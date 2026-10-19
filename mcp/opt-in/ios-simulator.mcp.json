@@ -1,8 +1,0 @@
-{
-  "mcpServers": {
-    "ios-simulator": {
-      "command": "npx",
-      "args": ["-y", "ios-simulator-mcp"]
-    }
-  }
-}

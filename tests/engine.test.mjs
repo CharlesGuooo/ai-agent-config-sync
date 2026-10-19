@@ -262,6 +262,30 @@ test('links of a pack no longer selected go, on install and on uninstall; your o
   assert.deepEqual([isLink(gamma), isLink(delta), isLink(mine)], [false, false, true]);
 });
 
+test('links of a sub-pack the repo no longer has go; your own links there stay', () => {
+  const { ctx, repo } = setup();
+  const delta = join(ctx.home, 'dev-project', 'frontend', '.claude', 'skills', 'delta');
+  const mine = join(ctx.home, 'dev-project', 'frontend', '.claude', 'skills', 'my-alpha');
+  install(ctx, ['claude']);
+  makeDirLink(join(repo, 'skills', 'global', 'alpha'), mine);
+  rmSync(join(repo, 'skills', 'project-packs', 'dev-project', 'frontend'), { recursive: true });
+  const dry = install(ctx, ['claude'], { dryRun: true });
+  assert.deepEqual(dry.changes, [`unlink ${delta}`]);
+  assert.ok(isLink(delta));
+  assert.deepEqual(install(ctx, ['claude']).conflicts, []);
+  assert.deepEqual([isLink(delta), isLink(mine)], [false, true]);
+  assert.deepEqual(install(ctx, ['claude']).changes, []);
+});
+
+test('uninstall also removes the links of a sub-pack the repo no longer has', () => {
+  const { ctx, repo } = setup();
+  const delta = join(ctx.home, 'dev-project', 'frontend', '.claude', 'skills', 'delta');
+  install(ctx, ['claude']);
+  rmSync(join(repo, 'skills', 'project-packs', 'dev-project', 'frontend'), { recursive: true });
+  runInstall(ctx, { agents: ['claude'], packs: [], uninstall: true });
+  assert.ok(!isLink(delta));
+});
+
 test('a pack selection that differs from the machine\'s says which other installed agents an update would bring along', () => {
   const { ctx } = setup();
   install(ctx, ['claude', 'pi']);

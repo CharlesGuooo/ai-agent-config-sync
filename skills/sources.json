@@ -132,6 +132,13 @@
     "date": "2026-07-23",
     "license": "MIT"
   },
+  "global/using-superpowers": {
+    "repo": "obra/superpowers",
+    "path": "skills/using-superpowers",
+    "commit": "5bf4e78011075bcfc0dc295f0724994cd123ee71",
+    "date": "2026-09-18",
+    "license": "MIT"
+  },
   "global/verification-before-completion": {
     "repo": "obra/superpowers",
     "path": "skills/verification-before-completion",

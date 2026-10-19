@@ -72,6 +72,22 @@ test('claude: drops v1 hooks and the stray mcpServers key, keeps the rest', () =
   assert.deepEqual(json(file), { model: 'opus', hooks: { SessionStart: [{ matcher: '', hooks: [{ type: 'command', command: 'any-buddy apply --silent' }] }] } });
 });
 
+test('claude: a v1 hook with a Windows backslash path is recognised', () => {
+  const { home, ctx } = setup();
+  const file = put(home, '.claude/settings.json', JSON.stringify({ model: 'opus', hooks: {
+    PreToolUse: [{ matcher: 'Bash', hooks: [{ type: 'command', command: 'node C:\\Users\\x\\.agent-hooks\\guard.mjs' }] }],
+  } }));
+  cleanAgent(ctx, 'claude', [], newRun());
+  assert.deepEqual(json(file), { model: 'opus', hooks: {} });
+});
+
+test('codex: a v1 hook with a backslash path in a TOML literal string is removed', () => {
+  const { home, ctx } = setup();
+  const file = put(home, '.codex/config.toml', 'model = "m"\n\n[[hooks.PostToolUse]]\nmatcher = "Edit"\n[[hooks.PostToolUse.hooks]]\ntype = "command"\ncommand = \'node C:\\Users\\x\\.agent-hooks\\format.mjs\'\n');
+  cleanAgent(ctx, 'codex', [], newRun());
+  assert.equal(readFileSync(file, 'utf8'), 'model = "m"\n');
+});
+
 test('claude: an mcpServers key naming servers outside the catalog is left alone', () => {
   const { home, ctx } = setup();
   const file = put(home, '.claude/settings.json', JSON.stringify({ mcpServers: { mine: {} } }));

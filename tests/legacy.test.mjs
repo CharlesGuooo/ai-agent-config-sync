@@ -57,6 +57,19 @@ test('cleanSkillDir removes the two data files v1 mirrored', () => {
   assert.deepEqual([existsSync(join(dir, 'catalog.json')), existsSync(join(dir, 'skill-rules.json')), existsSync(join(dir, 'keep'))], [false, false, true]);
 });
 
+test('cleanSkillDir removes the README v1 mirrored and keeps one the user wrote', () => {
+  const { ctx } = setup();
+  const dir = tempDir();
+  put(dir, 'README.md', '\n# Skills\r\nbody\r\n');
+  cleanSkillDir(ctx, dir, newRun());
+  assert.ok(!existsSync(join(dir, 'README.md')));
+  put(dir, 'README.md', '# My notes\n');
+  const run = newRun();
+  cleanSkillDir(ctx, dir, run);
+  assert.ok(existsSync(join(dir, 'README.md')));
+  assert.deepEqual([run.report.changes, run.report.warnings], [[], []]);
+});
+
 test('cleanSkillDir keeps data files that are not v1 output', () => {
   const { ctx } = setup();
   const dir = tempDir();

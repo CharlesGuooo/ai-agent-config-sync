@@ -38,8 +38,9 @@ git clone https://github.com/virgiliojr94/book-to-skill.git ~/.claude/skills/boo
 `~/.claude/skills/book-to-skill` is this pointer skill: a link (a junction on Windows) into the
 repo, put there by `node harness.mjs`. `npx skills add` would write upstream's files through that
 link into the repo, over this file; the `git clone` stops because the folder is not empty. A copy
-in any other skills folder (`~/.agents/skills/`, a project's `.claude/skills/`) has the same name
-as this skill, so Claude Code shows only one of the two.
+in another skills folder clashes by name with this skill too: in `~/.agents/skills/`, which Codex
+and OpenCode read (Claude Code does not), and in a project's `.claude/skills/`, where Claude Code
+shows only one of the two.
 
 ## Setup (first use)
 
@@ -76,16 +77,19 @@ HTML · RTF · MOBI/AZW/AZW3.
 ## After it generates a skill — this part is on you
 
 Upstream writes the draft to `~/.agents/skills/<slug>/` and, under Claude Code, links
-`~/.claude/skills/<slug>` to it (on Windows that can land as a copy). The output is a **draft**,
-not a finished skill. Before it goes anywhere:
+`~/.claude/skills/<slug>` to it (on Windows that can land as a copy). If `~/.agents/skills/` does
+not exist, it writes the draft straight into `~/.claude/skills/<slug>/` instead, because that
+folder already holds skills — here, a real folder next to the harness's links. The output is a
+**draft**, not a finished skill. Before it goes anywhere:
 
 1. **Read it.** Generated skills from niche books usually need real cleanup.
 2. **Audit it against the rubric** — hand the draft to `skill-creator` ("审一下这个
    skill"). It grades against `references/rubric.md` and reports a verdict per
    failure mode. Mined skills fail hardest on triggering and on sprawl.
 3. **Move it into the repo.** Domain-specific (almost always, for a book) → the matching
-   local pack, not `skills/global/`; use `skill-router` if unsure. Then delete
-   `~/.claude/skills/<slug>` (the link or copy upstream made) and `~/.agents/skills/<slug>`.
+   local pack, not `skills/global/`; use `skill-router` if unsure. Then delete what upstream
+   left: `~/.claude/skills/<slug>` (its link, copy or the draft itself) and, if it exists,
+   `~/.agents/skills/<slug>`.
 4. **Register it.** In `skills/global/`, add a `catalog.json` entry first. Then run
    `node scripts/gen-harness.mjs`, then `node harness.mjs check`, and finally
    `node harness.mjs update` (details: `skill-creator`'s `references/registering.md`).

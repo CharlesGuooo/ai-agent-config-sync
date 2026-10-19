@@ -227,8 +227,10 @@ hook 命令是 `node "<repo>/scripts/hooks/guard.mjs"`（format 同理），路�
 | OpenCode | `type: local`，`command` 数组 | `type: remote` | `{env:VAR}` | `enabled: false` |
 | Pi | `npx -y …`（每个系统都一样：Pi 自己找得到 Windows 上的 `npx.cmd`，`cmd /c` 反而会重新解析参数里的 `&`、`%VAR%`、`^`） | `url` + `headers` | `${VAR}`（`url` 里的安装时代入） | `enabled: false` |
 
-`url` 里的变量需要安装时代入（Codex、Pi），变量不存在就跳过这个服务器（本机已有的条目原样保留）
-并报警告。所以 `url` 里只能放不是秘密的值；秘密走 `env`（按原名透传）或 `bearerEnv`。
+`url` 里的变量需要安装时代入（Codex、Pi），变量不存在就跳过这个服务器，本机已有的条目原样保留。
+只有默认开的服务器会报警告；默认关的（比如 `supabase` 缺 `SUPABASE_PROJECT_REF`）悄悄跳过，否则
+每次 update 都会重复同一条警告。所以 `url` 里只能放不是秘密的值；秘密走 `env`（按原名透传）或
+`bearerEnv`。
 
 ### 提示词
 
@@ -272,7 +274,10 @@ guard hook：危险命令先确认，不读凭证文件）。Claude 和 Codex �
   CRLF/LF 和末尾空白算一样，用户自己写的 README 哪怕也以 `# Skills` 开头也不动）。
 - Claude：`settings.json` 里命令指向 `.agent-hooks` 的 hook；旧同步写进去的 `mcpServers` 键（Claude 不读这里）。
 - Codex：`~/.codex/profiles/`；`config.toml` 里命令指向 `.agent-hooks` 的 `[[hooks.*]]`（连同 v1 写在它正上方的注释）。
-- skill 目录里 v1 的拷贝：和 repo 一模一样的换成链接，不一样的报冲突（见上面的链接规则）。
+- skill 目录里 v1 的拷贝：和 repo 一模一样的换成链接，不一样的报冲突（见上面的链接规则）。例外是
+  `~/.opencode/skills/`（v2 不往那里链接）：v1 的 `catalog.json` 列出的那些拷贝，和 repo 不一样也删，
+  `--dry-run --verbose` 里标成 "differs from the repo's copy"（repo 已经不发的标成 "the repo no
+  longer ships it"）；本身是 git clone 的拷贝留着。
 - Cursor：`~/.cursor/global-rules.md`、`~/.cursor/rules/global-rules.md`；`mcp.json` 里 v1 写的 `enabled: false` 条目。
 - OpenCode：`~/.opencode/` 下的 `AGENTS.md`、`opencode.json`、`skills/`、`command/`；`~/.config/opencode/command/` 下和 repo 相同的命令文件。
 

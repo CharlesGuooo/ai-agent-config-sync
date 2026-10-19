@@ -8,6 +8,7 @@ import { loadState } from './lib/state.mjs';
 import { runInstall } from './lib/engine.mjs';
 import { PACKS } from './lib/skills.mjs';
 import { doctor, repoProblems } from './lib/doctor.mjs';
+import { loadSources, upstreamStatus } from './lib/upstream.mjs';
 
 const USAGE = `usage:
   node harness.mjs install --agents claude,codex,cursor,opencode,pi [--packs ${Object.keys(PACKS).join(',')}] [--dry-run]
@@ -20,6 +21,8 @@ const USAGE = `usage:
   node harness.mjs doctor [--deep]                    health check; --deep also starts the agents themselves
                                                       (they may write their own logs and caches)
   node harness.mjs check                              repo self-check
+  node harness.mjs upstream                           which vendored skills have a newer upstream (skills/sources.json;
+                                                      reads GitHub, set GITHUB_TOKEN for more than 60 lookups an hour)
   node harness.mjs help
 install without --packs keeps the packs already installed (all of them the first time)
 add --verbose to install, update, uninstall or resolve to list every change`;
@@ -33,6 +36,7 @@ const COMMANDS = {
   resolve: { flags: { 'dry-run': false, verbose: false }, words: [0, 1, 2] },
   doctor: { flags: { deep: false }, words: [0] },
   check: { flags: {}, words: [0] },
+  upstream: { flags: {}, words: [0] },
 };
 
 const repo = dirname(fileURLToPath(import.meta.url));
@@ -170,6 +174,20 @@ try {
       for (const p of problems) console.error(`FAIL: ${p}`);
       if (!problems.length) console.log('repo is consistent');
       process.exit(problems.length ? 1 : 0);
+    }
+    case 'upstream': {
+      const sources = loadSources(ctx.repo);
+      const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || process.env.GITHUB_PERSONAL_ACCESS_TOKEN;
+      const res = await upstreamStatus(sources, { token });
+      const by = (s) => res.filter((r) => r.status === s);
+      const newer = by('newer');
+      for (const repoName of [...new Set(newer.map((r) => r.repo))].sort()) {
+        console.log(repoName);
+        for (const r of newer.filter((x) => x.repo === repoName)) console.log(`  ${r.dir}  (ours ${r.since}, upstream ${r.latest.date})`);
+      }
+      for (const r of [...by('gone'), ...by('error')]) console.log(`${r.status}: ${r.dir} — ${r.msg}`);
+      console.log(`${res.length} sources: ${by('current').length} current, ${newer.length} newer upstream, ${by('gone').length} gone, ${by('error').length} errors`);
+      process.exit(by('error').length && by('error').length === res.length ? 1 : 0);
     }
   }
 } catch (e) {

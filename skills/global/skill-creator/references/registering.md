@@ -14,6 +14,17 @@ Author it **inside the repo**. Agents reach skills through links into the repo, 
 straight into `~/.claude/skills/` exists for that one agent on that one machine only — and if its
 name matches a repo skill, the installer reports a conflict.
 
+A skill copied from someone else's repository gets an entry in `skills/sources.json`, keyed by its
+path under `skills/`:
+
+```json
+"project-packs/media-project/skills/ffmpeg": { "repo": "n0an/ffmpeg-skill", "path": ".", "commit": "<sha>", "date": "2026-10-19", "license": "MIT" }
+```
+
+`commit` is the newest upstream commit touching `path` that this copy reflects; `node harness.mjs
+upstream` compares it with GitHub to say when upstream has moved on. `check` fails on an entry
+whose folder does not exist. A skill written here has no entry.
+
 ## 2. Catalog the skill — global only
 
 Add one line to `skills/global/catalog.json` under `skills`, choosing a `category` key that already

@@ -130,6 +130,11 @@ node harness.mjs update          # re-apply for the agents and packs installed h
 node harness.mjs doctor          # drift, conflicts, leftovers, missing variables
 ```
 
+To see which vendored skills have moved on upstream since the repo last took them, run
+`node harness.mjs upstream` (it reads `skills/sources.json` and asks GitHub; with `GITHUB_TOKEN` or
+`GITHUB_PERSONAL_ACCESS_TOKEN` set it can make more than 60 lookups an hour). It only reports;
+taking an update is a change to the repo, made and reviewed like any other.
+
 `update` keeps the packs this machine has, so a pack the repo gains later is not added on its own.
 To take it, name all the packs you want: `node harness.mjs install --agents <yours> --packs dev,research,media`
 (`node harness.mjs help` lists the pack names).

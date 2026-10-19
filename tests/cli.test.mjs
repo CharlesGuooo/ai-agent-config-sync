@@ -119,6 +119,8 @@ test('flags are strict: a typo, a repeat, a missing value or an extra word is a 
     ['resolve', 'repo', 'all', 'more'],
     ['doctor', '--dry-run'],
     ['check', '--deep'],
+    ['upstream', '--dry-run'],
+    ['upstream', 'now'],
   ]) {
     const r = cli(args, home);
     assert.equal(r.status, 2, `${args.join(' ')}\n${r.stdout}${r.stderr}`);

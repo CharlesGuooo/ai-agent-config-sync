@@ -57,17 +57,33 @@ test('cleanSkillDir removes the two data files v1 mirrored', () => {
   assert.deepEqual([existsSync(join(dir, 'catalog.json')), existsSync(join(dir, 'skill-rules.json')), existsSync(join(dir, 'keep'))], [false, false, true]);
 });
 
-test('cleanSkillDir removes the README v1 mirrored and keeps one the user wrote', () => {
+// The three versions of skills/global/README.md that v1 mirrored, copied from git history (851dff9 common/README.md,
+// b8e1e62, 7bd9e82).
+const V1_READMES = ['851dff9', 'b8e1e62', '7bd9e82'].map((rev) => readFileSync(new URL(`./fixtures/v1-skills-readme/${rev}.md`, import.meta.url), 'utf8').replace(/\r\n/g, '\n'));
+const crlf = (text) => text.replace(/\n/g, '\r\n');
+
+test('cleanSkillDir removes each README v1 mirrored, with LF or CRLF line endings', () => {
   const { ctx } = setup();
-  const dir = tempDir();
-  put(dir, 'README.md', '\n# Skills\r\nbody\r\n');
-  cleanSkillDir(ctx, dir, newRun());
-  assert.ok(!existsSync(join(dir, 'README.md')));
-  put(dir, 'README.md', '# My notes\n');
-  const run = newRun();
-  cleanSkillDir(ctx, dir, run);
-  assert.ok(existsSync(join(dir, 'README.md')));
-  assert.deepEqual([run.report.changes, run.report.warnings], [[], []]);
+  for (const text of V1_READMES) {
+    for (const variant of [text, crlf(text), `${text}\n\n`]) {
+      const dir = tempDir();
+      put(dir, 'README.md', variant);
+      cleanSkillDir(ctx, dir, newRun());
+      assert.ok(!existsSync(join(dir, 'README.md')));
+    }
+  }
+});
+
+test('cleanSkillDir keeps a README the user wrote, even one with the same heading or an added line', () => {
+  const { ctx } = setup();
+  for (const text of ['# Skills\n\nMy own notes about these skills.\n', `${V1_READMES[2]}- my own line\n`, '# My notes\n']) {
+    const dir = tempDir();
+    put(dir, 'README.md', text);
+    const run = newRun();
+    cleanSkillDir(ctx, dir, run);
+    assert.ok(existsSync(join(dir, 'README.md')));
+    assert.deepEqual([run.report.changes, run.report.warnings], [[], []]);
+  }
 });
 
 test('cleanSkillDir keeps data files that are not v1 output', () => {
@@ -236,6 +252,17 @@ test('opencode skills: labels say whether a v1 copy differs or the repo dropped 
   assert.ok(labels.some((c) => c.startsWith('remove-v1 (the repo no longer ships it) ') && c.endsWith('gone')));
   assert.ok(labels.some((c) => c.startsWith('remove-v1 ') && c.endsWith('alpha')));
   assert.ok(existsSync(join(home, '.opencode', 'skills', 'beta')));
+});
+
+test('opencode skills: the README v1 mirrored goes with them, a README the user wrote stays', () => {
+  for (const [readme, gone] of [[crlf(V1_READMES[0]), true], [V1_READMES[2], true], ['# Skills\n\nmine\n', false]]) {
+    const { home, ctx } = setup();
+    v1Skills(home, ctx, () => put(home, '.opencode/skills/README.md', readme));
+    const run = newRun();
+    cleanAgent(ctx, 'opencode', [], run);
+    assert.equal(existsSync(join(home, '.opencode', 'skills')), !gone);
+    if (!gone) assert.deepEqual(readdirSync(join(home, '.opencode', 'skills')), ['README.md']);
+  }
 });
 
 test('opencode skills: the directory itself goes once it is empty', () => {

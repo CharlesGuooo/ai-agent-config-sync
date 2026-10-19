@@ -106,24 +106,24 @@ index anymore.
 ### Local skill packs — index
 
 #### dev-project (86)
-- `archify` — Create polished, validated architecture, workflow, sequence, data-flow, and lifecycle/state diagrams as explorable standalone HTML with i...
-- `changelog-generator` — Generate changelogs and release notes from git history/commits.
-- `codebase-onboarding` — Produce onboarding docs and a guided tour of an unfamiliar codebase.
+- `archify` — Create validated architecture, workflow, sequence, data-flow, lifecycle/state, ERD, class, tree, timeline, and waterfall diagrams as expl...
+- `changelog-generator` — Produce consistent, auditable release notes from Conventional Commits.
+- `codebase-onboarding` — Analyze a codebase and generate onboarding documentation for engineers, tech leads, and contractors.
 - `codebase-to-course` — Turn a codebase into an interactive single-page HTML course that teaches non-technical readers how the code works: scroll navigation, ani...
-- `database-schema-designer` — Design or review a database schema — tables, relationships, indexes, normalization, migrations.
-- `dependency-auditor` — Audit project dependencies for security vulnerabilities, outdated/abandoned packages, and license issues.
-- `drawio-skill` — Use when user requests diagrams, flowcharts, architecture charts, or visualizations.
+- `database-schema-designer` — Use when the user asks to create ERD diagrams, normalize database schemas, design table relationships, or plan schema migrations.
+- `dependency-auditor` — Audit and manage dependencies across multi-language projects.
+- `drawio-skill` — Create and edit draw.io/diagrams.net diagrams as editable `.drawio` files.
 - `find-bugs` — Find bugs, security vulnerabilities, and code quality issues in local branch changes.
-- `ponytail` — Forces the laziest solution that actually works, simplest, shortest, most minimal.
-- `ponytail-audit` — Whole-repo audit for over-engineering.
-- `ponytail-review` — Code review focused exclusively on over-engineering.
+- `ponytail` — Lazy senior dev mode: the smallest change that fully solves the task, and a reply a busy human understands in one read.
+- `ponytail-audit` — Quality audit of a whole repo: bugs, security holes, what breaks under real load, risky code without tests, slow paths, and what to delet...
+- `ponytail-review` — Quality review of a change: is the logic right, is it safe, does it hold under real load, is risky code tested, is it fast enough, and is...
 - `release-manager` — Plan and coordinate a software release — versioning, release checklist, tagging, rollout.
-- `remotion` — Best practices for Remotion - Video creation in React
-- `senior-security` — Security engineering toolkit for threat modeling, vulnerability analysis, secure architecture, and penetration testing.
+- `remotion-best-practices` — Router for all Remotion skills
+- `senior-security` — Use when the user asks for STRIDE threat modeling, DREAD risk scoring, data-flow-diagram threat analysis, or a quick secret scan — or whe...
 - `site-architecture` — When the user wants to plan, map, or restructure their website's page hierarchy, navigation, URL structure, or internal linking.
 - `tech-debt-tracker` — Scan codebases for technical debt, score severity, track trends, and generate prioritized remediation plans.
 - **agent-dev/**
-  - `claude-api` — Build apps with the Claude API or Anthropic SDK.
+  - `claude-api` — Reference for the Claude API / Anthropic SDK — model ids, pricing, params, streaming, tool use, MCP, agents, caching, token counting, mod...
   - `deep-agents-core` — INVOKE THIS SKILL when building ANY Deep Agents application.
   - `deep-agents-memory` — INVOKE THIS SKILL when your Deep Agent needs memory, persistence, or filesystem access.
   - `deep-agents-orchestration` — INVOKE THIS SKILL when using subagents, task planning, or human approval in Deep Agents.
@@ -145,7 +145,7 @@ index anymore.
   - `senior-fullstack` — Fullstack development toolkit with project scaffolding for Next.js, FastAPI, MERN, and Django stacks, code quality analysis with security...
 - **cloud-platform/**
   - `aws-solution-architect` — Design AWS architectures for startups using serverless patterns and IaC templates.
-  - `durable-objects` — Create and review Cloudflare Durable Objects.
+  - `durable-objects` — Build, debug, or review Cloudflare Durable Objects code for persistent state and coordination.
   - `posthog-error-tracking-nextjs` — PostHog error tracking for Next.js
   - `posthog-error-tracking-python` — PostHog error tracking for Python
   - `posthog-error-tracking-react` — PostHog error tracking for React
@@ -153,27 +153,27 @@ index anymore.
   - `posthog-feature-flags-nodejs` — PostHog feature flags for Node.js applications
   - `posthog-feature-flags-python` — PostHog feature flags for Python applications
   - `posthog-feature-flags-react` — PostHog feature flags for React applications
-  - `stripe-best-practices` — Guides Stripe integration decisions — API selection (Checkout Sessions vs PaymentIntents), Connect platform setup (Accounts v2, controlle...
-  - `stripe-integration-expert` — Integrate Stripe payments end-to-end — checkout, subscriptions, webhooks, customer portal, invoicing.
-  - `stripe-projects` — Use when the user needs to provision a third-party service available on https://projects.dev/providers; create or retrieve a provider/ser...
+  - `stripe-best-practices` — Guides Stripe integration decisions across development and test environment planning (separate sandboxes vs the shared test mode sandbox)...
+  - `stripe-integration-expert` — Production-grade Stripe integrations: subscriptions with trials and proration, one-time payments, usage-based billing, checkout sessions,...
+  - `stripe-projects` — Use when the user wants to provision infrastructure or third-party services using Stripe Projects.
   - `supabase` — Use when doing ANY task involving Supabase.
-  - `supabase-postgres-best-practices` — Postgres performance optimization and best practices from Supabase.
-  - `upgrade-stripe` — Guide for upgrading Stripe API versions and SDKs
-  - `web-perf` — Analyzes web performance using Chrome DevTools MCP.
-  - `workers-best-practices` — Reviews and authors Cloudflare Workers code against production best practices.
-  - `wrangler` — Cloudflare Workers CLI for deploying, developing, and managing Workers, KV, R2, D1, Vectorize, Hyperdrive, Workers AI, Containers, Queues...
+  - `supabase-postgres-best-practices` — Postgres best practices maintained by Supabase, for Postgres running anywhere.
+  - `upgrade-stripe` — Guide for upgrading Stripe API versions, webhook endpoints, server-side SDKs, Stripe.js, and mobile SDKs
+  - `web-perf` — Audit, diagnose, or optimize website loading and interaction performance, Core Web Vitals, and Lighthouse performance scores.
+  - `workers-best-practices` — Cloudflare Workers best practices for production applications.
+  - `wrangler` — Run or troubleshoot Wrangler CLI commands in projects that have a wrangler.jsonc, wrangler.json, or wrangler.toml file, including local d...
 - **devops-sre/**
-  - `ci-cd-pipeline-builder` — CI/CD Pipeline Builder
+  - `ci-cd-pipeline-builder` — Generate pragmatic CI/CD pipelines from detected project stack signals — fast baseline generation, repeatable checks, environment-aware d...
   - `docker-development` — Docker and container development agent skill and plugin for Dockerfile optimization, docker-compose orchestration, multi-stage builds, an...
-  - `performance-profiler` — Profile and optimize application performance — bottlenecks, hot paths, CPU/memory, latency.
+  - `performance-profiler` — Systematic performance profiling for Node.js, Python, and Go applications.
 - **frontend/**
-  - `frontend-design` — Create distinctive, production-grade frontend interfaces with high design quality.
+  - `frontend-design` — Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one.
   - `frontend-dev-guidelines` — Frontend development guidelines for React/TypeScript applications.
   - `senior-frontend` — Frontend development skill for React, Next.js, TypeScript, and Tailwind CSS applications.
-  - `ui-ux-pro-max` — UI/UX design intelligence for web and mobile.
+  - `ui-ux-pro-max` — UI/UX design intelligence for web, mobile, and desktop.
   - `web-artifacts-builder` — Suite of tools for creating elaborate, multi-component claude.ai HTML artifacts using modern frontend web technologies (React, Tailwind C...
 - **ml/**
-  - `get-available-resources` — This skill should be used at the start of any computationally intensive scientific task to detect and report available system resources (...
+  - `get-available-resources` — Detects host inventory and effective CPU, memory, disk, scheduler, container, and accelerator limits when a user asks for resource-aware ...
   - `huggingface-best` — Use when the user asks about finding the best, top, or recommended model for a task, wants to know what AI model to use, or wants to comp...
   - `huggingface-community-evals` — Run evaluations for Hugging Face Hub models using inspect-ai and lighteval on local hardware.
   - `huggingface-datasets` — Use this skill for Hugging Face Dataset Viewer API workflows that fetch subset/split metadata, paginate rows, search text, apply filters,...
@@ -185,18 +185,18 @@ index anymore.
   - `huggingface-tool-builder` — Use this skill when the user wants to build tool/scripts or achieve a task where using data from the Hugging Face API would help.
   - `huggingface-trackio` — Track and visualize ML training experiments with Trackio.
   - `huggingface-vision-trainer` — Trains and fine-tunes vision models for object detection (D-FINE, RT-DETR v2, DETR, YOLOS), image classification (timm models — MobileNet...
-  - `pufferlib` — High-performance reinforcement learning framework optimized for speed and scale.
-  - `pytorch-lightning` — Deep learning framework (PyTorch Lightning).
-  - `scikit-learn` — Machine learning in Python with scikit-learn.
-  - `shap` — Model interpretability and explainability using SHAP (SHapley Additive exPlanations).
-  - `stable-baselines3` — Production-ready reinforcement learning algorithms (PPO, SAC, DQN, TD3, DDPG, A2C) with scikit-learn-like API.
-  - `torch-geometric` — Graph Neural Networks (PyG).
-  - `train-sentence-transformers` — Train or fine-tune sentence-transformers models across `SentenceTransformer` (bi-encoder; dense or static embedding model; for retrieval,...
-  - `transformers` — This skill should be used when working with pre-trained transformer models for natural language processing, computer vision, audio, or mu...
+  - `pufferlib` — Version-aware guidance for PufferLib reinforcement-learning environments, vectorization, policies, PuffeRL training, evaluation, and safe...
+  - `pytorch-lightning` — Deep learning framework (PyTorch Lightning / lightning package).
+  - `scikit-learn` — Supports machine learning in Python with scikit-learn.
+  - `shap` — Explain and audit machine-learning predictions with SHAP.
+  - `stable-baselines3` — Trains and evaluates single-agent reinforcement learning with Stable Baselines3 (PPO, SAC, DQN, TD3, DDPG, A2C), Gymnasium custom environ...
+  - `torch-geometric` — Supports PyTorch Geometric (PyG) graph neural networks — node/link/graph classification, message passing (GCN, GAT, GraphSAGE, GIN), hete...
+  - `train-sentence-transformers` — Train or fine-tune sentence-transformers models across `SentenceTransformer` (bi-encoder, dense or static embedding model for retrieval, ...
+  - `transformers` — Hugging Face Transformers for loading Hub models, running pipeline inference, text generation, and Trainer fine-tuning on NLP, vision, au...
   - `transformers-js` — Use Transformers.js to run state-of-the-art machine learning models directly in JavaScript/TypeScript.
-  - `umap-learn` — UMAP dimensionality reduction.
+  - `umap-learn` — Applies UMAP-learn to nonlinear dimensionality reduction, 2D/3D embeddings, clustering preprocessing, supervised or semi-supervised UMAP,...
 - **testing-qa/**
-  - `api-test-suite-builder` — Build an automated API test suite — endpoint tests, auth, fixtures, contract/integration coverage.
+  - `api-test-suite-builder` — Use when the user asks to generate API tests, create integration test suites, test REST endpoints, or build contract tests.
   - `senior-qa` — Generates unit tests, integration tests, and E2E tests for React/Next.js applications.
   - `webapp-testing` — Toolkit for interacting with and testing local web applications using Playwright.
 
@@ -246,16 +246,16 @@ index anymore.
 - **gates/**
   - `ablation-planning` — Enumerates the ablations a paper actually needs, then costs and orders them against a compute budget and maps each to the claim it defends.
   - `claim-calibration` — Decides what your results license you to say, and sets that as the ceiling before the abstract is written.
-  - `experimental-design` — Designs a study BEFORE data is collected — the design type, randomization, blocking, and how treatment combinations are laid out so the r...
+  - `experimental-design` — Designs experiments and studies BEFORE data is collected — choosing a design, randomizing, blocking, and laying out treatment combination...
   - `falsification-design` — Fixes the result that would end the claim, before the experiment runs.
   - `field-map` — Turns a research direction into a map of what the field actually disagrees about, and a register of anomalies an idea could come from.
-  - `hypothesis-generation` — Structured hypothesis formulation from observations.
+  - `hypothesis-generation` — Formulates evidence-bounded scientific questions, candidate hypotheses, rival explanations, causal or associational claims, discriminatin...
   - `idea-forge` — Turns a field's anomaly register into 3-8 candidate research ideas.
   - `idea-triage` — Decides which research idea to commit to by eliminating the rest.
 - **literature/**
   - `bibtex-manager` — Turns a reference you already have into a correct BibTeX entry, and checks the ones already in your .bib.
   - `paper-library` — Search and reason over a LOCAL library of collected research papers (downloaded arXiv/conference PDFs).
-  - `paper-lookup` — Finds papers across 11 academic APIs and returns each result with reproducible provenance.
+  - `paper-lookup` — Searches 18 scholarly APIs for papers, preprints, citations, open-access full text, repository records, and journal OA status, and return...
   - `paper-reading-guide` — Use this whenever the user wants to read, understand, or be walked through an academic paper — whether they share a PDF, arxiv/URL link, ...
   - `survey-deep` — Fans out one independent agent per item in a survey outline, each researching that item against every field and writing a structured JSON...
   - `survey-outline` — Builds a comparison table for a landscape survey — decides the items (what is being compared) and the fields (what is being compared abou...
@@ -271,66 +271,87 @@ index anymore.
 - **review/**
   - `auto-review-loop` — Iteratively improve YOUR OWN research artifact (paper draft, experiment writeup, or codebase) by having a DIFFERENT model review it adver...
   - `paper-stress-test` — Adversarially stress-test YOUR OWN paper draft before submission — as the harshest fair reviewer would.
-  - `peer-review` — Reviews someone else's manuscript, protocol, preprint or proposal, and grades the evidence behind its claims.
+  - `peer-review` — Prepares evidence-bounded, constructive peer-review drafts and structured manuscript assessments.
   - `rebuttal` — Writes, audits or revises a point-by-point response to reviewers.
 - **talks/**
-  - `latex-posters` — Create professional research posters in LaTeX using beamerposter, tikzposter, or baposter.
-  - `nature-paper2ppt` — Build a complete Nature-style Chinese PPTX presentation from a scientific paper, preprint, PDF, article text, figure legends, or reading ...
-  - `pptx-posters` — Create research posters using HTML/CSS that can be exported to PDF or PPTX.
+  - `latex-posters` — Creates research posters in LaTeX using beamerposter, tikzposter, or baposter.
+  - `nature-paper2ppt` — Create or improve a Chinese academic PPTX from a scientific paper or research reading notes, with source figures and speaker notes.
+  - `pptx-posters` — Creates and audits editable scientific posters in macro-free PowerPoint (.pptx) from author-approved local content and assets.
   - `scientific-slides` — Builds a research talk — slide structure, what goes on each slide, timing, and a visual validation pass.
 
 #### data-analysis-project (16)
-- `dask` — Distributed computing for larger-than-RAM pandas/NumPy workflows.
-- `defuddle` — Extract clean markdown content from web pages using Defuddle CLI, removing clutter and navigation to save tokens.
-- `exploratory-data-analysis` — Perform comprehensive exploratory data analysis on scientific data files across 200+ file formats.
-- `matplotlib` — Low-level plotting library for full customization.
-- `networkx` — Comprehensive toolkit for creating, analyzing, and visualizing complex networks and graphs in Python.
+- `dask` — Scales pandas, NumPy, and custom Python research workflows beyond memory or across clusters with Dask.
+- `defuddle` — Extract clean Markdown from HTML pages with Defuddle CLI.
+- `exploratory-data-analysis` — Performs bounded, local exploratory analysis of explicitly supported scientific files.
+- `matplotlib` — Creates and customizes scientific plots with Matplotlib.
+- `networkx` — Creates, analyzes, and visualizes complex networks and graphs in Python with NetworkX.
 - `perplexity-search` — Perform AI-powered web searches with real-time information using Perplexity models via LiteLLM and OpenRouter.
 - `plotly` — Interactive visualization library.
-- `polars` — Fast in-memory DataFrame library for datasets that fit in RAM.
-- `pymc` — Bayesian modeling with PyMC.
-- `seaborn` — Statistical visualization with pandas integration.
-- `statistical-analysis` — Guided statistical analysis with test selection and reporting.
-- `statsmodels` — Statistical models library for Python.
-- `sympy` — Use this skill when working with symbolic mathematics in Python.
-- `timesfm-forecasting` — Zero-shot time series forecasting with Google's TimesFM foundation model.
-- `vaex` — Use this skill for processing and analyzing large tabular datasets (billions of rows) that exceed available RAM.
-- `zarr-python` — Chunked N-D arrays for cloud storage.
+- `polars` — High-performance DataFrame library for Python ETL, analytics, and pandas migration.
+- `pymc` — Builds and checks Bayesian models with PyMC, including hierarchical models, NUTS MCMC, variational inference, mutable-data predictions, p...
+- `seaborn` — Creates Seaborn statistical visualizations with pandas integration for distributions, relationships, categorical comparisons, regression ...
+- `statistical-analysis` — Guided statistical analysis for research data - test selection, assumption checking, effect sizes, power analysis, Bayesian alternatives,...
+- `statsmodels` — Fits and diagnoses Python statistical models including OLS, GLM, discrete and mixed models, ARIMA and SARIMAX.
+- `sympy` — Performs exact symbolic mathematics with SymPy for algebra, calculus, equation solving, symbolic linear algebra, physics, and lambdify or...
+- `timesfm-forecasting` — Performs zero-shot time-series forecasting with Google's TimesFM, including regular-grid CSV preparation, quantile forecasts, XReg covari...
+- `vaex` — Processes large tabular scientific datasets with Vaex expressions, filtered views, streamed statistics, binned visualizations, and file c...
+- `zarr-python` — Stores and queries chunked N-D scientific arrays with Zarr-Python 3, including codecs, sharding, S3/GCS storage, and NumPy/Dask/Xarray in...
 
-#### marketing-project (28)
+#### marketing-project (49)
+- `ab-testing` — When the user wants to plan, design, or implement an A/B test or experiment, or build a growth experimentation program.
 - `ad-creative` — When the user wants to generate, iterate, or scale ad creative — headlines, descriptions, primary text, or full ad variations — for any p...
 - `ai-seo` — When the user wants to optimize content for AI search engines, get cited by LLMs, or appear in AI-generated answers.
+- `aso` — When the user wants to audit or optimize an App Store or Google Play listing.
+- `attribution` — When the user wants to figure out which marketing actually drives conversions and revenue, choose or interpret an attribution model, or r...
 - `canvas-design` — Create beautiful visual art in .png and .pdf documents using design philosophy.
+- `co-marketing` — When the user wants to find co-marketing partners, plan joint campaigns, or brainstorm partnership opportunities.
+- `community-marketing` — Build and leverage online communities to drive product growth and brand loyalty.
+- `competitor-profiling` — When the user wants to research, profile, or analyze competitors from their URLs.
 - `content-strategy` — When the user wants to plan a content strategy, decide what content to create, or figure out what topics to cover.
-- `copy-editing` — When the user wants to edit, review, or improve existing marketing copy.
-- `copywriting` — When the user wants to write, rewrite, or improve marketing copy for any page — including homepage, landing pages, pricing pages, feature...
+- `copy-editing` — When the user wants to edit, review, or improve existing marketing copy, or refresh outdated content.
+- `copywriting` — When the user wants to write, rewrite, or improve marketing copy for any page, including homepage, landing pages, pricing pages, feature ...
+- `cro` — When the user wants to optimize, improve, or increase conversions on any marketing page or form — including homepage, landing pages, pric...
+- `customer-research` — When the user wants to conduct, analyze, or synthesize customer research.
+- `directory-submissions` — When the user wants to submit their product to startup, SaaS, AI, agent, MCP, no-code, or review directories for backlinks, domain rating...
 - `elevenlabs-agents` — Build voice AI agents with ElevenLabs.
 - `elevenlabs-music` — Generate music using ElevenLabs Music API.
-- `elevenlabs-setup-api-key` — Guides users through setting up an ElevenLabs API key for ElevenLabs MCP tools.
+- `elevenlabs-setup-api-key` — Fix or hand-configure an existing ElevenLabs API key.
 - `elevenlabs-sound-effects` — Generate sound effects from text descriptions using ElevenLabs.
 - `elevenlabs-speech-to-text` — Transcribe audio to text using ElevenLabs Scribe v2.
 - `elevenlabs-text-to-speech` — Convert text to speech using ElevenLabs voice AI.
 - `elevenlabs-transcribe` — Transcribe audio to text using ElevenLabs Scribe.
 - `elevenlabs-voice-changer` — Transform the voice in an audio recording into a different target voice while preserving emotion, timing, and delivery using the ElevenLa...
 - `elevenlabs-voice-isolator` — Remove background noise and isolate vocals/speech from audio using ElevenLabs Voice Isolator (audio isolation) API.
-- `generate-image` — Generate or edit images using AI models (FLUX, Nano Banana 2).
+- `generate-image` — Generates or edits images with AI models through the OpenRouter Image API (Gemini, Seedream, Recraft, GPT-Image, Riverflow).
+- `image` — When the user wants to create, generate, edit, or optimize images for marketing — blog heroes, social graphics, product mockups, profile ...
+- `influencer-marketing` — When the user wants to run influencer, creator, or ambassador partnerships to promote their product — finding and vetting partners, struc...
 - `last30days` — Research what people actually say about any topic in the last 30 days.
-- `launch-strategy` — When the user wants to plan a product launch, feature announcement, or release strategy.
-- `market-research-reports` — Generate comprehensive market research reports (50+ pages) in the style of top consulting firms (McKinsey, BCG, Gartner).
+- `launch` — When the user wants to plan a product launch, feature announcement, or release strategy.
+- `lead-magnets` — When the user wants to create, plan, or optimize a lead magnet for email capture or lead generation.
+- `market-research-reports` — Builds evidence-traceable market research reports and assumption-driven market sizing or forecast scenarios.
+- `marketing-council` — When the user wants multiple expert perspectives on a marketing question — a simulated board of advisors staffed by legendary marketers (...
 - `marketing-ideas` — When the user needs marketing ideas, inspiration, or strategies for their SaaS or software product.
+- `marketing-loops` — When the user wants to set up a recurring, self-running marketing workflow — a repeatable loop an AI agent runs on a cadence (weekly, dai...
+- `marketing-plan` — When the user needs a comprehensive marketing plan for a client, a company they advise, or their own product.
 - `marketing-psychology` — When the user wants to apply psychological principles, mental models, or behavioral science to marketing.
-- `pricing-strategy` — When the user wants help with pricing decisions, packaging, or monetization strategy.
-- `product-marketing-context` — When the user wants to create or update their product marketing context document.
+- `offers` — When the user wants to design, construct, or improve an offer — the thing they actually sell — including value framing, bonus stacking, g...
+- `onboarding` — When the user wants to optimize post-signup onboarding, user activation, first-run experience, or time-to-value.
+- `paywalls` — When the user wants to create or optimize in-app paywalls, upgrade screens, upsell modals, or feature gates.
+- `pricing` — When the user wants help with pricing decisions, packaging, or monetization strategy.
+- `product-marketing` — When the user wants to create or update their product marketing context document.
+- `public-relations` — When the user wants help with public relations, earned media, press coverage, journalist outreach, or media strategy (not pull requests).
 - `seo-audit` — When the user wants to audit, review, or diagnose SEO issues on their site.
-- `social-content` — When the user wants help creating, scheduling, or optimizing social media content for LinkedIn, Twitter/X, Instagram, TikTok, Facebook, o...
+- `signup` — When the user wants to optimize signup, registration, account creation, or trial activation flows.
+- `social` — When the user wants help creating, scheduling, or optimizing social media content for LinkedIn, Twitter/X, Instagram, TikTok, or Facebook...
 - `theme-factory` — Toolkit for styling artifacts with a theme.
+- `video` — When the user wants to create, generate, or produce video content using AI tools or programmatic frameworks.
 - `wechat-ai-publisher` — 自动采集 AI 热门内容，撰写公众号文章，生成配图并发布到微信公众号草稿箱。当用户说"发布AI热点"、"写公众号文章"、"采集AI内容"、"publish AI news"时触发。
 - `xhs-visual-director` — Use this skill when planning, redesigning, or reviewing Xiaohongshu carousel visuals, covers, 3:4 image posts, page-by-page visual direct...
 
 #### productivity-project (24)
 - `agent-reach` — MUST USE when user wants to 调研/research/搜索/search/查/找/look up anything on the internet — e.g.
 - `autonomy-audit` — 逐环节审计一条变现路径能否真的无人托管，输出「人工小时/月」的可加总估算。
-- `career-ops` — AI job search command center -- evaluate offers, generate CVs, scan portals, track applications.
+- `career-ops` — Open-source AI job search agent -- evaluate offers, generate CVs, scan portals, track applications.
 - `decision-memo` — 把调研收口成一份可拍板的决策备忘录：选定 ONE 条路径，说清为什么淘汰另外两条最强候选， 给出 30 天落地方案、kill 判据和敞口自述。当你要「出最终结论」「选一条」「写决策文档」 「给落地方案」「收口」时使用。含六维加权打分卡与对抗性复核流程（打分必须在干净上下文里做）。
 - `evidence-ledger` — 维护证据台账并给来源分级，专治「AI 月入 X 万」类内容营销污染。
 - `gws` — Google Workspace CLI for AI agents.
@@ -338,19 +359,19 @@ index anymore.
 - `job-application-assistant` — Assists with job applications: evaluating job postings, tailoring CVs, writing cover letters, and preparing for interviews.
 - `joe-ielts-writing` — 按 Joe 老师的雅思写作教学体系陪学生练写作。大作文（Task 2）：审题四陷阱、"为什么"转述法、 题型与结构、具象化/情景化 Brainstorming、中心句与因果论证、冲 7 语言三件套；语法地基：主干法、 三类从句、五种修饰（汉译英、长难句）；按官方四项评分标准...
 - `json-canvas` — Create and edit JSON Canvas files (.canvas) with nodes, edges, groups, and connections.
-- `markdown-mermaid-writing` — Comprehensive markdown and Mermaid diagram writing skill.
+- `markdown-mermaid-writing` — Writes scientific Markdown documentation and Mermaid diagrams for workflows, relationships, timelines, and schemas.
 - `monetization-path-scan` — 枚举并初筛「可无人托管运转的变现路径」候选池。当你需要生成候选变现路径、 横向对比赚钱方式、回答「有哪些路可以走」「先把候选列出来」「筛掉不可行的」时使用。
 - `notebooklm` — Drive Google NotebookLM from the agent — auto-upload PDFs/sources, then get grounded summaries and Q&A back.
 - `notion-cli` — Use the Notion CLI (`ntn`) to interact with the Notion API, manage workers, and upload files.
 - `obsidian-bases` — Create and edit Obsidian Bases (.base files) with views, filters, formulas, and summaries.
 - `obsidian-cli` — Interact with Obsidian vaults using the Obsidian CLI to read, create, search, and manage notes, tasks, properties, and more.
 - `obsidian-markdown` — Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, and other Obsidian-specific syntax.
-- `open-notebook` — Self-hosted, open-source alternative to Google NotebookLM for AI-powered research and document analysis.
-- `planning-with-files` — Implements Manus-style file-based planning to organize and track progress on complex tasks.
+- `open-notebook` — Organizes research with the self-hosted Open Notebook alternative to NotebookLM.
+- `planning-with-files` — Persistent file-based planning for multi-step AI-agent work.
 - `ppt-master` — Generate truly EDITABLE PowerPoint (.pptx) from any document — native shapes and native animations (not slide images), optional speaker-n...
 - `resume-writing` — Use when writing, rewriting, or tailoring a resume or academic CV kept as LaTeX source in a repository: one shared class file, one .tex p...
 - `upskill` — Compares tracked job postings against the candidate profile to identify skill gaps and generate a prioritized learning plan with study re...
-- `what-if-oracle` — Run structured What-If scenario analysis with multi-branch possibility exploration.
+- `what-if-oracle` — Supports structured what-if scenario analysis for research planning, experimental contingencies, and scientific project decisions.
 - `youtube-transcript` — 提取 YouTube 视频的字幕文本，用于"观看"并学习视频教程内容。当你遇到 YouTube 链接、需要了解某个视频讲了什么、或要照着视频教程操作时使用。也可用于列出视频有哪些字幕语言轨道。Triggers on YouTube URLs, youtu.be links,...
 
 #### ios-project (21)
@@ -376,17 +397,28 @@ index anymore.
 - `swiftui-view-refactor` — SwiftUI view refactoring.
 - `widgetkit-liveactivity` — Build or review iOS widgets (WidgetKit), Live Activities (ActivityKit), and the Dynamic Island.
 
-#### craft-project (8)
+#### craft-project (19)
 - **design/**
   - `brand` — Brand voice, visual identity, messaging frameworks, asset management, brand consistency.
+  - `brandkit` — Moved to github.com/Leonxlnx/imagegen-skills.
   - `design-system` — Token architecture, component specifications, and slide generation.
+  - `design-taste-frontend-v1` — The original taste-skill v1, kept for projects that depend on its exact behaviour.
+  - `gpt-taste` — Classic skill for GPT and Codex, opt-in: it runs only when called by name.
+  - `high-end-visual-design` — Classic style skill, opt-in: it runs only when called by name.
+  - `image-to-code` — Moved to github.com/Leonxlnx/imagegen-skills.
+  - `imagegen-frontend-mobile` — Moved to github.com/Leonxlnx/imagegen-skills.
+  - `imagegen-frontend-web` — Moved to github.com/Leonxlnx/imagegen-skills.
   - `impeccable` — Give an AI coding agent real design craft: a shared design vocabulary, live in-browser iteration, and 44 deterministic checks that catch ...
   - `impeccable-ppt` — Use when the visual craft or aesthetics of a slide deck / PowerPoint / 演示文稿 / 答辩PPT / presentation matter — making slides look designed a...
+  - `industrial-brutalist-ui` — Classic style skill, opt-in: it runs only when called by name.
+  - `minimalist-ui` — Classic style skill, opt-in: it runs only when called by name.
+  - `redesign-existing-projects` — Retired: redesigns, restyles and design reviews are part of design-taste-frontend.
   - `slides` — Create strategic HTML presentations with Chart.js, design tokens, responsive layouts, copywriting formulas, and contextual slide strategies.
-  - `taste-skill` — Anti-slop frontend skill for landing pages, portfolios, and redesigns.
+  - `stitch-design-taste` — Classic skill for Google Stitch, opt-in: it runs only when called by name.
+  - `taste-skill` — tasteskill v2, the anti-slop frontend skill.
   - `ui-styling` — Create beautiful, accessible user interfaces with shadcn/ui components (built on Radix UI + Tailwind), Tailwind CSS utility-first styling...
 - **writing/**
-  - `humanizer-zh` — 去除文本中的 AI 生成痕迹。适用于编辑或审阅文本，使其听起来更自然、更像人类书写。
+  - `humanizer-zh` — 编辑中文文章、评论和文档中的空话、重复及模板化表达，让文字更自然，同时保留事实、确定程度和作者声音。适用于润色已有文本，不用于判断作者身份或保证通过 AI 检测器。
 
 #### life-project (10)
 - `astrology-chart` — Generate real, astronomically-calculated natal (birth) charts, planetary transits, and synastry/compatibility readings using Swiss Epheme...

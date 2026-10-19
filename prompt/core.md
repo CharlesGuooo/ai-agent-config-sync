@@ -40,7 +40,7 @@ When a task becomes domain-specific, start the agent from (or open) the matching
 | Domain | Directory |
 | --- | --- |
 | ML / DL / RL training | `~/dev-project/ml/` (sklearn / PyTorch / transformers / RL) |
-| Finance / 投资 / 交易 | `~/finance-project/` (container; start in `trading/` `research/` `macro/` `modeling/` `portfolio/` `quant-methods/`, or `advisory/ib/` `advisory/pe/` `advisory/wealth/` `advisory/fund-admin/` `advisory/compliance/`, for actual skills) |
+| Finance / 投资 / 交易 | `~/finance-project/` (container; start in `trading/` `research/` `portfolio/` `quant-methods/` for actual skills) |
 | Data analysis | `~/data-analysis-project/` |
 | Development | `~/dev-project/` (general dev skills; start in `frontend/` `backend/` `cloud-platform/` `testing-qa/` `devops-sre/` `agent-dev/` for specialized ones) |
 | Marketing | `~/marketing-project/` |

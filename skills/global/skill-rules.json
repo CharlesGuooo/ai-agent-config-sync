@@ -42,18 +42,6 @@
       "priority": "medium",
       "description": "Use for persistent browser-based UI debugging and iterative Playwright interaction."
     },
-    "gh-fix-ci": {
-      "type": "workflow",
-      "enforcement": "suggest",
-      "priority": "medium",
-      "description": "Use when debugging failing GitHub Actions or PR checks."
-    },
-    "gh-address-comments": {
-      "type": "workflow",
-      "enforcement": "suggest",
-      "priority": "medium",
-      "description": "Use when addressing GitHub PR review or issue comments with gh."
-    },
     "brainstorming": {
       "type": "process",
       "enforcement": "suggest",

@@ -101,11 +101,11 @@ index anymore.
 > Auto-generated from `skills/project-packs/` by `scripts/gen-harness.mjs`.
 > Do not edit between the PACKS markers by hand — run the generator.
 
-**Global skills (38, auto-exposed at startup — no need to route):** Process 13 · Thinking 1 · Escalation 1 · Routing & Meta 4 · Workflow 4 · Code Review 3 · Design & Architecture 4 · OpenSpec 4 · Document 3 · Learning 1.
+**Global skills (36, auto-exposed at startup — no need to route):** Process 13 · Thinking 1 · Escalation 1 · Routing & Meta 4 · Workflow 2 · Code Review 3 · Design & Architecture 4 · OpenSpec 4 · Document 3 · Learning 1.
 
 ### Local skill packs — index
 
-#### dev-project (94)
+#### dev-project (83)
 - `changelog-generator` — Generate changelogs and release notes from git history/commits.
 - `codebase-onboarding` — Produce onboarding docs and a guided tour of an unfamiliar codebase.
 - `database-schema-designer` — Design or review a database schema — tables, relationships, indexes, normalization, migrations.
@@ -114,9 +114,6 @@ index anymore.
 - `find-bugs` — Find bugs, security vulnerabilities, and code quality issues in local branch changes.
 - `ponytail` — Forces the laziest solution that actually works, simplest, shortest, most minimal.
 - `ponytail-audit` — Whole-repo audit for over-engineering.
-- `ponytail-debt` — Harvest every `ponytail:` comment in the codebase into a debt ledger, so the deliberate shortcuts and deferrals ponytail leaves behind ge...
-- `ponytail-gain` — Show ponytail's measured impact as a compact scoreboard: less code, less cost, more speed, from the benchmark medians.
-- `ponytail-help` — Quick-reference card for all ponytail modes, skills, and commands.
 - `ponytail-review` — Code review focused exclusively on over-engineering.
 - `release-manager` — Plan and coordinate a software release — versioning, release checklist, tagging, rollout.
 - `remotion` — Best practices for Remotion - Video creation in React
@@ -124,7 +121,6 @@ index anymore.
 - `site-architecture` — When the user wants to plan, map, or restructure their website's page hierarchy, navigation, URL structure, or internal linking.
 - `tech-debt-tracker` — Scan codebases for technical debt, score severity, track trends, and generate prioritized remediation plans.
 - **agent-dev/**
-  - `agents-sdk` — Build AI agents on Cloudflare Workers using the Agents SDK.
   - `claude-api` — Build apps with the Claude API or Anthropic SDK.
   - `deep-agents-core` — INVOKE THIS SKILL when building ANY Deep Agents application.
   - `deep-agents-memory` — INVOKE THIS SKILL when your Deep Agent needs memory, persistence, or filesystem access.
@@ -166,13 +162,7 @@ index anymore.
 - **devops-sre/**
   - `ci-cd-pipeline-builder` — CI/CD Pipeline Builder
   - `docker-development` — Docker and container development agent skill and plugin for Dockerfile optimization, docker-compose orchestration, multi-stage builds, an...
-  - `error-tracking` — Add Sentry v8 error tracking and performance monitoring to your project services.
-  - `incident-commander` — Coordinate incident response as incident commander — triage, severity, comms, roles, timeline, postmortem.
-  - `observability-designer` — Design observability for production systems — SLI/SLO frameworks, alerting, dashboards, metrics/logs/tracing.
   - `performance-profiler` — Profile and optimize application performance — bottlenecks, hot paths, CPU/memory, latency.
-  - `runbook-generator` — Generate operational runbooks — procedures, on-call steps, recovery playbooks.
-  - `senior-devops` — Comprehensive DevOps skill for CI/CD, infrastructure automation, containerization, and cloud platforms (AWS, GCP, Azure).
-  - `terraform-patterns` — Terraform infrastructure-as-code agent skill and plugin for Claude Code, Codex, Gemini CLI, Cursor, OpenClaw.
 - **frontend/**
   - `frontend-design` — Create distinctive, production-grade frontend interfaces with high design quality.
   - `frontend-dev-guidelines` — Frontend development guidelines for React/TypeScript applications.
@@ -204,98 +194,20 @@ index anymore.
   - `umap-learn` — UMAP dimensionality reduction.
 - **testing-qa/**
   - `api-test-suite-builder` — Build an automated API test suite — endpoint tests, auth, fixtures, contract/integration coverage.
-  - `route-tester` — Test authenticated routes in the your project using cookie-based authentication.
   - `senior-qa` — Generates unit tests, integration tests, and E2E tests for React/Next.js applications.
   - `webapp-testing` — Toolkit for interacting with and testing local web applications using Playwright.
 
-#### finance-project (129)
-- **advisory/compliance/**
-  - `kyc-doc-parse` — Parse an investor or client onboarding packet into structured KYC fields — identity, ownership, control, source of funds, and document in...
-  - `kyc-rules` — Apply the firm's KYC/AML rules grid to a parsed onboarding record — assign a risk rating, list every rule outcome with the rule cited, an...
-- **advisory/fund-admin/**
-  - `accrual-schedule` — Build the period-end accrual schedule — for each accrual, compute the entry, cite the support, and draft the JE.
-  - `break-trace` — Root-cause a reconciliation break to its source transaction or posting — follow the audit trail from the break row back to the originatin...
-  - `gl-recon` — Reconcile general ledger to subledger for a trade date or period — match at the position or transaction level, surface breaks, and classi...
-  - `nav-tieout` — Tie an LP statement to the fund's NAV pack — recompute the LP's capital account from the NAV components and flag any line that doesn't ag...
-  - `roll-forward` — Build a roll-forward schedule for a balance-sheet account — beginning balance plus activity less reversals equals ending balance, with ea...
-  - `variance-commentary` — Write flux commentary for every P&L and balance-sheet line over threshold — current vs prior period and vs budget, with the driver explai...
-- **advisory/ib/**
-  - `buyer-list` — Build and organize a universe of potential acquirers for sell-side M&A processes.
-  - `cim-builder` — Structure and draft a Confidential Information Memorandum for sell-side M&A processes.
-  - `datapack-builder` — Build professional financial services data packs from various sources including CIMs, offering memorandums, SEC filings, web search, or M...
-  - `deal-tracker` — Track multiple live deals with milestones, deadlines, action items, and status updates.
-  - `pitch-deck` — Populates investment banking pitch deck templates with data from source files.
-  - `process-letter` — Draft process letters and bid instructions for sell-side M&A processes.
-  - `strip-profile` — Creates professional investment banking strip profiles (company profiles) for pitch books, deal materials, and client presentations.
-  - `teaser` — Draft anonymous one-page company teasers for sell-side M&A processes.
-- **advisory/pe/**
-  - `ai-readiness` — Scan the portfolio for the highest-leverage AI opportunities and rank where to deploy operating-partner time.
-  - `dd-checklist` — Generate and track comprehensive due diligence checklists tailored to the target company's sector, deal type, and complexity.
-  - `dd-meeting-prep` — Prepare for due diligence meetings — management presentations, expert network calls, customer references, and advisor sessions.
-  - `deal-screening` — Quickly screen inbound deal flow — CIMs, teasers, and broker materials — against the fund's investment criteria.
-  - `deal-sourcing` — PE deal sourcing workflow — discover target companies, check CRM for existing relationships, and draft personalized founder outreach emails.
-  - `ic-memo` — Draft a structured investment committee memo for PE deal approval.
-  - `portfolio-monitoring` — Track and analyze portfolio company performance against plan.
-  - `value-creation-plan` — Structure post-acquisition value creation plans with revenue, cost, and operational levers mapped to an EBITDA bridge.
-- **advisory/wealth/**
-  - `client-report` — Generate professional client-facing performance reports with portfolio returns, allocation breakdowns, and market commentary.
-  - `client-review` — Prepare for client review meetings with portfolio performance summary, allocation analysis, talking points, and action items.
-  - `investment-proposal` — Create professional investment proposals for prospective clients.
-- **macro/**
-  - `breadth-chart-analyst` — This skill should be used when analyzing market breadth charts, specifically the S&P 500 Breadth Index (200-Day MA based) and the US Stoc...
-  - `downtrend-duration-analyzer` — Analyze historical downtrend durations and generate interactive HTML histograms showing typical correction lengths by sector and market cap.
-  - `earnings-calendar` — This skill retrieves upcoming earnings announcements for US stocks using the Financial Modeling Prep (FMP) API.
-  - `economic-calendar-fetcher` — Fetch upcoming economic events and data releases using FMP API.
-  - `ftd-detector` — Detects Follow-Through Day (FTD) signals for market bottom confirmation using William O'Neil's methodology.
-  - `ibd-distribution-day-monitor` — Detect IBD-style Distribution Days for QQQ/SPY (close down at least 0.2% on higher volume), track 25-session expiration and 5% invalidati...
-  - `institutional-flow-tracker` — Use this skill to track institutional investor ownership changes and portfolio flows using 13F filings data.
-  - `macro-rates-monitor` — Build macroeconomic and rates dashboards combining macro indicators, yield curves, inflation breakevens, and swap rates.
-  - `macro-regime-detector` — Detect structural macro regime transitions (1-2 year horizon) using cross-asset ratio analysis.
-  - `market-breadth-analyzer` — Quantifies market breadth health using TraderMonty's public CSV data.
-  - `market-environment-analysis` — Comprehensive market environment analysis and reporting tool.
-  - `market-top-detector` — Detects market top probability using O'Neil Distribution Days, Minervini Leading Stock Deterioration, and Monty Defensive Sector Rotation.
-  - `scenario-analyzer` — ニュースヘッドラインを入力として18ヶ月シナリオを分析するスキル。
-  - `stanley-druckenmiller-investment` — Druckenmiller Strategy Synthesizer - Integrates 8 upstream skill outputs (Market Breadth, Uptrend Analysis, Market Top, Macro Regime, FTD...
-  - `uptrend-analyzer` — Analyzes market breadth using Monty's Uptrend Ratio Dashboard data to diagnose the current market environment.
-  - `us-market-bubble-detector` — Evaluates market bubble risk through quantitative data-driven analysis using the revised Minsky/Kindleberger framework v2.1.
-- **modeling/**
-  - `3-statement-model` — Complete, populate and fill out 3-statement financial model templates (Income Statement, Balance Sheet, Cash Flow Statement) .
-  - `audit-xls` — Audit a spreadsheet for formula accuracy, errors, and common mistakes.
-  - `clean-data-xls` — Clean up messy spreadsheet data — trim whitespace, fix inconsistent casing, convert numbers-stored-as-text, standardize dates, remove dup...
-  - `competitive-analysis` — Framework for building competitive landscape decks — market positioning, competitor deep-dives, comparative analysis, strategic synthesis.
-  - `comps-analysis` — Build institutional-grade comparable company analyses with operating metrics, valuation multiples, and statistical benchmarking in Excel/...
-  - `dcf-model` — Real DCF (Discounted Cash Flow) model creation for equity valuation.
-  - `deck-refresh` — Updates a presentation with new numbers — quarterly refreshes, earnings updates, comp rolls, rebased market data.
-  - `ib-check-deck` — Investment banking presentation quality checker.
-  - `lbo-model` — This skill should be used when completing LBO (Leveraged Buyout) model templates in Excel for private equity transactions, deal materials...
-  - `merger-model` — Build accretion/dilution analysis for M&A transactions.
-  - `ppt-template-creator` — Creates self-contained PPT template SKILLS (not presentations) from user-provided PowerPoint templates.
-  - `pptx-author` — Produce a .pptx file on disk (headless) instead of driving a live PowerPoint document — for managed-agent sessions with no open Office app.
-  - `returns-analysis` — Build quick IRR/MOIC sensitivity tables for PE deal evaluation.
-  - `unit-economics` — Analyze unit economics for PE targets — ARR cohorts, LTV/CAC, net retention, payback periods, revenue quality, and margin waterfall.
-  - `xlsx-author` — Produce a .xlsx file on disk (headless) instead of driving a live Excel workbook — for managed-agent sessions with no open Office app.
+#### finance-project (31)
 - **portfolio/**
   - `backtest-expert` — Expert guidance for systematic backtesting of trading strategies.
-  - `bond-futures-basis` — Analyze the bond futures basis by pricing futures, identifying the cheapest-to-deliver, and comparing with yield curves to assess deliver...
-  - `bond-relative-value` — Perform relative value analysis on bonds by combining pricing, yield curve context, credit spreads, and scenario stress testing.
   - `edge-concept-synthesizer` — Abstract detector tickets and hints into reusable edge concepts with thesis, invalidation signals, and strategy playbooks before strategy...
   - `edge-hint-extractor` — Extract edge hints from daily market observations and news reactions, with optional LLM ideation, and output canonical hints.yaml for dow...
   - `edge-pipeline-orchestrator` — Orchestrate the full edge research pipeline from candidate detection through strategy design, review, revision, and export.
   - `edge-signal-aggregator` — Aggregate and rank signals from multiple edge-finding skills (edge-candidate-agent, theme-detector, sector-analyst, institutional-flow-tr...
   - `edge-strategy-designer` — Convert abstract edge concepts into strategy draft variants and optional exportable ticket YAMLs for edge-candidate-agent export/validation.
   - `edge-strategy-reviewer` — Critically review strategy drafts from edge-strategy-designer for edge plausibility, overfitting risk, sample size adequacy, and executio...
-  - `exposure-coach` — Generate a one-page Market Posture summary with net exposure ceiling, growth-vs-value bias, participation breadth, and new-entry-allowed ...
-  - `financial-plan` — Build or update a comprehensive financial plan covering retirement projections, education funding, estate planning, and cash flow analysis.
-  - `fixed-income-portfolio` — Review fixed income portfolios by pricing multiple bonds, retrieving reference data, analyzing cashflows, and running scenario analysis.
-  - `fx-carry-trade` — Evaluate FX carry trade opportunities by combining spot rates, forward points, interest rate differentials, volatility surface analysis, ...
-  - `option-vol-analysis` — Analyze option volatility by combining vol surface data, option pricing with Greeks, and historical price data to assess implied vs reali...
-  - `options-strategy-advisor` — Options trading strategy analysis and simulation tool.
-  - `portfolio-manager` — Comprehensive portfolio analysis using Alpaca MCP Server integration to fetch holdings and positions, then analyze asset allocation, risk...
-  - `portfolio-rebalance` — Analyze portfolio allocation drift and generate rebalancing trade recommendations across accounts.
   - `position-sizer` — Calculate risk-based position sizes for long stock trades.
   - `strategy-pivot-designer` — Detect backtest iteration stagnation and generate structurally different strategy pivot proposals when parameter tuning reaches a local o...
-  - `swap-curve-strategy` — Analyze the interest rate swap curve by pricing swaps at multiple tenors, overlaying government and inflation curves, and identifying cur...
-  - `tax-loss-harvesting` — Identify tax-loss harvesting opportunities across taxable accounts.
 - **quant-methods/**
   - `backtesting-frameworks` — Selection guide and minimal working examples for major open-source Python backtesting frameworks — backtrader, vectorbt, backtesting.py, ...
   - `bet-sizing` — Convert model signals and probabilities into trade sizes — Kelly Criterion (full and fractional), ML-probability-to-position-size (López ...
@@ -313,42 +225,14 @@ index anymore.
   - `time-series-stats` — Statistical tests and tools for financial time series — stationarity (ADF, KPSS, Phillips-Perron), cointegration (Engle-Granger, Johansen...
   - `volatility-modeling` — Volatility forecasting and modeling for financial returns — GARCH family (GARCH, EGARCH, GJR-GARCH), Realized Volatility, HAR-RV models, ...
 - **research/**
-  - `catalyst-calendar` — Build and maintain a calendar of upcoming catalysts across a coverage universe — earnings dates, conferences, product launches, regulator...
-  - `earnings-analysis` — Create professional equity research earnings update reports (8-12 pages, 3,000-5,000 words) analyzing quarterly results for companies alr...
-  - `earnings-preview` — Build pre-earnings analysis with estimate models, scenario frameworks, and key metrics to watch.
-  - `earnings-preview-beta` — Generate a concise 4-5 page equity research earnings preview for a single company.
   - `edge-candidate-agent` — Generate and prioritize US equity long-side edge research tickets from EOD observations, then export pipeline-ready candidate specs for t...
-  - `equity-research` — Generate comprehensive equity research snapshots combining analyst consensus estimates, company fundamentals, historical prices, and macr...
-  - `funding-digest` — Generate a polished one-page PowerPoint slide summarizing key takeaways from recent funding rounds and notable capital markets activity a...
-  - `idea-generation` — Systematic stock screening and investment idea sourcing.
-  - `initiating-coverage` — Create institutional-quality equity research initiation reports through a 5-task workflow.
-  - `market-news-analyst` — This skill should be used when analyzing recent market-moving news events and their impact on equity markets and commodities.
-  - `model-update` — Update financial models with new data — quarterly earnings, management guidance, macro changes, or revised assumptions.
-  - `morning-note` — Draft concise morning meeting notes summarizing overnight developments, trade ideas, and key events for coverage stocks.
-  - `sector-analyst` — This skill should be used when analyzing sector rotation patterns and market cycle positioning.
-  - `sector-overview` — Create comprehensive industry and sector landscape reports covering market dynamics, competitive positioning, key players, and thematic t...
   - `signal-postmortem` — Record and analyze post-trade outcomes for signals generated by edge pipeline and other skills.
-  - `tear-sheet` — Generate professional company tear sheets using S&P Capital IQ data via the Kensho LLM-ready API MCP server.
-  - `theme-detector` — Detect and analyze trending market themes across sectors.
   - `thesis-tracker` — Maintain and update investment theses for portfolio positions and watchlist names.
   - `trade-hypothesis-ideator` — Generate falsifiable trade strategy hypotheses from market data, trade logs, and journal snippets.
   - `trader-memory-core` — Track investment theses across their lifecycle — from screening idea to closed position with postmortem.
-  - `us-stock-analysis` — Comprehensive US stock analysis including fundamental analysis (financial metrics, business quality, valuation), technical analysis (indi...
 - **trading/**
-  - `breakout-trade-planner` — Generate Minervini-style breakout trade plans from VCP screener output with worst-case risk calculation, portfolio heat management, and A...
-  - `canslim-screener` — Screen US stocks using William O'Neil's CANSLIM growth stock methodology.
-  - `dividend-growth-pullback-screener` — Use this skill to find high-quality dividend growth stocks (12%+ annual dividend growth, 1.5%+ yield) that are experiencing temporary pul...
-  - `earnings-trade-analyzer` — Analyze recent post-earnings stocks using a 5-factor scoring system (Gap Size, Pre-Earnings Trend, Volume Trend, MA200 Position, MA50 Pos...
-  - `finviz-screener` — Build and open FinViz screener URLs from natural language requests.
-  - `kanchi-dividend-review-monitor` — Monitor dividend portfolios with Kanchi-style forced-review triggers (T1-T5) and convert anomalies into OK/WARN/REVIEW states without aut...
-  - `kanchi-dividend-sop` — Convert Kanchi-style dividend investing into a repeatable US-stock operating procedure.
-  - `kanchi-dividend-us-tax-accounting` — Provide US dividend tax and account-location workflow for Kanchi-style income portfolios.
   - `pair-trade-screener` — Statistical arbitrage tool for identifying and analyzing pair trading opportunities.
-  - `parabolic-short-trade-planner` — Screen US equities for parabolic exhaustion patterns and generate conditional pre-market short plans, then evaluate intraday trigger fire...
-  - `pead-screener` — Screen post-earnings gap-up stocks for PEAD (Post-Earnings Announcement Drift) patterns.
   - `technical-analyst` — This skill should be used when analyzing weekly price charts for stocks, stock indices, cryptocurrencies, or forex pairs.
-  - `value-dividend-screener` — Screen US stocks for high-quality dividend opportunities combining value characteristics (P/E ratio under 20, P/B ratio under 2), attract...
-  - `vcp-screener` — Screen S&P 500 stocks for Mark Minervini's Volatility Contraction Pattern (VCP).
 
 #### research-project (30)
 - `research-router` — Routes a research task to one of five sub-packs under ~/research-project/ — literature, gates, manuscript, review, talks.
@@ -387,14 +271,12 @@ index anymore.
   - `pptx-posters` — Create research posters using HTML/CSS that can be exported to PDF or PPTX.
   - `scientific-slides` — Builds a research talk — slide structure, what goes on each slide, timing, and a visual validation pass.
 
-#### data-analysis-project (18)
+#### data-analysis-project (16)
 - `dask` — Distributed computing for larger-than-RAM pandas/NumPy workflows.
 - `defuddle` — Extract clean markdown content from web pages using Defuddle CLI, removing clutter and navigation to save tokens.
 - `exploratory-data-analysis` — Perform comprehensive exploratory data analysis on scientific data files across 200+ file formats.
-- `infographics` — Create professional infographics using Nano Banana Pro AI with smart iterative refinement.
 - `matplotlib` — Low-level plotting library for full customization.
 - `networkx` — Comprehensive toolkit for creating, analyzing, and visualizing complex networks and graphs in Python.
-- `parallel-web` — Search the web, extract URL content, and run deep research using the Parallel Chat API and Extract API.
 - `perplexity-search` — Perform AI-powered web searches with real-time information using Perplexity models via LiteLLM and OpenRouter.
 - `plotly` — Interactive visualization library.
 - `polars` — Fast in-memory DataFrame library for datasets that fit in RAM.
@@ -407,14 +289,10 @@ index anymore.
 - `vaex` — Use this skill for processing and analyzing large tabular datasets (billions of rows) that exceed available RAM.
 - `zarr-python` — Chunked N-D arrays for cloud storage.
 
-#### marketing-project (40)
+#### marketing-project (28)
 - `ad-creative` — When the user wants to generate, iterate, or scale ad creative — headlines, descriptions, primary text, or full ad variations — for any p...
 - `ai-seo` — When the user wants to optimize content for AI search engines, get cited by LLMs, or appear in AI-generated answers.
-- `analytics-tracking` — When the user wants to set up, improve, or audit analytics tracking and measurement.
 - `canvas-design` — Create beautiful visual art in .png and .pdf documents using design philosophy.
-- `churn-prevention` — When the user wants to reduce churn, build cancellation flows, set up save offers, recover failed payments, or implement retention strate...
-- `cold-email` — Write B2B cold emails and follow-up sequences that get replies.
-- `competitor-alternatives` — When the user wants to create competitor comparison or alternative pages for SEO and sales enablement.
 - `content-strategy` — When the user wants to plan a content strategy, decide what content to create, or figure out what topics to cover.
 - `copy-editing` — When the user wants to edit, review, or improve existing marketing copy.
 - `copywriting` — When the user wants to write, rewrite, or improve marketing copy for any page — including homepage, landing pages, pricing pages, feature...
@@ -427,35 +305,22 @@ index anymore.
 - `elevenlabs-transcribe` — Transcribe audio to text using ElevenLabs Scribe.
 - `elevenlabs-voice-changer` — Transform the voice in an audio recording into a different target voice while preserving emotion, timing, and delivery using the ElevenLa...
 - `elevenlabs-voice-isolator` — Remove background noise and isolate vocals/speech from audio using ElevenLabs Voice Isolator (audio isolation) API.
-- `email-sequence` — When the user wants to create or optimize an email sequence, drip campaign, automated email flow, or lifecycle email program.
-- `free-tool-strategy` — When the user wants to plan, evaluate, or build a free tool for marketing purposes — lead generation, SEO value, or brand awareness.
 - `generate-image` — Generate or edit images using AI models (FLUX, Nano Banana 2).
 - `last30days` — Research what people actually say about any topic in the last 30 days.
 - `launch-strategy` — When the user wants to plan a product launch, feature announcement, or release strategy.
 - `market-research-reports` — Generate comprehensive market research reports (50+ pages) in the style of top consulting firms (McKinsey, BCG, Gartner).
 - `marketing-ideas` — When the user needs marketing ideas, inspiration, or strategies for their SaaS or software product.
 - `marketing-psychology` — When the user wants to apply psychological principles, mental models, or behavioral science to marketing.
-- `paid-ads` — When the user wants help with paid advertising campaigns on Google Ads, Meta (Facebook/Instagram), LinkedIn, Twitter/X, or other ad platf...
 - `pricing-strategy` — When the user wants help with pricing decisions, packaging, or monetization strategy.
 - `product-marketing-context` — When the user wants to create or update their product marketing context document.
-- `programmatic-seo` — When the user wants to create SEO-driven pages at scale using templates and data.
-- `referral-program` — When the user wants to create, optimize, or analyze a referral program, affiliate program, or word-of-mouth strategy.
-- `revops` — When the user wants help with revenue operations, lead lifecycle management, or marketing-to-sales handoff processes.
-- `sales-enablement` — When the user wants to create sales collateral, pitch decks, one-pagers, objection handling docs, or demo scripts.
-- `schema-markup` — When the user wants to add, fix, or optimize schema markup and structured data on their site.
 - `seo-audit` — When the user wants to audit, review, or diagnose SEO issues on their site.
 - `social-content` — When the user wants help creating, scheduling, or optimizing social media content for LinkedIn, Twitter/X, Instagram, TikTok, Facebook, o...
 - `theme-factory` — Toolkit for styling artifacts with a theme.
 - `wechat-ai-publisher` — 自动采集 AI 热门内容，撰写公众号文章，生成配图并发布到微信公众号草稿箱。当用户说"发布AI热点"、"写公众号文章"、"采集AI内容"、"publish AI news"时触发。
 - `xhs-visual-director` — Use this skill when planning, redesigning, or reviewing Xiaohongshu carousel visuals, covers, 3:4 image posts, page-by-page visual direct...
 
-#### productivity-project (22)
-- `capture-tasks-from-meeting-notes` — Analyze meeting notes to find action items and create Jira tasks for assigned work.
-- `doc-coauthoring` — Guide users through a structured workflow for co-authoring documentation.
-- `generate-status-report` — Generate project status reports from Jira issues and publish to Confluence.
+#### productivity-project (12)
 - `gws` — Google Workspace CLI for AI agents.
-- `internal-comms` — A set of resources to help me write all kinds of internal communications, using the formats that my company likes to use.
-- `jira-expert` — Atlassian Jira expert for creating and managing projects, planning, product discovery, JQL queries, workflows, custom fields, automation,...
 - `json-canvas` — Create and edit JSON Canvas files (.canvas) with nodes, edges, groups, and connections.
 - `markdown-mermaid-writing` — Comprehensive markdown and Mermaid diagram writing skill.
 - `notebooklm` — Drive Google NotebookLM from the agent — auto-upload PDFs/sources, then get grounded summaries and Q&A back.
@@ -466,11 +331,6 @@ index anymore.
 - `open-notebook` — Self-hosted, open-source alternative to Google NotebookLM for AI-powered research and document analysis.
 - `planning-with-files` — Implements Manus-style file-based planning to organize and track progress on complex tasks.
 - `ppt-master` — Generate truly EDITABLE PowerPoint (.pptx) from any document — native shapes and native animations (not slide images), optional speaker-n...
-- `scrum-master` — Advanced Scrum Master skill for data-driven agile team analysis and coaching.
-- `search-company-knowledge` — Search across company knowledge bases (Confluence, Jira, internal docs) to find and explain internal concepts, processes, and technical d...
-- `senior-pm` — Senior Project Manager for enterprise software, SaaS, and digital transformation projects.
-- `spec-to-backlog` — Automatically convert Confluence specification documents into structured Jira backlogs with Epics and implementation tickets.
-- `triage-issue` — Intelligently triage bug reports and error messages by searching for duplicates in Jira and offering to create new issues or add comments...
 - `what-if-oracle` — Run structured What-If scenario analysis with multi-branch possibility exploration.
 
 #### ios-project (21)
@@ -496,18 +356,14 @@ index anymore.
 - `swiftui-view-refactor` — SwiftUI view refactoring.
 - `widgetkit-liveactivity` — Build or review iOS widgets (WidgetKit), Live Activities (ActivityKit), and the Dynamic Island.
 
-#### craft-project (9)
+#### craft-project (6)
 - **design/**
-  - `banner-design` — Design banners for social media, ads, website heroes, creative assets, and print.
   - `brand` — Brand voice, visual identity, messaging frameworks, asset management, brand consistency.
-  - `design` — Comprehensive design skill: brand identity, design tokens, UI styling, logo generation (55 styles, Gemini AI), corporate identity program...
   - `design-system` — Token architecture, component specifications, and slide generation.
   - `impeccable` — Give an AI coding agent real design craft: a shared design vocabulary, live in-browser iteration, and 44 deterministic checks that catch ...
   - `slides` — Create strategic HTML presentations with Chart.js, design tokens, responsive layouts, copywriting formulas, and contextual slide strategies.
   - `taste-skill` — Anti-slop frontend skill for landing pages, portfolios, and redesigns.
   - `ui-styling` — Create beautiful, accessible user interfaces with shadcn/ui components (built on Radix UI + Tailwind), Tailwind CSS utility-first styling...
-- **writing/**
-  - `humanizer` — Remove signs of AI-generated writing from text.
 
 <!-- PACKS:END -->
 

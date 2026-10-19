@@ -74,8 +74,7 @@ due to disable-model-invocation
 
 一写代码 → `test-driven-development` · 一报错 → `systematic-debugging` ·
 一说"完成了" → `verification-before-completion` · 一提 PDF/Word/Excel/PPT →
-`pdf` / `officecli` / `markitdown` · 多步实现 → `writing-plans` / `executing-plans` ·
-GitHub PR/CI → `gh-fix-ci` / `gh-address-comments`。
+`pdf` / `officecli` / `markitdown` · 多步实现 → `writing-plans` / `executing-plans`。
 
 OpenSpec 那 4 个走 `/opsx:` 命令,不靠描述触发。
 

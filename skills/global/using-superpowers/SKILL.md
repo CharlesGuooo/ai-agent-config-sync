@@ -98,10 +98,8 @@ Examples:
 - LLM agent framework code (LangChain / LangGraph / Deep / MCP) → `~/dev-project/agent-dev/`
 - ML / DL / RL model training → `~/dev-project/ml/`
 - iOS / Swift / SwiftUI native app → `~/ios-project/`
-- Active trading / stock screening → `~/finance-project/trading/`
-- Financial modeling (DCF / LBO / comps) → `~/finance-project/modeling/`
+- Trading ideas, strategy research, backtests → `~/finance-project/<sub>/` (trading / research / portfolio)
 - Quant methodology (PBO / CV / Triple Barrier / GARCH / portfolio opt) → `~/finance-project/quant-methods/`
-- IB / PE / wealth / fund-admin / KYC work → `~/finance-project/advisory/<vert>/`
 - Marketing execution → `~/marketing-project/`
 - Document task (PDF / Word / Excel / PPT) → **stay**, use global document skills directly
 

@@ -73,7 +73,7 @@ DESIGN-IT-TWICE、`improve-codebase-architecture`、`dispatching-parallel-agents
 
 ---
 
-## 🌐 Global Skills(38 个,5 agent 共享,启动自动可用)
+## 🌐 Global Skills(36 个,5 agent 共享,启动自动可用)
 
 每个 agent 的 skill 目录里各有一份指向仓库的链接。按分类(权威清单见 `skills/global/catalog.json`):
 
@@ -83,7 +83,7 @@ DESIGN-IT-TWICE、`improve-codebase-architecture`、`dispatching-parallel-agents
 | Thinking | 1 | `first-principles-thinking` —— 从第一性原理推理 |
 | Escalation | 1 | `high-agency` —— 常驻内驱 + 失败时自救 |
 | Routing & Meta | 4 | `skill-router` / **`skill-creator`**(写 skill + 审 skill,含标尺与 eval 工具)/ `skill-scanner` / `book-to-skill`(书→技能) |
-| Workflow | 4 | `playwright-interactive` / `gh-fix-ci` / `gh-address-comments` / **`github-gold`**(挖 GitHub 宝藏) |
+| Workflow | 2 | `playwright-interactive` / **`github-gold`**(挖 GitHub 宝藏) |
 | Code Review | 3 | requesting(**双轴并行**)/ receiving / finishing-a-development-branch |
 | **Design & Architecture** | 4 | `codebase-design`(深模块)/ `domain-modeling`(CONTEXT.md+ADR)/ `prototype` / `improve-codebase-architecture` |
 | OpenSpec | 4 | explore / propose / apply-change / archive-change |
@@ -100,10 +100,10 @@ DESIGN-IT-TWICE、`improve-codebase-architecture`、`dispatching-parallel-agents
 | Pack | 领域 / 何时进 |
 | --- | --- |
 | `~/dev-project/` | 软件开发(8 层:frontend / backend / cloud-platform / testing-qa / devops-sre / agent-dev / ml + 根) |
-| `~/finance-project/` | 金融/投资/交易(容器:trading / research / macro / modeling / portfolio / quant-methods / advisory) |
+| `~/finance-project/` | 量化/交易(容器:trading / research / portfolio / quant-methods) |
 | `~/research-project/` | 学术/科研(AI/CS 取向。容器,5 个子包:literature / gates / manuscript / review / talks) |
 | `~/marketing-project/` | 营销/SEO/增长/音频(ElevenLabs 套件)/ 小红书 · WeChat |
-| `~/productivity-project/` | 工作流/PM(Jira / Notion / Obsidian / Google Workspace) |
+| `~/productivity-project/` | 工作流(Notion / Obsidian / NotebookLM / Google Workspace) |
 | `~/data-analysis-project/` | 数据分析/EDA/统计/可视化 |
 | `~/ios-project/` | iOS/SwiftUI(widget/Live Activity / Rive / 动画 / HIG 设计 / Mac 构建 runbook) |
 | `~/craft-project/` | 跨领域「功力」(writing:去 AI 味;design:审美/anti-slop) |

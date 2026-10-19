@@ -39,8 +39,7 @@ The global layer should stay small and stable.
 ### Global workflow skills
 
 - `playwright-interactive`
-- `gh-fix-ci`
-- `gh-address-comments`
+- `github-gold`
 
 ### Global routing skill
 
@@ -55,7 +54,7 @@ The router decides which project directory should own the task and where the loc
 Domain-specific skills belong in project directories such as:
 
 - `~/dev-project/.claude/skills/` (3 layers: top / `agent-dev/` / `ml/`)
-- `~/finance-project/<sub>/.claude/skills/` (container with `trading/` `research/` `macro/` `modeling/` `portfolio/` `advisory/`)
+- `~/finance-project/<sub>/.claude/skills/` (container with `trading/` `research/` `portfolio/` `quant-methods/`)
 - `~/data-analysis-project/.claude/skills/`
 - `~/marketing-project/.claude/skills/`
 - `~/research-project/.claude/skills/`
@@ -67,7 +66,7 @@ Examples:
 - frontend, backend, CI/CD, agents: `dev-project`
 - LLM agent frameworks (LangChain/LangGraph/Deep/MCP): `dev-project/agent-dev/`
 - ML/DL/RL model training (sklearn/PyTorch/transformers/RL): `dev-project/ml/`
-- finance / investing / trading / valuation: `finance-project/<sub>/` (6-way: trading/research/macro/modeling/portfolio/advisory)
+- trading / strategy research / quant methods: `finance-project/<sub>/` (trading/research/portfolio/quant-methods)
 - EDA, visualization, statistics: `data-analysis-project`
 - SEO, copy, campaigns: `marketing-project`
 - literature review, grants, peer review: `research-project`

@@ -49,7 +49,7 @@ These are available regardless of directory — don't route the user just to use
 - `pdf`, `officecli`(Word/Excel/PPT), `markitdown` — document tasks need NO project switch
 
 **External workflows:**
-- `playwright-interactive`, `gh-fix-ci`, `gh-address-comments`
+- `playwright-interactive`, `github-gold`
 
 **OpenSpec workflow:**
 - `openspec-{explore, propose, apply-change, archive-change}`
@@ -60,11 +60,11 @@ These are available regardless of directory — don't route the user just to use
 | --- | --- | --- |
 | Software / dev / LLM-agent / ML | `~/dev-project/<sub>/` (8 sub-folders) | Frontend, backend, APIs, cloud-platform, testing/QA, DevOps/SRE, LLM agent frameworks, ML/RL training — see "Dev sub-routing" below |
 | iOS / Swift / SwiftUI | `~/ios-project/` | iOS app development, Swift concurrency, SwiftUI components, App Store, native profiling |
-| Finance / Investing / Trading | `~/finance-project/<sub>/` (11 routing targets) | Active trading, equity research, macro/timing, financial modeling, portfolio mgmt, IB/PE/wealth/fund-admin/compliance, quant methodology — see "Finance sub-routing" below |
+| Finance / Investing / Trading | `~/finance-project/<sub>/` (4 sub-folders) | Trading ideas, strategy research and review, backtests and position sizing, quant methodology — see "Finance sub-routing" below |
 | Data analysis | `~/data-analysis-project/` | EDA, statistics, visualization, notebooks, forecasting, time-series |
 | Marketing | `~/marketing-project/` | SEO, ads, copywriting, growth, social, **ElevenLabs audio** |
 | Research / academic | `~/research-project/<sub>/` (5 sub-folders) | Literature and surveys, experiment framing, manuscript writing and LaTeX, figures, review and rebuttal, talks and posters — see "Research sub-routing" below |
-| Productivity / PM | `~/productivity-project/` | Obsidian, Jira, Atlassian, Notion, Google Workspace, PM workflows |
+| Productivity | `~/productivity-project/` | Obsidian, Notion, NotebookLM, Google Workspace, planning with files |
 
 ## Domain Heuristics
 
@@ -73,11 +73,11 @@ Use these to break ties:
 - If the user is building software, default to `~/dev-project/<sub>/` even when the software uses AI. Then pick the right sub-folder (see Dev sub-routing).
 - If the task is iOS / Swift / SwiftUI native app work, route to `~/ios-project/`.
 - If the user is analyzing data for insight (charts / stats / EDA / forecasting), default to `~/data-analysis-project/`.
-- If the task involves stocks, trading, portfolio, valuation, IB/PE, financial modeling, or quant methodology, route to `~/finance-project/<sub>/` (see Finance sub-routing).
+- If the task involves trading, strategy research, backtests, or quant methodology, route to `~/finance-project/<sub>/` (see Finance sub-routing).
 - If the user is writing research artifacts (papers / reviews / talks) rather than building systems, route to `~/research-project/<sub>/` (see Research sub-routing).
 - If the task centers on business messaging, growth, audio content, or acquisition, default to `~/marketing-project/`.
 - If the task is primarily document transformation (PDF / Word / Excel / PowerPoint), use **global** document skills directly — no directory switch needed.
-- If the task is workflow tooling, Obsidian/Jira/Notion/Atlassian, or organizational operations, default to `~/productivity-project/`.
+- If the task is workflow tooling or Obsidian/Notion/NotebookLM/Google Workspace, default to `~/productivity-project/`.
 
 ## Dev Sub-Routing
 
@@ -89,9 +89,9 @@ Use these to break ties:
 | `~/dev-project/frontend/` | React / Next / Tailwind / Suspense / SSR / UI design (frontend-design avoids "AI slop") |
 | `~/dev-project/backend/` | REST APIs, microservices, system architecture, auth, full-stack (Next/FastAPI/MERN/Django) |
 | `~/dev-project/cloud-platform/` | AWS / Cloudflare (Workers/DO) / Stripe / Supabase / PostHog (feature flags, error tracking, analytics) |
-| `~/dev-project/testing-qa/` | API tests, route tests, E2E with Playwright, Jest / RTL unit + integration |
-| `~/dev-project/devops-sre/` | CI/CD pipelines, Docker, Terraform, observability, performance profiling, incident response |
-| `~/dev-project/agent-dev/` | Building LLM agents: LangChain, LangGraph, Deep Agents, MCP server, Claude SDK, Cloudflare agents-sdk, prompt-optimizer |
+| `~/dev-project/testing-qa/` | API tests, E2E with Playwright, Jest / RTL unit + integration |
+| `~/dev-project/devops-sre/` | CI/CD pipelines, Docker, performance profiling |
+| `~/dev-project/agent-dev/` | Building LLM agents: LangChain, LangGraph, Deep Agents, MCP server, Claude SDK, prompt-optimizer |
 | `~/dev-project/ml/` | Training ML: sklearn / PyTorch Lightning / transformers / GNN / SHAP / UMAP / RL (SB3, pufferlib) + HuggingFace 13 |
 
 ## Finance Sub-Routing
@@ -100,16 +100,9 @@ Use these to break ties:
 
 | Sub-folder | Use when |
 | --- | --- |
-| `~/finance-project/trading/` | Active trading, stock screening (VCP / CANSLIM / PEAD / breakout), Kanchi dividend strategies, technical analysis, entry decisions |
-| `~/finance-project/research/` | Equity research, sector overviews, investment thesis, idea generation, earnings notes, initiating coverage |
-| `~/finance-project/macro/` | Market regime, breadth, top/bottom detection, market timing, Druckenmiller-style macro |
-| `~/finance-project/modeling/` | DCF, LBO, comps, 3-statement, merger model, Excel audit, IB-style deliverables |
-| `~/finance-project/portfolio/` | Position sizing, options strategy, backtest, rebalancing, tax-loss harvesting, FX/rates relative value |
-| `~/finance-project/advisory/ib/` | Investment Banking: CIM, teaser, pitch deck, buyer list, process letter, deal tracker |
-| `~/finance-project/advisory/pe/` | Private Equity: deal sourcing, DD, IC memo, portfolio monitoring, value creation |
-| `~/finance-project/advisory/wealth/` | Wealth management: client review, performance report, investment proposal |
-| `~/finance-project/advisory/fund-admin/` | Fund admin: GL recon, NAV tieout, accruals, roll-forward, variance, break trace |
-| `~/finance-project/advisory/compliance/` | Compliance / KYC: doc parsing, rules engine |
+| `~/finance-project/trading/` | Technical analysis of a chart, pair-trade screening |
+| `~/finance-project/research/` | Trade hypotheses, research tickets, thesis tracking, signal post-mortems, trade journal memory |
+| `~/finance-project/portfolio/` | Edge research pipeline (hints → concepts → strategy drafts → review), backtest robustness, position sizing, strategy pivots |
 | `~/finance-project/quant-methods/` | López de Prado AFML methodology: PBO / Deflated Sharpe / Purged K-Fold CV / Triple Barrier / Bet Sizing / GARCH / HMM regime / portfolio optimization / risk metrics / backtest framework selection / execution cost modeling / thesis structuring |
 
 ## Research Sub-Routing

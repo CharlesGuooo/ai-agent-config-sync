@@ -265,6 +265,8 @@ guard hook：危险命令先确认，不读凭证文件）。Claude 和 Codex �
 `lib/legacy.mjs` 只认 v1 留下的东西，在新机器上什么都不做，可以每次 update 都跑：
 
 - home 下：`~/HARNESS.md`、`~/PLAYBOOK.md`、`~/.agent-hooks/`、`~/MCP-Templates/`、带 v1 标记的 `~/AGENTS.md`。
+  `~/.agent-hooks/` 要等这次运行的 agent 全部处理完、且没有任何 agent 的 hook 还在用它时才删；
+  还有人用就留着，并提示还要装哪些 agent。
 - 各 agent 的全局 skill 目录里：`catalog.json`、`skill-rules.json`，以及和 v1 某个版本的
   `skills/global/README.md` 整个文件一模一样的 `README.md`（`~/.opencode/skills/` 里也一样；只差
   CRLF/LF 和末尾空白算一样，用户自己写的 README 哪怕也以 `# Skills` 开头也不动）。

@@ -4,7 +4,7 @@ import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fixtureRepo, tempDir, put, newRun } from './helpers.mjs';
 import { makeContext, makeDirLink } from '../lib/platform.mjs';
-import { cleanHome, cleanSkillDir, cleanAgent } from '../lib/legacy.mjs';
+import { cleanHome, cleanSkillDir, cleanAgent, cleanHooksDir } from '../lib/legacy.mjs';
 
 // The descriptions v1's two data files carried, copied from git history.
 const V1_CATALOG = 'Curated catalog of global skills: the single source for the generated skill tables in each agent\'s instruction file. The generator (scripts/gen-skill-table.mjs) reconciles this against the actual skills/global/*/ directories and fails if they disagree, so a new skill cannot silently drift out of the tables.';
@@ -29,6 +29,7 @@ test('cleanHome removes v1 copies and leaves files that are not v1 output', () =
   put(home, 'MCP-Templates/README.md', 'x');
   put(home, 'AGENTS.md', 'my own notes\n');
   cleanHome(ctx, newRun());
+  cleanHooksDir(ctx, [], newRun());
   for (const p of ['HARNESS.md', 'PLAYBOOK.md', '.agent-hooks', 'MCP-Templates']) assert.ok(!existsSync(join(home, p)), p);
   assert.ok(existsSync(join(home, 'AGENTS.md')));
   put(home, 'AGENTS.md', V1);
@@ -367,12 +368,15 @@ test('home: folders with an extra file are kept, and a file in place of a folder
   const run = newRun();
   cleanHome(ctx, run);
   cleanAgent(ctx, 'codex', [], run);
+  cleanHooksDir(ctx, ['codex'], run);
   assert.equal(run.report.changes.length, 0);
   const second = tempDir();
   put(second, '.agent-hooks', 'a file');
   put(second, 'MCP-Templates', 'a file');
   const run2 = newRun();
-  cleanHome(makeContext({ repo: ctx.repo, home: second }), run2);
+  const ctx2 = makeContext({ repo: ctx.repo, home: second });
+  cleanHome(ctx2, run2);
+  cleanHooksDir(ctx2, [], run2);
   assert.equal(run2.report.changes.length + run2.report.warnings.length, 0);
 });
 
@@ -384,6 +388,7 @@ test('home: a link that leads to something else is left alone silently', () => {
   makeDirLink(target, join(home, 'MCP-Templates'));
   const run = newRun();
   cleanHome(ctx, run);
+  cleanHooksDir(ctx, [], run);
   assert.deepEqual([run.report.changes, run.report.warnings], [[], []]);
 });
 
@@ -394,6 +399,7 @@ test('home: a link at a v1 path that leads to v1 content is a warning and its ta
   makeDirLink(target, join(home, '.agent-hooks'));
   const run = newRun();
   cleanHome(ctx, run);
+  cleanHooksDir(ctx, [], run);
   assert.ok(existsSync(join(target, 'guard.mjs')));
   assert.equal(run.report.changes.length, 0);
   assert.equal(run.report.warnings.length, 1);
@@ -493,6 +499,7 @@ const AGENTS = ['claude', 'codex', 'cursor', 'opencode', 'pi'];
 const sweep = (ctx, run) => {
   cleanHome(ctx, run);
   for (const a of AGENTS) cleanAgent(ctx, a, ['memory', 'remote'], run);
+  cleanHooksDir(ctx, AGENTS, run);
 };
 
 test('an empty home: nothing changes and nothing is reported', () => {

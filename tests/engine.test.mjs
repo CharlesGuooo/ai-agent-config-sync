@@ -403,6 +403,44 @@ test('a Codex or Pi server whose URL variable goes missing is warned about and l
   assert.deepEqual(json(join(home, '.pi', 'agent', 'mcp.json')).mcpServers, {});
 });
 
+test('~/.agent-hooks stays while an agent not in the run still runs its scripts, and goes once none does', () => {
+  const { ctx, home } = setup();
+  const dir = join(ctx.home, '.agent-hooks');
+  put(home, '.agent-hooks/guard.mjs', 'x');
+  put(home, '.agent-hooks/format.mjs', 'x');
+  put(home, '.claude/settings.json', JSON.stringify({ hooks: { PreToolUse: [{ matcher: 'Bash', hooks: [{ type: 'command', command: 'node C:/Users/x/.agent-hooks/guard.mjs' }] }] } }));
+  const toml = put(home, '.codex/config.toml', 'model = "m"\n\n[[hooks.PreToolUse]]\nmatcher = "Bash"\n[[hooks.PreToolUse.hooks]]\ntype = "command"\ncommand = "node C:/Users/x/.agent-hooks/guard.mjs"\n');
+  const codexConfig = readFileSync(toml);
+  const dry = install(ctx, ['claude'], { dryRun: true });
+  const real = install(ctx, ['claude']);
+  assert.deepEqual(dry, real);
+  assert.ok(real.notes.includes(`kept ${dir}: still used by codex — install those agents too`));
+  assert.ok(!real.changes.includes(`remove-v1 ${dir}`));
+  assert.ok(existsSync(join(dir, 'guard.mjs')));
+  assert.ok(readFileSync(toml).equals(codexConfig));
+  const dry2 = install(ctx, ['codex'], { dryRun: true });
+  const real2 = install(ctx, ['codex']);
+  assert.deepEqual(dry2, real2);
+  assert.ok(real2.changes.includes(`remove-v1 ${dir}`));
+  assert.ok(!real2.notes.some((n) => n.startsWith(`kept ${dir}`)));
+  assert.ok(!existsSync(dir));
+});
+
+test('a hook running ~/.agent-hooks keeps it however its path is written, and one no install removes is named', () => {
+  const { ctx, home } = setup();
+  const dir = join(ctx.home, '.agent-hooks');
+  put(home, '.agent-hooks/guard.mjs', 'x');
+  put(home, '.claude/settings.json', JSON.stringify({ hooks: { PreToolUse: [{ matcher: 'Bash', hooks: [{ type: 'command', command: 'node C:\\Users\\x\\.agent-hooks\\guard.mjs' }] }] } }));
+  // v1 never wrote Codex's hooks.json, so this one is the user's own and installing Codex leaves it.
+  const hooks = put(home, '.codex/hooks.json', JSON.stringify({ hooks: { PostToolUse: [{ matcher: 'Edit', hooks: [{ type: 'command', command: 'node ~/.agent-hooks/format.mjs' }] }] } }));
+  const r = install(ctx, ['codex']);
+  assert.deepEqual(r.notes.filter((n) => n.startsWith(`kept ${dir}`)), [
+    `kept ${dir}: still used by claude — install those agents too`,
+    `kept ${dir}: hooks in ${hooks} still run its scripts — take them out by hand`,
+  ]);
+  assert.ok(existsSync(join(dir, 'guard.mjs')));
+});
+
 // What the v1 sync left on a machine that ran it for every agent.
 function v1Home(home, repo) {
   const v1 = '# old\n<!-- SKILLS:BEGIN -->\nx\n<!-- SKILLS:END -->\n';

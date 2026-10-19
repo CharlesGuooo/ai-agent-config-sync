@@ -52,6 +52,8 @@ On a machine that the v1 `sync` scripts set up, `install` also takes out what th
 and only what is recognisably theirs: the copies in your home (`~/HARNESS.md`, `~/PLAYBOOK.md`,
 `~/.agent-hooks/`, `~/MCP-Templates/`), their hook entries and whole-file configs, and skill copies
 identical to the repo's, which become links. A skill copy you changed is a conflict instead.
+`~/.agent-hooks/` goes only once no agent's hooks still run it: install only some agents and it
+stays, with a note naming the agents still using it.
 An instruction file v1 wrote (the ones with `<!-- SKILLS:BEGIN -->` markers, such as
 `~/.claude/CLAUDE.md`) is replaced whole: copy any lines of your own out of it first.
 `install --dry-run --verbose` lists every one of these first; none of them is backed up.

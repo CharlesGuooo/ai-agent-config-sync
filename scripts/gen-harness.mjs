@@ -151,7 +151,7 @@ if (!existsSync(TARGET)) {
   console.error(`HARNESS.md not found at ${TARGET}. Create it with the PACKS markers first.`);
   process.exit(1);
 }
-const src = readFileSync(TARGET, 'utf8');
+const src = readFileSync(TARGET, 'utf8').replace(/\r\n/g, '\n');  // a CRLF checkout (core.autocrlf) is the same text
 const i = src.indexOf(BEGIN), j = src.indexOf(END);
 if (i === -1 || j === -1 || j < i) {
   console.error(`HARNESS.md has no PACKS markers ("${BEGIN}" / "${END}").`);

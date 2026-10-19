@@ -87,6 +87,20 @@ test('dry run reports and touches nothing', () => {
   assert.ok(!existsSync(dst));
 });
 
+test('dirsEqual treats CRLF and LF text as equal, but not a real change or a binary file', () => {
+  const a = tempDir();
+  const b = tempDir();
+  writeFileSync(join(a, 't.md'), 'one\ntwo\n');
+  writeFileSync(join(b, 't.md'), 'one\r\ntwo\r\n');
+  assert.ok(dirsEqual(a, b));
+  assert.ok(dirsEqual(b, a));
+  writeFileSync(join(b, 't.md'), 'one\r\ntwx\r\n');
+  assert.ok(!dirsEqual(a, b));
+  writeFileSync(join(a, 't.md'), Buffer.from([0, 10, 65]));
+  writeFileSync(join(b, 't.md'), Buffer.from([0, 13, 10, 65]));
+  assert.ok(!dirsEqual(a, b));
+});
+
 test('dirsEqual compares file sets and bytes, ignoring __pycache__ but never .git or a link', () => {
   const a = tempDir();
   const b = tempDir();

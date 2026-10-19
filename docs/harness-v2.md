@@ -66,7 +66,7 @@ tests/                      node:test 测试
 各家整份配置、`agents/codex/profiles/`（整份替换 `config.toml`，和第 4 条冲突）、
 `agents/claude/profiles/`、`agents/cursor/skills-cursor/`、`skills/codex-system/`
 （这两个由 Cursor 和 Codex 自己维护）、`mcp/always-on/`、`mcp/opt-in/`、`mcp/README.md`、
-`INVENTORY.md`（`install --dry-run` 会打印精确的落点）、`.env.example`（没有东西读 `.env`；变量清单在
+`INVENTORY.md`（`install --dry-run --verbose` 会逐条打印精确的落点；只加 `--dry-run` 时改动一多就按类计数）、`.env.example`（没有东西读 `.env`；变量清单在
 `INSTALL.md`）。`agents/opencode/command/` 改名为
 `commands/`（OpenCode 文档里的名字），文件内容不变：清理 v1 时拿本机的拷贝和这些文件逐字比较。
 
@@ -256,8 +256,8 @@ guard hook：危险命令先确认，不读凭证文件）。Claude 和 Codex �
 - pack 下有不属于任何计划的 `.<agent>/skills` 目录（孤儿）：列出来，不自动删。
 - 启用的 MCP 服务器需要的环境变量没有设置：警告。
 - `--deep`：OpenCode（`opencode debug skill`）和 Codex（`codex debug prompt-input`）实际加载的
-  skill 里是否有全部全局 skill；Cursor 设置库里的用户规则是否已粘贴且是最新的（需要 Node 22.5+
-  的 `node:sqlite`，否则跳过）；Claude 的 4 个 LSP 插件是否已安装。`--deep` 会启动真实的 agent
+  skill 里是否有全部全局 skill；Cursor 设置库里的用户规则是否已粘贴且是最新的（需要 Node 22.13+
+  的 `node:sqlite`——22.5 起就有，但到 22.13 才不用加 `--experimental-sqlite`——否则跳过）；Claude 的 4 个 LSP 插件是否已安装。`--deep` 会启动真实的 agent
   （它们可能写自己的日志和缓存），而且只对真实的 home 做：`HARNESS_HOME` 指向别处时跳过。
 
 ### v1 → v2 迁移
@@ -265,7 +265,9 @@ guard hook：危险命令先确认，不读凭证文件）。Claude 和 Codex �
 `lib/legacy.mjs` 只认 v1 留下的东西，在新机器上什么都不做，可以每次 update 都跑：
 
 - home 下：`~/HARNESS.md`、`~/PLAYBOOK.md`、`~/.agent-hooks/`、`~/MCP-Templates/`、带 v1 标记的 `~/AGENTS.md`。
-- 各 agent 的全局 skill 目录里：`catalog.json`、`skill-rules.json`。
+- 各 agent 的全局 skill 目录里：`catalog.json`、`skill-rules.json`，以及和 v1 某个版本的
+  `skills/global/README.md` 整个文件一模一样的 `README.md`（`~/.opencode/skills/` 里也一样；只差
+  CRLF/LF 和末尾空白算一样，用户自己写的 README 哪怕也以 `# Skills` 开头也不动）。
 - Claude：`settings.json` 里命令指向 `.agent-hooks` 的 hook；旧同步写进去的 `mcpServers` 键（Claude 不读这里）。
 - Codex：`~/.codex/profiles/`；`config.toml` 里命令指向 `.agent-hooks` 的 `[[hooks.*]]`（连同 v1 写在它正上方的注释）。
 - skill 目录里 v1 的拷贝：和 repo 一模一样的换成链接，不一样的报冲突（见上面的链接规则）。
@@ -306,9 +308,11 @@ guard hook：危险命令先确认，不读凭证文件）。Claude 和 Codex �
 - Windows 上带"隐藏"属性的配置文件不能原地重写：运行停在 `EPERM`，报错里写着是哪个文件。去掉
   隐藏属性（`attrib -h <文件>`）再跑一次。
 - 本机状态在 clone 里的 `.local/`。挪 clone 要整个目录一起挪，再在新位置跑 `update`（断链会自动
-  重建）。重新 clone 时把旧的 `.local/` 拷过来；不拷的话 `update` 会说什么都没装，重新 `install`
-  则会把所有还指向旧 clone 的东西（链接、提示词、hook）都报成冲突，用 `resolve repo all` 解决
-  （先把以前 keep 过的那几项重新 `resolve keep <id>`）。
+  重建）。重新 clone 时把旧的 `.local/` 拷过来，并先删掉或改名旧 clone：旧 clone 还在的话，指向它的
+  链接都是"指向 repo 外、目标还在"，报冲突（`resolve repo all` 解决）；它没了，这些就是断链，悄悄
+  重建。不拷 `.local/` 的话 `update` 会说什么都没装；重新 `install` 时，除了上面这些链接，写着 repo
+  路径的提示词段落和 hook 不管旧 clone 在不在都报冲突，用 `resolve repo all` 解决（先把以前 keep
+  过的那几项重新 `resolve keep <id>`）。
 - 首次安装会把本机已有的、和 repo 不同的值都报成冲突，包括你有意设的（OpenCode 的 `lsp` 写成自己
   的配置或 `false`、关掉的 Claude LSP 插件）。这些用 `resolve keep <id>`，别一把 `resolve repo all`。
 - Cursor、OpenCode、Pi 没有 guard hook，只能靠指令里的 notes 让它们自己先确认危险命令、不读凭证文件。

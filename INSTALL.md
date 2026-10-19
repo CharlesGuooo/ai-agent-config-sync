@@ -8,7 +8,7 @@ How it works and why: `docs/harness-v2.md`.
 | Required | Why |
 | --- | --- |
 | `git` | Clone this repo. |
-| Node 20+ | The installer, the guard/format hooks, and most MCP servers (`npx`). Node 22+ to run the tests; 22.5+ for `doctor --deep` to check Cursor's rules. |
+| Node 20+ | The installer, the guard/format hooks, and most MCP servers (`npx`). Node 22+ to run the tests; 22.13+ for `doctor --deep` to check Cursor's rules (`node:sqlite`). |
 | The agents you want | Install them first. The installer configures agents; it does not install them. |
 
 ## Install
@@ -16,9 +16,14 @@ How it works and why: `docs/harness-v2.md`.
 ```bash
 git clone https://github.com/CharlesGuooo/ai-agent-config-sync.git
 cd ai-agent-config-sync
-node harness.mjs install --agents claude --dry-run   # print exactly what would change
-node harness.mjs install --agents claude             # then do it
+node harness.mjs install --agents claude --dry-run --verbose   # list every change it would make
+node harness.mjs install --agents claude                       # then do it
 ```
+
+Read the dry run before the first real install: nothing the installer replaces or removes is
+backed up. On Windows, some skill files sit deep in the tree; clone to a short path (say
+`C:\src`) or run `git config --global core.longpaths true` first, or the clone fails with
+"Filename too long".
 
 Name the agents you have — any of `claude`, `codex`, `cursor`, `opencode`, `pi`. Only those
 agents' files are touched, plus the pack folders in your home (`~/dev-project/`, …) where each
@@ -32,9 +37,11 @@ can drop an entry the installer has just written there.
 Where the clone lives matters: every agent's skills are links into it, and its `.local/` folder
 holds this machine's install state. Pick a stable place before installing. To move it later, move
 the whole folder and run `node harness.mjs update` from the new place. For a fresh clone, copy
-`.local/` over from the old one first. Without it, `update` finds nothing installed; run
-`install --agents …` again and expect a conflict for every item that still points at the old
-clone — settle them as on a first install (below).
+`.local/` over from the old one, and remove or rename the old clone before running `update` from
+the new one; while the old clone exists, every skill link into it is a conflict (settle them with
+`node harness.mjs resolve repo all`). Without `.local/`, `update` finds nothing installed; run
+`install --agents …` again and expect conflicts for the instruction blocks and hooks, which name
+the old path — settle them as on a first install (below).
 
 Install from the main checkout, never from a `git worktree` — the installer refuses, because the
 worktree would become what your agents run.
@@ -45,7 +52,9 @@ On a machine that the v1 `sync` scripts set up, `install` also takes out what th
 and only what is recognisably theirs: the copies in your home (`~/HARNESS.md`, `~/PLAYBOOK.md`,
 `~/.agent-hooks/`, `~/MCP-Templates/`), their hook entries and whole-file configs, and skill copies
 identical to the repo's, which become links. A skill copy you changed is a conflict instead.
-`install --dry-run` lists every one of these first.
+An instruction file v1 wrote (the ones with `<!-- SKILLS:BEGIN -->` markers, such as
+`~/.claude/CLAUDE.md`) is replaced whole: copy any lines of your own out of it first.
+`install --dry-run --verbose` lists every one of these first; none of them is backed up.
 
 ## After installing
 
@@ -77,13 +86,17 @@ variable only once you turn it on.
 | `EXPO_TOKEN` | `expo-mcp` | no |
 | `REVENUECAT_API_V2_KEY` | `revenuecat` | no |
 
-Windows (PowerShell), then restart your agents:
+Windows (PowerShell):
 
 ```powershell
 [Environment]::SetEnvironmentVariable('BRAVE_API_KEY', '<value>', 'User')
 ```
 
-macOS / Linux: add `export BRAVE_API_KEY=<value>` to `~/.zshrc` or `~/.bashrc`.
+A terminal that was already open does not see the new value: open a new one before `install` or
+`update`, and restart your agents.
+
+macOS / Linux: add `export BRAVE_API_KEY=<value>` to `~/.zshrc` or `~/.bashrc`, then open a new
+terminal (or `source` the file).
 
 Codex and Pi cannot read variables inside a URL, so `SUPABASE_PROJECT_REF` is filled in at install
 time: set it before `install` or `update` (until then the run warns and leaves their `supabase`

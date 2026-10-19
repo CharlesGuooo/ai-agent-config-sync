@@ -40,14 +40,14 @@ When a task becomes domain-specific, start the agent from (or open) the matching
 | Domain | Directory |
 | --- | --- |
 | ML / DL / RL training | `~/dev-project/ml/` (sklearn / PyTorch / transformers / RL) |
-| Finance / 投资 / 交易 | `~/finance-project/` (container; cd into `trading/` `research/` `macro/` `modeling/` `portfolio/` `quant-methods/`, or `advisory/ib/` `advisory/pe/` `advisory/wealth/` `advisory/fund-admin/` `advisory/compliance/`, for actual skills) |
+| Finance / 投资 / 交易 | `~/finance-project/` (container; start in `trading/` `research/` `macro/` `modeling/` `portfolio/` `quant-methods/`, or `advisory/ib/` `advisory/pe/` `advisory/wealth/` `advisory/fund-admin/` `advisory/compliance/`, for actual skills) |
 | Data analysis | `~/data-analysis-project/` |
-| Development | `~/dev-project/` (general dev skills; cd into `frontend/` `backend/` `cloud-platform/` `testing-qa/` `devops-sre/` `agent-dev/` for specialized ones) |
+| Development | `~/dev-project/` (general dev skills; start in `frontend/` `backend/` `cloud-platform/` `testing-qa/` `devops-sre/` `agent-dev/` for specialized ones) |
 | Marketing | `~/marketing-project/` |
-| Research | `~/research-project/` (container; cd into `literature/` `gates/` `manuscript/` `review/` `talks/` for actual skills) |
+| Research | `~/research-project/` (container; start in `literature/` `gates/` `manuscript/` `review/` `talks/` for actual skills) |
 | Productivity | `~/productivity-project/` |
 | iOS / Swift / SwiftUI | `~/ios-project/` |
-| Craft / 表达功力 (cross-cutting) | `~/craft-project/` (container; cd into `writing/` `design/`) |
+| Craft / 表达功力 (cross-cutting) | `~/craft-project/` (container; start in `writing/` `design/`) |
 
 Document tasks (PDF / Word / Excel / PowerPoint) use the global `pdf`, `officecli` and `markitdown` skills directly — no project switch needed.
 The global layer routes to the right directory and stops there; the local pack owns the domain guidance.

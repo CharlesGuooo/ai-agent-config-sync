@@ -8,6 +8,7 @@ Narrow bridge. Run these commands as written, in this order, from the repo root.
 |---|---|---|
 | Global | `skills/global/<name>/` | every agent, every directory |
 | Local pack | `skills/project-packs/<pack>/skills/<name>/` | that pack's directory only |
+| Local sub-pack | `skills/project-packs/<pack>/<sub>/skills/<name>/` | that sub-pack's directory only |
 
 Author it **inside the repo**. Agents reach skills through links into the repo, so a skill written
 straight into `~/.claude/skills/` exists for that one agent on that one machine only — and if its
@@ -39,7 +40,7 @@ node harness.mjs check
 ## 4. Scan it
 
 ```bash
-cd skills/global/skill-scanner && uv run scripts/scan_skill.py <absolute-path-to-skill>
+(cd skills/global/skill-scanner && uv run scripts/scan_skill.py <absolute-path-to-skill>)
 ```
 
 Expect `findings: 0`, `urls.untrusted: []`, and `tools.unrestricted: false`. A vendored skill that
@@ -52,7 +53,9 @@ node harness.mjs update
 ```
 
 Each installed agent gets one link to the new directory. Nothing is copied, and nothing in the
-agents' directories that the repo does not own is touched.
+agents' directories that the repo does not own is touched. A new global skill also changes every
+agent's instructions (the skill table): if Cursor is installed, `update` says its rules changed —
+paste `.local/cursor-rules.md` into Cursor Settings → Rules → User Rules again.
 
 ## 6. Confirm
 
@@ -60,8 +63,11 @@ agents' directories that the repo does not own is touched.
 node harness.mjs doctor
 ```
 
-Expect no pending changes and no conflicts. On disk, `~/.claude/skills/<name>` (and each other
-agent's skill directory) is a link that resolves into this repo — a junction on Windows.
+Expect no pending changes and no conflicts. Until the skill is committed, `doctor` also warns about
+uncommitted changes in shipped content; that warning goes once you commit. On disk, a global skill
+is at `~/.claude/skills/<name>` (and in each other agent's skill directory), a pack skill at
+`~/<pack>/[<sub>/].claude/skills/<name>` (and the other agents' folders there): a link that
+resolves into this repo — a junction on Windows.
 
 ## Declare what it costs
 

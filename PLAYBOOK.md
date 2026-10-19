@@ -162,7 +162,7 @@ OpenSpec 那 4 个走 `/opsx:` 命令,不靠描述触发。
 `skill-creator` —— 写新 skill 和审已有 skill 都是它,自带标尺(`references/rubric.md`)、
 术语表、注册契约和 eval 工具。说"帮我写个 skill"或"审一下这个 SKILL.md"就来,不用喊。
 外面挖来的:`book-to-skill`(把一本书挖成 skill)→ `skill-scanner`(装任何外部 skill 前先扫)
-→ 跑 `node harness.mjs check` + `node scripts/gen-harness.mjs`,再 `node harness.mjs update`
+→ 跑 `node scripts/gen-harness.mjs`,再 `node harness.mjs check`,最后 `node harness.mjs update`
 
 > ⚠️ **别把外部 skill 直接 clone 进 `~/.claude/skills/`** —— 那样它只在这一个 agent、这一台电脑上有;
 > 和仓库里的 skill 同名的话,安装器还会报冲突。要装就装进仓库 `skills/global/`(或某个 pack),再 `update`。

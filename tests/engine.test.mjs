@@ -231,7 +231,7 @@ test('uninstall keeps links you made into the repo and kept directories, and rem
   assert.ok(samePath(linkTarget(join(skills, 'my-gamma')), mineTarget));
   assert.ok(!isLink(join(ctx.home, 'dev-project', '.claude', 'skills', 'gamma')));
   assert.equal(readFileSync(join(delta, 'SKILL.md'), 'utf8'), 'my own delta\n');
-  assert.ok(r.notes.includes(`no longer shipped, left as it is: link:${delta}`));
+  assert.ok(r.notes.includes(`uninstalled; left as it is (kept on this machine): link:${delta}`));
   assert.deepEqual(Object.keys(json(join(ctx.local, 'state.json')).entries), []);
 });
 
@@ -260,6 +260,16 @@ test('links of a pack no longer selected go, on install and on uninstall; your o
   assert.deepEqual([isLink(gamma), isLink(delta)], [true, true]);
   runInstall(ctx, { agents: ['claude'], packs: [], uninstall: true });
   assert.deepEqual([isLink(gamma), isLink(delta), isLink(mine)], [false, false, true]);
+});
+
+test('a pack selection that differs from the machine\'s says which other installed agents an update would bring along', () => {
+  const { ctx } = setup();
+  install(ctx, ['claude', 'pi']);
+  const note = 'the pack selection applies to every installed agent: run `node harness.mjs update` to apply it to claude, pi';
+  assert.ok(install(ctx, ['codex'], { packs: [], dryRun: true }).notes.includes(note));
+  assert.ok(install(ctx, ['codex'], { packs: [] }).notes.includes(note));
+  assert.ok(!install(ctx, ['codex'], { packs: [] }).notes.some((n) => n.startsWith('the pack selection')));
+  assert.ok(!install(ctx, ['claude', 'codex', 'pi'], { packs: ['dev'] }).notes.some((n) => n.startsWith('the pack selection')));
 });
 
 test('an uninstall that meets a machine edit keeps it as it is and still finishes', () => {
@@ -467,6 +477,7 @@ function v1Home(home, repo) {
   put(home, '.opencode/opencode.json', JSON.stringify({ lsp: true, mcp: { memory: {} } }));
   put(home, '.opencode/skills/catalog.json', JSON.stringify({ description: V1_CATALOG, skills: { alpha: {} } }));
   copy('skills/global/alpha', '.opencode/skills/alpha');
+  put(home, '.opencode/skills/mine/SKILL.md', 'my own skill\n');
   put(home, '.opencode/command/opsx-x.md', 'opsx command\n');
   put(home, '.pi/agent/AGENTS.md', v1);
 }
@@ -481,6 +492,7 @@ test('a dry run over a v1 machine lists exactly what the real run then does, and
   const real = install(ctx, ALL);
   assert.deepEqual(real.conflicts, []);
   assert.ok(real.changes.length > 40, `${real.changes.length} changes`);
-  assert.deepEqual([dry.changes, dry.conflicts, dry.warnings], [real.changes, real.conflicts, real.warnings]);
+  assert.ok(real.notes.includes(`kept ${join(ctx.home, '.opencode', 'skills')}: it still holds mine`));
+  assert.deepEqual(dry, real);
   assert.deepEqual(install(ctx, ALL).changes, []);
 });

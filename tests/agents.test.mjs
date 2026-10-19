@@ -40,13 +40,16 @@ test('codex: every server as a TOML table, hooks in hooks.json', () => {
   assert.equal(p.json[0].hooks.length, 2);
 });
 
-test('codex and pi skip a server whose URL needs a variable that is not set', () => {
-  const catalog = { servers: { sb: { http: 'https://x/mcp?ref=${NOPE_REF}', on: false } } };
+test('codex and pi skip a server whose URL needs a variable that is not set, warning only when it is on', () => {
+  const catalog = { servers: {
+    sb: { http: 'https://x/mcp?ref=${NOPE_REF}', on: true },
+    off: { http: 'https://y/mcp?ref=${NOPE_REF}', on: false },
+  } };
   for (const [adapter, name] of [[codex, 'codex'], [pi, 'pi']]) {
     const { p, warnings } = plan(adapter, name, { catalog });
     const entries = name === 'codex' ? p.toml[0].servers : p.json[0].entries;
-    assert.deepEqual(entries, [{ id: `${name}:mcp:sb`, skip: true }]);
-    assert.match(warnings[0], /NOPE_REF/);
+    assert.deepEqual(entries, [{ id: `${name}:mcp:sb`, skip: true }, { id: `${name}:mcp:off`, skip: true }]);
+    assert.deepEqual(warnings, [`${name}:mcp:sb left as it is: environment variable NOPE_REF is not set`]);
   }
 });
 

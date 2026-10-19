@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, writeFileSync, rmSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { spawnSync } from 'node:child_process';
 import { tempDir, put, fixtureRepo } from './helpers.mjs';
 import { makeContext, makeDirLink } from '../lib/platform.mjs';
 import { runInstall } from '../lib/engine.mjs';
@@ -155,6 +156,22 @@ test('doctor reports only skills folders the harness left behind under a pack, n
   assert.ok(!found.includes(join(pack, 'my-tools')), found);
   assert.ok(found.includes(join(pack, 'old', '.claude', 'skills')), found);
   assert.ok(found.includes(join(pack, 'gone', '.claude', 'skills')), found);
+});
+
+const hasGit = spawnSync('git', ['--version']).status === 0;
+
+test('doctor lists uncommitted shipped files as git prints them, the first one included', { skip: !hasGit && 'git is not installed' }, async () => {
+  const fixture = fixtureRepo();
+  const git = (...args) => spawnSync('git', ['-C', fixture, '-c', 'user.name=t', '-c', 'user.email=t@example.com', '-c', 'core.autocrlf=false', ...args], { encoding: 'utf8' });
+  git('init', '-q');
+  git('add', '-A');
+  git('commit', '-q', '-m', 'fixture');
+  const ctx = { ...makeContext({ repo: fixture, home: tempDir('harness-dr-home-'), local: tempDir('harness-dr-local-') }), env: {} };
+  runInstall(ctx, { agents: ['pi'], packs: ['dev'] });
+  writeFileSync(join(fixture, 'skills', 'global', 'alpha', 'SKILL.md'), 'edited\n');
+  writeFileSync(join(fixture, 'skills', 'global', 'beta', 'SKILL.md'), 'edited\n');
+  const dirty = (await doctor(ctx)).find((f) => f.msg.startsWith('uncommitted changes'));
+  assert.ok(dirty?.msg.endsWith(':\n     M skills/global/alpha/SKILL.md\n     M skills/global/beta/SKILL.md'), dirty?.msg);
 });
 
 test('doctor names a missing variable once, even when the dry run warns about it too', async () => {

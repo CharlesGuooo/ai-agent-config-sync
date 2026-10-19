@@ -51,7 +51,9 @@ worktree would become what your agents run.
 On a machine that the v1 `sync` scripts set up, `install` also takes out what they left behind,
 and only what is recognisably theirs: the copies in your home (`~/HARNESS.md`, `~/PLAYBOOK.md`,
 `~/.agent-hooks/`, `~/MCP-Templates/`), their hook entries and whole-file configs, and skill copies
-identical to the repo's, which become links. A skill copy you changed is a conflict instead.
+identical to the repo's, which become links. A skill copy you changed is a conflict instead,
+except in v1's mirror in `~/.opencode/skills`: that one is removed even where a skill differs
+(`install --dry-run --verbose` labels those "differs from the repo's copy").
 `~/.agent-hooks/` goes only once no agent's hooks still run it: install only some agents and it
 stays, with a note naming the agents still using it.
 An instruction file v1 wrote (the ones with `<!-- SKILLS:BEGIN -->` markers, such as
@@ -101,9 +103,10 @@ macOS / Linux: add `export BRAVE_API_KEY=<value>` to `~/.zshrc` or `~/.bashrc`, 
 terminal (or `source` the file).
 
 Codex and Pi cannot read variables inside a URL, so `SUPABASE_PROJECT_REF` is filled in at install
-time: set it before `install` or `update` (until then the run warns and leaves their `supabase`
-entry as it is). `node harness.mjs doctor` lists the variables that servers which are on by
-default need and that are not set.
+time: set it before `install` or `update`. Until then their `supabase` entry is left as it is,
+quietly, because the server is off by default (a server that is on by default gets a warning).
+`node harness.mjs doctor` lists the variables that servers which are on by default need and that
+are not set.
 
 ## Conflicts on the first install
 

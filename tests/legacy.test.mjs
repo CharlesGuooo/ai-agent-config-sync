@@ -235,11 +235,13 @@ function v1Skills(home, ctx, extra = () => {}) {
 test('opencode skills: only the skills v1 mirrored go, the users own stay', () => {
   const { home, ctx } = setup();
   v1Skills(home, ctx, () => put(home, '.opencode/skills/mine/SKILL.md', 'mine'));
+  const dry = newRun({ dryRun: true });
+  cleanAgent(ctx, 'opencode', [], dry);
   const run = newRun();
   cleanAgent(ctx, 'opencode', [], run);
   assert.deepEqual(readdirSync(join(home, '.opencode', 'skills')), ['mine']);
-  assert.equal(run.report.notes.length, 1);
-  assert.match(run.report.notes[0], /mine/);
+  assert.deepEqual(run.report.notes, [`kept ${join(home, '.opencode', 'skills')}: it still holds mine`]);
+  assert.deepEqual(dry.report, run.report);
 });
 
 test('opencode skills: labels say whether a v1 copy differs or the repo dropped it, also in a dry run', () => {
@@ -266,11 +268,18 @@ test('opencode skills: the README v1 mirrored goes with them, a README the user 
   }
 });
 
-test('opencode skills: the directory itself goes once it is empty', () => {
+test('opencode skills: the directory itself goes once it is empty, and a dry run says so too', () => {
   const { home, ctx } = setup();
+  const dir = join(home, '.opencode', 'skills');
   v1Skills(home, ctx);
-  cleanAgent(ctx, 'opencode', [], newRun());
-  assert.ok(!existsSync(join(home, '.opencode', 'skills')));
+  const dry = newRun({ dryRun: true });
+  cleanAgent(ctx, 'opencode', [], dry);
+  assert.ok(existsSync(dir));
+  const run = newRun();
+  cleanAgent(ctx, 'opencode', [], run);
+  assert.ok(!existsSync(dir));
+  assert.equal(run.report.changes.at(-1), `remove-v1 ${dir}`);
+  assert.deepEqual(dry.report, run.report);
 });
 
 test('opencode skills: an unreadable catalog.json is skipped silently and nothing is removed', () => {

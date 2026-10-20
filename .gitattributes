@@ -1,0 +1,5 @@
+# bash cannot run a script with CRLF line endings, and core.autocrlf=true (the Windows
+# default) checks text files out with CRLF. Keep every shell script LF in the work tree.
+*.sh text eol=lf
+skills/global/executing-plans/scripts/* text eol=lf
+skills/global/subagent-driven-development/scripts/* text eol=lf

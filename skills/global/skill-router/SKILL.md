@@ -176,7 +176,7 @@ Switch command: none
 
 ## Startup Guidance
 
-After routing, tell the user to start from the target project directory and let that local pack govern domain-specific skill choice.
+After routing, tell the user to start from the target project directory and let that local pack govern domain-specific skill choice. If this session did not start there, end your turn with the routing answer and that question (restart there, or carry on here without the pack); do the task only after the user answers.
 
 - Do not enumerate local skills from the global layer.
 - Do not dump a long list of next steps.

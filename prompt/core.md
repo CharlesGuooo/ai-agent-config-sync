@@ -20,7 +20,7 @@ Guidelines that bias toward caution over speed. For trivial tasks, use judgment.
 
 ## Starting work
 
-Building something new or changing behaviour: load `brainstorming` before writing anything. It sizes the request first and lets a quick, clear task straight through. A bug goes to `systematic-debugging` instead.
+Building something new or changing behaviour: load `brainstorming` before writing anything. This comes first, before the pack question under Local Skill Packs. It sizes the request first and lets a quick, clear task straight through. A bug goes to `systematic-debugging` instead.
 
 ---
 
@@ -32,7 +32,7 @@ Every global skill is in your skill list with its full description; `{{REPO}}/HA
 
 ## Local Skill Packs
 
-When a task becomes domain-specific, start the agent from (or open) the matching project directory: that pack's skills are linked there and load at session start — a `cd` inside a running session does not load them. When a task belongs to a pack this session did not start in, name the directory (pick the sub-folder with `skill-router`) and ask the user whether to restart there or carry on without the pack.
+When a task becomes domain-specific, start the agent from (or open) the matching project directory: that pack's skills are linked there and load at session start — a `cd` inside a running session does not load them. When a task belongs to a pack this session did not start in, ask before doing any of it, even when you could do it without the pack: name the directory (pick the sub-folder with `skill-router`), ask whether to restart there or carry on here without the pack, and wait for the answer.
 
 | Domain | Directory |
 | --- | --- |

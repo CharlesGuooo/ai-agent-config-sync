@@ -36,6 +36,13 @@
     "date": "2026-08-12",
     "license": "MIT"
   },
+  "global/handoff": {
+    "repo": "mattpocock/skills",
+    "path": "skills/productivity/handoff",
+    "commit": "0f5e033ebc47b142f5ffa56a582ede6d9d9bada3",
+    "date": "2026-10-06",
+    "license": "MIT"
+  },
   "global/markitdown": {
     "repo": "K-Dense-AI/claude-scientific-skills",
     "path": "skills/markitdown",

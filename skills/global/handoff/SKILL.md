@@ -1,22 +1,21 @@
 ---
 name: handoff
 description: >-
-  Compact the current session into a handoff document so a fresh agent — or a
-  future you — can pick the work up cleanly. Use when the user says "hand off",
-  "写个交接", "compact this session", "I'm starting a new session/agent on this",
-  or when a long session is about to run out of context and the work isn't
-  finished. Produces ONE markdown file written outside the workspace. Distinct
-  from writing-plans (which designs work that hasn't started yet) — handoff
-  captures work already in flight.
-allowed-tools: Read, Write
+  Writes the current session into a HANDOFF.md so a fresh agent, on this machine or another,
+  can pick the work up cleanly. Use when the user says "hand off", "写个交接", "写个 HANDOFF",
+  "compact this session", "I'm starting a new session/agent on this", or when a long session is
+  about to run out of context and the work isn't finished. Distinct from writing-plans, which
+  designs work that hasn't started: handoff captures work already in flight.
+allowed-tools: Read, Write, Edit, Bash
 metadata:
   category: process
   tags: [handoff, session, context, continuity, compaction]
   source: >-
-    Vendored from `mattpocock/skills` (MIT) — `productivity/handoff`. Adapted:
-    the output path is pinned to a stable cross-session temp directory rather
-    than "the OS temp dir", because a session-scoped scratchpad disappears with
-    the session that wrote it — which defeats the purpose.
+    Adapted from `mattpocock/skills` (MIT) `productivity/handoff`. Ours is model-invoked, and
+    the document goes in the project as HANDOFF.md, updated in place and kept out of git unless
+    it has to travel, instead of the OS temp directory: the user put all three of their
+    handoffs in the project, and the one written to %TEMP% has since been cleaned away.
+    Ours also adds the Standing instructions section.
 ---
 
 # Handoff
@@ -26,18 +25,30 @@ continue the work without re-deriving everything.
 
 ## Where it goes
 
-**One** markdown file, outside the workspace:
+`HANDOFF.md` at the root of the directory the next agent will start in, usually the project
+root. When that folder already holds a handoff for an unrelated line of work, name this one by
+topic: `HANDOFF-<topic-slug>.md`.
 
-- Windows: `%TEMP%\agent-handoffs\<topic-slug>.md`
-- macOS / Linux: `${TMPDIR:-/tmp}/agent-handoffs/<topic-slug>.md`
+If the file exists, read it first and update it in place: finished items move to done, open
+items stay, stale ones go. Print the full path when you're done.
 
-Not the repo — a handoff is not a project artifact and must never be committed. Not
-the per-session scratchpad either: that dies with this session, and the entire point
-is that the *next* session can read it. Print the full path when you're done.
+## Git
+
+Keep it out of history by default. In a git repository, unless `git check-ignore -q <file>`
+already succeeds, add the file name to the exclude file that `git rev-parse --git-path
+info/exclude` names (usually `.git/info/exclude`): it applies on this machine only and leaves
+`.gitignore` alone.
+
+Commit it only when the user asks, or when the next agent works on another machine and gets the
+repository through git. A public repository keeps it uncommitted whatever the reason: check with
+`gh repo view --json visibility`, and ask when you can't tell.
 
 ## What goes in
 
 - **The task** — what the user actually asked for, in their terms.
+- **Standing instructions** — the user's rules that outlive this session: what not to touch,
+  what to ask before doing, how they want answers. Quote them where the wording matters. They
+  are the easiest thing to lose between sessions and the costliest to break.
 - **State** — what is done, what is in progress, what is untouched. Be honest about
   what was tried and failed; that's the most expensive thing to rediscover.
 - **Decisions already made** — and the ones deliberately deferred, so the next agent

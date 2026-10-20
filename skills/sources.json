@@ -726,6 +726,62 @@
     "date": "2026-06-10",
     "license": "MIT"
   },
+  "project-packs/dev-project/frontend/skills/gsap-core": {
+    "repo": "greensock/gsap-skills",
+    "path": "skills/gsap-core",
+    "commit": "96c4b013173fa9b01c059b036abc4d266a58c476",
+    "date": "2026-03-09",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/frontend/skills/gsap-frameworks": {
+    "repo": "greensock/gsap-skills",
+    "path": "skills/gsap-frameworks",
+    "commit": "7f8b61e6e9be0c187e46aaa28253514b0f0a4b78",
+    "date": "2026-04-10",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/frontend/skills/gsap-performance": {
+    "repo": "greensock/gsap-skills",
+    "path": "skills/gsap-performance",
+    "commit": "96c4b013173fa9b01c059b036abc4d266a58c476",
+    "date": "2026-03-09",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/frontend/skills/gsap-plugins": {
+    "repo": "greensock/gsap-skills",
+    "path": "skills/gsap-plugins",
+    "commit": "5b909b9d9475884aedbca35375d12f963df4e898",
+    "date": "2026-04-21",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/frontend/skills/gsap-react": {
+    "repo": "greensock/gsap-skills",
+    "path": "skills/gsap-react",
+    "commit": "96c4b013173fa9b01c059b036abc4d266a58c476",
+    "date": "2026-03-09",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/frontend/skills/gsap-scrolltrigger": {
+    "repo": "greensock/gsap-skills",
+    "path": "skills/gsap-scrolltrigger",
+    "commit": "96c4b013173fa9b01c059b036abc4d266a58c476",
+    "date": "2026-03-09",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/frontend/skills/gsap-timeline": {
+    "repo": "greensock/gsap-skills",
+    "path": "skills/gsap-timeline",
+    "commit": "96c4b013173fa9b01c059b036abc4d266a58c476",
+    "date": "2026-03-09",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/frontend/skills/gsap-utils": {
+    "repo": "greensock/gsap-skills",
+    "path": "skills/gsap-utils",
+    "commit": "96c4b013173fa9b01c059b036abc4d266a58c476",
+    "date": "2026-03-09",
+    "license": "MIT"
+  },
   "project-packs/dev-project/frontend/skills/senior-frontend": {
     "repo": "alirezarezvani/claude-skills",
     "path": "engineering-team/skills/senior-frontend",
@@ -899,6 +955,13 @@
     "path": "skills/umap-learn",
     "commit": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c",
     "date": "2026-10-01",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/skills/anatomy": {
+    "repo": "wheresryan22/anatomy",
+    "path": ".",
+    "commit": "1482e8469b0a9e0d8cc18ea2740a01423d29ae80",
+    "date": "2026-10-18",
     "license": "MIT"
   },
   "project-packs/dev-project/skills/archify": {
@@ -1676,6 +1739,13 @@
     "path": ".",
     "commit": "94b88b23703bed7df507acae7d6d5876209a0cdf",
     "date": "2026-07-03",
+    "license": "MIT"
+  },
+  "project-packs/research-project/manuscript/skills/anti-defensive-writing": {
+    "repo": "Kiterlin/anti-defensive-writing",
+    "path": "skill/anti-defensive-writing",
+    "commit": "e1bc88014632e2eb5c7720cdff56e8776e5eea0b",
+    "date": "2026-10-17",
     "license": "MIT"
   },
   "project-packs/research-project/manuscript/skills/latex-paper-en": {

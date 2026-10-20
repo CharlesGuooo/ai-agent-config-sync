@@ -179,6 +179,26 @@ Removes that agent's skill links and what the installer wrote for it; your own c
 file or entry you changed since it was installed is left as it is, and the report says so. For
 Cursor, also take the pasted rules out of Cursor Settings → Rules.
 
+## Installed beside the harness: graphify
+
+graphify ([Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify), Apache-2.0) turns a
+codebase into a knowledge graph an agent queries instead of grepping (`/graphify .` in a project).
+Its skill differs per agent, so its own installer puts it in each agent's global skill folder
+instead of a link from this repo:
+
+```bash
+uv tool install graphifyy
+graphify install --platform windows   # Claude Code on Windows; `claude` elsewhere
+graphify install --platform codex
+graphify install --platform pi
+graphify install --platform opencode  # from a scratch folder: it writes .opencode/plugins/graphify.js into the current directory
+```
+
+The Claude install also appends a four-line `# graphify` block to `~/.claude/CLAUDE.md`, after the
+harness markers, which `update` leaves alone. Cursor has no global install: run
+`graphify install --platform cursor` inside a project to add it there. To upgrade, run
+`uv tool upgrade graphifyy` and the same `graphify install` lines. Set up with 0.9.92 on 2026-10-20.
+
 ## Do not install
 
 - **`claude-mem` — do NOT install it.** Retired 2026-07 (unused in practice). Never add it back

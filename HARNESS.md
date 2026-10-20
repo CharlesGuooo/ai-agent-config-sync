@@ -164,7 +164,9 @@ index anymore.
 
 ### Local skill packs — index
 
-#### dev-project (86)
+#### dev-project (96)
+- `anatomy` — Build crafted, highly detailed, interactive isometric SVG figures that explain a technical idea as a real physical object (a test rig, a ...
+- `aoci-code` — Points to AOCI-CODE (aoci-spec/aoci-code): a Git-versioned index of a whole codebase, one line per file written by the agent (what it doe...
 - `archify` — Create validated architecture, workflow, sequence, data-flow, lifecycle/state, ERD, class, tree, timeline, and waterfall diagrams as expl...
 - `changelog-generator` — Produce consistent, auditable release notes from Conventional Commits.
 - `codebase-onboarding` — Analyze a codebase and generate onboarding documentation for engineers, tech leads, and contractors.
@@ -228,6 +230,14 @@ index anymore.
 - **frontend/**
   - `frontend-design` — Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one.
   - `frontend-dev-guidelines` — Frontend development guidelines for React/TypeScript applications.
+  - `gsap-core` — Official GSAP skill for the core API — gsap.to(), from(), fromTo(), easing, duration, stagger, defaults, gsap.matchMedia() (responsive, p...
+  - `gsap-frameworks` — Official GSAP skill for Vue, Svelte, and other non-React frameworks — lifecycle, scoping selectors, cleanup on unmount.
+  - `gsap-performance` — Official GSAP skill for performance — prefer transforms, avoid layout thrashing, will-change, batching.
+  - `gsap-plugins` — Official GSAP skill for GSAP plugins — registration, ScrollToPlugin, ScrollSmoother, Flip, Draggable, Inertia, Observer, SplitText, Scram...
+  - `gsap-react` — Official GSAP skill for React — useGSAP hook, refs, gsap.context(), cleanup.
+  - `gsap-scrolltrigger` — Official GSAP skill for ScrollTrigger — scroll-linked animations, pinning, scrub, triggers.
+  - `gsap-timeline` — Official GSAP skill for timelines — gsap.timeline(), position parameter, nesting, playback.
+  - `gsap-utils` — Official GSAP skill for gsap.utils — clamp, mapRange, normalize, interpolate, random, snap, toArray, wrap, pipe.
   - `senior-frontend` — Frontend development skill for React, Next.js, TypeScript, and Tailwind CSS applications.
   - `ui-ux-pro-max` — UI/UX design intelligence for web, mobile, and desktop.
   - `web-artifacts-builder` — Suite of tools for creating elaborate, multi-component claude.ai HTML artifacts using modern frontend web technologies (React, Tailwind C...
@@ -300,7 +310,7 @@ index anymore.
   - `pair-trade-screener` — Statistical arbitrage tool for identifying and analyzing pair trading opportunities.
   - `technical-analyst` — This skill should be used when analyzing weekly price charts for stocks, stock indices, cryptocurrencies, or forex pairs.
 
-#### research-project (31)
+#### research-project (32)
 - `research-router` — Routes a research task to one of five sub-packs under ~/research-project/ — literature, gates, manuscript, review, talks.
 - **gates/**
   - `ablation-planning` — Enumerates the ablations a paper actually needs, then costs and orders them against a compute budget and maps each to the claim it defends.
@@ -321,6 +331,7 @@ index anymore.
   - `survey-report` — Collapses the per-item JSON results of a deep survey pass into one markdown report covering every field, and leaves uncertain values mark...
 - **manuscript/**
   - `academic-humanizer` — Strips AI tells from academic prose — papers, theses, abstracts, rebuttals — and from NSF/NIH funding proposals, while keeping the precis...
+  - `anti-defensive-writing` — Reduce defensive writing in drafts and revisions by removing unnecessary caveats, disclaimers, hedges, apology-like framing, negative sel...
   - `latex-paper-en` — Operates on an existing .tex manuscript — compiles it and diagnoses build failures, checks venue formatting and bibliography, and reviews...
   - `paper-figures` — Makes a paper's matplotlib figures — house style, journal sizing, colorblind and grayscale survival, multi-panel layout, export.
   - `paper-writing` — Decides what a paper's prose should say, then writes it — argument first, sentences second.

@@ -6,3 +6,9 @@
 __pycache__/
 *.pyc
 .local/
+
+# anatomy builds its examples next to their scripts; the pages, prints and screenshots are output.
+skills/project-packs/dev-project/skills/anatomy/examples/**/*.html
+skills/project-packs/dev-project/skills/anatomy/examples/**/*.pdf
+skills/project-packs/dev-project/skills/anatomy/examples/**/*.png
+skills/project-packs/dev-project/skills/anatomy/**/shots/

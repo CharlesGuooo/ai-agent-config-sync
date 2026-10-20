@@ -85,7 +85,7 @@ DESIGN-IT-TWICE、`improve-codebase-architecture`、`dispatching-parallel-agents
 | Routing & Meta | 5 | `skill-router` / **`skill-creator`**(写 skill + 审 skill,含标尺与 eval 工具)/ `skill-scanner` + **`skillspector`**(两道安全扫描)/ `book-to-skill`(书→技能) |
 | Workflow | 2 | `playwright-interactive` / **`github-gold`**(挖 GitHub 宝藏) |
 | Code Review | 3 | requesting(**双轴并行**)/ receiving / finishing-a-development-branch |
-| **Design & Architecture** | 4 | `codebase-design`(深模块)/ `domain-modeling`(CONTEXT.md+ADR)/ `prototype` / `improve-codebase-architecture` |
+| **Design & Architecture** | 4 | `codebase-design`(深模块)/ `domain-modeling`(GLOSSARY.md+ADR)/ `prototype` / `improve-codebase-architecture` |
 | OpenSpec | 4 | explore / propose / apply-change / archive-change |
 | Document | 3 | pdf / **officecli**(Word/Excel/PPT 引擎,取代旧 docx/xlsx/pptx)/ markitdown |
 | Learning | 1 | `teach` —— 多轮互动式辅导 |

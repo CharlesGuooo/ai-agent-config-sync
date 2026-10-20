@@ -7,7 +7,7 @@ Global skills are in `~/.pi/agent/skills/`, project packs in `<project>/.pi/skil
 **Invoke a skill with `/skill:<name>`** — e.g. `/skill:brainstorming`. This differs from the
 other agents in this harness (Claude Code uses a Skill tool; Codex reads the file). Skills whose
 frontmatter sets `disable-model-invocation: true` are hidden from the system prompt and **can
-only** be reached that way: currently `action-first`.
+only** be reached that way: currently `action-first` and `improve-codebase-architecture`.
 
 ## What this harness does not give Pi
 

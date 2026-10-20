@@ -15,11 +15,25 @@
       "license": "MIT"
     }
   ],
+  "global/codebase-design": {
+    "repo": "mattpocock/skills",
+    "path": "skills/engineering/codebase-design",
+    "commit": "d80fa0f4ebe0c5714af0adf8670336065233ecc6",
+    "date": "2026-09-17",
+    "license": "MIT"
+  },
   "global/dispatching-parallel-agents": {
     "repo": "obra/superpowers",
     "path": "skills/dispatching-parallel-agents",
     "commit": "6dbbbda3baeff8407f3dddb0cc9e8a9495a273bc",
     "date": "2026-07-23",
+    "license": "MIT"
+  },
+  "global/domain-modeling": {
+    "repo": "mattpocock/skills",
+    "path": "skills/engineering/domain-modeling",
+    "commit": "d80fa0f4ebe0c5714af0adf8670336065233ecc6",
+    "date": "2026-09-17",
     "license": "MIT"
   },
   "global/executing-plans": {
@@ -41,6 +55,13 @@
     "path": "skills/productivity/handoff",
     "commit": "0f5e033ebc47b142f5ffa56a582ede6d9d9bada3",
     "date": "2026-10-06",
+    "license": "MIT"
+  },
+  "global/improve-codebase-architecture": {
+    "repo": "mattpocock/skills",
+    "path": "skills/engineering/improve-codebase-architecture",
+    "commit": "d80fa0f4ebe0c5714af0adf8670336065233ecc6",
+    "date": "2026-09-17",
     "license": "MIT"
   },
   "global/markitdown": {
@@ -105,6 +126,13 @@
     "commit": "ecc1fb8bc0b82f1d3c7a92a82167ae8e8e613a67",
     "date": "2026-03-11",
     "license": null
+  },
+  "global/prototype": {
+    "repo": "mattpocock/skills",
+    "path": "skills/engineering/prototype",
+    "commit": "321658273cb1d20b76026717d027d505790106d4",
+    "date": "2026-08-19",
+    "license": "MIT"
   },
   "global/receiving-code-review": {
     "repo": "obra/superpowers",

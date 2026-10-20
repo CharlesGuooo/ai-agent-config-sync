@@ -46,9 +46,9 @@
     "finishing-a-development-branch":{ "category": "code-review", "tagline": "Wrap up a dev branch (rebase/squash/PR)" },
 
     "codebase-design":               { "category": "design",      "tagline": "Deep-module vocabulary: interface, seam, depth, leverage, locality" },
-    "domain-modeling":               { "category": "design",      "tagline": "Pin down domain terms (CONTEXT.md) and record decisions (ADRs)" },
+    "domain-modeling":               { "category": "design",      "tagline": "Pin down domain terms (GLOSSARY.md) and record decisions (ADRs)" },
     "prototype":                     { "category": "design",      "tagline": "Throwaway prototype to settle one design question" },
-    "improve-codebase-architecture": { "category": "design",      "tagline": "Scan a codebase for deepening opportunities → visual HTML report" },
+    "improve-codebase-architecture": { "category": "design",      "tagline": "Scan a codebase for deepening opportunities → visual HTML report (user-invoked)" },
 
     "openspec-explore":              { "category": "openspec",    "tagline": "Think through a spec before writing it" },
     "openspec-propose":              { "category": "openspec",    "tagline": "Generate a full change proposal (design/specs/tasks) in one step" },

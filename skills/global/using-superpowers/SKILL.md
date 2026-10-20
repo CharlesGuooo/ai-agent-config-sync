@@ -68,7 +68,7 @@ User message → Is this a substantive task?
 | Designing a module's interface / where a seam goes | `codebase-design` |
 | Terminology is fuzzy or contested; recording a decision | `domain-modeling` |
 | "Would this design even work?" — settle it by building | `prototype` |
-| Architecture review / "what should I refactor" | `improve-codebase-architecture` |
+| Architecture review / "what should I refactor" | suggest the user run `/improve-codebase-architecture` (user-invoked) |
 | Session running out of context, work unfinished | `handoff` |
 | Multi-step implementation | `writing-plans` → `executing-plans` → `verification-before-completion` |
 | Need isolation from current workspace | `using-git-worktrees` |

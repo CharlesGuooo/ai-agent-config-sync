@@ -23,7 +23,7 @@
 | 你心里想的 | 你说什么 | 触发 |
 | --- | --- | --- |
 | 这想法还没想透 / 帮我挑毛病 | **"grill me"** / **"盘问我"** | `brainstorming` |
-| 这代码库到底哪里烂 | "做个架构体检" | `improve-codebase-architecture` |
+| 这代码库到底哪里烂 | 🔒 **`/improve-codebase-architecture`** | `improve-codebase-architecture`(扫完出 HTML 报告,你挑一个再细聊) |
 | 这设计行不行,先验证一下 | "先做个原型" / "spike 一下" | `prototype` |
 | 我们说的好像不是一个东西 | "把术语定下来" / "写个 ADR" | `domain-modeling` |
 | 上下文快满了但活没干完 | **"写个交接"** | `handoff` |
@@ -37,7 +37,7 @@
 其余的按需:`teach`(让它教你一个概念,多轮带记忆)· `first-principles-thinking`(逼它
 从第一性原理重推,别照搬惯例)· `high-agency`(它偷懒或活很长时加压)。
 
-### 🔒 标记的那一个:模型**看不见**它
+### 🔒 标记的那两个:模型**看不见**它们
 
 上表大多数技能,模型其实**能**自己触发,只是它们属于"你不提就不会主动做"的深思熟虑动作。
 但带 🔒 的不一样 —— 它的 frontmatter 里有:
@@ -53,17 +53,18 @@ Skill <name> cannot be used with Skill tool
 due to disable-model-invocation
 ```
 
-**所以只有两种用法:** ① 你敲 `/action-first`;② 你开口要,agent 直接把那个文件读进来照做
+**所以只有两种用法:** ① 你敲 `/action-first` 或 `/improve-codebase-architecture`;② 你开口要,agent 直接把那个文件读进来照做
 (走 Read,不走 Skill)。
 
 **为什么要这样设计** —— 拿 **context load 换 cognitive load**:
 
-| | model-invoked(其余全部) | 🔒 user-invoked(1 个) |
+| | model-invoked(其余全部) | 🔒 user-invoked(2 个) |
 | --- | --- | --- |
 | 常驻上下文成本 | 每轮都花(描述在窗口里) | **0** |
 | 谁负责记得它存在 | 模型 | **你**(所以才有这张表) |
 
 `action-first` 是个输出风格开关,只在你想要它的那一刻才有意义 —— 让它每轮占位置不划算。
+`improve-codebase-architecture` 要通读整个代码库、很慢,只在你想做体检时才跑(上游也是这么设的)。
 
 > **一个踩过的坑**:写 skill 的标尺以前也是 🔒(`writing-great-skills`)。结果是你说
 > "帮我写个 skill" 时,触发的是 `skill-creator`,**标尺永远不在场** —— 它就在那儿,却在最需要它的
@@ -101,7 +102,7 @@ OpenSpec 那 4 个走 `/opsx:` 命令,不靠描述触发。
 - **设计文档写完先过"实施者检查"**:子 agent 扮演实施者读一遍,只把会改变做法的问题带回来
 - **你不点头,它不动手**
 
-> 术语对不齐 → 顺手 `domain-modeling`,把词钉死在 `CONTEXT.md`
+> 术语对不齐 → 顺手 `domain-modeling`,把词钉死在 `GLOSSARY.md`
 > 核心设计没把握 → `prototype`,花 20 分钟写个一次性玩具验证,别在纸上吵
 
 ### ② 落成计划
@@ -157,7 +158,7 @@ OpenSpec 那 4 个走 `/opsx:` 命令,不靠描述触发。
 → `verification-before-completion`
 
 **接手一个烂代码库**
-`improve-codebase-architecture`(扫出候选 + 可视化 HTML 报告,带 before/after 图和推荐强度)
+🔒 `/improve-codebase-architecture`(扫出候选 + 可视化 HTML 报告,带 before/after 图和推荐强度)
 → 你挑一个 → `brainstorming` 盘问细节 → `codebase-design` 定接口 → `domain-modeling` 同步术语
 
 **改这个 harness 本身**

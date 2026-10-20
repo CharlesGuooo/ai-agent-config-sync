@@ -34,7 +34,7 @@ These are available regardless of directory — don't route the user just to use
 - `action-first` — 输出风格开关(动作优先、无废话);user-invoked,不参与自动匹配
 
 **Design & architecture:**
-- `codebase-design`(深模块词汇), `domain-modeling`(CONTEXT.md/ADR), `prototype`(一次性原型), `improve-codebase-architecture`(代码库体检)
+- `codebase-design`(深模块词汇), `domain-modeling`(GLOSSARY.md/ADR), `prototype`(一次性原型), `improve-codebase-architecture`(代码库体检)
 
 **Code review flow:**
 - `requesting-code-review`, `receiving-code-review`, `finishing-a-development-branch`

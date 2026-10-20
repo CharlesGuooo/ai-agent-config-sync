@@ -244,9 +244,9 @@
     "license": "MIT"
   },
   "project-packs/craft-project/design/skills/brandkit": {
-    "repo": "Leonxlnx/taste-skill",
+    "repo": "Leonxlnx/imagegen-skills",
     "path": "skills/brandkit",
-    "commit": "f6831c5df8ad546c2567535442f1691a823868e3",
+    "commit": "ff958617c7c397ed129024008b82eb3101ed1a17",
     "date": "2026-10-19",
     "license": "MIT"
   },
@@ -258,58 +258,58 @@
     "license": "MIT"
   },
   "project-packs/craft-project/design/skills/design-taste-frontend-v1": {
-    "repo": "Leonxlnx/taste-skill",
+    "repo": "Leonxlnx/taste-skill-classics",
     "path": "skills/taste-skill-v1",
-    "commit": "f6831c5df8ad546c2567535442f1691a823868e3",
+    "commit": "5e08c9383dc4ad7fc0df70e1ac8cfa09ec356305",
     "date": "2026-10-19",
     "license": "MIT"
   },
   "project-packs/craft-project/design/skills/gpt-taste": {
-    "repo": "Leonxlnx/taste-skill",
+    "repo": "Leonxlnx/taste-skill-classics",
     "path": "skills/gpt-tasteskill",
-    "commit": "f6831c5df8ad546c2567535442f1691a823868e3",
+    "commit": "5e08c9383dc4ad7fc0df70e1ac8cfa09ec356305",
     "date": "2026-10-19",
     "license": "MIT"
   },
   "project-packs/craft-project/design/skills/high-end-visual-design": {
-    "repo": "Leonxlnx/taste-skill",
+    "repo": "Leonxlnx/taste-skill-classics",
     "path": "skills/soft-skill",
-    "commit": "f6831c5df8ad546c2567535442f1691a823868e3",
+    "commit": "5e08c9383dc4ad7fc0df70e1ac8cfa09ec356305",
     "date": "2026-10-19",
     "license": "MIT"
   },
   "project-packs/craft-project/design/skills/image-to-code": {
-    "repo": "Leonxlnx/taste-skill",
-    "path": "skills/image-to-code-skill",
-    "commit": "f6831c5df8ad546c2567535442f1691a823868e3",
+    "repo": "Leonxlnx/imagegen-skills",
+    "path": "skills/image-to-code",
+    "commit": "ff958617c7c397ed129024008b82eb3101ed1a17",
     "date": "2026-10-19",
     "license": "MIT"
   },
   "project-packs/craft-project/design/skills/imagegen-frontend-mobile": {
-    "repo": "Leonxlnx/taste-skill",
+    "repo": "Leonxlnx/imagegen-skills",
     "path": "skills/imagegen-frontend-mobile",
-    "commit": "f6831c5df8ad546c2567535442f1691a823868e3",
+    "commit": "ff958617c7c397ed129024008b82eb3101ed1a17",
     "date": "2026-10-19",
     "license": "MIT"
   },
   "project-packs/craft-project/design/skills/imagegen-frontend-web": {
-    "repo": "Leonxlnx/taste-skill",
+    "repo": "Leonxlnx/imagegen-skills",
     "path": "skills/imagegen-frontend-web",
-    "commit": "f6831c5df8ad546c2567535442f1691a823868e3",
+    "commit": "ff958617c7c397ed129024008b82eb3101ed1a17",
     "date": "2026-10-19",
     "license": "MIT"
   },
   "project-packs/craft-project/design/skills/industrial-brutalist-ui": {
-    "repo": "Leonxlnx/taste-skill",
+    "repo": "Leonxlnx/taste-skill-classics",
     "path": "skills/brutalist-skill",
-    "commit": "f6831c5df8ad546c2567535442f1691a823868e3",
+    "commit": "5e08c9383dc4ad7fc0df70e1ac8cfa09ec356305",
     "date": "2026-10-19",
     "license": "MIT"
   },
   "project-packs/craft-project/design/skills/minimalist-ui": {
-    "repo": "Leonxlnx/taste-skill",
+    "repo": "Leonxlnx/taste-skill-classics",
     "path": "skills/minimalist-skill",
-    "commit": "f6831c5df8ad546c2567535442f1691a823868e3",
+    "commit": "5e08c9383dc4ad7fc0df70e1ac8cfa09ec356305",
     "date": "2026-10-19",
     "license": "MIT"
   },
@@ -328,9 +328,9 @@
     "license": "MIT"
   },
   "project-packs/craft-project/design/skills/stitch-design-taste": {
-    "repo": "Leonxlnx/taste-skill",
+    "repo": "Leonxlnx/taste-skill-classics",
     "path": "skills/stitch-skill",
-    "commit": "f6831c5df8ad546c2567535442f1691a823868e3",
+    "commit": "5e08c9383dc4ad7fc0df70e1ac8cfa09ec356305",
     "date": "2026-10-19",
     "license": "MIT"
   },
@@ -673,8 +673,8 @@
   "project-packs/dev-project/cloud-platform/skills/upgrade-stripe": {
     "repo": "stripe/ai",
     "path": "providers/claude/plugin/skills/upgrade-stripe",
-    "commit": "2f68b6e13ceab52310058fd60d3ea24adaf8df32",
-    "date": "2026-10-19",
+    "commit": "579b067ffb461b82afc845c47b17fc8e8910488c",
+    "date": "2026-10-20",
     "license": "MIT"
   },
   "project-packs/dev-project/cloud-platform/skills/web-perf": {
@@ -981,8 +981,8 @@
   "project-packs/dev-project/skills/remotion-best-practices": {
     "repo": "remotion-dev/skills",
     "path": "skills/remotion-best-practices",
-    "commit": "1441a11e95db35443bd76bb318386c0d3ca00053",
-    "date": "2026-10-16",
+    "commit": "039e8a2fc78b67efc228d5645367838b85818a1c",
+    "date": "2026-10-19",
     "license": null
   },
   "project-packs/dev-project/skills/senior-security": {
@@ -1212,8 +1212,8 @@
   "project-packs/marketing-project/skills/ai-seo": {
     "repo": "coreyhaines31/marketingskills",
     "path": "skills/ai-seo",
-    "commit": "b8c1cd0699e148c47a6c8647aa7231b6bc8a1ee4",
-    "date": "2026-10-15",
+    "commit": "001fd4e08bcbdac54f55f95c1ad89533813003cf",
+    "date": "2026-10-19",
     "license": "MIT"
   },
   "project-packs/marketing-project/skills/aso": {
@@ -1226,8 +1226,8 @@
   "project-packs/marketing-project/skills/attribution": {
     "repo": "coreyhaines31/marketingskills",
     "path": "skills/attribution",
-    "commit": "cc2450706842dd60d8cccc4e539e9841c746dbcf",
-    "date": "2026-10-12",
+    "commit": "686f50ec6ab9984c95cbf9c50fd222040c2d7742",
+    "date": "2026-10-19",
     "license": "MIT"
   },
   "project-packs/marketing-project/skills/canvas-design": {
@@ -1254,15 +1254,15 @@
   "project-packs/marketing-project/skills/competitor-profiling": {
     "repo": "coreyhaines31/marketingskills",
     "path": "skills/competitor-profiling",
-    "commit": "f51d91575512852a403d425e128df7f344f58c2a",
-    "date": "2026-10-07",
+    "commit": "435cde424b1d3eb0251ee9efaf0c47e12a9ab4c2",
+    "date": "2026-10-15",
     "license": "MIT"
   },
   "project-packs/marketing-project/skills/content-strategy": {
     "repo": "coreyhaines31/marketingskills",
     "path": "skills/content-strategy",
-    "commit": "4ca2d4c623e45f3aa7d0aaefcd33abc4331d77a2",
-    "date": "2026-10-07",
+    "commit": "435cde424b1d3eb0251ee9efaf0c47e12a9ab4c2",
+    "date": "2026-10-15",
     "license": "MIT"
   },
   "project-packs/marketing-project/skills/copy-editing": {
@@ -1296,15 +1296,15 @@
   "project-packs/marketing-project/skills/directory-submissions": {
     "repo": "coreyhaines31/marketingskills",
     "path": "skills/directory-submissions",
-    "commit": "d7a1c7a45e9f1381032c52039c64532a3ad5a108",
-    "date": "2026-10-08",
+    "commit": "435cde424b1d3eb0251ee9efaf0c47e12a9ab4c2",
+    "date": "2026-10-15",
     "license": "MIT"
   },
   "project-packs/marketing-project/skills/elevenlabs-agents": {
     "repo": "elevenlabs/skills",
     "path": "agents",
-    "commit": "f3c79c119a533e8175aa4f85a4802da59498bf0a",
-    "date": "2026-10-18",
+    "commit": "b6ba3fb6b3fece34da2fee064080f7c1fa5ddb90",
+    "date": "2026-10-19",
     "license": "MIT"
   },
   "project-packs/marketing-project/skills/elevenlabs-music": {
@@ -1422,7 +1422,7 @@
   "project-packs/marketing-project/skills/marketing-loops": {
     "repo": "coreyhaines31/marketingskills",
     "path": "skills/marketing-loops",
-    "commit": "0e59abb7ff9c62234529c2315f9d3c2db0b97321",
+    "commit": "2651b01da27c656e28bbe4072f4f63debd7f7e5c",
     "date": "2026-10-15",
     "license": "MIT"
   },
@@ -1478,15 +1478,15 @@
   "project-packs/marketing-project/skills/public-relations": {
     "repo": "coreyhaines31/marketingskills",
     "path": "skills/public-relations",
-    "commit": "a8ac2636ec38004c5a6ab08acde9d68f2d3d0e22",
-    "date": "2026-10-02",
+    "commit": "435cde424b1d3eb0251ee9efaf0c47e12a9ab4c2",
+    "date": "2026-10-15",
     "license": "MIT"
   },
   "project-packs/marketing-project/skills/seo-audit": {
     "repo": "coreyhaines31/marketingskills",
     "path": "skills/seo-audit",
-    "commit": "6b9e9387265d9e3049258f7eae3f746d3c3ddf87",
-    "date": "2026-10-10",
+    "commit": "435cde424b1d3eb0251ee9efaf0c47e12a9ab4c2",
+    "date": "2026-10-15",
     "license": "MIT"
   },
   "project-packs/marketing-project/skills/signup": {
@@ -1576,15 +1576,15 @@
   "project-packs/productivity-project/skills/career-ops": {
     "repo": "career-ops-hq/career-ops",
     "path": ".agents/skills/career-ops",
-    "commit": "306b9244607679ed9d37e9e9d8ddd4a072ca98b7",
-    "date": "2026-10-17",
+    "commit": "60a68d4912db3d3f27a32be09b52db71b35db6da",
+    "date": "2026-10-19",
     "license": "MIT"
   },
   "project-packs/productivity-project/skills/job-application-assistant": {
     "repo": "MadsLorentzen/ai-job-search",
     "path": ".claude/skills/job-application-assistant",
-    "commit": "baf8c68e53c43500b1e74f76ad33456d1471e42e",
-    "date": "2026-10-17",
+    "commit": "2da322772db02701ab82b3ee4c1af82a9a4ae564",
+    "date": "2026-10-19",
     "license": "MIT"
   },
   "project-packs/productivity-project/skills/json-canvas": {
@@ -1730,8 +1730,8 @@
   "project-packs/research-project/talks/skills/nature-paper2ppt": {
     "repo": "Yuan1z0825/nature-skills",
     "path": "skills/nature-paper2ppt",
-    "commit": "35eb0bcd33a5d2239620db29dc00d825faa4d5c0",
-    "date": "2026-09-14",
+    "commit": "ed63628a632be5d9f165ae721841a46b751f323a",
+    "date": "2026-10-16",
     "license": "Apache-2.0"
   },
   "project-packs/research-project/talks/skills/pptx-posters": {

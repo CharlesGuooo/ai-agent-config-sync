@@ -400,14 +400,14 @@ index anymore.
 #### craft-project (19)
 - **design/**
   - `brand` — Brand voice, visual identity, messaging frameworks, asset management, brand consistency.
-  - `brandkit` — Moved to github.com/Leonxlnx/imagegen-skills.
+  - `brandkit` — Premium brand-kit image generation skill for creating high-end brand-guidelines boards, logo systems, identity decks, and visual-world pr...
   - `design-system` — Token architecture, component specifications, and slide generation.
   - `design-taste-frontend-v1` — The original taste-skill v1, kept for projects that depend on its exact behaviour.
   - `gpt-taste` — Classic skill for GPT and Codex, opt-in: it runs only when called by name.
   - `high-end-visual-design` — Classic style skill, opt-in: it runs only when called by name.
-  - `image-to-code` — Moved to github.com/Leonxlnx/imagegen-skills.
-  - `imagegen-frontend-mobile` — Moved to github.com/Leonxlnx/imagegen-skills.
-  - `imagegen-frontend-web` — Moved to github.com/Leonxlnx/imagegen-skills.
+  - `image-to-code` — Elite website image-to-code skill for Codex.
+  - `imagegen-frontend-mobile` — Elite mobile app image-generation skill for creating premium, app-native screen concepts and flows.
+  - `imagegen-frontend-web` — Elite frontend image-direction skill for generating premium, conversion-aware website design references.
   - `impeccable` — Points to Impeccable (pbakaus/impeccable), which gives a coding agent design craft for frontend UI: a shared design vocabulary of 24 comm...
   - `impeccable-ppt` — Use when the visual craft or aesthetics of a slide deck / PowerPoint / 演示文稿 / 答辩PPT / presentation matter — making slides look designed a...
   - `industrial-brutalist-ui` — Classic style skill, opt-in: it runs only when called by name.

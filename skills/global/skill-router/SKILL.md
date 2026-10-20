@@ -67,6 +67,7 @@ These are available regardless of directory — don't route the user just to use
 | Productivity | `~/productivity-project/` | Obsidian, Notion, NotebookLM, Google Workspace, planning with files, job search and CVs, research-to-decision memos |
 | Video editing | `~/media-project/` | ffmpeg recipes, multicam sync and cuts, subtitles, overlays, audio cleanup |
 | Divination / dating | `~/life-project/` | 八字, 风水, 六壬, 梅花易数, 奇门, 塔罗, 星盘, dating advice |
+| Craft (cross-cutting) | `~/craft-project/<sub>/` (2 sub-folders) | Making writing or visual design look made by a person: Chinese prose de-AI-ing, UI taste and style systems, image-led web comps, slide polish — see "Craft sub-routing" below |
 
 ## Domain Heuristics
 
@@ -80,6 +81,7 @@ Use these to break ties:
 - If the task centers on business messaging, growth, audio content, or acquisition, default to `~/marketing-project/`.
 - If the task is primarily document transformation (PDF / Word / Excel / PowerPoint), use **global** document skills directly — no directory switch needed.
 - If the task is workflow tooling or Obsidian/Notion/NotebookLM/Google Workspace, default to `~/productivity-project/`.
+- If the work already exists and the ask is to make it look or read better (taste, style, de-AI-ing), route to `~/craft-project/<sub>/` (see Craft sub-routing); building the thing itself stays in its own domain.
 
 ## Dev Sub-Routing
 
@@ -121,6 +123,15 @@ Use these to break ties:
 
 Nothing in this pack requires a paid API key. Each skill declares its tier on a
 `compatibility:` line (`offline` / `network` / `local-tools`).
+
+## Craft Sub-Routing
+
+`~/craft-project/` is a container, not a skill pack. Always route to one of these:
+
+| Sub-folder | Use when |
+| --- | --- |
+| `~/craft-project/writing/` | Chinese prose that reads as machine-written (humanizer-zh); for English drafts the global `no-ai-slop` needs no switch |
+| `~/craft-project/design/` | UI taste and style direction, design systems and brand kits, image-generated web/app comps and image-to-code, Impeccable, slide polish |
 
 ## Cross-Domain Rules
 

@@ -84,13 +84,15 @@ skills load; a `cd` inside a running session does not load them. Document tasks
 | Task domain | Pack | Sub-packs (start one level deeper for the specialty) |
 | --- | --- | --- |
 | Software dev (general) | `~/dev-project/` | `frontend` `backend` `cloud-platform` `testing-qa` `devops-sre` `agent-dev` `ml` |
-| Finance / investing / trading | `~/finance-project/<sub>/` | `trading` `research` `macro` `modeling` `portfolio` `quant-methods` `advisory/{ib,pe,wealth,fund-admin,compliance}` |
+| Finance / investing / trading | `~/finance-project/<sub>/` | `trading` `research` `portfolio` `quant-methods` |
 | Academic / 科研 (AI/CS focus) | `~/research-project/<sub>/` | `literature` `gates` `manuscript` `review` `talks` |
 | Data analysis / stats / viz | `~/data-analysis-project/` | flat |
 | Marketing / SEO / content / ads | `~/marketing-project/` | flat |
 | Productivity / PM / notes | `~/productivity-project/` | flat |
 | iOS / Swift / SwiftUI | `~/ios-project/` | flat |
 | Cross-cutting craft (writing/design quality) | `~/craft-project/<sub>/` | `writing` `design` |
+| Video editing | `~/media-project/` | flat |
+| 命理 / 情感 | `~/life-project/` | flat |
 
 The per-skill index below is a discovery aid ("which pack has a skill for X?"). Once an agent
 starts in a pack, that pack's full SKILL.md descriptions load with it — you don't need this
@@ -397,7 +399,7 @@ index anymore.
 - `swiftui-view-refactor` — SwiftUI view refactoring.
 - `widgetkit-liveactivity` — Build or review iOS widgets (WidgetKit), Live Activities (ActivityKit), and the Dynamic Island.
 
-#### craft-project (19)
+#### craft-project (18)
 - **design/**
   - `brand` — Brand voice, visual identity, messaging frameworks, asset management, brand consistency.
   - `brandkit` — Premium brand-kit image generation skill for creating high-end brand-guidelines boards, logo systems, identity decks, and visual-world pr...
@@ -412,7 +414,6 @@ index anymore.
   - `impeccable-ppt` — Use when the visual craft or aesthetics of a slide deck / PowerPoint / 演示文稿 / 答辩PPT / presentation matter — making slides look designed a...
   - `industrial-brutalist-ui` — Classic style skill, opt-in: it runs only when called by name.
   - `minimalist-ui` — Classic style skill, opt-in: it runs only when called by name.
-  - `redesign-existing-projects` — Retired: redesigns, restyles and design reviews are part of design-taste-frontend.
   - `slides` — Create strategic HTML presentations with Chart.js, design tokens, responsive layouts, copywriting formulas, and contextual slide strategies.
   - `stitch-design-taste` — Classic skill for Google Stitch, opt-in: it runs only when called by name.
   - `taste-skill` — tasteskill v2, the anti-slop frontend skill.

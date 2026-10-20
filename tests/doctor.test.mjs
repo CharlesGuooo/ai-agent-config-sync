@@ -79,7 +79,7 @@ test('repoProblems names a missing and an unknown placeholder, and skips the HAR
   const fixture = fixtureRepo();
   const ctx = makeContext({ repo: fixture, home: tempDir('harness-dr-home-'), local: tempDir('harness-dr-local-') });
   assert.deepEqual(repoProblems(ctx), []);
-  put(fixture, 'prompt/core.md', '# {{TITLE}}\n\n{{SKILLS}}\n\n{{MCP}}\n\n{{NOTES}}\n\n{{REPOS}}\n');
+  put(fixture, 'prompt/core.md', '# {{TITLE}}\n\n{{SKILLS}}\n\n| Dev | `~/dev-project/` |\n\n{{MCP}}\n\n{{NOTES}}\n\n{{REPOS}}\n');
   assert.deepEqual(repoProblems(ctx), ['prompt/core.md is missing {{REPO}}', 'prompt/core.md has an unknown placeholder {{REPOS}}']);
 });
 

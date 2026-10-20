@@ -12,22 +12,15 @@ Guidelines that bias toward caution over speed. For trivial tasks, use judgment.
 
 **4. Exhaust options before giving up.** Try the reasonable alternatives before claiming something can't be done. "It doesn't work" is a hypothesis to test, not a conclusion to report.
 
-**5. Verify before claiming success.** Define success criteria, then prove them with evidence — run it, test it, observe it. Never report "done" or "fixed" on code you haven't exercised. "Fix the bug" means: write a test that reproduces it, then make it pass.
+**5. Verify before claiming success.** Define success criteria, then prove them with evidence — run it, test it, observe it. Never report "done" or "fixed" on code you haven't exercised. "Fix the bug" means: reproduce it first (a failing test where the project has tests, otherwise a command you can rerun), then make it pass.
 
 **6. Preserve context and align with the goal.** Keep the user's actual objective in view; don't win a subtask at the expense of the real goal.
 
 ---
 
-## Global Skill Architecture
+## Starting work
 
-The shared architecture uses two layers:
-
-1. Global skills for process, routing, escalation, and repeatable workflows.
-2. Local project packs for domain-specific guidance.
-
-This keeps the global layer small and stable.
-
-Building something new or changing behaviour: load `brainstorming` before writing anything. It sizes the request first and lets a quick, clear task straight through.
+Building something new or changing behaviour: load `brainstorming` before writing anything. It sizes the request first and lets a quick, clear task straight through. A bug goes to `systematic-debugging` instead.
 
 ---
 
@@ -37,7 +30,7 @@ Building something new or changing behaviour: load `brainstorming` before writin
 
 ## Local Skill Packs
 
-When a task becomes domain-specific, start the agent from (or open) the matching project directory: that pack's skills are linked there and load at session start — a `cd` inside a running session does not load them.
+When a task becomes domain-specific, start the agent from (or open) the matching project directory: that pack's skills are linked there and load at session start — a `cd` inside a running session does not load them. When a task belongs to a pack this session did not start in, name the directory (pick the sub-folder with `skill-router`) and ask the user whether to restart there or carry on without the pack.
 
 | Domain | Directory |
 | --- | --- |
@@ -54,10 +47,9 @@ When a task becomes domain-specific, start the agent from (or open) the matching
 | 命理 / 情感 | `~/life-project/` |
 
 Document tasks (PDF / Word / Excel / PowerPoint) use the global `pdf`, `officecli` and `markitdown` skills directly — no project switch needed.
-The global layer routes to the right directory and stops there; the local pack owns the domain guidance.
 
-The full per-skill pack index is `{{REPO}}/HARNESS.md`; the human usage guide is `{{REPO}}/PLAYBOOK.md`.
-Skills reach you as links into that repo: to change a skill, edit it there, not in a copy.
+To find which pack has a skill for X, read `{{REPO}}/HARNESS.md`; when the user asks how to use this harness, `{{REPO}}/PLAYBOOK.md`.
+Skills reach you as links into that repo: to change a skill, edit it there, not in a copy. These instructions are generated from `{{REPO}}/prompt/core.md`: to change them, edit that file and run `node harness.mjs update`, since an edit made to this copy conflicts on the next update.
 
 ---
 

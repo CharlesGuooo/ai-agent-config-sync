@@ -166,6 +166,13 @@
     "date": "2026-10-09",
     "license": "MIT"
   },
+  "global/teach": {
+    "repo": "SebastianElvis/hammer",
+    "path": "skills/teach",
+    "commit": "c5b86153b15621649560cee247659840738aadae",
+    "date": "2026-05-02",
+    "license": "MIT"
+  },
   "global/test-driven-development": {
     "repo": "obra/superpowers",
     "path": "skills/test-driven-development",

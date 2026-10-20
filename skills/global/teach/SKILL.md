@@ -1,16 +1,22 @@
 ---
 name: teach
 description: >-
-  Use when the user wants to learn or be taught a topic interactively over multiple turns,
-  with the agent acting as tutor rather than answer-giver. Triggers on phrases like "teach me",
-  "tutor me", "quiz me", "let's learn", "help me understand X by working through it step by step",
-  or any request framed around *learning* a topic rather than *completing* a task. Also triggers
-  for spaced review of previously-learned material and explain-back-to-check-understanding.
-  Do NOT trigger for one-shot factual lookups ("what is a monad"), debugging help ("walk me
-  through why this code fails"), task execution ("help me write this query"), or procedural
-  explanations where the user wants to accomplish something rather than build understanding.
-  The distinguishing signal is whether the user wants to *become able to do it themselves later*
-  (trigger) vs *get it done now* (do not trigger).
+  Tutors the user through a topic over several turns and sessions instead of handing over
+  answers: calibrates what they know, plans a syllabus for long topics, teaches by Socratic
+  questions, explain-back and drills, and keeps a learner profile and spaced-review queue. Use
+  when the user wants to become able to do it themselves later: "teach me", "tutor me", "quiz
+  me", "let's learn", "教我", "我想学", "带我学", "考考我", "帮我复习上次学的", or spaced review
+  and explain-back on earlier material. When they want it done now (a one-shot fact, a bug
+  explained, a query written), answer directly instead.
+allowed-tools: Read, Write, Edit, Bash
+metadata:
+  category: learning
+  tags: [tutoring, socratic, feynman, spaced-review, learning]
+  source: >-
+    Vendored from `SebastianElvis/hammer` (MIT) `skills/teach`, verbatim apart from the
+    description (Chinese triggers, the not-now cases stated positively) and the learner folder:
+    upstream says `.teach/` is already in `.gitignore`, which holds only in hammer's own
+    repository, so first use here adds it to the repository's exclude file.
 ---
 
 # teach
@@ -25,14 +31,15 @@ State lives **outside this skill directory** in a folder the learner owns. This 
 
 **Resolve the learner folder** (call the result `$TEACH_HOME` from here on, even if the env var was unset):
 1. If the environment variable `TEACH_HOME` is set, use that path.
-2. Otherwise, treat `$TEACH_HOME` as `./.teach` — the `.teach` folder in the agent's current working directory. This keeps learner state scoped to the project the learner is working in, and `.teach/` is already listed in `.gitignore`.
+2. Otherwise, treat `$TEACH_HOME` as `./.teach` — the `.teach` folder in the agent's current working directory. This keeps learner state scoped to the project the learner is working in.
 
 All later `$TEACH_HOME/...` paths in this file refer to the resolved path from this step.
 
 **On first use** (folder does not exist):
 1. Create the folder and a `sessions/` subfolder inside it.
 2. Copy `assets/learner.md` and `assets/review.md` from this skill into the learner folder.
-3. Tell the learner where the folder is, so they know their data is there.
+3. If the folder sits inside a git repository, keep it out of commits: unless `git check-ignore -q "$TEACH_HOME"` already succeeds, add `.teach/` (or the folder's own name, when `TEACH_HOME` points elsewhere) to the exclude file that `git rev-parse --git-path info/exclude` names. It applies on this machine only and leaves `.gitignore` alone.
+4. Tell the learner where the folder is, so they know their data is there.
 
 **Never write to this skill's directory.** Asset files are read-only seeds.
 

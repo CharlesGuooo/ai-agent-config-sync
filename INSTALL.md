@@ -160,8 +160,9 @@ it) is a conflict too: `resolve repo <id>` puts it back.
 
 `node harness.mjs doctor --deep` also starts the installed agents (`opencode debug skill`,
 `codex debug prompt-input`) to see which skills they really load, compares Cursor's pasted rules
-with `.local/cursor-rules.md`, and checks Claude's LSP plugins. The agents may write their own logs
-and caches while it runs.
+with `.local/cursor-rules.md`, and checks Claude's LSP plugins. OpenCode v2 has no `debug skill`:
+there it asks OpenCode's background server (`opencode api GET /api/skill`), which starts the server
+if it is not running. The agents may write their own logs and caches while it runs.
 
 ## When a run stops with an error
 

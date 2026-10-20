@@ -7,7 +7,7 @@ import { spawnSync } from 'node:child_process';
 import { tempDir, put, fixtureRepo } from './helpers.mjs';
 import { makeContext, makeDirLink } from '../lib/platform.mjs';
 import { runInstall } from '../lib/engine.mjs';
-import { doctor, repoProblems, opencodeNotLoaded, codexNotLoaded, missingLspPlugins } from '../lib/doctor.mjs';
+import { doctor, repoProblems, opencodeNotLoaded, opencodeV2NotLoaded, codexNotLoaded, missingLspPlugins, runTool } from '../lib/doctor.mjs';
 
 const repo = join(dirname(fileURLToPath(import.meta.url)), '..');
 // An empty env, so Codex and Pi never resolve a real variable of this machine into the scratch home's files.
@@ -98,6 +98,26 @@ test('opencodeNotLoaded reads the JSON list after any log lines', () => {
   assert.deepEqual(opencodeNotLoaded('[]\n', names), names);
   assert.equal(opencodeNotLoaded('Error: no config\n', names), null);
   assert.equal(opencodeNotLoaded('', names), null);
+});
+
+// OpenCode v2 has no `debug skill`; its server lists skills at GET /api/skill.
+test('opencodeV2NotLoaded reads the skill list of GET /api/skill, by id or name', () => {
+  const names = ['alpha', 'beta'];
+  const body = (data) => JSON.stringify({ location: { directory: '/home/x' }, data });
+  assert.deepEqual(opencodeV2NotLoaded(body([{ id: 'alpha', name: 'Alpha', path: '/x/alpha/SKILL.md', content: 'x' }]), names), ['beta']);
+  assert.deepEqual(opencodeV2NotLoaded(body([{ id: 'a', name: 'alpha' }, { id: 'beta', name: 'Beta' }]), names), []);
+  assert.deepEqual(opencodeV2NotLoaded(body([]), names), names);
+  assert.equal(opencodeV2NotLoaded('{"_tag":"UnauthorizedError","message":"Authentication required"}', names), null);
+  assert.equal(opencodeV2NotLoaded('DESCRIPTION\n  Debugging and troubleshooting tools\n', names), null);
+  assert.equal(opencodeV2NotLoaded('', names), null);
+});
+
+// On macOS a pipe is asynchronous, so a tool that exits right after a large write loses all but the first 64 KB.
+test('runTool keeps all of a large stdout from a tool that exits right after writing it', () => {
+  const size = 1 << 20;
+  const r = runTool(`"${process.execPath}" -e "process.stdout.write('x'.repeat(${size})); process.exit(0)"`, { cwd: tempDir('harness-dr-tool-') });
+  assert.equal(r.status, 0);
+  assert.equal(r.stdout.length, size);
 });
 
 // What `codex debug prompt-input` prints: the prompt as a JSON list of messages.

@@ -260,8 +260,10 @@ guard hook：危险命令先确认，不读凭证文件）。Claude 和 Codex �
   （OpenCode 会和 `opencode.json` 合并，可能改掉我们的 `mcp`/`lsp`）。
 - pack 下有不属于任何计划的 `.<agent>/skills` 目录（孤儿）：列出来，不自动删。
 - 启用的 MCP 服务器需要的环境变量没有设置：警告。
-- `--deep`：OpenCode（`opencode debug skill`）和 Codex（`codex debug prompt-input`）实际加载的
-  skill 里是否有全部全局 skill；Cursor 设置库里的用户规则是否已粘贴且是最新的（需要 Node 22.13+
+- `--deep`：OpenCode（`opencode debug skill`；v2 没有这个子命令，改问它的后台服务
+  `opencode api GET /api/skill`，服务没开会被拉起来）和 Codex（`codex debug prompt-input`）实际加载的
+  skill 里是否有全部全局 skill；工具的输出写进临时文件再读，不走管道（macOS 的管道是异步的，写完立刻退出的
+  工具会丢掉 64 KB 之后的输出）；Cursor 设置库里的用户规则是否已粘贴且是最新的（需要 Node 22.13+
   的 `node:sqlite`——22.5 起就有，但到 22.13 才不用加 `--experimental-sqlite`——否则跳过）；Claude 的 4 个 LSP 插件是否已安装。`--deep` 会启动真实的 agent
   （它们可能写自己的日志和缓存），而且只对真实的 home 做：`HARNESS_HOME` 指向别处时跳过。
 

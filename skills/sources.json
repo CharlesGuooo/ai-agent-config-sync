@@ -1,11 +1,20 @@
 {
-  "global/brainstorming": {
-    "repo": "obra/superpowers",
-    "path": "skills/brainstorming",
-    "commit": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
-    "date": "2026-10-09",
-    "license": "MIT"
-  },
+  "global/brainstorming": [
+    {
+      "repo": "obra/superpowers",
+      "path": "skills/brainstorming",
+      "commit": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
+      "date": "2026-10-09",
+      "license": "MIT"
+    },
+    {
+      "repo": "mattpocock/skills",
+      "path": "skills/productivity/grilling",
+      "commit": "95249b0b49782349740fd9b8c6ce32b4e59e497a",
+      "date": "2026-10-07",
+      "license": "MIT"
+    }
+  ],
   "global/dispatching-parallel-agents": {
     "repo": "obra/superpowers",
     "path": "skills/dispatching-parallel-agents",
@@ -97,13 +106,38 @@
     "date": "2026-07-23",
     "license": "MIT"
   },
-  "global/requesting-code-review": {
-    "repo": "obra/superpowers",
-    "path": "skills/requesting-code-review",
-    "commit": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
-    "date": "2026-10-09",
-    "license": "MIT"
-  },
+  "global/requesting-code-review": [
+    {
+      "repo": "obra/superpowers",
+      "path": "skills/requesting-code-review",
+      "commit": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
+      "date": "2026-10-09",
+      "license": "MIT"
+    },
+    {
+      "repo": "mattpocock/skills",
+      "path": "skills/engineering/code-review",
+      "commit": "3da8c01116264675eeefbd6e9d59c734de9095cc",
+      "date": "2026-10-07",
+      "license": "MIT"
+    }
+  ],
+  "global/skill-creator": [
+    {
+      "repo": "anthropics/skills",
+      "path": "skills/skill-creator",
+      "commit": "b9e19e6f44773509fbdd7001d77ff41a49a486c1",
+      "date": "2026-04-20",
+      "license": "Apache-2.0"
+    },
+    {
+      "repo": "mattpocock/skills",
+      "path": "skills/productivity/writing-for-agents",
+      "commit": "321658273cb1d20b76026717d027d505790106d4",
+      "date": "2026-08-19",
+      "license": "MIT"
+    }
+  ],
   "global/skill-scanner": {
     "repo": "getsentry/skills",
     "path": "skills/skill-scanner",

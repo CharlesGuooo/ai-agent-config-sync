@@ -1,5 +1,8 @@
 # Registering a skill in this repo
 
+Contents: 1. Place the directory · 2. Catalog the skill · 3. Regenerate · 4. Scan it · 5. Link it
+· 6. Confirm · Declare what it costs · Optional: activation rules
+
 Narrow bridge. Run these commands as written, in this order, from the repo root.
 
 ## 1. Place the directory
@@ -23,7 +26,20 @@ path under `skills/`:
 
 `commit` is the newest upstream commit touching `path` that this copy reflects; `node harness.mjs
 upstream` compares it with GitHub to say when upstream has moved on. `check` fails on an entry
-whose folder does not exist. A skill written here has no entry.
+whose folder does not exist. A skill written here has no entry; a skill drawn from several
+upstreams takes a list of entries, one per upstream.
+
+A user-invoked skill (`disable-model-invocation: true`) also needs `agents/openai.yaml` beside its
+`SKILL.md`, holding:
+
+```yaml
+policy:
+  allow_implicit_invocation: false
+```
+
+Codex ignores the frontmatter key and reads only this file, so without it the skill stays in
+Codex's skill list and its description fires on its own. When the file already exists, add the
+`policy` block to it.
 
 ## 2. Catalog the skill — global only
 

@@ -79,7 +79,8 @@ due to disable-model-invocation
 OpenSpec 那 4 个走 `/opsx:` 命令,不靠描述触发。
 
 > 想知道某个技能到底属于哪一类?看它的 frontmatter 有没有 `disable-model-invocation: true`
-> —— 有就是 🔒(模型看不见,只能你喊),没有就是描述匹配自动触发。
+> —— 有就是 🔒(模型看不见,只能你喊),没有就是描述匹配自动触发。Codex 不认这个字段,
+> 🔒 的 skill 还要在 `agents/openai.yaml` 里写 `allow_implicit_invocation: false`。
 > 一行命令列出所有 🔒 的:
 > `grep -l "disable-model-invocation" ~/.claude/skills/*/SKILL.md`
 
@@ -160,8 +161,9 @@ OpenSpec 那 4 个走 `/opsx:` 命令,不靠描述触发。
 → 你挑一个 → `brainstorming` 盘问细节 → `codebase-design` 定接口 → `domain-modeling` 同步术语
 
 **改这个 harness 本身**
-`skill-creator` —— 写新 skill 和审已有 skill 都是它,自带标尺(`references/rubric.md`)、
-术语表、注册契约和 eval 工具。说"帮我写个 skill"或"审一下这个 SKILL.md"就来,不用喊。
+`skill-creator` —— 写新 skill、审已有 skill、审 CLAUDE.md / AGENTS.md(在这个仓库里改
+`prompt/core.md`)都是它,自带标尺(`references/rubric.md`)、术语、注册契约和 eval 工具。
+说"帮我写个 skill""审一下这个 SKILL.md"或"审一下 CLAUDE.md"就来,不用喊。
 外面挖来的:`book-to-skill`(把一本书挖成 skill)→ `skill-scanner`(装任何外部 skill 前先扫)
 → 跑 `node scripts/gen-harness.mjs`,再 `node harness.mjs check`,最后 `node harness.mjs update`
 

@@ -63,3 +63,16 @@ test('a path upstream no longer has (no commits) is reported as gone', async () 
   const out = await upstreamStatus({ 'a/x': entry({ path: 'skills/renamed' }) }, { fetch: fakeFetch({}) });
   assert.equal(out[0].status, 'gone');
 });
+
+test('a skill drawn from several upstreams lists one entry per upstream, each checked', () => {
+  const repo = fixtureRepo();
+  put(repo, 'skills/sources.json', JSON.stringify({ 'global/alpha': [entry(), entry({ repo: 'not a repo' })] }));
+  assert.deepEqual(sourcesProblems(repo, loadSources(repo)), ['skills/sources.json: global/alpha: repo must be owner/name']);
+});
+
+test('upstream status covers every upstream of a skill that lists several', async () => {
+  const sources = { 'a/both': [entry(), entry({ repo: 'other/kit', path: 'docs/guide', commit: 'old444' })] };
+  const fetch = fakeFetch({ 'acme/skills:skills/gamma': { sha: 'aaa111', date: '2026-01-02' }, 'other/kit:docs/guide': { sha: 'new555', date: '2026-10-10' } });
+  const out = await upstreamStatus(sources, { fetch });
+  assert.deepEqual(out.map((r) => [r.dir, r.repo, r.status]), [['a/both', 'acme/skills', 'current'], ['a/both', 'other/kit', 'newer']]);
+});

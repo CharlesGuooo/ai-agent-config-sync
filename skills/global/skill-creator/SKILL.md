@@ -1,27 +1,24 @@
 ---
 name: skill-creator
 description: >-
-  Authors a new agent skill end to end, or audits an existing one against a quality rubric.
-  Covers choosing whether the thing should be a skill at all rather than a hook, slash command,
-  or memory file; finding the real gap by running the task without a skill first; writing evals
-  before the body; drafting the name and description at the right level of constraint; grading
-  against named failure modes; verifying with a fresh agent; and registering it so this repo's
-  drift gates pass. Use when the user says "写个 skill", "帮我改进这个 skill",
-  "这个 skill 写得好不好", "审一下这个 SKILL.md", "create a skill", "improve this skill's
-  triggering", or hands over a SKILL.md for critique. Distinct from skill-scanner, which
-  security-scans a third-party skill before installing it, and from book-to-skill, which mines a
-  book into a draft that this skill then audits.
-allowed-tools: Read, Write, Edit, Bash, Glob, Grep
+  Writes a new agent skill end to end, or audits one, or any document an agent reads every
+  session (CLAUDE.md, AGENTS.md, prompt/core.md), against a rubric of named failure modes. Use
+  when the user says "写个 skill", "帮我改进这个 skill", "这个 skill 写得好不好", "审一下这个
+  SKILL.md", "审一下 CLAUDE.md", "create a skill", "improve this skill's triggering", or hands
+  over a SKILL.md for critique. Distinct from skill-scanner (security scan before installing)
+  and book-to-skill (mines a book into a draft this skill then audits).
+allowed-tools: Read, Write, Edit, Bash, Glob, Grep, Agent
 metadata:
   category: routing
   tags: [skills, authoring, rubric, evaluation, predictability]
   source: >-
     This SKILL.md, references/rubric.md, references/evaluating.md and
-    references/registering.md are written for this repo. references/GLOSSARY.md comes from
-    mattpocock/skills' writing-great-skills (MIT), verbatim apart from its first-line
-    back-link, which was retargeted here — so it can still track upstream at a one-line
-    conflict. scripts/, agents/, eval-viewer/, assets/ and references/schemas.md are
-    Anthropic's skill-creator (see LICENSE.txt), verbatim.
+    references/registering.md are written for this repo. references/writing-for-agents.md and
+    references/SKILL-MECHANICS.md are mattpocock/skills' writing-for-agents (MIT), verbatim
+    apart from two mechanical edits so they can keep tracking upstream: the frontmatter of its
+    SKILL.md is dropped, and SKILL-MECHANICS.md's mentions of SKILL.md read
+    writing-for-agents.md. scripts/, agents/, eval-viewer/, assets/ and references/schemas.md
+    are Anthropic's skill-creator (see LICENSE.txt), verbatim.
 ---
 
 # Skill Creator
@@ -33,7 +30,7 @@ taking the same *process* every run — is what every judgment below serves.
 
 | The user | Branch |
 |---|---|
-| hands over an existing SKILL.md to critique, or asks whether one is any good | **Audit** |
+| hands over an existing SKILL.md, CLAUDE.md or AGENTS.md to critique, or asks whether one is any good | **Audit** |
 | wants a new skill, or a rewrite of one | **Create** |
 
 ## Reference files
@@ -41,7 +38,8 @@ taking the same *process* every run — is what every judgment below serves.
 | File | Open when |
 |---|---|
 | [references/rubric.md](references/rubric.md) | Grading a draft — both branches end here |
-| [references/GLOSSARY.md](references/GLOSSARY.md) | A rubric term needs its precise definition |
+| [references/writing-for-agents.md](references/writing-for-agents.md) | A rubric term needs its precise definition |
+| [references/SKILL-MECHANICS.md](references/SKILL-MECHANICS.md) | Choosing model- or user-invoked, or whether to split a skill in two |
 | [references/registering.md](references/registering.md) | Wiring a finished skill into this repo |
 | [references/evaluating.md](references/evaluating.md) | Measuring trigger rate or benchmarking versions |
 
@@ -88,8 +86,9 @@ later; the prompts come now, because they are what keeps the body honest.
 like `helper` or `utils` tells the agent nothing.
 
 **Description** — the trigger surface, and the only part loaded every turn. Third person. State
-what it does *and* when to use it. One trigger per branch: synonyms that rename a single branch are
-duplication. Include the words the user actually types, Chinese included, since a description
+what it does *and* when to use it, leading word first. One trigger per branch: synonyms that rename
+a single branch are duplication. Leave the steps to the body; a description that lists them pays
+for them every turn. Include the words the user actually types, Chinese included, since a description
 written only in English will not fire on a Chinese prompt. Close with a "Distinct from …" clause
 naming its nearest neighbour, so the model has a correct answer available when both look plausible.
 
@@ -130,6 +129,11 @@ linked for every installed agent.
 
 Go straight to step 4. Report per finding: the failure mode, the line, and the positive rewrite —
 the sentence that should replace it. Leave the file alone unless the user asks for the edit.
+
+A CLAUDE.md, AGENTS.md or prompt/core.md is graded the same way: every line in it is loaded every
+turn, as a description is. In this repo each agent's global instructions are generated from
+`prompt/core.md`, so audit and edit that file, never the generated `~/.claude/CLAUDE.md` or
+`~/.codex/AGENTS.md`.
 
 Rank by what changes behaviour. A description that fires on the wrong prompts outranks a section
 that is merely long.

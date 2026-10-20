@@ -1,5 +1,8 @@
 # Measured evaluation
 
+Contents: Optimizing the description for trigger rate · Benchmarking a version against a baseline
+· Reading the results · Deeper comparisons
+
 The three-prompt check in SKILL.md step 5 answers *does it work*. This file answers *how much* —
 reach for it when triggering is contested, when two versions need separating, or when the skill
 guards something expensive enough to justify the run.

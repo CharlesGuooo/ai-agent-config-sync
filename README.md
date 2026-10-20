@@ -160,8 +160,10 @@ Cursor / OpenCode / Pi 没有 hook,它们的指令里写了:危险命令先确�
 # 📖 Meta:如何写好一个 Skill(Matt Pocock)
 
 > 出自 Matt Pocock 的演讲 *"The Missing Manual: How to Write Great Skills"*。这套标尺现在活在
-> `skills/global/skill-creator/references/rubric.md`(术语定义在同目录 `GLOSSARY.md`,逐字保留),
-> 由 **model-invoked** 的 `skill-creator` 在写/审 skill 时自动读进去 —— 不用你记得喊。
+> `skills/global/skill-creator/references/rubric.md`(术语定义在同目录 `writing-for-agents.md` 和
+> `SKILL-MECHANICS.md`,逐字跟随上游 `writing-for-agents`),由 **model-invoked** 的 `skill-creator`
+> 在写/审 skill 时自动读进去 —— 不用你记得喊。同一套标尺也用来审 CLAUDE.md / AGENTS.md /
+> `prompt/core.md` 这类每轮都加载的说明。
 > 下面是给**人**看的浓缩版。核心目标叫 **Predictability**:让 agent 每次走**同一套过程**(不是同一个输出)。
 
 ## 四个维度
@@ -191,17 +193,21 @@ Cursor / OpenCode / Pi 没有 hook,它们的指令里写了:危险命令先确�
 **④ Trimming(修剪)**
 - **单一权威源**:每个含义只有一处,改行为 = 改一处。
 - **相关性**:每行还切题吗?
+- **别当缓存**:`package.json` 脚本、目录结构、`--help` 这类一查就有的,别抄进文档(抄了会过期);
+  只写查不到的:没写下来的约定、为什么这么选、配置里看不出的坑。
 - **no-op 删除测试**(逐句):删掉这句,行为会变吗?不变就整句删,**要狠**。
 
-## 六个失败模式(拿来自查)
+## 八个失败模式(拿来自查)
 - **Premature completion** —— 步骤没真做完就收(注意力滑向"完成")。先磨判据,再考虑拆步骤。
 - **Duplication** —— 同一含义多处出现,费 token 又抬高它的层级权重。
+- **Cache** —— 照抄环境里一查就有的东西,迟早过期。
 - **Sediment(沉积)** —— 加着安全、删着危险,于是攒下过时废料。没有修剪纪律的默认下场。
 - **Sprawl** —— 单纯太长(哪怕每行都活)。解药是阶梯:reference 推到指针后、按 branch/序列拆。
 - **No-op** —— 模型本来就会做的话,白占 load。弱引导词(*be thorough*,它本来就 thorough)= no-op,
   换更强的词(*relentless*),不是换技巧。
 - **Negation** —— 用禁令引导会反噬:*别想大象*,大象就来了。改成**正向陈述目标行为**,让被禁的那个
   压根不出现在文本里;实在没法正着说的硬护栏,也要配一句"那该怎么做"。
+- **Restatement** —— 同一个特质在几处用一串词描述("快、确定、低开销"),收成一个现成的词(*tight*)。
 
 ---
 

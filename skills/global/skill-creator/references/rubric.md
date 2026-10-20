@@ -1,8 +1,11 @@
 # Rubric
 
+Contents: A. Failure modes (Sprawl · Duplication · Cache · Sediment · No-op · Negation ·
+Restatement · Premature completion) · B. Mechanical checks · C. Calibration
+
 Grade a draft here. Two kinds of item, deliberately separated: **A** needs judgment and often needs
-the precise definition in [GLOSSARY.md](GLOSSARY.md); **B** is binary and can be checked
-mechanically, some of it by grep.
+the precise definition in [writing-for-agents.md](writing-for-agents.md); **B** is binary and can
+be checked mechanically, some of it by grep.
 
 A skill that scores badly fails *quietly* — it is either never selected, or selected and then
 ignored. Neither shows up as an error, which is why grading has to be deliberate.
@@ -13,12 +16,12 @@ Give every item in A a verdict: **hit** (with the line) or **clear**. "Looks fin
 
 ## A. Failure modes — judgment
 
-Definitions live in [GLOSSARY.md](GLOSSARY.md), grouped by axis: **Invocation** (model-invoked,
-user-invoked, description, context pointer, context load, cognitive load, router skill,
-granularity) · **Information Hierarchy** (steps, reference, external reference, progressive
-disclosure, co-location, sprawl) · **Steering** (branch, leading word, completion criterion,
-legwork, post-completion steps, premature completion, negation) · **Pruning** (single source of
-truth, duplication, relevance, sediment, no-op).
+Definitions live in [writing-for-agents.md](writing-for-agents.md), by section: **Context
+pointers** · **The two loads** (context, cognitive) · **Information hierarchy** (steps, reference,
+progressive disclosure, co-location, sprawl) · **Steps and completion criteria** (legwork,
+premature completion) · **When to split** · **Leading words** (negation) · **Pruning** (single
+source of truth, duplication, cache, relevance, sediment, no-op). What changes when the document is
+a skill (model- or user-invoked, router skills) is in [SKILL-MECHANICS.md](SKILL-MECHANICS.md).
 
 ### Sprawl
 
@@ -35,6 +38,15 @@ what it deserves.
 *Spot it:* two passages where deleting either loses nothing.
 *Fix:* pick the authoritative home; the other becomes a pointer, or goes.
 
+### Cache
+
+A line restating what the environment already says: `package.json` scripts, a config file, the
+directory layout, `--help` output. The copy goes stale; the lookup cannot.
+
+*Spot it:* a line the agent could replace with one file read or one command.
+*Fix:* delete it and let the agent look. Keep what looking cannot find: the unwritten convention,
+the reason behind a choice, the gotcha no config confesses.
+
 ### Sediment
 
 Stale layers nobody cleared, because adding feels safe and removing feels risky.
@@ -48,7 +60,8 @@ A line the model already obeys by default, so you pay load to say nothing.
 
 *Spot it:* ask whether the line changes behaviour versus the default. "Be thorough" against an
 already-thorough agent is a no-op; so is explaining what a PDF is.
-*Fix:* delete, or replace the weak word with one strong enough to beat the default.
+*Fix:* delete the whole sentence rather than trimming words from it. When the weak part is a
+leading word, replace it with one strong enough to beat the default.
 
 ### Negation
 
@@ -58,6 +71,15 @@ Steering by prohibition drags the banned behaviour into context and makes it *mo
 *Spot it:* "don't", "never", "avoid" carrying the instruction's weight.
 *Fix:* state the target behaviour so the banned one is never named. Keep a prohibition only as a
 hard guardrail you cannot phrase positively, and pair it with what to do instead.
+
+### Restatement
+
+One quality spelled out in several words, at several sites, where one pretrained word would carry
+it: "fast, deterministic, low-overhead" is a *tight* loop.
+
+*Spot it:* the same triad or phrase recurring across sections, or a pointer spending a sentence to
+gesture at one idea.
+*Fix:* name it with a leading word and repeat the word, never the sentence.
 
 ### Premature completion
 
@@ -70,6 +92,9 @@ steps only when the criterion is irreducibly fuzzy *and* you have watched the ag
 ---
 
 ## B. Mechanical checks — binary
+
+Auditing a CLAUDE.md, AGENTS.md or prompt/core.md: skip the `name`, `description`, `allowed-tools`,
+body-length and bundled-script items.
 
 - [ ] `name`: lowercase, hyphens, digits only; ≤64 characters; not `helper`/`utils`/`tools`
 - [ ] `description` is third person — not "I can help you…" or "You can use this to…"

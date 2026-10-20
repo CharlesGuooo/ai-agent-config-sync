@@ -90,9 +90,7 @@ node harness.mjs update
 ```
 
 Each installed agent gets one link to the new directory. Nothing is copied, and nothing in the
-agents' directories that the repo does not own is touched. A new global skill also changes every
-agent's instructions (the skill table): if Cursor is installed, `update` says its rules changed —
-paste `.local/cursor-rules.md` into Cursor Settings → Rules → User Rules again.
+agents' directories that the repo does not own is touched.
 
 ## 6. Confirm
 

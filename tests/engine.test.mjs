@@ -49,7 +49,7 @@ test('installing only Claude touches only Claude paths', () => {
   assert.ok(isLink(join(home, 'dev-project', 'frontend', '.claude', 'skills', 'delta')));
   const prompt = readFileSync(join(home, '.claude', 'CLAUDE.md'), 'utf8');
   assert.ok(prompt.startsWith(BEGIN));
-  assert.match(prompt, /`alpha` \| Alpha tagline/);
+  assert.ok(!prompt.includes('Alpha tagline'));
   assert.deepEqual(Object.keys(json(join(home, '.claude.json')).mcpServers), ['memory']);
   assert.ok(existsSync(join(home, '.claude', 'mcp-templates', 'remote.mcp.json')));
   const settings = json(join(home, '.claude', 'settings.json'));

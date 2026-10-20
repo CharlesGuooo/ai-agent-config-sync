@@ -24,7 +24,9 @@ Building something new or changing behaviour: load `brainstorming` before writin
 
 ---
 
-{{SKILLS}}
+## Global Skills
+
+Every global skill is in your skill list with its full description; `{{REPO}}/HARNESS.md` groups them by category.
 
 ---
 

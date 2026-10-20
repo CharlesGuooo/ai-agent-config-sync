@@ -4,7 +4,7 @@ import { fixtureRepo, put } from './helpers.mjs';
 import { routingProblems } from '../lib/routing.mjs';
 
 // The fixture ships one pack, dev-project, with a frontend sub-pack.
-const core = (table) => `# {{TITLE}}\n\n## Local Skill Packs\n\n${table}\n\n---\n\n{{SKILLS}}\n`;
+const core = (table) => `# {{TITLE}}\n\n## Local Skill Packs\n\n${table}\n\n---\n`;
 
 test('a routing table that names every pack and only real folders passes', () => {
   const repo = fixtureRepo();

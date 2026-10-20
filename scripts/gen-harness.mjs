@@ -118,7 +118,13 @@ function globalSummary() {
     .filter((c) => counts.get(c.key))
     .map((c) => `${c.title} ${counts.get(c.key)}`);
   const total = Object.keys(cat.skills).length;
-  return `**Global skills (${total}, auto-exposed at startup — no need to route):** ${parts.join(' · ')}.`;
+  const lines = [`**Global skills (${total}, auto-exposed at startup — no need to route):** ${parts.join(' · ')}.`];
+  // The categorized list the agents' instructions point to; it is read on demand instead of loaded every turn.
+  for (const c of cat.categories.filter((c) => counts.get(c.key))) {
+    lines.push('', `- **${c.title}** — ${c.blurb}`);
+    for (const [n, meta] of Object.entries(cat.skills)) if (meta.category === c.key) lines.push(`  - \`${n}\` — ${meta.tagline}`);
+  }
+  return lines.join('\n');
 }
 
 function buildBlock() {

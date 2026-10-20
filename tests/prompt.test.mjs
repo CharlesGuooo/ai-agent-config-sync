@@ -3,14 +3,7 @@ import assert from 'node:assert/strict';
 import { rmSync } from 'node:fs';
 import { fixtureRepo, put } from './helpers.mjs';
 import { makeContext, slash } from '../lib/platform.mjs';
-import { skillTable, catalogErrors, renderPrompt } from '../lib/prompt.mjs';
-
-test('skillTable renders the catalog by category', () => {
-  const t = skillTable(fixtureRepo());
-  assert.match(t, /^## Global Skills \(2\)/);
-  assert.match(t, /### Process \(2\) — Process discipline/);
-  assert.match(t, /\| `beta` \| Beta tagline \|/);
-});
+import { catalogErrors, renderPrompt } from '../lib/prompt.mjs';
 
 test('catalogErrors catches a skill directory missing from the catalog', () => {
   const repo = fixtureRepo();
@@ -18,7 +11,6 @@ test('catalogErrors catches a skill directory missing from the catalog', () => {
   const errors = catalogErrors(repo);
   assert.equal(errors.length, 1);
   assert.match(errors[0], /gamma/);
-  assert.throws(() => skillTable(repo), /out of sync/);
 });
 
 test('renderPrompt fills every placeholder and keeps $ sequences literal', () => {
@@ -98,8 +90,8 @@ test('a skill directory named like an Object property still counts as uncatalogu
 test('renderPrompt rejects an unknown placeholder and a missing core.md', () => {
   const repo = fixtureRepo();
   const ctx = makeContext({ repo, home: repo });
-  put(repo, 'prompt/core.md', '# {{TITLE}}\n\n{{SKILL}}\n');
-  assert.throws(() => renderPrompt(ctx, { title: 'T', agent: 'pi', mcp: 'm' }), /unknown placeholder \{\{SKILL\}\}/);
+  put(repo, 'prompt/core.md', '# {{TITLE}}\n\n{{SKILLS}}\n');
+  assert.throws(() => renderPrompt(ctx, { title: 'T', agent: 'pi', mcp: 'm' }), /unknown placeholder \{\{SKILLS\}\}/);
   rmSync(`${repo}/prompt/core.md`);
   assert.throws(() => renderPrompt(ctx, { title: 'T', agent: 'pi', mcp: 'm' }), /prompt[\\/]core\.md does not exist/);
 });

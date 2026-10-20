@@ -243,4 +243,4 @@ OpenSpec 那 4 个走 `/opsx:` 命令,不靠描述触发。
 - **"说完成了就是完成了"** —— `verification-before-completion` 存在的理由:证据优先于断言。
 - **手改生成的内容** —— `HARNESS.md` 里 `<!-- PACKS:BEGIN -->` 之间的内容跑 `node scripts/gen-harness.mjs`,
   别手写,`node harness.mjs check` 会拦你;各 agent 指令文件里 `ai-agent-config-sync` 标记之间的那段
-  改仓库的 `prompt/core.md` / `skills/global/catalog.json`,别在本机改 —— 本机改了 `update` 会报冲突。
+  改仓库的 `prompt/core.md`,别在本机改 —— 本机改了 `update` 会报冲突。

@@ -234,10 +234,13 @@ hook 命令是 `node "<repo>/scripts/hooks/guard.mjs"`（format 同理），路�
 
 ### 提示词
 
-`prompt/core.md` 的占位符：`{{TITLE}}`、`{{SKILLS}}`（由 `skills/global/catalog.json`
-生成的 skill 表）、`{{MCP}}`（这个 agent 实际有哪些服务器、默认关的怎么打开）、`{{NOTES}}`
-（`agents/<agent>/notes.md`，没有就留空）、`{{REPO}}`（repo 路径，用于指向 `HARNESS.md`
+`prompt/core.md` 的占位符：`{{TITLE}}`、`{{MCP}}`（这个 agent 实际有哪些服务器、默认关的怎么打开）、
+`{{NOTES}}`（`agents/<agent>/notes.md`，没有就留空）、`{{REPO}}`（repo 路径，用于指向 `HARNESS.md`
 和 `PLAYBOOK.md`）。`core.md` 里出现别的 `{{…}}` 时直接报错，不会把它原样写出去。
+
+指令里不放全局 skill 表：5 个 agent 都会自己列出每个 skill 的名字和完整描述，这张表是第二份，约占指令一半。
+2026-10-19 在 Claude Code 上对照过（11 个请求 × 有表/无表各 2 次，22 组里 21 组触发的 skill 相同）。
+按分类的清单由 `skills/global/catalog.json` 生成到 `HARNESS.md`，指令里只留一句指向它。
 
 现有的 notes：Pi（skill 怎么调用；没有 hook、没有子 agent 时怎么做）；Cursor 和 OpenCode（没有
 guard hook：危险命令先确认，不读凭证文件）。Claude 和 Codex 没有 notes。

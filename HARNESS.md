@@ -105,6 +105,63 @@ index anymore.
 
 **Global skills (37, auto-exposed at startup — no need to route):** Process 13 · Thinking 1 · Escalation 1 · Routing & Meta 5 · Workflow 2 · Code Review 3 · Design & Architecture 4 · OpenSpec 4 · Document 3 · Learning 1.
 
+- **Process** — Process discipline
+  - `using-superpowers` — Decide whether a skill applies before acting
+  - `brainstorming` — Clarify intent/requirements/design before building or changing behavior
+  - `writing-plans` — Write a multi-step implementation plan before coding
+  - `executing-plans` — Execute an existing written plan step by step
+  - `test-driven-development` — Write tests before implementing or fixing
+  - `systematic-debugging` — Structured root-cause investigation for bugs
+  - `verification-before-completion` — Verify with evidence before claiming done
+  - `subagent-driven-development` — Dispatch subagents per plan step with spec/quality reviewers
+  - `dispatching-parallel-agents` — Run 2+ independent tasks via parallel subagents with a merge protocol
+  - `using-git-worktrees` — Isolated worktrees for parallel agents / high-risk refactors
+  - `handoff` — Compact the session into a handoff doc for the next agent
+  - `action-first` — Output-style toggle: action first, no preamble/recap (user-invoked)
+  - `no-ai-slop` — Edit a draft you hand it into human-sounding prose, or flag AI-slop patterns without rewriting
+
+- **Thinking** — Reasoning frameworks
+  - `first-principles-thinking` — Reason from base truths instead of by analogy; question inherited assumptions
+
+- **Escalation** — Drive / pressure
+  - `high-agency` — Stay proactive and own complex long tasks
+
+- **Routing & Meta** — Routing + skill tooling
+  - `skill-router` — Route the task to the correct local project pack
+  - `skill-creator` — Write a new skill, or audit a skill or CLAUDE.md/AGENTS.md against the rubric
+  - `skill-scanner` — Security-scan a community skill before installing it
+  - `skillspector` — Second security scan (NVIDIA SkillSpector, 0-100 risk score) before installing or publishing a skill
+  - `book-to-skill` — Mine a technical book into a reusable SKILL.md (pointer: install from GitHub)
+
+- **Workflow** — External collaboration
+  - `playwright-interactive` — Persistent browser session for iterative UI debugging
+  - `github-gold` — Hunt GitHub for genuinely good projects; curated feeds + momentum, allowed to find nothing
+
+- **Code Review** — Review discipline
+  - `requesting-code-review` — Self-review before merge/completion
+  - `receiving-code-review` — Respond technically to review feedback
+  - `finishing-a-development-branch` — Wrap up a dev branch (rebase/squash/PR)
+
+- **Design & Architecture** — Deep modules, domain language, prototypes
+  - `codebase-design` — Deep-module vocabulary: interface, seam, depth, leverage, locality
+  - `domain-modeling` — Pin down domain terms (GLOSSARY.md) and record decisions (ADRs)
+  - `prototype` — Throwaway prototype to settle one design question
+  - `improve-codebase-architecture` — Scan a codebase for deepening opportunities → visual HTML report (user-invoked)
+
+- **OpenSpec** — Spec-driven development
+  - `openspec-explore` — Think through a spec before writing it
+  - `openspec-propose` — Generate a full change proposal (design/specs/tasks) in one step
+  - `openspec-apply-change` — Implement an OpenSpec change task by task
+  - `openspec-archive-change` — Archive a completed OpenSpec change
+
+- **Document** — Office / document I/O
+  - `pdf` — PDF read/merge/split/OCR/forms
+  - `officecli` — Create/edit/render .docx/.xlsx/.pptx via the officecli binary (formulas, pivots, HTML/PNG)
+  - `markitdown` — Convert PDF/Office/images/AV to Markdown
+
+- **Learning** — Interactive teaching
+  - `teach` — Interactive multi-turn tutoring with persistent learner state
+
 ### Local skill packs — index
 
 #### dev-project (86)

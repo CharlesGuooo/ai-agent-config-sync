@@ -7,7 +7,8 @@ import { spawnSync } from 'node:child_process';
 import { tempDir, put, fixtureRepo } from './helpers.mjs';
 import { makeContext, makeDirLink } from '../lib/platform.mjs';
 import { runInstall } from '../lib/engine.mjs';
-import { doctor, repoProblems, opencodeNotLoaded, opencodeV2NotLoaded, codexNotLoaded, missingLspPlugins, runTool } from '../lib/doctor.mjs';
+import { doctor, repoProblems, opencodeNotLoaded, opencodeV2NotLoaded, codexNotLoaded, codexHidden, codexExpected, missingLspPlugins, runTool } from '../lib/doctor.mjs';
+import { globalSkills } from '../lib/skills.mjs';
 
 const repo = join(dirname(fileURLToPath(import.meta.url)), '..');
 // An empty env, so Codex and Pi never resolve a real variable of this machine into the scratch home's files.
@@ -149,6 +150,27 @@ test('codexNotLoaded reads the JSON prompt and counts only its skills section', 
   assert.equal(codexNotLoaded('<skills_instructions>\n- beta: x\n</skills_instructions>', ['beta']), null);
   assert.equal(codexNotLoaded('{"not": "a list"}', ['beta']), null);
   assert.equal(codexNotLoaded('', ['beta']), null);
+});
+
+test('codexHidden reads policy.allow_implicit_invocation from a skill\'s agents/openai.yaml', () => {
+  const dir = tempDir('harness-codex-skill-');
+  assert.equal(codexHidden(dir), false);
+  put(dir, 'agents/openai.yaml', 'interface:\n  display_name: "X"\npolicy:\n  allow_implicit_invocation: false\n');
+  assert.equal(codexHidden(dir), true);
+  put(dir, 'agents/openai.yaml', 'policy:\r\n  allow_implicit_invocation: false\r\n');
+  assert.equal(codexHidden(dir), true);
+  put(dir, 'agents/openai.yaml', 'policy:\n  allow_implicit_invocation: true\n');
+  assert.equal(codexHidden(dir), false);
+  put(dir, 'agents/openai.yaml', 'interface:\n  allow_implicit_invocation: false\npolicy:\n  other: 1\n');
+  assert.equal(codexHidden(dir), false);
+});
+
+test('the user-invoked global skills are hidden from Codex, so doctor --deep does not expect them', () => {
+  const { src, names } = globalSkills(repo);
+  const hidden = names.filter((n) => codexHidden(join(src, n)));
+  for (const n of ['action-first', 'improve-codebase-architecture']) assert.ok(hidden.includes(n), n);
+  assert.ok(!hidden.includes('brainstorming'));
+  assert.deepEqual(codexExpected(src, names).filter((n) => hidden.includes(n)), []);
 });
 
 test('repoProblems tells a stale HARNESS.md from a generator that fails for another reason', () => {

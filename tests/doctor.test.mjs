@@ -83,6 +83,13 @@ test('repoProblems names a missing and an unknown placeholder, and skips the HAR
   assert.deepEqual(repoProblems(ctx), ['prompt/core.md is missing {{REPO}}', 'prompt/core.md has an unknown placeholder {{REPOS}}']);
 });
 
+test('repoProblems names a skill whose frontmatter an agent would skip', () => {
+  const fixture = fixtureRepo();
+  const ctx = makeContext({ repo: fixture, home: tempDir('harness-dr-home-'), local: tempDir('harness-dr-local-') });
+  put(fixture, 'skills/project-packs/dev-project/skills/gamma/SKILL.md', '---\nname: gamma\ndescription: Tests: unquoted\n---\nbody\n');
+  assert.deepEqual(repoProblems(ctx), ['skills/project-packs/dev-project/skills/gamma/SKILL.md: description is an unquoted scalar containing ": " — quote it or use a >- block']);
+});
+
 test('doctor --deep runs no agent against a home that is not the real one', async () => {
   const ctx = scratch();
   runInstall(ctx, { agents: ['claude', 'codex', 'opencode'], packs: ['craft'] });

@@ -82,7 +82,7 @@ node harness.mjs resolve                     # 列出冲突和 pin 住的条目
 node harness.mjs resolve repo <id>|all       # 用 repo 的版本
 node harness.mjs resolve keep <id>|all       # 保留本机版本，以后不再管这一项（pin）
 node harness.mjs uninstall --agents codex [--dry-run]
-node harness.mjs check                       # repo 自检，适合 CI：清单和目录对得上、HARNESS.md 是新的
+node harness.mjs check                       # repo 自检，适合 CI：清单和目录对得上、HARNESS.md 是新的、SKILL.md frontmatter 合规
 ```
 
 `install`、`update`、`resolve`、`uninstall` 都能加 `--dry-run`（只报告，什么都不写）和

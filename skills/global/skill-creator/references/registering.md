@@ -62,7 +62,10 @@ node scripts/gen-harness.mjs
 node harness.mjs check
 ```
 
-`check` must exit 0 before going further.
+`check` must exit 0 before going further. It also reads every global and pack `SKILL.md`
+frontmatter: `name` equal to the directory, lowercase-hyphen, at most 64 characters; a non-empty
+`description` of at most 1024; no unquoted description containing `: `; no key dropped inside
+another key's list. Agents skip or misread a skill that breaks one of these without saying so.
 
 ## 4. Scan it
 

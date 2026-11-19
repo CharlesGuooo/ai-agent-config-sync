@@ -1,6 +1,14 @@
 ---
 name: overfitting-detection
-description: Statistical tests for diagnosing backtest overfitting and inflated Sharpe ratios — Probability of Backtest Overfitting (PBO), Deflated Sharpe Ratio (DSR), White's Reality Check, Hansen's SPA test, and Haircut Sharpe. Use this skill whenever the user mentions backtest validation, "is this strategy real", overfitting concerns, suspiciously high Sharpe ratios, multiple-testing problems, strategy selection from a parameter sweep, hyperparameter optimization on returns, or claims of edge from limited data — even if they don't explicitly say "overfitting". Trigger eagerly before any strategy comes out of optimization or selection: most backtests are overfit, and the methods here are the only honest way to know.
+description: >-
+  Statistical tests for diagnosing backtest overfitting and inflated Sharpe ratios — Probability of
+  Backtest Overfitting (PBO), Deflated Sharpe Ratio (DSR), White's Reality Check, Hansen's SPA test,
+  and Haircut Sharpe. Use this skill whenever the user mentions backtest validation, "is this
+  strategy real", overfitting concerns, suspiciously high Sharpe ratios, multiple-testing problems,
+  strategy selection from a parameter sweep, hyperparameter optimization on returns, or claims of
+  edge from limited data — even if they don't explicitly say "overfitting". Trigger eagerly before
+  any strategy comes out of optimization or selection: most backtests are overfit, and the methods
+  here are the only honest way to know.
 ---
 
 # Overfitting Detection

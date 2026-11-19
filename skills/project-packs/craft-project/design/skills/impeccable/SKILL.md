@@ -7,7 +7,7 @@ description: >-
   Use on frontend work when the goal is distinctive, non-templated UI: "make this UI look
   designed", "界面一股 AI 味", "帮我审一下界面细节", "这个页面怎么做得更有设计感". Not
   vendored: install it into the project with its own installer (Setup below). Complements
-  taste-skill here and frontend-design in dev-project; for slide decks use impeccable-ppt.
+  design-taste-frontend here and frontend-design in dev-project; for slide decks use impeccable-ppt.
 allowed-tools: Read, Bash
 compatibility: "local-tools — needs the Impeccable engine: npx impeccable install, whose launcher downloads a self-contained binary into ~/.impeccable/bin on first run"
 metadata:

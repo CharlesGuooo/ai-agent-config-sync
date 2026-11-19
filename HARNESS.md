@@ -472,6 +472,7 @@ index anymore.
   - `brand` — Brand voice, visual identity, messaging frameworks, asset management, brand consistency.
   - `brandkit` — Premium brand-kit image generation skill for creating high-end brand-guidelines boards, logo systems, identity decks, and visual-world pr...
   - `design-system` — Token architecture, component specifications, and slide generation.
+  - `design-taste-frontend` — tasteskill v2, the anti-slop frontend skill.
   - `design-taste-frontend-v1` — The original taste-skill v1, kept for projects that depend on its exact behaviour.
   - `gpt-taste` — Classic skill for GPT and Codex, opt-in: it runs only when called by name.
   - `high-end-visual-design` — Classic style skill, opt-in: it runs only when called by name.
@@ -484,7 +485,6 @@ index anymore.
   - `minimalist-ui` — Classic style skill, opt-in: it runs only when called by name.
   - `slides` — Create strategic HTML presentations with Chart.js, design tokens, responsive layouts, copywriting formulas, and contextual slide strategies.
   - `stitch-design-taste` — Classic skill for Google Stitch, opt-in: it runs only when called by name.
-  - `taste-skill` — tasteskill v2, the anti-slop frontend skill.
   - `ui-styling` — Create beautiful, accessible user interfaces with shadcn/ui components (built on Radix UI + Tailwind), Tailwind CSS utility-first styling...
 - **writing/**
   - `humanizer-zh` — 编辑中文文章、评论和文档中的空话、重复及模板化表达，让文字更自然，同时保留事实、确定程度和作者声音。适用于润色已有文本，不用于判断作者身份或保证通过 AI 检测器。

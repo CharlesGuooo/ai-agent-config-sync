@@ -2,11 +2,11 @@
 name: paper-library
 description: Search and reason over a LOCAL library of collected research papers (downloaded arXiv/conference PDFs). Use to find, recall, compare, or pull evidence from papers the user already has ("which of my papers did X", "find the one about Y in my library"). NOT for live web discovery (use paper-lookup) or guided reading of one new paper (use paper-reading-guide).
 allowed-tools:
-compatibility: "offline — Python stdlib plus pypdf for ingest; optional sentence-transformers re-ranker. Reads only your own local PDFs."
   - Read
   - Grep
   - Glob
   - Bash
+compatibility: "offline — Python stdlib plus pypdf for ingest; optional sentence-transformers re-ranker. Reads only your own local PDFs."
 ---
 
 # Paper Library — lexical-first local search

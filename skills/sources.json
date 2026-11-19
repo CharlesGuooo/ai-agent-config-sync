@@ -257,6 +257,13 @@
     "date": "2026-09-03",
     "license": "MIT"
   },
+  "project-packs/craft-project/design/skills/design-taste-frontend": {
+    "repo": "Leonxlnx/taste-skill",
+    "path": "skills/taste-skill",
+    "commit": "9919bcb117086422295044479d4a3c776c8f6834",
+    "date": "2026-10-19",
+    "license": "MIT"
+  },
   "project-packs/craft-project/design/skills/design-taste-frontend-v1": {
     "repo": "Leonxlnx/taste-skill-classics",
     "path": "skills/taste-skill-v1",
@@ -324,13 +331,6 @@
     "repo": "Leonxlnx/taste-skill-classics",
     "path": "skills/stitch-skill",
     "commit": "5e08c9383dc4ad7fc0df70e1ac8cfa09ec356305",
-    "date": "2026-10-19",
-    "license": "MIT"
-  },
-  "project-packs/craft-project/design/skills/taste-skill": {
-    "repo": "Leonxlnx/taste-skill",
-    "path": "skills/taste-skill",
-    "commit": "9919bcb117086422295044479d4a3c776c8f6834",
     "date": "2026-10-19",
     "license": "MIT"
   },

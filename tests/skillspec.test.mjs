@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { fixtureRepo, put } from './helpers.mjs';
-import { frontMatterProblems, skillSpecProblems } from '../lib/skillspec.mjs';
+import { frontMatterProblems, frontMatterValue, skillSpecProblems } from '../lib/skillspec.mjs';
 
 const fm = (body) => `---\n${body}\n---\n# Body\n`;
 const check = (body, dir = 'alpha') => frontMatterProblems(fm(body), dir);
@@ -68,4 +68,12 @@ test('skillSpecProblems scans global and pack skills and names the file', () => 
     'skills/global/beta/SKILL.md: empty description',
     'skills/project-packs/dev-project/frontend/skills/taste-skill/SKILL.md: name "design-taste-frontend" does not match its directory "taste-skill"',
   ]);
+});
+
+test('frontMatterValue reads a plain, a quoted and a block value, and null for a missing key', () => {
+  const t = '---\nname: x\ndisable-model-invocation: true\nq: "a: b"\ndescription: >-\n  one\n  two\n---\nbody\n';
+  assert.equal(frontMatterValue(t, 'disable-model-invocation'), 'true');
+  assert.equal(frontMatterValue(t, 'q'), 'a: b');
+  assert.equal(frontMatterValue(t, 'description'), 'one two');
+  assert.equal(frontMatterValue(t, 'missing'), null);
 });

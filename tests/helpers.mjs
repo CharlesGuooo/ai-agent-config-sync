@@ -30,7 +30,7 @@ export function fixtureRepo() {
     memory: { npx: ['@modelcontextprotocol/server-memory@1.0.0'], on: true },
     remote: { http: 'https://example.com/mcp', bearerEnv: 'REMOTE_TOKEN', on: false },
   } }));
-  put(repo, 'prompt/core.md', '# {{TITLE}}\n\n| Dev | `~/dev-project/` |\n\n{{MCP}}\n\n{{NOTES}}\n\nRepo: {{REPO}}\n');
+  put(repo, 'prompt/core.md', '# {{TITLE}}\n\n| Dev | `~/dev-project/` |\n\n{{MCP}}\n\n{{NOTES}}\n\n{{NAMED}}\n\nRepo: {{REPO}}\n');
   put(repo, 'agents/pi/notes.md', '## Pi notes\n');
   put(repo, 'agents/claude/commands/hello.md', 'hello command\n');
   put(repo, 'agents/opencode/commands/opsx-x.md', 'opsx command\n');

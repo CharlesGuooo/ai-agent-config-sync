@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { rmSync } from 'node:fs';
-import { fixtureRepo, put } from './helpers.mjs';
+import { fixtureRepo, put, tempDir } from './helpers.mjs';
 import { makeContext, slash } from '../lib/platform.mjs';
 import { catalogErrors, renderPrompt } from '../lib/prompt.mjs';
 
@@ -94,4 +94,12 @@ test('renderPrompt rejects an unknown placeholder and a missing core.md', () => 
   assert.throws(() => renderPrompt(ctx, { title: 'T', agent: 'pi', mcp: 'm' }), /unknown placeholder \{\{SKILLS\}\}/);
   rmSync(`${repo}/prompt/core.md`);
   assert.throws(() => renderPrompt(ctx, { title: 'T', agent: 'pi', mcp: 'm' }), /prompt[\\/]core\.md does not exist/);
+});
+
+test('named-only global skills are listed with their catalog tagline', () => {
+  const repo = fixtureRepo();
+  put(repo, 'skills/global/beta/SKILL.md', '---\nname: beta\ndescription: beta skill\ndisable-model-invocation: true\n---\nbody\n');
+  const text = renderPrompt(makeContext({ repo, home: tempDir() }), { title: 'T', agent: 'claude', mcp: '' });
+  assert.ok(text.includes('- `beta` — Beta tagline'));
+  assert.ok(!text.includes('`alpha` —'));
 });

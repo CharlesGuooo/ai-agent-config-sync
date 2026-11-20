@@ -26,7 +26,9 @@ Building something new or changing behaviour: load `brainstorming` before writin
 
 ## Global Skills
 
-Every global skill is in your skill list with its full description; `{{REPO}}/HARNESS.md` groups them by category.
+Every global skill that loads on its own is in your skill list with its full description; `{{REPO}}/HARNESS.md` groups them by category. These load only when the user names them, so when one fits, tell the user its name:
+
+{{NAMED}}
 
 ---
 

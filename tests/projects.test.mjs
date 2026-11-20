@@ -216,3 +216,24 @@ test('doctor reports a project link that went missing', async () => {
   const found = await doctor(ctx);
   assert.ok(found.some((f) => f.msg.includes('update would make') && f.msg.includes(L('pi', 'gamma'))));
 });
+
+test('update says when a project skill stops being tracked because every place is taken', () => {
+  update();
+  addSkills(ctx, { project, names: ['gamma'] });
+  for (const a of ['claude', 'pi']) {
+    removeLink(L(a, 'gamma'));
+    put(project, `${a === 'claude' ? '.claude' : '.pi'}/skills/gamma/SKILL.md`, 'mine\n');
+  }
+  const r = update();
+  assert.ok(existsSync(join(L('claude', 'gamma'), 'SKILL.md')) && existsSync(join(L('pi', 'gamma'), 'SKILL.md')));
+  assert.ok(r.notes.some((n) => /gamma: no place in .* could be linked; no longer tracked/.test(n)), r.notes.join('\n'));
+  assert.deepEqual(state().projects ?? {}, {});
+});
+
+test('an add whose every place is blocked gives no "no longer tracked" note', () => {
+  put(project, '.claude/skills/gamma/SKILL.md', 'mine\n');
+  put(project, '.pi/skills/gamma/SKILL.md', 'mine\n');
+  const r = addSkills(ctx, { project, names: ['gamma'] });
+  assert.equal(r.warnings.filter((w) => /left as it is/.test(w)).length, 2);
+  assert.ok(!r.notes.some((n) => /no longer tracked/.test(n)));
+});

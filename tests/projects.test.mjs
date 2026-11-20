@@ -1,6 +1,6 @@
 import test, { beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync, mkdirSync, writeFileSync, renameSync, rmSync } from 'node:fs';
+import { existsSync, readFileSync, mkdirSync, writeFileSync, renameSync, rmSync, chmodSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { join } from 'node:path';
 import { fixtureRepo, tempDir, put } from './helpers.mjs';
@@ -37,6 +37,79 @@ test('add refuses an unknown name, a global skill and a missing folder, and writ
   assert.throws(() => addSkills(ctx, { project: join(project, 'missing'), names: ['gamma'] }), /no such folder/);
   assert.ok(!existsSync(join(project, '.claude')));
   assert.deepEqual(state().projects ?? {}, {});
+});
+
+test('add refuses a file given as the project', () => {
+  const file = put(tempDir('harness-file-'), 'notes.txt', 'x\n');
+  assert.throws(() => addSkills(ctx, { project: file, names: ['gamma'] }), /no such folder/);
+  assert.deepEqual(state().projects ?? {}, {});
+});
+
+test('a new name leaves a link made by hand into another repo skill as it is', () => {
+  const other = join(repo, 'skills/project-packs/dev-project/frontend/skills/delta');
+  makeDirLink(other, L('claude', 'gamma'));
+  const r = addSkills(ctx, { project, names: ['gamma'] });
+  assert.ok(samePath(linkTarget(L('claude', 'gamma')), other));
+  assert.ok(r.warnings.some((w) => /left as it is/.test(w) && w.includes(L('claude', 'gamma'))), r.warnings.join('\n'));
+  assert.ok(!r.changes.some((c) => c.startsWith('relink ')));
+  assert.ok(isLink(L('pi', 'gamma')));
+});
+
+test('a place that cannot be linked is a warning; what was linked is recorded, excluded and removable', () => {
+  git('init', '-q', project);
+  put(project, '.pi', 'a file, not a folder\n');
+  const r = addSkills(ctx, { project, names: ['gamma'] });
+  assert.ok(r.warnings.some((w) => w.includes(L('pi', 'gamma'))), r.warnings.join('\n'));
+  assert.ok(isLink(L('claude', 'gamma')));
+  assert.deepEqual(Object.values(state().projects), [['gamma']]);
+  const ex = readFileSync(join(project, '.git/info/exclude'), 'utf8');
+  assert.ok(ex.includes('/.claude/skills/gamma\n') && !ex.includes('/.pi/'), ex);
+  assert.equal(git('-C', project, 'status', '--porcelain', '--untracked-files=all').stdout, '?? .pi\n');
+  removeSkills(ctx, { project, names: 'all' });
+  assert.ok(!existsSync(L('claude', 'gamma')));
+});
+
+test('an exclude file that cannot be written means no new link, and earlier ones stay recorded', { skip: process.getuid?.() === 0 }, () => {
+  git('init', '-q', project);
+  addSkills(ctx, { project, names: ['delta'] });
+  const file = join(project, '.git/info/exclude');
+  chmodSync(file, 0o444);
+  try {
+    const r = addSkills(ctx, { project, names: ['gamma'] });
+    assert.ok(r.warnings.some((w) => w.includes(file)), r.warnings.join('\n'));
+    assert.ok(!existsSync(L('claude', 'gamma')) && !existsSync(L('pi', 'gamma')));
+    assert.ok(isLink(L('claude', 'delta')) && isLink(L('pi', 'delta')));
+    assert.equal(git('-C', project, 'status', '--porcelain', '--untracked-files=all').stdout, '');
+    assert.deepEqual(Object.values(state().projects), [['delta']]);
+  } finally {
+    chmodSync(file, 0o644);
+  }
+});
+
+test('git that cannot be run is a warning naming the project', () => {
+  const saved = process.env.PATH;
+  process.env.PATH = '';
+  try {
+    const r = addSkills(ctx, { project, names: ['gamma'] });
+    assert.ok(r.warnings.some((w) => w.startsWith('git not found') && w.includes(project)), r.warnings.join('\n'));
+  } finally {
+    process.env.PATH = saved;
+  }
+});
+
+test('one project reached by its real path and through a folder link is one entry, excluded as one', () => {
+  const top = tempDir('top-');
+  git('init', '-q', top);
+  const real = join(top, 'proj');
+  mkdirSync(real);
+  const via = join(tempDir('via-'), 'proj');
+  makeDirLink(real, via);
+  addSkills(ctx, { project: real, names: ['gamma'] });
+  addSkills(ctx, { project: via, names: ['delta'] });
+  assert.deepEqual(Object.values(state().projects), [['delta', 'gamma']]);
+  const ex = readFileSync(join(top, '.git/info/exclude'), 'utf8');
+  for (const l of ['/proj/.claude/skills/gamma\n', '/proj/.pi/skills/gamma\n', '/proj/.claude/skills/delta\n', '/proj/.pi/skills/delta\n']) assert.ok(ex.includes(l), l);
+  assert.equal(git('-C', top, 'status', '--porcelain', '--untracked-files=all').stdout, '');
 });
 
 test('a real folder or a foreign link with the same name is left alone and reported', () => {
@@ -197,6 +270,31 @@ test('uninstalling one agent removes only its project links, and the exclude blo
   assert.ok(!existsSync(L('pi', 'gamma')) && isLink(L('claude', 'gamma')));
   const ex = readFileSync(join(project, '.git/info/exclude'), 'utf8');
   assert.ok(ex.includes('/.claude/skills/gamma') && !ex.includes('/.pi/skills/gamma'));
+});
+
+test('update carries on past a project it cannot sync, and saves the state', () => {
+  update();
+  const bad = tempDir('harness-bad-');
+  addSkills(ctx, { project: bad, names: ['gamma'] });
+  addSkills(ctx, { project, names: ['gamma', 'delta'] });
+  removeLink(join(bad, '.pi', 'skills', 'gamma'));
+  rmSync(join(bad, '.pi'), { recursive: true });
+  put(bad, '.pi', 'a file, not a folder\n');
+  rmSync(join(repo, 'skills/project-packs/dev-project/frontend/skills/delta'), { recursive: true });
+  const r = update();
+  assert.ok(r.warnings.some((w) => w.includes(join(bad, '.pi'))), r.warnings.join('\n'));
+  assert.ok(isLink(join(bad, '.claude', 'skills', 'gamma')));
+  assert.ok(!isLink(L('pi', 'delta')) && isLink(L('pi', 'gamma')));
+  assert.deepEqual(Object.values(state().projects), [['gamma'], ['gamma']]);
+});
+
+test('uninstalling every agent keeps the project records and says nothing about tracking', () => {
+  update();
+  addSkills(ctx, { project, names: ['gamma'] });
+  const r = runInstall(ctx, { agents: ['claude', 'pi'], packs: ['dev'], uninstall: true });
+  assert.ok(!existsSync(L('claude', 'gamma')) && !existsSync(L('pi', 'gamma')));
+  assert.ok(!r.notes.some((n) => /no longer tracked/.test(n)), r.notes.join('\n'));
+  assert.deepEqual(Object.values(state().projects), [['gamma']]);
 });
 
 test('a project folder that is gone is reported, not fatal, and remove all clears it', () => {

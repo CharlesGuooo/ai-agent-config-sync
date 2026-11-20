@@ -171,7 +171,7 @@ test('a dry run reports and returns what a real run would but leaves the state a
 
 test('state round-trips through <local>/state.json', () => {
   const local = tempDir();
-  assert.deepEqual(loadState(local), { version: 1, agents: [], packs: [], entries: {} });
+  assert.deepEqual(loadState(local), { version: 1, agents: [], packs: [], entries: {}, projects: {} });
   saveState(local, { version: 1, agents: ['pi'], packs: ['dev'], entries: {} });
   assert.deepEqual(loadState(local).agents, ['pi']);
 });

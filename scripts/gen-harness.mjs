@@ -118,7 +118,7 @@ function globalSummary() {
     .filter((c) => counts.get(c.key))
     .map((c) => `${c.title} ${counts.get(c.key)}`);
   const total = Object.keys(cat.skills).length;
-  const lines = [`**Global skills (${total}, auto-exposed at startup — no need to route):** ${parts.join(' · ')}.`];
+  const lines = [`**Global skills (${total}, in every session — no need to add them to a project):** ${parts.join(' · ')}.`];
   // The categorized list the agents' instructions point to; it is read on demand instead of loaded every turn.
   for (const c of cat.categories.filter((c) => counts.get(c.key))) {
     lines.push('', `- **${c.title}** — ${c.blurb}`);

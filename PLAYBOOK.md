@@ -24,18 +24,18 @@
 | --- | --- | --- |
 | 这想法还没想透 / 帮我挑毛病 | **"grill me"** / **"盘问我"** | `brainstorming` |
 | 这代码库到底哪里烂 | 🔒 **`/improve-codebase-architecture`** | `improve-codebase-architecture`(扫完出 HTML 报告,你挑一个再细聊) |
-| 这设计行不行,先验证一下 | "先做个原型" / "spike 一下" | `prototype` |
-| 我们说的好像不是一个东西 | "把术语定下来" / "写个 ADR" | `domain-modeling` |
+| 这设计行不行,先验证一下 | "先做个原型" / "spike 一下" | `prototype`(在 dev-project)|
+| 我们说的好像不是一个东西 | "把术语定下来" / "写个 ADR" | `domain-modeling`(在 dev-project)|
 | 上下文快满了但活没干完 | **"写个交接"** | `handoff` |
 | 合并前帮我审一遍 | "review 一下我的改动" | `requesting-code-review` |
 | 这个项目该装哪些技能 | "这个项目需要什么 skill" | `skill-find` |
 | 想装个外面的 skill | "先扫一下安全" | `skill-scanner` |
-| GitHub 上最近有什么好东西 | **"挖点宝藏项目"** / "find me good repos" | `github-gold` |
+| GitHub 上最近有什么好东西 | **"挖点宝藏项目"** / "find me good repos" | `github-gold`(在 productivity-project)|
 | 现在只想要"敲哪条命令",别解释 | 🔒 **`/action-first`** | `action-first`(开关,说"normal mode"关掉) |
-| 这段写得一股 AI 味 | **"去下 AI 味"** / "这段是不是很 AI" | `no-ai-slop`(**你得把稿子递给它**) |
+| 这段写得一股 AI 味 | **"去下 AI 味"** / "这段是不是很 AI" | `no-ai-slop`(在 craft-project/writing;**你得把稿子递给它**) |
 
-其余的按需:`teach`(让它教你一个概念,多轮带记忆)· `first-principles-thinking`(逼它
-从第一性原理重推,别照搬惯例)· `high-agency`(它偷懒或活很长时加压)。
+其余的按需(都在 productivity-project,用 `skill-find` 装进项目):`teach`(让它教你一个概念,多轮带记忆)· `first-principles-thinking`(逼它
+从第一性原理重推,别照搬惯例)。
 
 ### 🔒 标记的那两个:模型**看不见**它们
 
@@ -75,7 +75,7 @@ due to disable-model-invocation
 
 一写代码 → `test-driven-development` · 一报错 → `systematic-debugging` ·
 一说"完成了" → `verification-before-completion` · 一提 PDF/Word/Excel/PPT →
-`pdf` / `officecli` / `markitdown` · 多步实现 → `writing-plans` / `executing-plans`。
+`pdf` / `officecli` / `markitdown` · 多步实现 → `writing-plans`(`executing-plans` 在 dev-project)。
 
 OpenSpec 那 4 个走 `/opsx:` 命令,不靠描述触发。
 
@@ -165,7 +165,7 @@ OpenSpec 那 4 个走 `/opsx:` 命令,不靠描述触发。
 `skill-creator` —— 写新 skill、审已有 skill、审 CLAUDE.md / AGENTS.md(在这个仓库里改
 `prompt/core.md`)都是它,自带标尺(`references/rubric.md`)、术语、注册契约和 eval 工具。
 说"帮我写个 skill""审一下这个 SKILL.md"或"审一下 CLAUDE.md"就来,不用喊。
-外面挖来的:`book-to-skill`(把一本书挖成 skill)→ `skill-scanner`(装任何外部 skill 前先扫)
+外面挖来的:`book-to-skill`(在 productivity-project,把一本书挖成 skill)→ `skill-scanner`(装任何外部 skill 前先扫)
 → 跑 `node scripts/gen-harness.mjs`,再 `node harness.mjs check`,最后 `node harness.mjs update`
 
 > ⚠️ **别把外部 skill 直接 clone 进 `~/.claude/skills/`** —— 那样它只在这一个 agent、这一台电脑上有;
@@ -173,7 +173,7 @@ OpenSpec 那 4 个走 `/opsx:` 命令,不靠描述触发。
 
 **非代码工作(研究 / 写作 / 金融 / 营销)**
 `skill-find` 把对应 pack 的技能装进项目。全局层里仍然好用的:`brainstorming`(盘问任何决策,
-不限代码)· `handoff` · `officecli` / `pdf` / `markitdown` · `teach`。
+不限代码)· `handoff` · `officecli` / `pdf` / `markitdown`(`teach` 在 productivity-project)。
 
 **挖 GitHub 上的好东西** —— `github-gold`,用法有三点反直觉,知道了才用得对:
 

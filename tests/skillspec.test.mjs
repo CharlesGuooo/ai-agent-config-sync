@@ -77,3 +77,11 @@ test('frontMatterValue reads a plain, a quoted and a block value, and null for a
   assert.equal(frontMatterValue(t, 'description'), 'one two');
   assert.equal(frontMatterValue(t, 'missing'), null);
 });
+
+test('a named-only global skill must also be hidden from Codex', () => {
+  const repo = fixtureRepo();
+  put(repo, 'skills/global/beta/SKILL.md', '---\nname: beta\ndescription: beta skill\ndisable-model-invocation: true\n---\nbody\n');
+  assert.deepEqual(skillSpecProblems(repo), ['skills/global/beta/SKILL.md: named-only, but Codex can still pick it: add agents/openai.yaml with policy.allow_implicit_invocation: false']);
+  put(repo, 'skills/global/beta/agents/openai.yaml', 'policy:\n  allow_implicit_invocation: false\n');
+  assert.deepEqual(skillSpecProblems(repo), []);
+});

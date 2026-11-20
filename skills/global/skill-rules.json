@@ -7,12 +7,6 @@
     "principle": "Do not duplicate domain guardrails in the global layer"
   },
   "skills": {
-    "using-superpowers": {
-      "type": "process",
-      "enforcement": "suggest",
-      "priority": "critical",
-      "description": "Entry skill for deciding whether another skill applies before acting."
-    },
     "skill-find": {
       "type": "router",
       "enforcement": "suggest",
@@ -27,12 +21,6 @@
           "(which|what).*?(skill|skills|project|directory)"
         ]
       }
-    },
-    "playwright-interactive": {
-      "type": "workflow",
-      "enforcement": "suggest",
-      "priority": "medium",
-      "description": "Use for persistent browser-based UI debugging and iterative Playwright interaction."
     },
     "brainstorming": {
       "type": "process",
@@ -77,25 +65,6 @@
           "(write|create|make).*?(plan|roadmap|task list|breakdown)",
           "(how should we implement|implementation steps)",
           "(multi-step|phased).*?(implementation|rollout|migration)"
-        ]
-      }
-    },
-    "executing-plans": {
-      "type": "process",
-      "enforcement": "suggest",
-      "priority": "high",
-      "description": "Use when executing an existing written implementation plan.",
-      "promptTriggers": {
-        "keywords": [
-          "execute the plan",
-          "implement the plan",
-          "continue the plan",
-          "work through the plan",
-          "follow the plan"
-        ],
-        "intentPatterns": [
-          "(execute|implement|continue|follow).*?plan",
-          "(start|resume).*?(implementation plan|written plan)"
         ]
       }
     },
@@ -166,46 +135,6 @@
           "(is it|are we).*?(done|finished|fixed|ready)",
           "(can you|should we).*?(commit|merge|ship|close this)",
           "(verify|confirm|double-check).*?(works|passes|is complete)"
-        ]
-      }
-    },
-    "high-agency": {
-      "type": "process",
-      "enforcement": "suggest",
-      "priority": "medium",
-      "description": "Use for long, high-ownership, quality-sensitive tasks.",
-      "promptTriggers": {
-        "keywords": [
-          "complex task",
-          "long task",
-          "end to end",
-          "own this",
-          "take initiative"
-        ],
-        "intentPatterns": [
-          "(handle|own|drive).*?(end to end|fully)",
-          "(complex|large|long-running).*?(task|migration|debugging|implementation)"
-        ]
-      }
-    },
-    "no-ai-slop": {
-      "type": "process",
-      "enforcement": "suggest",
-      "priority": "low",
-      "description": "Edit a draft the user supplies into human-sounding prose, or flag AI-slop patterns without rewriting. Requires a draft — does not police the agent's own output.",
-      "promptTriggers": {
-        "keywords": [
-          "去 AI 味",
-          "很 AI",
-          "像人写的",
-          "ai slop",
-          "sounds like AI"
-        ],
-        "intentPatterns": [
-          "(去|去掉|去下).*?(ai ?味|机器味)",
-          "(这段|这篇|这稿).*?(是不是|读起来).*?(很 ?ai|像 ?ai)",
-          "(make|edit|rewrite).*?(this draft|this writing).*?(less ai|more human)",
-          "(audit|scan|check).*?(for )?(ai ?slop|slop patterns)"
         ]
       }
     }

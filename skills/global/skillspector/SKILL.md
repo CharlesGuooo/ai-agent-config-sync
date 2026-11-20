@@ -7,6 +7,7 @@ description: >-
   with a 0-100 risk score. Use for "扫一下这个 skill 安不安全", "scan this skill", "is this skill
   safe to install", and as the second scanner after skill-scanner when registering a skill. It
   judges safety, not quality: whether a skill is well written is skill-creator's rubric.
+disable-model-invocation: true
 allowed-tools: Read, Bash
 metadata:
   category: routing

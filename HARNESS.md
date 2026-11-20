@@ -99,49 +99,27 @@ The index below is what `skill-find` searches: grep it, then read the sections t
 > Auto-generated from `skills/project-packs/` by `scripts/gen-harness.mjs`.
 > Do not edit between the PACKS markers by hand — run the generator.
 
-**Global skills (37, auto-exposed at startup — no need to route):** Process 13 · Thinking 1 · Escalation 1 · Routing & Meta 5 · Workflow 2 · Code Review 3 · Design & Architecture 4 · OpenSpec 4 · Document 3 · Learning 1.
+**Global skills (20, in every session — no need to add them to a project):** Process 7 · Routing & Meta 4 · Code Review 1 · Design & Architecture 1 · OpenSpec 4 · Document 3.
 
 - **Process** — Process discipline
-  - `using-superpowers` — Decide whether a skill applies before acting
   - `brainstorming` — Clarify intent/requirements/design before building or changing behavior
   - `writing-plans` — Write a multi-step implementation plan before coding
-  - `executing-plans` — Execute an existing written plan step by step
   - `test-driven-development` — Write tests before implementing or fixing
   - `systematic-debugging` — Structured root-cause investigation for bugs
   - `verification-before-completion` — Verify with evidence before claiming done
-  - `subagent-driven-development` — Dispatch subagents per plan step with spec/quality reviewers
-  - `dispatching-parallel-agents` — Run 2+ independent tasks via parallel subagents with a merge protocol
-  - `using-git-worktrees` — Isolated worktrees for parallel agents / high-risk refactors
   - `handoff` — Compact the session into a handoff doc for the next agent
   - `action-first` — Output-style toggle: action first, no preamble/recap (user-invoked)
-  - `no-ai-slop` — Edit a draft you hand it into human-sounding prose, or flag AI-slop patterns without rewriting
-
-- **Thinking** — Reasoning frameworks
-  - `first-principles-thinking` — Reason from base truths instead of by analogy; question inherited assumptions
-
-- **Escalation** — Drive / pressure
-  - `high-agency` — Stay proactive and own complex long tasks
 
 - **Routing & Meta** — Routing + skill tooling
   - `skill-find` — Recommend pack skills for the project and link them in (harness add)
   - `skill-creator` — Write a new skill, or audit a skill or CLAUDE.md/AGENTS.md against the rubric
   - `skill-scanner` — Security-scan a community skill before installing it
   - `skillspector` — Second security scan (NVIDIA SkillSpector, 0-100 risk score) before installing or publishing a skill
-  - `book-to-skill` — Mine a technical book into a reusable SKILL.md (pointer: install from GitHub)
-
-- **Workflow** — External collaboration
-  - `playwright-interactive` — Persistent browser session for iterative UI debugging
-  - `github-gold` — Hunt GitHub for genuinely good projects; curated feeds + momentum, allowed to find nothing
 
 - **Code Review** — Review discipline
   - `requesting-code-review` — Self-review before merge/completion
-  - `receiving-code-review` — Respond technically to review feedback
-  - `finishing-a-development-branch` — Wrap up a dev branch (rebase/squash/PR)
 
 - **Design & Architecture** — Deep modules, domain language, prototypes
-  - `codebase-design` — Deep-module vocabulary: interface, seam, depth, leverage, locality
-  - `domain-modeling` — Pin down domain terms (GLOSSARY.md) and record decisions (ADRs)
-  - `prototype` — Throwaway prototype to settle one design question
   - `improve-codebase-architecture` — Scan a codebase for deepening opportunities → visual HTML report (user-invoked)
 
 - **OpenSpec** — Spec-driven development
@@ -155,30 +133,36 @@ The index below is what `skill-find` searches: grep it, then read the sections t
   - `officecli` — Create/edit/render .docx/.xlsx/.pptx via the officecli binary (formulas, pivots, HTML/PNG)
   - `markitdown` — Convert PDF/Office/images/AV to Markdown
 
-- **Learning** — Interactive teaching
-  - `teach` — Interactive multi-turn tutoring with persistent learner state
-
 ### Local skill packs — index
 
-#### dev-project (96)
+#### dev-project (106)
 - `anatomy` — Build crafted, highly detailed, interactive isometric SVG figures that explain a technical idea as a real physical object (a test rig, a ...
 - `aoci-code` — Points to AOCI-CODE (aoci-spec/aoci-code): a Git-versioned index of a whole codebase, one line per file written by the agent (what it doe...
 - `archify` — Create validated architecture, workflow, sequence, data-flow, lifecycle/state, ERD, class, tree, timeline, and waterfall diagrams as expl...
 - `changelog-generator` — Produce consistent, auditable release notes from Conventional Commits.
+- `codebase-design` — Shared vocabulary for designing deep modules.
 - `codebase-onboarding` — Analyze a codebase and generate onboarding documentation for engineers, tech leads, and contractors.
 - `codebase-to-course` — Turn a codebase into an interactive single-page HTML course that teaches non-technical readers how the code works: scroll navigation, ani...
 - `database-schema-designer` — Use when the user asks to create ERD diagrams, normalize database schemas, design table relationships, or plan schema migrations.
 - `dependency-auditor` — Audit and manage dependencies across multi-language projects.
+- `dispatching-parallel-agents` — Use when facing 2+ independent tasks that can be worked on without shared state or sequential dependencies
+- `domain-modeling` — Build and sharpen a project's domain model.
 - `drawio-skill` — Create and edit draw.io/diagrams.net diagrams as editable `.drawio` files.
+- `executing-plans` — Use when executing an implementation plan in the current session as the implementer yourself — your human partner chose inline execution,...
 - `find-bugs` — Find bugs, security vulnerabilities, and code quality issues in local branch changes.
+- `finishing-a-development-branch` — Use when implementation is complete, all tests pass, and you need to decide how to integrate the work
 - `ponytail` — Lazy senior dev mode: the smallest change that fully solves the task, and a reply a busy human understands in one read.
 - `ponytail-audit` — Quality audit of a whole repo: bugs, security holes, what breaks under real load, risky code without tests, slow paths, and what to delet...
 - `ponytail-review` — Quality review of a change: is the logic right, is it safe, does it hold under real load, is risky code tested, is it fast enough, and is...
+- `prototype` — Build a throwaway prototype to answer a design question.
+- `receiving-code-review` — Use when receiving code review feedback, before implementing suggestions, especially if feedback seems unclear or technically questionabl...
 - `release-manager` — Plan and coordinate a software release — versioning, release checklist, tagging, rollout.
 - `remotion-best-practices` — Router for all Remotion skills
 - `senior-security` — Use when the user asks for STRIDE threat modeling, DREAD risk scoring, data-flow-diagram threat analysis, or a quick secret scan — or whe...
 - `site-architecture` — When the user wants to plan, map, or restructure their website's page hierarchy, navigation, URL structure, or internal linking.
+- `subagent-driven-development` — Use when executing implementation plans with independent tasks in the current session
 - `tech-debt-tracker` — Scan codebases for technical debt, score severity, track trends, and generate prioritized remediation plans.
+- `using-git-worktrees` — Use when starting feature work that needs isolation from current workspace or before executing implementation plans - ensures an isolated...
 - **agent-dev/**
   - `claude-api` — Reference for the Claude API / Anthropic SDK — model ids, pricing, params, streaming, tool use, MCP, agents, caching, token counting, mod...
   - `deep-agents-core` — INVOKE THIS SKILL when building ANY Deep Agents application.
@@ -262,6 +246,7 @@ The index below is what `skill-find` searches: grep it, then read the sections t
   - `umap-learn` — Applies UMAP-learn to nonlinear dimensionality reduction, 2D/3D embeddings, clustering preprocessing, supervised or semi-supervised UMAP,...
 - **testing-qa/**
   - `api-test-suite-builder` — Use when the user asks to generate API tests, create integration test suites, test REST endpoints, or build contract tests.
+  - `playwright-interactive` — Persistent browser and Electron interaction through `js_repl` for fast iterative UI debugging.
   - `senior-qa` — Generates unit tests, integration tests, and E2E tests for React/Next.js applications.
   - `webapp-testing` — Toolkit for interacting with and testing local web applications using Playwright.
 
@@ -414,12 +399,15 @@ The index below is what `skill-find` searches: grep it, then read the sections t
 - `wechat-ai-publisher` — 自动采集 AI 热门内容，撰写公众号文章，生成配图并发布到微信公众号草稿箱。当用户说"发布AI热点"、"写公众号文章"、"采集AI内容"、"publish AI news"时触发。
 - `xhs-visual-director` — Use this skill when planning, redesigning, or reviewing Xiaohongshu carousel visuals, covers, 3:4 image posts, page-by-page visual direct...
 
-#### productivity-project (24)
+#### productivity-project (28)
 - `agent-reach` — MUST USE when user wants to 调研/research/搜索/search/查/找/look up anything on the internet — e.g.
 - `autonomy-audit` — 逐环节审计一条变现路径能否真的无人托管，输出「人工小时/月」的可加总估算。
+- `book-to-skill` — Mine a technical book (PDF/EPUB/DOCX/TXT/MD/HTML/RTF/MOBI…) into a reusable SKILL.md — its frameworks, mental models, principles and anti...
 - `career-ops` — Open-source AI job search agent -- evaluate offers, generate CVs, scan portals, track applications.
 - `decision-memo` — 把调研收口成一份可拍板的决策备忘录：选定 ONE 条路径，说清为什么淘汰另外两条最强候选， 给出 30 天落地方案、kill 判据和敞口自述。当你要「出最终结论」「选一条」「写决策文档」 「给落地方案」「收口」时使用。含六维加权打分卡与对抗性复核流程（打分必须在干净上下文里做）。
 - `evidence-ledger` — 维护证据台账并给来源分级，专治「AI 月入 X 万」类内容营销污染。
+- `first-principles-thinking` — Reason from base truths instead of by analogy.
+- `github-gold` — Hunt GitHub for genuinely good projects — the ones a sharp human curator would share, not the famous repos a star-sorted search returns.
 - `gws` — Google Workspace CLI for AI agents.
 - `idea-haunter` — Data-driven 4-stage funnel for discovering and validating indie-hacker product ideas from Reddit pain points, sizing them with Google Tre...
 - `job-application-assistant` — Assists with job applications: evaluating job postings, tailoring CVs, writing cover letters, and preparing for interviews.
@@ -436,6 +424,7 @@ The index below is what `skill-find` searches: grep it, then read the sections t
 - `planning-with-files` — Persistent file-based planning for multi-step AI-agent work.
 - `ppt-master` — Generate truly EDITABLE PowerPoint (.pptx) from any document — native shapes and native animations (not slide images), optional speaker-n...
 - `resume-writing` — Use when writing, rewriting, or tailoring a resume or academic CV kept as LaTeX source in a repository: one shared class file, one .tex p...
+- `teach` — Tutors the user through a topic over several turns and sessions instead of handing over answers: calibrates what they know, plans a sylla...
 - `upskill` — Compares tracked job postings against the candidate profile to identify skill gaps and generate a prioritized learning plan with study re...
 - `what-if-oracle` — Supports structured what-if scenario analysis for research planning, experimental contingencies, and scientific project decisions.
 - `youtube-transcript` — 提取 YouTube 视频的字幕文本，用于"观看"并学习视频教程内容。当你遇到 YouTube 链接、需要了解某个视频讲了什么、或要照着视频教程操作时使用。也可用于列出视频有哪些字幕语言轨道。Triggers on YouTube URLs, youtu.be links,...
@@ -463,7 +452,7 @@ The index below is what `skill-find` searches: grep it, then read the sections t
 - `swiftui-view-refactor` — SwiftUI view refactoring.
 - `widgetkit-liveactivity` — Build or review iOS widgets (WidgetKit), Live Activities (ActivityKit), and the Dynamic Island.
 
-#### craft-project (18)
+#### craft-project (19)
 - **design/**
   - `brand` — Brand voice, visual identity, messaging frameworks, asset management, brand consistency.
   - `brandkit` — Premium brand-kit image generation skill for creating high-end brand-guidelines boards, logo systems, identity decks, and visual-world pr...
@@ -484,6 +473,7 @@ The index below is what `skill-find` searches: grep it, then read the sections t
   - `ui-styling` — Create beautiful, accessible user interfaces with shadcn/ui components (built on Radix UI + Tailwind), Tailwind CSS utility-first styling...
 - **writing/**
   - `humanizer-zh` — 编辑中文文章、评论和文档中的空话、重复及模板化表达，让文字更自然，同时保留事实、确定程度和作者声音。适用于润色已有文本，不用于判断作者身份或保证通过 AI 检测器。
+  - `no-ai-slop` — Edit a draft into sharper, more human writing while preserving the writer's personal voice, or detect AI-slop patterns without rewriting.
 
 #### life-project (10)
 - `astrology-chart` — Generate real, astronomically-calculated natal (birth) charts, planetary transits, and synastry/compatibility readings using Swiss Epheme...

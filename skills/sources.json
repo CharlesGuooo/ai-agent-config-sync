@@ -15,41 +15,6 @@
       "license": "MIT"
     }
   ],
-  "global/codebase-design": {
-    "repo": "mattpocock/skills",
-    "path": "skills/engineering/codebase-design",
-    "commit": "d80fa0f4ebe0c5714af0adf8670336065233ecc6",
-    "date": "2026-09-17",
-    "license": "MIT"
-  },
-  "global/dispatching-parallel-agents": {
-    "repo": "obra/superpowers",
-    "path": "skills/dispatching-parallel-agents",
-    "commit": "6dbbbda3baeff8407f3dddb0cc9e8a9495a273bc",
-    "date": "2026-07-23",
-    "license": "MIT"
-  },
-  "global/domain-modeling": {
-    "repo": "mattpocock/skills",
-    "path": "skills/engineering/domain-modeling",
-    "commit": "d80fa0f4ebe0c5714af0adf8670336065233ecc6",
-    "date": "2026-09-17",
-    "license": "MIT"
-  },
-  "global/executing-plans": {
-    "repo": "obra/superpowers",
-    "path": "skills/executing-plans",
-    "commit": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
-    "date": "2026-10-09",
-    "license": "MIT"
-  },
-  "global/finishing-a-development-branch": {
-    "repo": "obra/superpowers",
-    "path": "skills/finishing-a-development-branch",
-    "commit": "b36e0829c6d0140e93cfef2ca599b1b07d4a7797",
-    "date": "2026-08-12",
-    "license": "MIT"
-  },
   "global/handoff": {
     "repo": "mattpocock/skills",
     "path": "skills/productivity/handoff",
@@ -69,13 +34,6 @@
     "path": "skills/markitdown",
     "commit": "f7a50ed2956fb45e32bd44cc5c713d4f0ac99f93",
     "date": "2026-10-01",
-    "license": "MIT"
-  },
-  "global/no-ai-slop": {
-    "repo": "petergyang/no-ai-slop",
-    "path": "skills/no-ai-slop",
-    "commit": "000650b156983f5159695b441477f4e63b25dc85",
-    "date": "2026-09-01",
     "license": "MIT"
   },
   "global/officecli": {
@@ -120,27 +78,6 @@
     "date": "2026-02-06",
     "license": null
   },
-  "global/playwright-interactive": {
-    "repo": "openai/skills",
-    "path": "skills/.curated/playwright-interactive",
-    "commit": "ecc1fb8bc0b82f1d3c7a92a82167ae8e8e613a67",
-    "date": "2026-03-11",
-    "license": null
-  },
-  "global/prototype": {
-    "repo": "mattpocock/skills",
-    "path": "skills/engineering/prototype",
-    "commit": "321658273cb1d20b76026717d027d505790106d4",
-    "date": "2026-08-19",
-    "license": "MIT"
-  },
-  "global/receiving-code-review": {
-    "repo": "obra/superpowers",
-    "path": "skills/receiving-code-review",
-    "commit": "3fb75974186ea7fada621d8ab77b3b02169baf57",
-    "date": "2026-07-23",
-    "license": "MIT"
-  },
   "global/requesting-code-review": [
     {
       "repo": "obra/superpowers",
@@ -180,13 +117,6 @@
     "date": "2026-09-29",
     "license": "Apache-2.0"
   },
-  "global/subagent-driven-development": {
-    "repo": "obra/superpowers",
-    "path": "skills/subagent-driven-development",
-    "commit": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
-    "date": "2026-10-09",
-    "license": "MIT"
-  },
   "global/systematic-debugging": {
     "repo": "obra/superpowers",
     "path": "skills/systematic-debugging",
@@ -194,30 +124,9 @@
     "date": "2026-10-09",
     "license": "MIT"
   },
-  "global/teach": {
-    "repo": "SebastianElvis/hammer",
-    "path": "skills/teach",
-    "commit": "c5b86153b15621649560cee247659840738aadae",
-    "date": "2026-05-02",
-    "license": "MIT"
-  },
   "global/test-driven-development": {
     "repo": "obra/superpowers",
     "path": "skills/test-driven-development",
-    "commit": "5bf4e78011075bcfc0dc295f0724994cd123ee71",
-    "date": "2026-09-18",
-    "license": "MIT"
-  },
-  "global/using-git-worktrees": {
-    "repo": "obra/superpowers",
-    "path": "skills/using-git-worktrees",
-    "commit": "bc868020bbcec32bbaf9d6b51fa0538dba0b487f",
-    "date": "2026-07-23",
-    "license": "MIT"
-  },
-  "global/using-superpowers": {
-    "repo": "obra/superpowers",
-    "path": "skills/using-superpowers",
     "commit": "5bf4e78011075bcfc0dc295f0724994cd123ee71",
     "date": "2026-09-18",
     "license": "MIT"
@@ -346,6 +255,13 @@
     "path": ".",
     "commit": "f4518a8eab97b8bfebc66a89d34320a89bef6930",
     "date": "2026-09-23",
+    "license": "MIT"
+  },
+  "project-packs/craft-project/writing/skills/no-ai-slop": {
+    "repo": "petergyang/no-ai-slop",
+    "path": "skills/no-ai-slop",
+    "commit": "000650b156983f5159695b441477f4e63b25dc85",
+    "date": "2026-09-01",
     "license": "MIT"
   },
   "project-packs/data-analysis-project/skills/dask": {
@@ -978,6 +894,13 @@
     "date": "2026-06-11",
     "license": "MIT"
   },
+  "project-packs/dev-project/skills/codebase-design": {
+    "repo": "mattpocock/skills",
+    "path": "skills/engineering/codebase-design",
+    "commit": "d80fa0f4ebe0c5714af0adf8670336065233ecc6",
+    "date": "2026-09-17",
+    "license": "MIT"
+  },
   "project-packs/dev-project/skills/codebase-onboarding": {
     "repo": "alirezarezvani/claude-skills",
     "path": "engineering/skills/codebase-onboarding",
@@ -999,11 +922,32 @@
     "date": "2026-06-11",
     "license": "MIT"
   },
+  "project-packs/dev-project/skills/dispatching-parallel-agents": {
+    "repo": "obra/superpowers",
+    "path": "skills/dispatching-parallel-agents",
+    "commit": "6dbbbda3baeff8407f3dddb0cc9e8a9495a273bc",
+    "date": "2026-07-23",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/skills/domain-modeling": {
+    "repo": "mattpocock/skills",
+    "path": "skills/engineering/domain-modeling",
+    "commit": "d80fa0f4ebe0c5714af0adf8670336065233ecc6",
+    "date": "2026-09-17",
+    "license": "MIT"
+  },
   "project-packs/dev-project/skills/drawio-skill": {
     "repo": "Agents365-ai/drawio-skill",
     "path": "skills/drawio-skill",
     "commit": "57270820d3cd71cbdf4fb6b2f7091d4fb37bb019",
     "date": "2026-10-11",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/skills/executing-plans": {
+    "repo": "obra/superpowers",
+    "path": "skills/executing-plans",
+    "commit": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
+    "date": "2026-10-09",
     "license": "MIT"
   },
   "project-packs/dev-project/skills/find-bugs": {
@@ -1012,6 +956,13 @@
     "commit": "24361e7958f9644d11f1de100654e3b04a509192",
     "date": "2026-04-19",
     "license": "Apache-2.0"
+  },
+  "project-packs/dev-project/skills/finishing-a-development-branch": {
+    "repo": "obra/superpowers",
+    "path": "skills/finishing-a-development-branch",
+    "commit": "b36e0829c6d0140e93cfef2ca599b1b07d4a7797",
+    "date": "2026-08-12",
+    "license": "MIT"
   },
   "project-packs/dev-project/skills/ponytail": {
     "repo": "DietrichGebert/ponytail",
@@ -1032,6 +983,20 @@
     "path": "skills/ponytail-review",
     "commit": "2a1fe842d078cf66ec7f3e6096a8ca4279c2cad7",
     "date": "2026-10-08",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/skills/prototype": {
+    "repo": "mattpocock/skills",
+    "path": "skills/engineering/prototype",
+    "commit": "321658273cb1d20b76026717d027d505790106d4",
+    "date": "2026-08-19",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/skills/receiving-code-review": {
+    "repo": "obra/superpowers",
+    "path": "skills/receiving-code-review",
+    "commit": "3fb75974186ea7fada621d8ab77b3b02169baf57",
+    "date": "2026-07-23",
     "license": "MIT"
   },
   "project-packs/dev-project/skills/remotion-best-practices": {
@@ -1055,11 +1020,25 @@
     "date": "2026-10-02",
     "license": "MIT"
   },
+  "project-packs/dev-project/skills/subagent-driven-development": {
+    "repo": "obra/superpowers",
+    "path": "skills/subagent-driven-development",
+    "commit": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
+    "date": "2026-10-09",
+    "license": "MIT"
+  },
   "project-packs/dev-project/skills/tech-debt-tracker": {
     "repo": "alirezarezvani/claude-skills",
     "path": "engineering/skills/tech-debt-tracker",
     "commit": "aecfb8e0bb71dbf1413082f86b33a5c4c9b8f416",
     "date": "2026-06-11",
+    "license": "MIT"
+  },
+  "project-packs/dev-project/skills/using-git-worktrees": {
+    "repo": "obra/superpowers",
+    "path": "skills/using-git-worktrees",
+    "commit": "bc868020bbcec32bbaf9d6b51fa0538dba0b487f",
+    "date": "2026-07-23",
     "license": "MIT"
   },
   "project-packs/dev-project/testing-qa/skills/api-test-suite-builder": {
@@ -1068,6 +1047,13 @@
     "commit": "1851c8fb09ea8ff0488d48bd7c312abb1bbf5850",
     "date": "2026-05-02",
     "license": "MIT"
+  },
+  "project-packs/dev-project/testing-qa/skills/playwright-interactive": {
+    "repo": "openai/skills",
+    "path": "skills/.curated/playwright-interactive",
+    "commit": "ecc1fb8bc0b82f1d3c7a92a82167ae8e8e613a67",
+    "date": "2026-03-11",
+    "license": null
   },
   "project-packs/dev-project/testing-qa/skills/senior-qa": {
     "repo": "alirezarezvani/claude-skills",
@@ -1697,6 +1683,13 @@
     "path": "skills/planning-with-files",
     "commit": "d363544caea69df35ba624b238662ab861d1d92a",
     "date": "2026-10-17",
+    "license": "MIT"
+  },
+  "project-packs/productivity-project/skills/teach": {
+    "repo": "SebastianElvis/hammer",
+    "path": "skills/teach",
+    "commit": "c5b86153b15621649560cee247659840738aadae",
+    "date": "2026-05-02",
     "license": "MIT"
   },
   "project-packs/productivity-project/skills/upskill": {

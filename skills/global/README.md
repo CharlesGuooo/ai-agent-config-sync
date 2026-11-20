@@ -26,20 +26,11 @@ The global layer should stay small and stable.
 
 ### Global process skills
 
-- `using-superpowers`
 - `brainstorming`
 - `systematic-debugging`
 - `test-driven-development`
 - `writing-plans`
-- `executing-plans`
 - `verification-before-completion`
-- `high-agency`
-- `no-ai-slop`
-
-### Global workflow skills
-
-- `playwright-interactive`
-- `github-gold`
 
 ### Global routing skill
 
@@ -79,7 +70,7 @@ Examples:
 
 - Do not duplicate domain guardrails in the global layer.
 - Do not use global file path triggers for domain code.
-- Route first, then load local skills.
+- Global skills are always present; pack skills are linked into a project with `skill-find` (`node harness.mjs add`).
 - Prefer one primary domain and at most one secondary domain.
 - Route to the local pack rather than enumerating domain-specific skills from the global layer.
 
@@ -88,7 +79,7 @@ Examples:
 ## Key Files
 
 - Global rules: [`skill-rules.json`](skill-rules.json)
-- Global router: [`skill-find/SKILL.md`](skill-find/SKILL.md)
+- Global skill finder: [`skill-find/SKILL.md`](skill-find/SKILL.md)
 - Global architecture guide: [`prompt/core.md`](../../prompt/core.md) (installed into every agent's instructions)
 - Routing regression cases: [`C:\\Users\\PC\\.claude\\ROUTING_REGRESSION_TESTS.md`](C:\Users\PC\.claude\ROUTING_REGRESSION_TESTS.md)
 

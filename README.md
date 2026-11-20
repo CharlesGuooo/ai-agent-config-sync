@@ -73,22 +73,22 @@ DESIGN-IT-TWICE、`improve-codebase-architecture`、`dispatching-parallel-agents
 
 ---
 
-## 🌐 Global Skills(37 个,5 agent 共享,启动自动可用)
+## 🌐 Global Skills(20 个,5 agent 共享,每次会话都在)
 
 每个 agent 的 skill 目录里各有一份指向仓库的链接。按分类(权威清单见 `skills/global/catalog.json`):
 
 | 分类 | 数 | 是什么 |
 | --- | --- | --- |
-| Process | 13 | 流程纪律:using-superpowers / **brainstorming**(盘问引擎)/ writing-plans / TDD / systematic-debugging / verification / **handoff** / **action-first** / **`no-ai-slop`**(去 AI 味)… |
-| Thinking | 1 | `first-principles-thinking` —— 从第一性原理推理 |
-| Escalation | 1 | `high-agency` —— 常驻内驱 + 失败时自救 |
-| Routing & Meta | 5 | `skill-find` / **`skill-creator`**(写 skill + 审 skill,含标尺与 eval 工具)/ `skill-scanner` + **`skillspector`**(两道安全扫描)/ `book-to-skill`(书→技能) |
-| Workflow | 2 | `playwright-interactive` / **`github-gold`**(挖 GitHub 宝藏) |
-| Code Review | 3 | requesting(**双轴并行**)/ receiving / finishing-a-development-branch |
-| **Design & Architecture** | 4 | `codebase-design`(深模块)/ `domain-modeling`(GLOSSARY.md+ADR)/ `prototype` / `improve-codebase-architecture` |
+| Process | 7 | 流程纪律:**brainstorming**(盘问引擎)/ writing-plans / TDD / systematic-debugging / verification / **handoff** / **action-first** |
+| Routing & Meta | 4 | `skill-find`(给项目找 pack 技能并装进去)/ **`skill-creator`**(写 skill + 审 skill,含标尺与 eval 工具)/ `skill-scanner` + **`skillspector`**(两道安全扫描) |
+| Code Review | 1 | `requesting-code-review`(**双轴并行**) |
+| **Design & Architecture** | 1 | `improve-codebase-architecture` |
 | OpenSpec | 4 | explore / propose / apply-change / archive-change |
 | Document | 3 | pdf / **officecli**(Word/Excel/PPT 引擎,取代旧 docx/xlsx/pptx)/ markitdown |
-| Learning | 1 | `teach` —— 多轮互动式辅导 |
+
+其中 6 个只在你点名时才用(模型的技能列表里没有它们):`action-first` / `improve-codebase-architecture` / `openspec-apply-change` / `openspec-archive-change` / `skill-scanner` / `skillspector`。
+
+其余的技能搬进了 pack,用 `skill-find`(`node harness.mjs add`)装进项目:`dev-project` 有 `codebase-design` / `domain-modeling` / `prototype` / `dispatching-parallel-agents` / `subagent-driven-development` / `executing-plans` / `using-git-worktrees` / `receiving-code-review` / `finishing-a-development-branch`,`dev-project/testing-qa` 有 `playwright-interactive`,`productivity-project` 有 `first-principles-thinking` / `github-gold` / `teach` / `book-to-skill`,`craft-project/writing` 有 `no-ai-slop`。`using-superpowers` 和 `high-agency` 已删除。
 
 ---
 

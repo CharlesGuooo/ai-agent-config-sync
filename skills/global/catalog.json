@@ -3,51 +3,28 @@
   "description": "Curated catalog of global skills: the single source for the skill table in every agent's generated instructions. lib/prompt.mjs reconciles it against the actual skills/global/*/ directories (run: node harness.mjs check) and fails if they disagree, so a new skill cannot silently drift out of the tables.",
   "categories": [
     { "key": "process",     "title": "Process",        "blurb": "Process discipline" },
-    { "key": "thinking",    "title": "Thinking",       "blurb": "Reasoning frameworks" },
-    { "key": "escalation",  "title": "Escalation",     "blurb": "Drive / pressure" },
     { "key": "routing",     "title": "Routing & Meta", "blurb": "Routing + skill tooling" },
-    { "key": "workflow",    "title": "Workflow",       "blurb": "External collaboration" },
     { "key": "code-review", "title": "Code Review",    "blurb": "Review discipline" },
     { "key": "design",      "title": "Design & Architecture", "blurb": "Deep modules, domain language, prototypes" },
     { "key": "openspec",    "title": "OpenSpec",       "blurb": "Spec-driven development" },
-    { "key": "document",    "title": "Document",       "blurb": "Office / document I/O" },
-    { "key": "learning",    "title": "Learning",       "blurb": "Interactive teaching" }
+    { "key": "document",    "title": "Document",       "blurb": "Office / document I/O" }
   ],
   "skills": {
-    "using-superpowers":             { "category": "process",     "tagline": "Decide whether a skill applies before acting" },
     "brainstorming":                 { "category": "process",     "tagline": "Clarify intent/requirements/design before building or changing behavior" },
     "writing-plans":                 { "category": "process",     "tagline": "Write a multi-step implementation plan before coding" },
-    "executing-plans":               { "category": "process",     "tagline": "Execute an existing written plan step by step" },
     "test-driven-development":       { "category": "process",     "tagline": "Write tests before implementing or fixing" },
     "systematic-debugging":          { "category": "process",     "tagline": "Structured root-cause investigation for bugs" },
     "verification-before-completion":{ "category": "process",     "tagline": "Verify with evidence before claiming done" },
-    "subagent-driven-development":   { "category": "process",     "tagline": "Dispatch subagents per plan step with spec/quality reviewers" },
-    "dispatching-parallel-agents":   { "category": "process",     "tagline": "Run 2+ independent tasks via parallel subagents with a merge protocol" },
-    "using-git-worktrees":           { "category": "process",     "tagline": "Isolated worktrees for parallel agents / high-risk refactors" },
     "handoff":                       { "category": "process",     "tagline": "Compact the session into a handoff doc for the next agent" },
     "action-first":                  { "category": "process",     "tagline": "Output-style toggle: action first, no preamble/recap (user-invoked)" },
-    "no-ai-slop":                    { "category": "process",     "tagline": "Edit a draft you hand it into human-sounding prose, or flag AI-slop patterns without rewriting" },
-
-    "first-principles-thinking":     { "category": "thinking",    "tagline": "Reason from base truths instead of by analogy; question inherited assumptions" },
-
-    "high-agency":                   { "category": "escalation",  "tagline": "Stay proactive and own complex long tasks" },
 
     "skill-find":                    { "category": "routing",     "tagline": "Recommend pack skills for the project and link them in (harness add)" },
     "skill-creator":                 { "category": "routing",     "tagline": "Write a new skill, or audit a skill or CLAUDE.md/AGENTS.md against the rubric" },
     "skill-scanner":                 { "category": "routing",     "tagline": "Security-scan a community skill before installing it" },
     "skillspector":                  { "category": "routing",     "tagline": "Second security scan (NVIDIA SkillSpector, 0-100 risk score) before installing or publishing a skill" },
-    "book-to-skill":                 { "category": "routing",     "tagline": "Mine a technical book into a reusable SKILL.md (pointer: install from GitHub)" },
-
-    "playwright-interactive":        { "category": "workflow",    "tagline": "Persistent browser session for iterative UI debugging" },
-    "github-gold":                   { "category": "workflow",    "tagline": "Hunt GitHub for genuinely good projects; curated feeds + momentum, allowed to find nothing" },
 
     "requesting-code-review":        { "category": "code-review", "tagline": "Self-review before merge/completion" },
-    "receiving-code-review":         { "category": "code-review", "tagline": "Respond technically to review feedback" },
-    "finishing-a-development-branch":{ "category": "code-review", "tagline": "Wrap up a dev branch (rebase/squash/PR)" },
 
-    "codebase-design":               { "category": "design",      "tagline": "Deep-module vocabulary: interface, seam, depth, leverage, locality" },
-    "domain-modeling":               { "category": "design",      "tagline": "Pin down domain terms (GLOSSARY.md) and record decisions (ADRs)" },
-    "prototype":                     { "category": "design",      "tagline": "Throwaway prototype to settle one design question" },
     "improve-codebase-architecture": { "category": "design",      "tagline": "Scan a codebase for deepening opportunities → visual HTML report (user-invoked)" },
 
     "openspec-explore":              { "category": "openspec",    "tagline": "Think through a spec before writing it" },
@@ -57,8 +34,7 @@
 
     "pdf":                           { "category": "document",    "tagline": "PDF read/merge/split/OCR/forms" },
     "officecli":                     { "category": "document",    "tagline": "Create/edit/render .docx/.xlsx/.pptx via the officecli binary (formulas, pivots, HTML/PNG)" },
-    "markitdown":                    { "category": "document",    "tagline": "Convert PDF/Office/images/AV to Markdown" },
+    "markitdown":                    { "category": "document",    "tagline": "Convert PDF/Office/images/AV to Markdown" }
 
-    "teach":                         { "category": "learning",    "tagline": "Interactive multi-turn tutoring with persistent learner state" }
   }
 }

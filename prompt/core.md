@@ -43,24 +43,6 @@ Document tasks (PDF / Word / Excel / PowerPoint) use the global `pdf`, `officecl
 When the user asks how to use this harness, read `{{REPO}}/PLAYBOOK.md`.
 Skills reach you as links into that repo: to change a skill, edit it there, not in a copy. These instructions are generated from `{{REPO}}/prompt/core.md`: to change them, edit that file and run `node harness.mjs update`, since an edit made to this copy conflicts on the next update.
 
---- | --- |
-| ML / DL / RL training | `~/dev-project/ml/` (sklearn / PyTorch / transformers / RL) |
-| Finance / 投资 / 交易 | `~/finance-project/` (container; start in `trading/` `research/` `portfolio/` `quant-methods/` for actual skills) |
-| Data analysis | `~/data-analysis-project/` |
-| Development | `~/dev-project/` (general dev skills; start in `frontend/` `backend/` `cloud-platform/` `testing-qa/` `devops-sre/` `agent-dev/` for specialized ones) |
-| Marketing | `~/marketing-project/` |
-| Research | `~/research-project/` (container; start in `literature/` `gates/` `manuscript/` `review/` `talks/` for actual skills) |
-| Productivity / 求职 | `~/productivity-project/` |
-| iOS / Swift / SwiftUI | `~/ios-project/` |
-| Craft / 表达功力 (cross-cutting) | `~/craft-project/` (container; start in `writing/` `design/`) |
-| Video editing / 视频剪辑 | `~/media-project/` |
-| 命理 / 情感 | `~/life-project/` |
-
-Document tasks (PDF / Word / Excel / PowerPoint) use the global `pdf`, `officecli` and `markitdown` skills directly — no project switch needed.
-
-To find which pack has a skill for X, read `{{REPO}}/HARNESS.md`; when the user asks how to use this harness, `{{REPO}}/PLAYBOOK.md`.
-Skills reach you as links into that repo: to change a skill, edit it there, not in a copy. These instructions are generated from `{{REPO}}/prompt/core.md`: to change them, edit that file and run `node harness.mjs update`, since an edit made to this copy conflicts on the next update.
-
 ---
 
 {{MCP}}

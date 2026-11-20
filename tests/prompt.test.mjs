@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { rmSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { fixtureRepo, put, tempDir } from './helpers.mjs';
 import { makeContext, slash } from '../lib/platform.mjs';
 import { catalogErrors, renderPrompt } from '../lib/prompt.mjs';
@@ -102,4 +103,14 @@ test('named-only global skills are listed with their catalog tagline', () => {
   const text = renderPrompt(makeContext({ repo, home: tempDir() }), { title: 'T', agent: 'claude', mcp: '' });
   assert.ok(text.includes('- `beta` — Beta tagline'));
   assert.ok(!text.includes('`alpha` —'));
+});
+
+test('the real prompt/core.md has no leftover pack paths and no repeated paragraph', () => {
+  const repo = fileURLToPath(new URL('..', import.meta.url));
+  const ctx = makeContext({ repo, home: tempDir('harness-core-home-') });
+  const text = renderPrompt(ctx, { title: 'T', agent: 'claude', mcp: 'm' });
+  assert.doesNotMatch(text, /~\/[a-z0-9-]+-project/);
+  const paras = text.split(/\r?\n\s*\r?\n/).map((p) => p.trim()).filter((p) => p && p !== '---');
+  const dup = paras.filter((p, i) => paras.indexOf(p) !== i);
+  assert.deepEqual(dup, []);
 });

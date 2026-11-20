@@ -5,7 +5,7 @@
     { "key": "process",     "title": "Process",        "blurb": "Process discipline" },
     { "key": "routing",     "title": "Routing & Meta", "blurb": "Routing + skill tooling" },
     { "key": "code-review", "title": "Code Review",    "blurb": "Review discipline" },
-    { "key": "design",      "title": "Design & Architecture", "blurb": "Deep modules, domain language, prototypes" },
+    { "key": "design",      "title": "Design & Architecture", "blurb": "Codebase architecture review" },
     { "key": "openspec",    "title": "OpenSpec",       "blurb": "Spec-driven development" },
     { "key": "document",    "title": "Document",       "blurb": "Office / document I/O" }
   ],

@@ -26,7 +26,7 @@ Building something new or changing behaviour: load `brainstorming` before writin
 
 ## Global Skills
 
-Every global skill that loads on its own is in your skill list with its full description; `{{REPO}}/HARNESS.md` groups them by category. These load only when the user names them, so when one fits, tell the user its name:
+Every global skill that loads on its own is in your skill list with its full description; `{{REPO}}/HARNESS.md` groups them by category. The skills below load only when the user names them, so when one fits, tell the user its name:
 
 {{NAMED}}
 
@@ -34,7 +34,7 @@ Every global skill that loads on its own is in your skill list with its full des
 
 ## Skill Packs
 
-Domain skills (frontend, finance, research, writing, …) live in the packs under `{{REPO}}/skills/project-packs/`, indexed in `{{REPO}}/HARNESS.md`. When the user starts a project, or asks which skills would help, use `skill-find`: it recommends skills from the packs and, once the user agrees, links them into the project.
+Domain skills (frontend, finance, research, writing, …) live in the packs under `{{REPO}}/skills/project-packs/`, indexed in `{{REPO}}/HARNESS.md`. When the user starts a project, or asks which skills would help, use `skill-find` (after `brainstorming` when both apply): it recommends skills from the packs and, once the user agrees, links them into the project.
 
 When a skill names a skill you do not have, or points at a file inside one (`../<skill>/…`) that is not there, read it from the repo: `{{REPO}}/skills/**/<skill>/` holds it. Do not ask first, and do not install it.
 

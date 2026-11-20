@@ -1,6 +1,6 @@
 ---
 name: openspec-explore
-description: Enter OpenSpec explore mode - a thinking partner for exploring ideas, investigating problems and clarifying requirements in a project that uses OpenSpec, before or during a change. Also use when the user says "openspec explore" or "opsx explore".
+description: Enter OpenSpec explore mode - a thinking partner for exploring ideas, investigating problems and clarifying requirements in a project that uses OpenSpec. Use it before or during an OpenSpec change, or when the user says "openspec explore" or "opsx explore".
 allowed-tools: Bash(openspec:*)
 license: MIT
 compatibility: Requires openspec CLI.

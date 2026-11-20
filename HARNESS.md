@@ -119,7 +119,7 @@ The index below is what `skill-find` searches: grep it, then read the sections t
 - **Code Review** — Review discipline
   - `requesting-code-review` — Self-review before merge/completion
 
-- **Design & Architecture** — Deep modules, domain language, prototypes
+- **Design & Architecture** — Codebase architecture review
   - `improve-codebase-architecture` — Scan a codebase for deepening opportunities → visual HTML report (user-invoked)
 
 - **OpenSpec** — Spec-driven development

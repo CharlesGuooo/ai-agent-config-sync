@@ -82,15 +82,17 @@ node harness.mjs resolve                     # 列出冲突和 pin 住的条目
 node harness.mjs resolve repo <id>|all       # 用 repo 的版本
 node harness.mjs resolve keep <id>|all       # 保留本机版本，以后不再管这一项（pin）
 node harness.mjs uninstall --agents codex [--dry-run]
+node harness.mjs add <skill>[,<skill>…] <项目目录> [--dry-run]       # 把 pack 里的 skill 链接进项目，给本机每个已装的 agent
+node harness.mjs remove <skill>[,<skill>…]|all <项目目录> [--dry-run]
 node harness.mjs check                       # repo 自检，适合 CI：清单和目录对得上、HARNESS.md 是新的、SKILL.md frontmatter 合规
 ```
 
-`install`、`update`、`resolve`、`uninstall` 都能加 `--dry-run`（只报告，什么都不写）和
+`install`、`update`、`resolve`、`uninstall`、`add`、`remove` 都能加 `--dry-run`（只报告，什么都不写）和
 `--verbose`（逐条列出改动；不加时超过 40 条就按类计数）。`install` 不带 `--packs` 时沿用本机
 已装的 pack（第一次装是全部 pack），所以给一台机器加 agent 不会悄悄扩大 pack。拼错的选项直接
 报错退出，不会被当成没写。有冲突时退出码是 1。
 
-`install`、`update`、`resolve`、`uninstall` 拒绝在 git worktree 里对真实 home 运行，因为链接会
+`install`、`update`、`resolve`、`uninstall`、`add`、`remove` 拒绝在 git worktree 里对真实 home 运行，因为链接会
 指向 worktree。设了 `HARNESS_HOME` 时装到那个目录，状态也放在那里（测试就这么跑）。开发时在
 worktree 里跑测试，装机只在主目录跑。
 
@@ -109,12 +111,29 @@ worktree 里跑测试，装机只在主目录跑。
     "claude:hook:guard": { "agent": "claude", "kind": "hook", "file": "...", "event": "PreToolUse", "command": "...", "hash": "..." },
     "claude:prompt":     { "agent": "claude", "kind": "block", "file": "...", "hash": "..." },
     "claude:mcp-template:supabase": { "agent": "claude", "kind": "file", "file": "...", "hash": "...", "pinned": true }
+  },
+  "projects": {
+    "D:\\Projects2\\xxx": ["prototype", "react-best-practices"]
   }
 }
 ```
 
-链接不记状态：链接自己就说明了它指向 repo 的哪里。唯一的例外是 `resolve keep` 留下的 pin
-（`"link:<路径>": { "agent": "...", "kind": "link", "hash": null, "pinned": true }`）。
+home 下的链接不记状态：链接自己就说明了它指向 repo 的哪里。例外是 `resolve keep` 留下的 pin
+（`"link:<路径>": { "agent": "...", "kind": "link", "hash": null, "pinned": true }`），以及 `add`
+链接进项目的 skill：项目不在 home 下，不记就找不回来。
+
+`projects` 按项目的真实路径记（经过目录链接、或换了大小写的路径都算同一个项目），值是排好序的 skill 名。
+`add` 只往项目里写两样东西：skill 链接，和 `.git/info/exclude` 里带标记的受管块（项目是 git 仓库时，
+每个链接一行，如 `/.claude/skills/prototype`；只排除链接本身，不排除整个 `.claude/skills/`）。一个 git
+仓库里的几个项目共用这一块，各自只改自己 skills 目录下的行。exclude 行在建链接之前写好、链接删掉之后才去掉，
+所以链接任何时候都不会出现在项目的 `git status` 里；exclude 写不进去时，这个项目这次不建新链接，只报警告。
+本机找不到 git 时链接照建，并警告它们没被排除。
+
+项目里已有的同名东西（真目录、文件、指向别处的链接）一律不动，跳过并报告；只有以前 `add` 过的名字，
+指向 repo 内别处的链接才改指新位置。某个位置建不了或删不掉链接（比如 `.pi` 是个文件）也只报警告，其余照做，
+已经建好的链接照样记进 `projects`。`update` 按 `projects` 重新同步每个项目：skill 在 repo 里挪了就改指，
+删了或变成全局的就删链接并说明；一个项目出错只报警告，不挡其他项目和状态保存。`uninstall` 删掉卸载的
+agent 在各项目里的链接，名字留在 `projects` 里，以后重装时再链上。
 
 状态只在整次运行成功后才保存：中途出错的运行不会记下没做成的写入和删除。`.local/` 在 clone
 里面，所以挪 clone 要整个目录一起挪；重新 clone 时把旧的 `.local/` 拷过来（见"已知限制"）。

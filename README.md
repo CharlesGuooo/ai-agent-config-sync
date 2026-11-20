@@ -94,7 +94,9 @@ DESIGN-IT-TWICE、`improve-codebase-architecture`、`dispatching-parallel-agents
 
 ## 📦 Local Project Packs(10 个)
 
-按领域组织。**在那个目录里启动 agent(Cursor:打开那个目录),该 pack 的 skills 就会加载**(token 成本最低);
+按领域组织。**日常用法:在自己的项目里说要做什么,`skill-find` 从 pack 里推荐几个 skill,你同意后它跑
+`node harness.mjs add <skill>[,<skill>…] <项目目录>` 把它们链接进项目**(给本机每个已装的 agent;`remove` 撤掉;
+链接写进项目的 `.git/info/exclude`,不会被提交)。在 pack 目录里启动 agent(Cursor:打开那个目录)仍然能加载整个 pack;
 已经开着的会话里 `cd` 过去不算。每个 pack 的完整 skill 清单和数量见 `HARNESS.md`(生成、不漂移):
 
 | Pack | 领域 / 何时进 |
@@ -110,7 +112,7 @@ DESIGN-IT-TWICE、`improve-codebase-architecture`、`dispatching-parallel-agents
 | `~/media-project/` | 视频剪辑(ffmpeg / 多机位同步与剪辑 / 字幕 / 叠加 / 降噪) |
 | `~/life-project/` | 命理(八字 / 风水 / 六壬 / 梅花 / 奇门 / 塔罗 / 星盘)与情感 |
 
-新开一个任意项目时:让 agent 读本仓库的 `HARNESS.md`,它据此决定去哪个 pack。
+新开一个任意项目时:说要做什么,`skill-find` 会按本仓库 `HARNESS.md` 的 pack 索引推荐 skill。
 
 ---
 

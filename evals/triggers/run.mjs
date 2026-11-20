@@ -30,14 +30,25 @@ const sum = (entries, wantTrigger) => {
   for (const e of entries) if (e.should_trigger === wantTrigger) { hits += e.hits; n += e.runs; }
   return [hits, n];
 };
+const count = (entries, field) => entries.reduce((t, e) => t + (e[field] ?? 0), 0);
 
+// Rates, not raw counts, so runs=3 can be compared with runs=1. A skill with any errored or timed-out call
+// on either side is inconclusive: such calls look like "no trigger" and would hide or fake a change.
 export function compare(before, after) {
   return Object.keys(before.results).map((skill) => {
     const b = before.results[skill];
     const a = after.results[skill] ?? [];
-    const should = [sum(b, true)[0], sum(a, true)[0]];
-    const falsePos = [sum(b, false)[0], sum(a, false)[0]];
-    return { skill, pass: should[1] >= should[0] && falsePos[1] <= falsePos[0], should, falsePos };
+    const [bsh, bsn] = sum(b, true), [ash, asn] = sum(a, true);
+    const [bfh, bfn] = sum(b, false), [afh, afn] = sum(a, false);
+    const rate = (h, n) => (n ? h / n : 0);
+    const should = [rate(bsh, bsn), rate(ash, asn)];
+    const falsePos = [rate(bfh, bfn), rate(afh, afn)];
+    const inconclusive = count(b, 'errors') + count(b, 'timeouts') + count(a, 'errors') + count(a, 'timeouts') > 0;
+    // cross-multiplied so equal fractions with different denominators compare equal exactly
+    const shouldOk = asn > 0 && ash * bsn >= bsh * asn;
+    const falseOk = afn === 0 ? true : bfn === 0 ? afh === 0 : afh * bfn <= bfh * afn;
+    const pass = !inconclusive && shouldOk && falseOk;
+    return { skill, pass, inconclusive, should, falsePos, counts: { should: [[bsh, bsn], [ash, asn]], falsePos: [[bfh, bfn], [afh, afn]] } };
   });
 }
 
@@ -55,34 +66,53 @@ function claudeCommand() {
   throw new Error('could not resolve the claude executable from claude.cmd');
 }
 
+let cleanupFailures = 0;
+function removeDir(dir) {
+  try { rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 }); } catch { cleanupFailures++; }
+}
+
 function runQuery(query) {
   const { cmd, pre } = claudeCommand();
   const cwd = mkdtempSync(join(tmpdir(), 'trigger-'));
   const env = { ...process.env };
   delete env.CLAUDECODE;
   return new Promise((resolve) => {
-    const child = spawn(cmd, [...pre, '-p', query, '--output-format', 'stream-json', '--verbose'], { cwd, env, stdio: ['ignore', 'pipe', 'ignore'] });
+    const child = spawn(cmd, [...pre, '-p', query, '--output-format', 'stream-json', '--verbose'], { cwd, env, stdio: ['ignore', 'pipe', 'pipe'] });
     const lines = [];
-    let buf = '', done = false, timedOut = false;
-    const finish = (res) => {
-      if (done) return;
-      done = true;
+    let buf = '', stderr = '', decided = false, settled = false, timedOut = false, result, error;
+    const settle = () => {
+      if (settled) return;
+      settled = true;
       clearTimeout(timer);
-      child.kill();
-      setTimeout(() => { try { rmSync(cwd, { recursive: true, force: true }); } catch {} }, 500);
-      resolve({ result: res, timedOut });
+      removeDir(cwd);
+      resolve({ result, timedOut, error });
     };
-    const timer = setTimeout(() => { timedOut = true; finish(undefined); }, TIMEOUT_MS);
+    const decide = (res) => {
+      if (decided) return;
+      decided = true;
+      result = res;
+      child.kill();
+    };
+    const timer = setTimeout(() => { timedOut = true; decide(undefined); }, TIMEOUT_MS);
+    child.stderr.on('data', (d) => { stderr = (stderr + d.toString('utf8')).slice(-500); });
     child.stdout.on('data', (d) => {
       buf += d.toString('utf8');
       const parts = buf.split('\n');
       buf = parts.pop();
       lines.push(...parts);
       const r = invokedSkill(lines);
-      if (r !== undefined) finish(r);
+      if (r !== undefined) decide(r);
     });
-    child.on('error', () => finish(undefined));
-    child.on('close', () => { if (buf) lines.push(buf); finish(invokedSkill(lines)); });
+    child.on('error', (e) => { error ??= `spawn error: ${e.message}`; decided = true; settle(); });
+    child.on('close', (code) => {
+      if (buf) lines.push(buf);
+      if (!decided) {
+        decided = true;
+        result = invokedSkill(lines);
+        if (result === undefined && code !== 0) error ??= `exit code ${code}: ${stderr.trim()}`;
+      }
+      settle();
+    });
   });
 }
 
@@ -106,9 +136,13 @@ async function run(label, { skills, runs, jobs }) {
     entries.forEach((e) => {
       for (let i = 0; i < runs; i++) {
         tasks.push(async () => {
-          const { result, timedOut } = await runQuery(e.query);
+          const { result, timedOut, error } = await runQuery(e.query);
           if (result === skill) e.hits++;
           if (timedOut) e.timeouts = (e.timeouts ?? 0) + 1;
+          if (error) {
+            e.errors = (e.errors ?? 0) + 1;
+            e.firstError ??= error;
+          }
         });
       }
     });
@@ -116,10 +150,13 @@ async function run(label, { skills, runs, jobs }) {
     out.results[skill] = entries;
     out.dates[skill] = new Date().toISOString();
     const [sh, sn] = sum(entries, true), [fh, fn] = sum(entries, false);
-    console.log(`${skill}: should ${sh}/${sn}  false ${fh}/${fn}`);
+    console.log(`${skill}: should ${sh}/${sn}  false ${fh}/${fn}  errors ${count(entries, 'errors')}  timeouts ${count(entries, 'timeouts')}`);
+    const firstError = entries.find((e) => e.firstError)?.firstError;
+    if (firstError) console.log(`  first error: ${firstError}`);
     mkdirSync(RESULTS, { recursive: true });
     writeFileSync(file, JSON.stringify(out, null, 2));
   }
+  if (cleanupFailures) console.warn(`warning: ${cleanupFailures} temp dir(s) named trigger-* could not be removed from ${tmpdir()}`);
   console.log(`wrote ${file}`);
 }
 
@@ -136,7 +173,12 @@ async function main(argv) {
     await run(label, { skills: opt('--skills')?.split(','), runs: Number(opt('--runs', 1)), jobs: Number(opt('--jobs', 4)) });
   } else if (cmd === 'compare') {
     const rows = compare(load(rest[0]), load(rest[1]));
-    for (const r of rows) console.log(`${r.pass ? 'ok  ' : 'FAIL'} ${r.skill}: should ${r.should[0]} -> ${r.should[1]}  false ${r.falsePos[0]} -> ${r.falsePos[1]}`);
+const pct = (r, [h, n]) => `${Math.round(r * 100)}% (${h}/${n})`;
+    for (const r of rows) {
+      const tag = r.inconclusive ? 'INCONCLUSIVE' : r.pass ? 'ok  ' : 'FAIL';
+      const c = r.counts;
+      console.log(`${tag} ${r.skill}: should ${pct(r.should[0], c.should[0])} -> ${pct(r.should[1], c.should[1])}  false ${pct(r.falsePos[0], c.falsePos[0])} -> ${pct(r.falsePos[1], c.falsePos[1])}`);
+    }
     if (rows.some((r) => !r.pass)) process.exitCode = 1;
   } else {
     throw new Error('usage: run.mjs run <label> | compare <before> <after>');

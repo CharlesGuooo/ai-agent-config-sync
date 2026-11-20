@@ -1,11 +1,13 @@
 import test, { beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync, mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, mkdirSync, writeFileSync, renameSync, rmSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { join } from 'node:path';
 import { fixtureRepo, tempDir, put } from './helpers.mjs';
-import { makeContext, isLink, linkTarget, samePath, makeDirLink } from '../lib/platform.mjs';
+import { makeContext, isLink, linkTarget, samePath, makeDirLink, removeLink } from '../lib/platform.mjs';
 import { addSkills, removeSkills, projectKey, excludeText } from '../lib/projects.mjs';
+import { runInstall } from '../lib/engine.mjs';
+import { doctor } from '../lib/doctor.mjs';
 
 const git = (...args) => spawnSync('git', args, { encoding: 'utf8' });
 let repo, home, project, ctx;
@@ -158,4 +160,59 @@ test('a skills folder linked into the repo is skipped, and nothing is written th
   assert.ok(!existsSync(join(packSkills, 'delta')));
   assert.ok(r.warnings.some((w) => w.includes(join(project, '.claude', 'skills')) && /into the repo/.test(w)));
   assert.ok(isLink(L('pi', 'delta')));
+});
+
+const update = () => runInstall(ctx, { agents: ['claude', 'pi'], packs: ['dev'] });
+
+test('update relinks a project skill that moved in the repo and drops one that was deleted', () => {
+  update();
+  addSkills(ctx, { project, names: ['gamma', 'delta'] });
+  renameSync(join(repo, 'skills/project-packs/dev-project/skills/gamma'), join(repo, 'skills/project-packs/dev-project/frontend/skills/gamma'));
+  rmSync(join(repo, 'skills/project-packs/dev-project/frontend/skills/delta'), { recursive: true });
+  const r = update();
+  assert.ok(samePath(linkTarget(L('pi', 'gamma')), join(repo, 'skills/project-packs/dev-project/frontend/skills/gamma')));
+  assert.ok(!existsSync(L('pi', 'delta')) && !isLink(L('pi', 'delta')));
+  assert.ok(r.notes.some((n) => /delta: no longer in the repo/.test(n)));
+  assert.deepEqual(Object.values(state().projects), [['gamma']]);
+});
+
+test('a project skill that became global is dropped from the project', () => {
+  update();
+  addSkills(ctx, { project, names: ['gamma'] });
+  renameSync(join(repo, 'skills/project-packs/dev-project/skills/gamma'), join(repo, 'skills/global/gamma'));
+  // The catalog needs gamma too, or checkRepo refuses the run.
+  const catalog = JSON.parse(readFileSync(join(repo, 'skills/global/catalog.json'), 'utf8'));
+  catalog.skills.gamma = { category: 'process', tagline: 'Gamma tagline' };
+  writeFileSync(join(repo, 'skills/global/catalog.json'), JSON.stringify(catalog));
+  const r = update();
+  assert.ok(!isLink(L('claude', 'gamma')));
+  assert.ok(r.notes.some((n) => /gamma: now a global skill/.test(n)));
+});
+
+test('uninstalling one agent removes only its project links, and the exclude block keeps the rest', () => {
+  update();
+  git('init', '-q', project);
+  addSkills(ctx, { project, names: ['gamma'] });
+  runInstall(ctx, { agents: ['pi'], packs: ['dev'], uninstall: true });
+  assert.ok(!existsSync(L('pi', 'gamma')) && isLink(L('claude', 'gamma')));
+  const ex = readFileSync(join(project, '.git/info/exclude'), 'utf8');
+  assert.ok(ex.includes('/.claude/skills/gamma') && !ex.includes('/.pi/skills/gamma'));
+});
+
+test('a project folder that is gone is reported, not fatal, and remove all clears it', () => {
+  update();
+  addSkills(ctx, { project, names: ['gamma'] });
+  rmSync(project, { recursive: true });
+  assert.ok(update().warnings.some((w) => /project folder is gone/.test(w)));
+  assert.equal(Object.keys(state().projects).length, 1);
+  removeSkills(ctx, { project, names: 'all' });
+  assert.deepEqual(state().projects, {});
+});
+
+test('doctor reports a project link that went missing', async () => {
+  update();
+  addSkills(ctx, { project, names: ['gamma'] });
+  removeLink(L('pi', 'gamma'));
+  const found = await doctor(ctx);
+  assert.ok(found.some((f) => f.msg.includes('update would make') && f.msg.includes(L('pi', 'gamma'))));
 });

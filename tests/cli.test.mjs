@@ -173,3 +173,17 @@ test('--dry-run writes nothing for install, uninstall, update and resolve', () =
   assert.match(res.stdout, /^would change/m);
   assert.deepEqual([readFileSync(mcp, 'utf8'), readFileSync(statePath, 'utf8')], before);
 });
+
+test('add and remove a pack skill in a project through the CLI', () => {
+  const home = tempDir('harness-cli-');
+  assert.equal(cli(['install', '--agents', 'claude', '--packs', 'dev'], home).status, 0);
+  const project = tempDir('harness-proj-');
+  const add = cli(['add', 'find-bugs', project], home);
+  assert.equal(add.status, 0, add.stdout + add.stderr);
+  assert.ok(isLink(join(project, '.claude', 'skills', 'find-bugs')));
+  const rm = cli(['remove', 'all', project], home);
+  assert.equal(rm.status, 0, rm.stdout + rm.stderr);
+  assert.ok(!existsSync(join(project, '.claude', 'skills', 'find-bugs')));
+  assert.equal(cli(['add', 'find-bugs'], home).status, 2);                    // 少了目录
+  assert.match(cli(['add', 'nope', project], home).stderr, /^error: unknown skill "nope"/);
+});

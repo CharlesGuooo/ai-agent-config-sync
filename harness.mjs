@@ -6,6 +6,7 @@ import { dirname, join } from 'node:path';
 import { makeContext, isWorktree } from './lib/platform.mjs';
 import { loadState } from './lib/state.mjs';
 import { runInstall } from './lib/engine.mjs';
+import { addSkills, removeSkills } from './lib/projects.mjs';
 import { PACKS } from './lib/skills.mjs';
 import { doctor, repoProblems } from './lib/doctor.mjs';
 import { loadSources, upstreamStatus } from './lib/upstream.mjs';
@@ -14,6 +15,8 @@ const USAGE = `usage:
   node harness.mjs install --agents claude,codex,cursor,opencode,pi [--packs ${Object.keys(PACKS).join(',')}] [--dry-run]
   node harness.mjs update [--dry-run]
   node harness.mjs uninstall --agents <list> [--dry-run]
+  node harness.mjs add <skill>[,<skill>…] <project-dir> [--dry-run]     link pack skills into a project, for every installed agent
+  node harness.mjs remove <skill>[,<skill>…]|all <project-dir> [--dry-run]
   node harness.mjs resolve                            list conflicts and the items kept on this machine
   node harness.mjs resolve repo <id|all> [--dry-run]  use the repo's version
   node harness.mjs resolve keep <id|all> [--dry-run]  keep this machine's version and stop managing it
@@ -25,7 +28,7 @@ const USAGE = `usage:
                                                       reads GitHub, set GITHUB_TOKEN for more than 60 lookups an hour)
   node harness.mjs help
 install without --packs keeps the packs already installed (all of them the first time)
-add --verbose to install, update, uninstall or resolve to list every change`;
+add --verbose to install, update, uninstall, resolve, add or remove to list every change`;
 
 // Each command's flags (true: takes a comma-separated list) and how many words may follow it. Anything else is refused,
 // so a misspelled --dry-run stops the command instead of letting it write.
@@ -33,6 +36,8 @@ const COMMANDS = {
   install: { flags: { agents: true, packs: true, 'dry-run': false, verbose: false }, words: [0] },
   update: { flags: { 'dry-run': false, verbose: false }, words: [0] },
   uninstall: { flags: { agents: true, 'dry-run': false, verbose: false }, words: [0] },
+  add: { flags: { 'dry-run': false, verbose: false }, words: [2] },
+  remove: { flags: { 'dry-run': false, verbose: false }, words: [2] },
   resolve: { flags: { 'dry-run': false, verbose: false }, words: [0, 1, 2] },
   doctor: { flags: { deep: false }, words: [0] },
   check: { flags: {}, words: [0] },
@@ -162,6 +167,15 @@ try {
       liveGuard();
       if (!flags.agents) usageError('uninstall: --agents is required');
       process.exit(printReport(runInstall(ctx, { agents: flags.agents, packs: loadState(ctx.local).packs, uninstall: true, dryRun })));
+    }
+    case 'add':
+    case 'remove': {
+      liveGuard();
+      installedState();
+      const names = words[0].split(',').map((s) => s.trim()).filter(Boolean);
+      if (!names.length) usageError(`${cmd}: no skill names given`);
+      const opts = { project: words[1], dryRun };
+      process.exit(printReport(cmd === 'add' ? addSkills(ctx, { ...opts, names }) : removeSkills(ctx, { ...opts, names: words[0] === 'all' ? 'all' : names })));
     }
     case 'doctor': {
       const found = await doctor(ctx, { deep: Boolean(flags.deep) });

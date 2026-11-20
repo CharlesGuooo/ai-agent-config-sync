@@ -329,3 +329,9 @@ guard hook：危险命令先确认，不读凭证文件）。Claude 和 Codex �
   的配置或 `false`、关掉的 Claude LSP 插件）。这些用 `resolve keep <id>`，别一把 `resolve repo all`。
 - Cursor、OpenCode、Pi 没有 guard hook，只能靠指令里的 notes 让它们自己先确认危险命令、不读凭证文件。
 - Cursor 的用户规则改了以后要重新粘贴，`doctor --deep` 会提醒。
+- 链接进项目的 skill（`harness add`）各 agent 怎么发现，在本机试过的结果（试用项目里 add 了 3 个，`.claude/skills`、`.codex/skills`、`.cursor/skills`、`.opencode/skills`、`.pi/skills` 都建了链接）：
+  - Claude Code：新开会话（`claude -p`）时，skill-find 被调用，并给出推荐、没有自己跑 `add`、等用户同意。装了以后新开会话是否列出这些 skill 没单独验证；已开着的会话里不 `/reload-skills` 能否直接用：未验证，需在交互会话里试。
+  - Codex：`codex debug prompt-input`（cwd 在试用项目）的 skills 列表里有这 3 个，已验证。
+  - OpenCode：`opencode debug skill`（cwd 在试用项目）列出这 3 个，路径在项目的 `.opencode/skills` 下，已验证。
+  - Cursor、Pi：未验证，需在交互会话里试。
+  - Codex 沙箱里跑 `add`（会写 repo 的 `.local/state.json`）是否被拦：未验证，需在交互会话里试。

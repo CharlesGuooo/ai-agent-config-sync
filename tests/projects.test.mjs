@@ -119,3 +119,43 @@ test('excludeText replaces only its own block', () => {
   assert.equal(excludeText(a, ['/b']).includes('/a'), false);
   assert.equal(excludeText(a, []), 'x\n');
 });
+
+test('two projects in one git repo keep each other\'s exclude lines', () => {
+  const top = tempDir('top-');
+  git('init', '-q', top);
+  const a = join(top, 'a');
+  const b = join(top, 'b');
+  mkdirSync(a);
+  mkdirSync(b);
+  addSkills(ctx, { project: a, names: ['gamma'] });
+  addSkills(ctx, { project: b, names: ['delta'] });
+  const ex = () => readFileSync(join(top, '.git/info/exclude'), 'utf8');
+  for (const l of ['/a/.claude/skills/gamma\n', '/a/.pi/skills/gamma\n', '/b/.claude/skills/delta\n', '/b/.pi/skills/delta\n']) assert.ok(ex().includes(l), l);
+  assert.equal(git('-C', top, 'status', '--porcelain', '--untracked-files=all').stdout, '');
+  removeSkills(ctx, { project: a, names: 'all' });
+  assert.ok(!ex().includes('/a/') && ex().includes('/b/.claude/skills/delta\n'));
+  removeSkills(ctx, { project: b, names: 'all' });
+  assert.ok(!ex().includes('ai-agent-config-sync'));
+});
+
+test('a project reached through a directory link gets git\'s own paths in the exclude', () => {
+  const top = tempDir('top-');
+  git('init', '-q', top);
+  const real = join(top, 'proj');
+  mkdirSync(real);
+  const via = join(tempDir('via-'), 'proj');
+  makeDirLink(real, via);
+  addSkills(ctx, { project: via, names: ['gamma'] });
+  const ex = readFileSync(join(top, '.git/info/exclude'), 'utf8');
+  assert.ok(ex.includes('/proj/.claude/skills/gamma\n') && !ex.includes('/../'), ex);
+  assert.equal(git('-C', top, 'status', '--porcelain', '--untracked-files=all').stdout, '');
+});
+
+test('a skills folder linked into the repo is skipped, and nothing is written there', () => {
+  const packSkills = join(repo, 'skills/project-packs/dev-project/skills');
+  makeDirLink(packSkills, join(project, '.claude', 'skills'));
+  const r = addSkills(ctx, { project, names: ['delta'] });
+  assert.ok(!existsSync(join(packSkills, 'delta')));
+  assert.ok(r.warnings.some((w) => w.includes(join(project, '.claude', 'skills')) && /into the repo/.test(w)));
+  assert.ok(isLink(L('pi', 'delta')));
+});

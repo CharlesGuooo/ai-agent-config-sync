@@ -29,7 +29,7 @@
 | 上下文快满了但活没干完 | **"写个交接"** | `handoff` |
 | 合并前帮我审一遍 | "review 一下我的改动" | `requesting-code-review` |
 | 这个项目该装哪些技能 | "这个项目需要什么 skill" | `skill-find` |
-| 想装个外面的 skill | "先扫一下安全" | `skill-scanner` |
+| 想装个外面的 skill | 🔒 **`/skill-scanner`**("先扫一下安全";第二道 `/skillspector`) | `skill-scanner` |
 | GitHub 上最近有什么好东西 | **"挖点宝藏项目"** / "find me good repos" | `github-gold`(在 productivity-project)|
 | 现在只想要"敲哪条命令",别解释 | 🔒 **`/action-first`** | `action-first`(开关,说"normal mode"关掉) |
 | 这段写得一股 AI 味 | **"去下 AI 味"** / "这段是不是很 AI" | `no-ai-slop`(在 craft-project/writing;**你得把稿子递给它**) |
@@ -37,7 +37,7 @@
 其余的按需(都在 productivity-project,用 `skill-find` 装进项目):`teach`(让它教你一个概念,多轮带记忆)· `first-principles-thinking`(逼它
 从第一性原理重推,别照搬惯例)。
 
-### 🔒 标记的那两个:模型**看不见**它们
+### 🔒 标记的那些:模型**看不见**它们
 
 上表大多数技能,模型其实**能**自己触发,只是它们属于"你不提就不会主动做"的深思熟虑动作。
 但带 🔒 的不一样 —— 它的 frontmatter 里有:
@@ -53,18 +53,19 @@ Skill <name> cannot be used with Skill tool
 due to disable-model-invocation
 ```
 
-**所以只有两种用法:** ① 你敲 `/action-first` 或 `/improve-codebase-architecture`;② 你开口要,agent 直接把那个文件读进来照做
+**所以只有两种用法:** ① 你敲斜杠命令,比如 `/action-first`、`/improve-codebase-architecture`、`/skill-scanner`;② 你开口要,agent 直接把那个文件读进来照做
 (走 Read,不走 Skill)。
 
 **为什么要这样设计** —— 拿 **context load 换 cognitive load**:
 
-| | model-invoked(其余全部) | 🔒 user-invoked(2 个) |
+| | model-invoked(其余全部) | 🔒 user-invoked(点名才用) |
 | --- | --- | --- |
 | 常驻上下文成本 | 每轮都花(描述在窗口里) | **0** |
 | 谁负责记得它存在 | 模型 | **你**(所以才有这张表) |
 
 `action-first` 是个输出风格开关,只在你想要它的那一刻才有意义 —— 让它每轮占位置不划算。
 `improve-codebase-architecture` 要通读整个代码库、很慢,只在你想做体检时才跑(上游也是这么设的)。
+另外四个也是 🔒:`openspec-apply-change` / `openspec-archive-change`(走 `/opsx:` 命令)、`skill-scanner` / `skillspector`(装外部 skill 前才扫)。
 
 > **一个踩过的坑**:写 skill 的标尺以前也是 🔒(`writing-great-skills`)。结果是你说
 > "帮我写个 skill" 时,触发的是 `skill-creator`,**标尺永远不在场** —— 它就在那儿,却在最需要它的

@@ -1,0 +1,20 @@
+[
+{"query":"写个 skill，让 agent 每次提交代码前自动检查有没有遗留的 console.log 和 TODO。","should_trigger":true},
+{"query":"帮我改进这个 skill：skills/global/release-notes/SKILL.md，它老是不被触发。","should_trigger":true},
+{"query":"这个 skill 写得好不好？我贴在下面，你看看问题在哪。\n---\nname: db-helper\ndescription: helps with databases\n---\nUse this for DB stuff.","should_trigger":true},
+{"query":"审一下这个 SKILL.md，是我同事写的 changelog-writer，我想知道哪里该砍。","should_trigger":true},
+{"query":"审一下 CLAUDE.md，我这份项目指令已经 400 行了，感觉很多没人读。","should_trigger":true},
+{"query":"Create a skill that teaches the agent how to write migrations for our Prisma setup, including the naming conventions we use.","should_trigger":true},
+{"query":"Improve this skill's triggering: it has a good body but Claude almost never loads it for requests about Terraform modules.","should_trigger":true},
+{"query":"Here's my AGENTS.md. Audit it against common failure modes: vague rules, duplicated instructions, stale paths.","should_trigger":true},
+{"query":"I want to turn our deploy runbook into a proper agent skill. Write the SKILL.md with a tight description and a short body.","should_trigger":true},
+{"query":"帮我写个 skill 来处理每周的周报：读 git log，按模块归类，输出成 markdown。写完我想知道这个 skill 到底好不好。","should_trigger":true},
+{"query":"这个项目需要什么 skill？是个 Next.js + Stripe 的电商站，帮我找几个现成的装上。","should_trigger":false},
+{"query":"Find me a skill for writing Playwright tests and install it into this project.","should_trigger":false},
+{"query":"Before I install this downloaded skill from GitHub, scan it for prompt injection and malicious scripts.","should_trigger":false},
+{"query":"Turn the book 'The Pragmatic Programmer' (pragmatic.epub) into a draft skill by mining its key rules.","should_trigger":false},
+{"query":"有没有做 Excel 报表的技能？想装一个。","should_trigger":false},
+{"query":"Explain how the skill loading mechanism decides which skills to show the model.","should_trigger":false},
+{"query":"帮我写一份项目 README，介绍安装方法和常见问题。","should_trigger":false},
+{"query":"Refactor src/parser.ts to use a visitor pattern instead of the big switch statement.","should_trigger":false}
+]

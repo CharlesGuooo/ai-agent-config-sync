@@ -1,0 +1,20 @@
+[
+{"query":"I just finished the payment-refund feature on branch feat/refunds. Review my changes since main before I open the PR.","should_trigger":true},
+{"query":"合并前帮我 review 一下，这个分支改了 auth 模块和三个 migration，对照 docs/specs/session-tokens.md 看有没有漏的。","should_trigger":true},
+{"query":"审一下我的改动，从 commit a1b2c3d 开始到现在的所有提交，看看符不符合这个仓库的规范。","should_trigger":true},
+{"query":"I've completed task 4 of the plan (the CSV importer). Before I move on, check my diff against the plan and against our repo conventions.","should_trigger":true},
+{"query":"Review the changes on my branch since the last release tag. Tell me separately whether it follows our coding standards and whether it does what issue #218 asked for.","should_trigger":true},
+{"query":"Finished the big refactor of the scheduler. Can you do a review of my own changes before merging? I want a second pair of eyes on spec compliance and code smells.","should_trigger":true},
+{"query":"帮我审一下我的改动：我做完了订单导出功能，需求在 issue #77 里，合并前想确认没偏离需求也没留坏味道。","should_trigger":true},
+{"query":"Look over everything I changed since origin/main on feature/dark-mode and flag anything that doesn't match the repo's style guide.","should_trigger":true},
+{"query":"I'm about to merge this PR into main. Do a pre-merge review of my diff, standards and spec, side by side.","should_trigger":true},
+{"query":"这是我今天完成的第二个任务，计划在 PLAN.md 里，合并前帮我 review 一下是不是都做到了。","should_trigger":true},
+{"query":"A reviewer left these comments on my PR: 'extract this into a helper' and 'this naming is misleading'. Go through them and decide which to apply.","should_trigger":false},
+{"query":"Before I say this is done, run the full test suite and the linter and show me the output.","should_trigger":false},
+{"query":"The nightly job crashes with a segfault in worker.c after my last change. Debug it.","should_trigger":false},
+{"query":"Reviewer says my retry logic is wrong but I think it's fine. Check their claim technically before I change anything.","should_trigger":false},
+{"query":"Is this build actually fixed? Verify it by running it before I tell my team.","should_trigger":false},
+{"query":"Explain what this regex does: ^(?=.*[A-Z])(?=.*\\d).{8,}$","should_trigger":false},
+{"query":"帮我写一个 Python 函数，把嵌套的 JSON 展平成一层的字典。","should_trigger":false},
+{"query":"Summarize the git log of the last week as release notes.","should_trigger":false}
+]

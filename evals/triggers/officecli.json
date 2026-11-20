@@ -1,0 +1,20 @@
+[
+{"query":"Create a quarterly sales report in Excel from the numbers I pasted below: one sheet per region, with a SUM total row and a bar chart. Save it as q3-sales.xlsx.","should_trigger":true},
+{"query":"帮我做一个 12 页的 PPT，主题是公司 2025 年度总结，保存成 annual-review.pptx，要有图表和统一的配色。","should_trigger":true},
+{"query":"Open contract-draft.docx and fix the numbering of the clauses, then change all headings to Calibri 14 bold.","should_trigger":true},
+{"query":"budget.xlsx 里的 Summary 表公式好像有问题，帮我检查一下哪些单元格算错了，并把 VLOOKUP 改成 XLOOKUP。","should_trigger":true},
+{"query":"Proofread meeting-notes.docx for typos and inconsistent date formats, and tell me what you found.","should_trigger":true},
+{"query":"Build a pivot table from sales-2024.xlsx showing revenue by product category and month.","should_trigger":true},
+{"query":"把 weekly-report.docx 渲染成 PNG 让我看看排版有没有错位。","should_trigger":true},
+{"query":"I have a Word template (offer-letter-template.docx) with {{name}} and {{salary}} placeholders. Merge it with candidates.xlsx and produce one docx per row.","should_trigger":true},
+{"query":"Insert the logo.png on the title slide of pitch-deck.pptx and shrink the font of the second slide's bullets so they fit.","should_trigger":true},
+{"query":"Give me an outline of what's inside handbook.docx: headings, tables, and images.","should_trigger":true},
+{"query":"Merge these three PDFs (a.pdf, b.pdf, c.pdf) into one file and rotate page 2 by 90 degrees.","should_trigger":false},
+{"query":"Extract the tables from annual-report.pdf and put them in a CSV.","should_trigger":false},
+{"query":"Convert handbook.docx to Markdown so I can feed it into my RAG pipeline.","should_trigger":false},
+{"query":"把 scanned-invoice.pdf 做 OCR，让它可以被搜索。","should_trigger":false},
+{"query":"Use markitdown to turn this xlsx and the linked web page into Markdown for analysis.","should_trigger":false},
+{"query":"Write a Python script using pandas that reads sales.csv and prints the monthly totals.","should_trigger":false},
+{"query":"帮我写一封给客户的邮件，说明项目延期一周的原因，语气诚恳一点。","should_trigger":false},
+{"query":"Explain how Excel's XLOOKUP differs from VLOOKUP, conceptually. No files involved.","should_trigger":false}
+]

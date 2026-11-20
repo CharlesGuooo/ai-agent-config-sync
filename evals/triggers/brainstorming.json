@@ -1,0 +1,20 @@
+[
+{"query":"I want to add offline sync to our notes app (Expo + SQLite, backend is Supabase). Brainstorm this with me before I write any code.","should_trigger":true},
+{"query":"我打算给公司内部的报销系统加一个审批流，但还没想清楚范围。盘问我，一轮一轮地问，别急着动手。","should_trigger":true},
+{"query":"Grill me on this plan: I'm going to migrate our Rails monolith's billing module into a separate service next quarter.","should_trigger":true},
+{"query":"我想做一个帮独立开发者追踪订阅收入的小工具，脑子里很乱，帮我想清楚到底该做成什么样、先做哪些功能。","should_trigger":true},
+{"query":"Here's my design for the rate limiter in api/middleware/limit.ts: token bucket per API key stored in Redis. Stress-test this and tell me where it breaks.","should_trigger":true},
+{"query":"I'm planning a 20-minute talk on our incident postmortem process for the all-hands. Poke holes in this outline before I build the slides: 1) timeline 2) root cause 3) what we changed.","should_trigger":true},
+{"query":"We're thinking of letting users export their dashboards as scheduled emails. I'm not sure it's a good idea or how it'd work. Help me think this through.","should_trigger":true},
+{"query":"Design a plugin system for our CLI tool (Node, ~40 commands). Users should be able to add their own commands. I haven't decided how plugins are discovered or sandboxed.","should_trigger":true},
+{"query":"We have a spare month and two engineers. What should we build to cut our onboarding drop-off? Nothing is decided yet, the options are an interactive tutorial, a template gallery, or a Slack integration.","should_trigger":true},
+{"query":"我们家想把客厅和书房打通重新装修，预算大概二十万，但格局、收纳、采光都没定。帮我想清楚要先决定哪些事，一个个问我。","should_trigger":true},
+{"query":"Let's explore ideas freely about what an AI-native spreadsheet could look like. No need to converge on anything, I just want to wander through possibilities. Use openspec explore mode.","should_trigger":false},
+{"query":"The spec for the invoice export is already approved (docs/specs/invoice-export.md). Write the step-by-step implementation plan with tasks and file paths.","should_trigger":false},
+{"query":"The checkout page throws 'TypeError: Cannot read properties of undefined (reading total)' after I apply a coupon. Figure out why.","should_trigger":false},
+{"query":"Turn this design doc into a concrete task list: docs/design/search-v2.md. We already decided on Elasticsearch and the schema is final.","should_trigger":false},
+{"query":"test_payment_retry.py started failing on CI after yesterday's merge but passes locally. Find the root cause.","should_trigger":false},
+{"query":"Rename the function getUserData to fetchUserProfile across src/ and update the imports.","should_trigger":false},
+{"query":"What's the difference between a left join and an inner join in Postgres? Give me a short example.","should_trigger":false},
+{"query":"帮我把 utils/date.ts 里的 formatDate 改成支持 ISO 8601 week 格式，加上单元测试。","should_trigger":false}
+]

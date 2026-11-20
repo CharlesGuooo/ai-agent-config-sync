@@ -1,0 +1,20 @@
+[
+{"query":"把这个 report.pdf 的第 3 到 5 页拆出来","should_trigger":true},
+{"query":"Merge invoice-jan.pdf, invoice-feb.pdf and invoice-mar.pdf into a single q1-invoices.pdf.","should_trigger":true},
+{"query":"Extract all the tables from financials-2024.pdf and save them as CSV files.","should_trigger":true},
+{"query":"这份 scanned-contract.pdf 是扫描件，帮我做 OCR 变成可搜索的 PDF。","should_trigger":true},
+{"query":"Add a diagonal DRAFT watermark to every page of proposal.pdf.","should_trigger":true},
+{"query":"I need to fill out the fields in w9-form.pdf with the info in my details.json.","should_trigger":true},
+{"query":"给 salary-sheet.pdf 加上密码保护，再帮我把另一个 locked.pdf 解密。","should_trigger":true},
+{"query":"Rotate pages 2 and 7 of manual.pdf by 90 degrees clockwise.","should_trigger":true},
+{"query":"Pull all the images out of brochure.pdf into a folder.","should_trigger":true},
+{"query":"帮我生成一份带封面和页码的 PDF 版会议纪要，内容我贴在下面。","should_trigger":true},
+{"query":"Edit slide 4 of board-meeting.pptx and replace the revenue chart with the new numbers.","should_trigger":false},
+{"query":"Add a new sheet to budget.xlsx with a SUMIF formula for each department.","should_trigger":false},
+{"query":"Convert handbook.docx to Markdown for my knowledge base.","should_trigger":false},
+{"query":"把 contract.docx 里的第三条改一下措辞，保留修订痕迹。","should_trigger":false},
+{"query":"Use markitdown to ingest these three PowerPoint files into Markdown for RAG.","should_trigger":false},
+{"query":"What does PDF/A mean and when would an archive need it? Just explain.","should_trigger":false},
+{"query":"Write a React component that shows a sortable table of users.","should_trigger":false},
+{"query":"明天下午三点提醒我给供应商回电话，顺便帮我想想怎么谈价格。","should_trigger":false}
+]

@@ -1,0 +1,20 @@
+[
+{"query":"这个项目需要什么 skill？是个 SwiftUI 的记账 app，还要接 RevenueCat 做订阅。","should_trigger":true},
+{"query":"找个 Playwright 测试的 skill，我这个项目要写 e2e。","should_trigger":true},
+{"query":"帮我装 skill，这是个用 FastAPI + PostgreSQL 做的后台，我还没装过任何额外的技能。","should_trigger":true},
+{"query":"有没有做 PPT 演讲稿的技能？下周要做一次技术分享。","should_trigger":true},
+{"query":"Find a skill for writing database migrations in this Rails project and link it in.","should_trigger":true},
+{"query":"Set up skills for this project: it's a PyTorch image-classification repo with a lot of training scripts under train/.","should_trigger":true},
+{"query":"I'm about to start a React + Tailwind landing page. What skills would help here?","should_trigger":true},
+{"query":"这个仓库是做量化回测的（pandas + backtrader），有什么 skill 适合装进来？","should_trigger":true},
+{"query":"Is there a skill for video editing workflows? I'm cutting a YouTube series from this folder.","should_trigger":true},
+{"query":"帮我找个做求职简历优化的 skill，装到当前项目里。","should_trigger":true},
+{"query":"Write a new skill from scratch that checks our commit messages against Conventional Commits.","should_trigger":false},
+{"query":"Audit my SKILL.md for the db-migrations skill; the description is too long and it never triggers.","should_trigger":false},
+{"query":"Brainstorm with me what features a skill marketplace for our team should have.","should_trigger":false},
+{"query":"帮我想清楚一下，我们团队的 skill 目录该怎么分类，先别动手。","should_trigger":false},
+{"query":"Read skills/global/pdf/SKILL.md and tell me what the merge step says.","should_trigger":false},
+{"query":"Add a rate limiter to the Express server in server/app.js.","should_trigger":false},
+{"query":"帮我把这段 Python 代码改成异步的，现在用的是 requests。","should_trigger":false},
+{"query":"Draft a polite reply to a customer who wants a refund after 45 days.","should_trigger":false}
+]

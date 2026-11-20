@@ -1,0 +1,20 @@
+[
+{"query":"I'm out of context on this migration work and it's not finished. Write a handoff so a fresh agent can pick it up.","should_trigger":true},
+{"query":"写个交接，我今天先做到这里，明天换个新会话继续接着干 auth 重构。","should_trigger":true},
+{"query":"写个 HANDOFF，把当前进度、没解决的坑、下一步都记下来，我要在另一台电脑上继续。","should_trigger":true},
+{"query":"Compact this session into a HANDOFF.md. We've been debugging the websocket reconnect issue for hours and I'll continue tomorrow in a new chat.","should_trigger":true},
+{"query":"I'm starting a new session on this feature. Hand off what we've done so far: the schema is done, the API routes are half done, tests not started.","should_trigger":true},
+{"query":"这个会话已经很长了，快撑不住上下文了，活还没干完，帮我写个交接文档给下一个 agent。","should_trigger":true},
+{"query":"Hand off this work to another agent on my laptop: record the branch name, the failing test, and what I already ruled out.","should_trigger":true},
+{"query":"We're near the context limit and the refactor of billing/ isn't done. Write up where things stand so I can start a fresh agent on it.","should_trigger":true},
+{"query":"帮我把现在的状态写成 HANDOFF.md，我准备开个新会话，不想重新解释一遍背景。","should_trigger":true},
+{"query":"Before I close this session, leave a handoff note for whoever (or whichever agent) continues the CI pipeline fix.","should_trigger":true},
+{"query":"We haven't started yet. Write the implementation plan for the new notification service based on docs/specs/notifications.md.","should_trigger":false},
+{"query":"Turn this approved spec into a multi-step task list with file paths and test commands before we touch any code.","should_trigger":false},
+{"query":"Summarize this long email thread from the vendor into five bullet points.","should_trigger":false},
+{"query":"把今天的会议内容整理成会议纪要，发给团队。","should_trigger":false},
+{"query":"Plan the work for next sprint: break the 'reporting' epic into tasks.","should_trigger":false},
+{"query":"What does git rebase --onto do? Explain with a small example.","should_trigger":false},
+{"query":"Fix the off-by-one in pagination in api/list.ts.","should_trigger":false},
+{"query":"帮我给 deploy.sh 加上失败重试和日志输出。","should_trigger":false}
+]

@@ -87,7 +87,7 @@ folder already holds skills — here, a real folder next to the harness's links.
    skill"). It grades against `references/rubric.md` and reports a verdict per
    failure mode. Mined skills fail hardest on triggering and on sprawl.
 3. **Move it into the repo.** Domain-specific (almost always, for a book) → the matching
-   local pack, not `skills/global/`; use `skill-router` if unsure. Then delete what upstream
+   local pack, not `skills/global/`; see the pack index in HARNESS.md if unsure. Then delete what upstream
    left: `~/.claude/skills/<slug>` (its link, copy or the draft itself) and, if it exists,
    `~/.agents/skills/<slug>`.
 4. **Register it.** In `skills/global/`, add a `catalog.json` entry first. Then run

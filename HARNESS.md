@@ -1,18 +1,16 @@
 # HARNESS — agent-facing routing manifest
 
-**You are an AI agent. Read this when you start work in a project to decide what to
-use.** It maps the *harness* (the scaffolding around the model) configured on this
-machine — with emphasis on the **local skill packs**, because those are the part you do
-NOT get for free.
+**You are an AI agent. Read this when you lack a skill for the work in front of you.**
+It maps the *harness* (the scaffolding around the model) configured on this machine —
+with emphasis on the **local skill packs**, because those are the part you do NOT get
+for free.
 
 **What you already have without this file** (auto-exposed at session start, don't re-derive):
 global skills, global MCP servers, the global CLAUDE.md/AGENTS.md principles, and the
-skills of whatever directory you launched in. **What this file adds:** the home-level
-local packs at `~/<pack>/` are NOT auto-discovered when your cwd is elsewhere (e.g. a
-fresh repo on another drive). Use the routing table below to pick the right pack; its skills
-load when an agent session starts in `~/<pack>[/<sub>]` (or Cursor opens it) — a `cd` inside a
-running session does not load them, so if you are already running elsewhere, tell the user which
-directory to start from.
+skills of whatever directory you launched in. **What this file adds:** the packs' skills
+are not loaded in a project until someone links them in. To install pack skills into a
+project, use `skill-find` (it runs `node harness.mjs add`); to use one skill once, read its
+`SKILL.md` straight from the repo.
 
 ---
 
@@ -75,11 +73,11 @@ owns its two paths; don't hardcode `.<agent>/skills`.
 
 ---
 
-## Local skill packs — routing (start the agent in the right one)
+## Local skill packs — where they live
 
-Pick by task, then start the agent from `~/<pack>[/<sub>]` (or open it in Cursor) so the pack's
-skills load; a `cd` inside a running session does not load them. Document tasks
-(PDF/Word/Excel/PPT) use **global** skills directly — no pack needed.
+Each pack is still linked at `~/<pack>[/<sub>]`, and an agent session started there loads that
+pack's skills, but the everyday route is to link the skills into the project you work in
+(`skill-find`). Document tasks (PDF/Word/Excel/PPT) use **global** skills directly — no pack needed.
 
 | Task domain | Pack | Sub-packs (start one level deeper for the specialty) |
 | --- | --- | --- |
@@ -94,9 +92,7 @@ skills load; a `cd` inside a running session does not load them. Document tasks
 | Video editing | `~/media-project/` | flat |
 | 命理 / 情感 | `~/life-project/` | flat |
 
-The per-skill index below is a discovery aid ("which pack has a skill for X?"). Once an agent
-starts in a pack, that pack's full SKILL.md descriptions load with it — you don't need this
-index anymore.
+The index below is what `skill-find` searches: grep it, then read the sections that hit.
 
 <!-- PACKS:BEGIN -->
 
@@ -127,7 +123,7 @@ index anymore.
   - `high-agency` — Stay proactive and own complex long tasks
 
 - **Routing & Meta** — Routing + skill tooling
-  - `skill-router` — Route the task to the correct local project pack
+  - `skill-find` — Recommend pack skills for the project and link them in (harness add)
   - `skill-creator` — Write a new skill, or audit a skill or CLAUDE.md/AGENTS.md against the rubric
   - `skill-scanner` — Security-scan a community skill before installing it
   - `skillspector` — Second security scan (NVIDIA SkillSpector, 0-100 risk score) before installing or publishing a skill

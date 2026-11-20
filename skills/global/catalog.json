@@ -32,7 +32,7 @@
 
     "high-agency":                   { "category": "escalation",  "tagline": "Stay proactive and own complex long tasks" },
 
-    "skill-router":                  { "category": "routing",     "tagline": "Route the task to the correct local project pack" },
+    "skill-find":                    { "category": "routing",     "tagline": "Recommend pack skills for the project and link them in (harness add)" },
     "skill-creator":                 { "category": "routing",     "tagline": "Write a new skill, or audit a skill or CLAUDE.md/AGENTS.md against the rubric" },
     "skill-scanner":                 { "category": "routing",     "tagline": "Security-scan a community skill before installing it" },
     "skillspector":                  { "category": "routing",     "tagline": "Second security scan (NVIDIA SkillSpector, 0-100 risk score) before installing or publishing a skill" },

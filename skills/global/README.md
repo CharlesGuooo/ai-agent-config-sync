@@ -43,9 +43,9 @@ The global layer should stay small and stable.
 
 ### Global routing skill
 
-- `skill-router`
+- `skill-find`
 
-The router decides which project directory should own the task and where the local pack should start.
+It recommends pack skills for the project at hand and, once the user agrees, links them into it (`node harness.mjs add`).
 
 ---
 
@@ -88,7 +88,7 @@ Examples:
 ## Key Files
 
 - Global rules: [`skill-rules.json`](skill-rules.json)
-- Global router: [`skill-router/SKILL.md`](skill-router/SKILL.md)
+- Global router: [`skill-find/SKILL.md`](skill-find/SKILL.md)
 - Global architecture guide: [`prompt/core.md`](../../prompt/core.md) (installed into every agent's instructions)
 - Routing regression cases: [`C:\\Users\\PC\\.claude\\ROUTING_REGRESSION_TESTS.md`](C:\Users\PC\.claude\ROUTING_REGRESSION_TESTS.md)
 
@@ -99,7 +99,7 @@ Examples:
 When changing global skill behavior:
 
 1. Update `skill-rules.json`
-2. Update `skill-router/SKILL.md` if routing behavior changes
+2. Update `skill-find/SKILL.md` if routing behavior changes
 3. Update `prompt/core.md` if the architecture contract changes (not the installed `CLAUDE.md` / `AGENTS.md` copies)
 4. Re-check `ROUTING_REGRESSION_TESTS.md`
 5. Keep domain details in local project packs, not in the global layer

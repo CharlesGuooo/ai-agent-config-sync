@@ -20,7 +20,7 @@ Guidelines that bias toward caution over speed. For trivial tasks, use judgment.
 
 ## Starting work
 
-Building something new or changing behaviour: load `brainstorming` before writing anything. This comes first, before the pack question under Local Skill Packs. It sizes the request first and lets a quick, clear task straight through. A bug goes to `systematic-debugging` instead.
+Building something new or changing behaviour: load `brainstorming` before writing anything. It sizes the request first and lets a quick, clear task straight through. A bug goes to `systematic-debugging` instead.
 
 ---
 
@@ -32,12 +32,18 @@ Every global skill that loads on its own is in your skill list with its full des
 
 ---
 
-## Local Skill Packs
+## Skill Packs
 
-When a task becomes domain-specific, start the agent from (or open) the matching project directory: that pack's skills are linked there and load at session start — a `cd` inside a running session does not load them. When a task belongs to a pack this session did not start in, ask before doing any of it, even when you could do it without the pack: name the directory (pick the sub-folder with `skill-router`), ask whether to restart there or carry on here without the pack, and wait for the answer.
+Domain skills (frontend, finance, research, writing, …) live in the packs under `{{REPO}}/skills/project-packs/`, indexed in `{{REPO}}/HARNESS.md`. When the user starts a project, or asks which skills would help, use `skill-find`: it recommends skills from the packs and, once the user agrees, links them into the project.
 
-| Domain | Directory |
-| --- | --- |
+When a skill names a skill you do not have, or points at a file inside one (`../<skill>/…`) that is not there, read it from the repo: `{{REPO}}/skills/**/<skill>/` holds it. Do not ask first, and do not install it.
+
+Document tasks (PDF / Word / Excel / PowerPoint) use the global `pdf`, `officecli` and `markitdown` skills directly.
+
+When the user asks how to use this harness, read `{{REPO}}/PLAYBOOK.md`.
+Skills reach you as links into that repo: to change a skill, edit it there, not in a copy. These instructions are generated from `{{REPO}}/prompt/core.md`: to change them, edit that file and run `node harness.mjs update`, since an edit made to this copy conflicts on the next update.
+
+--- | --- |
 | ML / DL / RL training | `~/dev-project/ml/` (sklearn / PyTorch / transformers / RL) |
 | Finance / 投资 / 交易 | `~/finance-project/` (container; start in `trading/` `research/` `portfolio/` `quant-methods/` for actual skills) |
 | Data analysis | `~/data-analysis-project/` |

@@ -28,7 +28,7 @@
 | 我们说的好像不是一个东西 | "把术语定下来" / "写个 ADR" | `domain-modeling` |
 | 上下文快满了但活没干完 | **"写个交接"** | `handoff` |
 | 合并前帮我审一遍 | "review 一下我的改动" | `requesting-code-review` |
-| 这活该在哪个目录干 | "我该去哪个目录" | `skill-router` |
+| 这个项目该装哪些技能 | "这个项目需要什么 skill" | `skill-find` |
 | 想装个外面的 skill | "先扫一下安全" | `skill-scanner` |
 | GitHub 上最近有什么好东西 | **"挖点宝藏项目"** / "find me good repos" | `github-gold` |
 | 现在只想要"敲哪条命令",别解释 | 🔒 **`/action-first`** | `action-first`(开关,说"normal mode"关掉) |
@@ -110,12 +110,12 @@ OpenSpec 那 4 个走 `/opsx:` 命令,不靠描述触发。
 > "写个实现计划" → `writing-plans`
 > 或 `/opsx:propose` → OpenSpec 生成 proposal / design / tasks
 
-### ③ 去对的地方
+### ③ 把技能装进项目
 
-> "这活该在哪做" → `skill-router` → 例如在 `~/dev-project/frontend` 里启动 agent(Cursor:打开这个目录)
+> "这个项目需要什么 skill" → `skill-find` → 你同意后它跑 `node harness.mjs add frontend-design,frontend-dev-guidelines <项目目录>`
 
-**在那个目录里开的会话,才加载那个 pack 的领域技能**(已经开着的会话里 `cd` 过去不算)。
-这是分层的意义:不进去就完全不花钱。
+**装进项目的技能,Claude Code 在当前会话就能用(刚建的 `.claude/skills/` 先 `/reload-skills`);Codex、Cursor、OpenCode、Pi 在项目里新开会话。** 不要了就 `node harness.mjs remove <技能>|all <项目目录>`。
+这是分层的意义:不装就完全不花钱。
 
 ### ④ 写
 
@@ -172,7 +172,7 @@ OpenSpec 那 4 个走 `/opsx:` 命令,不靠描述触发。
 > 和仓库里的 skill 同名的话,安装器还会报冲突。要装就装进仓库 `skills/global/`(或某个 pack),再 `update`。
 
 **非代码工作(研究 / 写作 / 金融 / 营销)**
-`skill-router` 送你进对应 pack。全局层里仍然好用的:`brainstorming`(盘问任何决策,
+`skill-find` 把对应 pack 的技能装进项目。全局层里仍然好用的:`brainstorming`(盘问任何决策,
 不限代码)· `handoff` · `officecli` / `pdf` / `markitdown` · `teach`。
 
 **挖 GitHub 上的好东西** —— `github-gold`,用法有三点反直觉,知道了才用得对:

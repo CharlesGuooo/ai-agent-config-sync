@@ -13,26 +13,18 @@
       "priority": "critical",
       "description": "Entry skill for deciding whether another skill applies before acting."
     },
-    "skill-router": {
+    "skill-find": {
       "type": "router",
       "enforcement": "suggest",
       "priority": "critical",
-      "description": "Route the session to the correct project directory and tell the user where to start the local pack.",
+      "description": "Recommend pack skills for the project and link them in (harness add)",
       "promptTriggers": {
         "keywords": [
           "which skill",
-          "which skills",
-          "which project",
-          "which directory",
-          "route this task",
-          "skill router",
-          "switch directory",
-          "change project"
+          "which skills"
         ],
         "intentPatterns": [
-          "(which|what).*?(skill|skills|project|directory)",
-          "(route|switch|move).*?(task|session|project|directory)",
-          "(where should i start|which repo should i use)"
+          "(which|what).*?(skill|skills|project|directory)"
         ]
       }
     },

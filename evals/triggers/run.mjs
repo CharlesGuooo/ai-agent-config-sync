@@ -66,25 +66,28 @@ function claudeCommand() {
   throw new Error('could not resolve the claude executable from claude.cmd');
 }
 
-let cleanupFailures = 0;
-function removeDir(dir) {
-  try { rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 }); } catch { cleanupFailures++; }
+let cleanupFailures = 0, stuckChildren = 0;
+function removeDir(dir, retries = 10) {
+  try { rmSync(dir, { recursive: true, force: true, maxRetries: retries, retryDelay: 200 }); } catch { cleanupFailures++; }
 }
 
-function runQuery(query) {
-  const { cmd, pre } = claudeCommand();
+// Options are a test seam: a fake spawn, short timers, and the command to run.
+export function runQuery(query, { spawnFn = spawn, command, timeoutMs = TIMEOUT_MS, killGraceMs = 5000 } = {}) {
+  const { cmd, pre } = command ?? claudeCommand();
   const cwd = mkdtempSync(join(tmpdir(), 'trigger-'));
   const env = { ...process.env };
   delete env.CLAUDECODE;
   return new Promise((resolve) => {
-    const child = spawn(cmd, [...pre, '-p', query, '--output-format', 'stream-json', '--verbose'], { cwd, env, stdio: ['ignore', 'pipe', 'pipe'] });
+    const child = spawnFn(cmd, [...pre, '-p', query, '--output-format', 'stream-json', '--verbose'], { cwd, env, stdio: ['ignore', 'pipe', 'pipe'] });
     const lines = [];
-    let buf = '', stderr = '', decided = false, settled = false, timedOut = false, result, error;
-    const settle = () => {
+    let buf = '', stderr = '', decided = false, settled = false, timedOut = false, result, error, grace;
+    const settle = (stuck = false) => {
       if (settled) return;
       settled = true;
       clearTimeout(timer);
-      removeDir(cwd);
+      clearTimeout(grace);
+      if (stuck) stuckChildren++;
+      removeDir(cwd, stuck ? 0 : 10);
       resolve({ result, timedOut, error });
     };
     const decide = (res) => {
@@ -92,8 +95,10 @@ function runQuery(query) {
       decided = true;
       result = res;
       child.kill();
+      // close only fires once the process and its pipes are gone; do not wait for it forever
+      grace = setTimeout(() => settle(true), killGraceMs);
     };
-    const timer = setTimeout(() => { timedOut = true; decide(undefined); }, TIMEOUT_MS);
+    const timer = setTimeout(() => { timedOut = true; decide(undefined); }, timeoutMs);
     child.stderr.on('data', (d) => { stderr = (stderr + d.toString('utf8')).slice(-500); });
     child.stdout.on('data', (d) => {
       buf += d.toString('utf8');
@@ -157,6 +162,7 @@ async function run(label, { skills, runs, jobs }) {
     writeFileSync(file, JSON.stringify(out, null, 2));
   }
   if (cleanupFailures) console.warn(`warning: ${cleanupFailures} temp dir(s) named trigger-* could not be removed from ${tmpdir()}`);
+  if (stuckChildren) console.warn(`warning: ${stuckChildren} claude process(es) did not close after being killed`);
   console.log(`wrote ${file}`);
 }
 

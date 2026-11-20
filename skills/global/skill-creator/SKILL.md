@@ -1,12 +1,11 @@
 ---
 name: skill-creator
 description: >-
-  Writes a new agent skill end to end, or audits one, or any document an agent reads every
-  session (CLAUDE.md, AGENTS.md, prompt/core.md), against a rubric of named failure modes. Use
-  when the user says "写个 skill", "帮我改进这个 skill", "这个 skill 写得好不好", "审一下这个
-  SKILL.md", "审一下 CLAUDE.md", "create a skill", "improve this skill's triggering", or hands
-  over a SKILL.md for critique. Distinct from skill-scanner (security scan before installing)
-  and book-to-skill (mines a book into a draft this skill then audits).
+  Writes a new agent skill or audits one, or any file an agent reads every session
+  (CLAUDE.md, AGENTS.md), against a rubric of named failure modes. Use when the user says
+  "写个 skill", "帮我改进这个 skill", "这个 skill 写得好不好", "审一下这个 SKILL.md",
+  "审一下 CLAUDE.md", "create a skill", "improve this skill's triggering", or hands over a
+  SKILL.md for critique. Distinct from skill-scanner (security scan before installing).
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, Agent
 metadata:
   category: routing
@@ -18,7 +17,8 @@ metadata:
     apart from two mechanical edits so they can keep tracking upstream: the frontmatter of its
     SKILL.md is dropped, and SKILL-MECHANICS.md's mentions of SKILL.md read
     writing-for-agents.md. scripts/, agents/, eval-viewer/, assets/ and references/schemas.md
-    are Anthropic's skill-creator (see LICENSE.txt), verbatim.
+    are Anthropic's skill-creator (see LICENSE.txt), verbatim. Description shortened for the
+    global skill-list budget (docs/skill-find.md E); keep it short when syncing upstream.
 ---
 
 # Skill Creator

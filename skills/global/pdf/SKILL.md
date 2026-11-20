@@ -1,7 +1,14 @@
 ---
 name: pdf
-description: Use this skill whenever the user wants to do anything with PDF files. This includes reading or extracting text/tables from PDFs, combining or merging multiple PDFs into one, splitting PDFs apart, rotating pages, adding watermarks, creating new PDFs, filling PDF forms, encrypting/decrypting PDFs, extracting images, and OCR on scanned PDFs to make them searchable. If the user mentions a .pdf file or asks to produce one, use this skill.
+description: >-
+  Reads, creates and edits PDF files: extract text, tables or images; merge, split, rotate,
+  watermark; fill forms; encrypt or decrypt; OCR scanned pages to make them searchable. Use
+  whenever the user mentions a .pdf file or asks to produce one.
 license: Proprietary. LICENSE.txt has complete terms
+metadata:
+  source: >-
+    Vendored from `anthropics/skills` `skills/pdf`. Description shortened for the global
+    skill-list budget (docs/skill-find.md E); keep it short when syncing upstream.
 ---
 
 # PDF Processing Guide

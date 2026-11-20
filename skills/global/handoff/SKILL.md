@@ -1,11 +1,10 @@
 ---
 name: handoff
 description: >-
-  Writes the current session into a HANDOFF.md so a fresh agent, on this machine or another,
-  can pick the work up cleanly. Use when the user says "hand off", "写个交接", "写个 HANDOFF",
-  "compact this session", "I'm starting a new session/agent on this", or when a long session is
-  about to run out of context and the work isn't finished. Distinct from writing-plans, which
-  designs work that hasn't started: handoff captures work already in flight.
+  Writes the work in flight into a HANDOFF.md so a fresh agent, here or on another machine,
+  can pick it up. Use when the user says "hand off", "写个交接", "写个 HANDOFF", "compact this
+  session", or is moving the work to a new session, or when a long session nears its context
+  limit with work unfinished. Distinct from writing-plans, which plans work not yet started.
 allowed-tools: Read, Write, Edit, Bash
 metadata:
   category: process
@@ -15,7 +14,8 @@ metadata:
     the document goes in the project as HANDOFF.md, updated in place and kept out of git unless
     it has to travel, instead of the OS temp directory: the user put all three of their
     handoffs in the project, and the one written to %TEMP% has since been cleaned away.
-    Ours also adds the Standing instructions section.
+    Ours also adds the Standing instructions section. Description shortened for the global
+    skill-list budget (docs/skill-find.md E); keep it short when syncing upstream.
 ---
 
 # Handoff

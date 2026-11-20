@@ -1,15 +1,12 @@
 ---
 name: requesting-code-review
 description: >-
-  Review your own changes since a fixed point along TWO independent axes —
-  Standards (does it follow this repo's conventions and avoid known code smells?)
-  and Spec (does it actually do what the plan/issue/spec asked?) — run as
-  parallel subagents and reported side by side, never merged. Use when
-  completing a task, finishing a major feature, before merging, or when the user
-  asks to "review my changes/branch/PR since X", "审一下我的改动", "合并前帮我
-  review". Distinct from
-  receiving-code-review (acting on feedback someone gave you) and
-  verification-before-completion (proving the thing runs).
+  Reviews your own changes since a fixed point on two separate axes, Standards (repo
+  conventions, code smells) and Spec (does it do what the plan or issue asked),
+  reported side by side. Use when finishing a task or feature, before merging, or
+  when the user asks to "review my changes since X", "审一下我的改动", "合并前帮我
+  review". Not for weighing review feedback someone gave you. Distinct from
+  verification-before-completion (proving it runs).
 allowed-tools: Read, Grep, Glob, Bash, Agent
 metadata:
   category: code-review
@@ -21,6 +18,8 @@ metadata:
     no-nested-subagent rules, and the Spec axis's reasonable-expectation rule
     and Declined to judge list come from `obra/superpowers` (MIT)
     `requesting-code-review`, whose code-reviewer.md is vendored verbatim.
+    Description shortened for the global skill-list budget (docs/skill-find.md E);
+    keep it short when syncing upstream.
 ---
 
 # Requesting Code Review

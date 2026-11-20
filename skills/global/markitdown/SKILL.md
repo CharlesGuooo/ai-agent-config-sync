@@ -1,12 +1,15 @@
 ---
 name: markitdown
-description: Converts heterogeneous documents and selected URIs to Markdown with Microsoft MarkItDown for text analysis, search, and LLM/RAG ingestion. Covers safe local conversion, streams, Office/PDF/data formats, batch workflows, plugins, vision OCR, Azure extraction, and the official MCP server.
+description: Converts documents (Office, PDF, data files) and URLs to Markdown with Microsoft MarkItDown, for text analysis, search and LLM/RAG ingestion.
 license: MIT
 compatibility: Python >=3.10,<3.15 and uv. Examples target MarkItDown 0.1.8. Core local conversion can run offline; URL, YouTube, audio transcription, LLM, Azure, and MCP workflows may use network or external services.
 metadata:
   version: "2.5"
   last-reviewed: "2026-10-01"
   skill-author: K-Dense Inc.
+  source: >-
+    Vendored from `K-Dense-AI/claude-scientific-skills` (MIT). Description shortened for the
+    global skill-list budget (docs/skill-find.md E); keep it short when syncing upstream.
 ---
 
 # MarkItDown

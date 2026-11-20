@@ -1,6 +1,10 @@
 ---
 name: verification-before-completion
-description: Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims; evidence before assertions always
+description: Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - run the verification commands and confirm their output before any success claim
+metadata:
+  source: >-
+    Vendored from `obra/superpowers` (MIT). Description shortened for the global skill-list
+    budget (docs/skill-find.md E); keep it short when syncing upstream.
 ---
 
 # Verification Before Completion

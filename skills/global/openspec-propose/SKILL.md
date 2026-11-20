@@ -1,12 +1,15 @@
 ---
 name: openspec-propose
-description: Propose a new OpenSpec change with all artifacts generated in one step. Use when the user wants to quickly describe what they want to build and get a complete proposal with design, specs, and tasks ready for implementation. Also use when the user says "openspec propose" or "opsx propose".
+description: Propose a new OpenSpec change with all artifacts generated in one step. Use when the user describes what they want to build and wants a complete proposal (design, specs, tasks) ready for implementation, or says "openspec propose" or "opsx propose".
 allowed-tools: Bash(openspec:*)
 license: MIT
 compatibility: Requires openspec CLI.
 metadata:
   author: openspec
   version: "1.0"
+  source: >-
+    Vendored from `Fission-AI/OpenSpec` (MIT). Description shortened for the global
+    skill-list budget (docs/skill-find.md E); keep it short when syncing upstream.
 ---
 
 Propose a new change - create the change and generate all artifacts in one step.

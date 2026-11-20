@@ -1,15 +1,11 @@
 ---
 name: officecli
 description: >-
-  Create, read, edit, proofread, and render Office documents (.docx, .xlsx,
-  .pptx) via the officecli binary — one self-contained CLI, no Office/LibreOffice
-  needed. Use whenever a Word / Excel / PowerPoint file is the primary input or
-  output: create from scratch; inspect / outline / extract; check formatting or
-  find issues; add or edit text, tables, charts, images; build pivot tables;
-  evaluate formulas (350+ functions, auto-calculated on write); merge templates;
-  or render to HTML / PNG / SVG / PDF for visual verification. Replaces the former
-  docx / xlsx / pptx Python skills. NOT for PDF-native editing (use `pdf`) or for
-  converting files to Markdown (use `markitdown`).
+  Creates, reads, edits, proofreads and renders Word, Excel and PowerPoint files
+  (.docx, .xlsx, .pptx) with the officecli binary, no Office needed, including
+  formulas, charts, pivot tables and template merges. Use whenever an Office file
+  is the main input or output. Not for editing PDFs (use `pdf`) or converting
+  files to Markdown (use `markitdown`).
 allowed-tools: Read, Write, Bash
 metadata:
   category: document
@@ -21,6 +17,8 @@ metadata:
     Vendored from `iOfficeAI/OfficeCLI` (Apache-2.0). Body is the upstream
     SKILL.md; only the Install section is adapted to this repo's npm-based setup.
     Security-scanned clean (skill-scanner, 0 findings) before adoption.
+    Description shortened for the global skill-list budget (docs/skill-find.md E);
+    keep it short when syncing upstream.
 ---
 
 # officecli

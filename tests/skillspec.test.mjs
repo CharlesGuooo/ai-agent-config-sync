@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { fixtureRepo, put } from './helpers.mjs';
-import { frontMatterProblems, frontMatterValue, skillSpecProblems } from '../lib/skillspec.mjs';
+import { frontMatterProblems, frontMatterValue, skillSpecProblems, globalDescriptionChars, budgetProblems } from '../lib/skillspec.mjs';
 
 const fm = (body) => `---\n${body}\n---\n# Body\n`;
 const check = (body, dir = 'alpha') => frontMatterProblems(fm(body), dir);
@@ -84,4 +84,12 @@ test('a named-only global skill must also be hidden from Codex', () => {
   assert.deepEqual(skillSpecProblems(repo), ['skills/global/beta/SKILL.md: named-only, but Codex can still pick it: add agents/openai.yaml with policy.allow_implicit_invocation: false']);
   put(repo, 'skills/global/beta/agents/openai.yaml', 'policy:\n  allow_implicit_invocation: false\n');
   assert.deepEqual(skillSpecProblems(repo), []);
+});
+
+test('the global description budget counts only skills that load on their own', () => {
+  const repo = fixtureRepo();                                     // alpha、beta 的描述各 11 字："alpha skill"
+  put(repo, 'skills/global/beta/SKILL.md', `---\nname: beta\ndescription: ${'b'.repeat(500)}\ndisable-model-invocation: true\n---\n`);
+  assert.deepEqual(globalDescriptionChars(repo), { total: 11, bySkill: [['alpha', 11]] });
+  assert.deepEqual(budgetProblems(repo, 11), []);
+  assert.deepEqual(budgetProblems(repo, 10), ['global skill descriptions total 11 characters, over the budget of 10; the longest: alpha (11)']);
 });
